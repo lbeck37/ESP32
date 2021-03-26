@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_TFT_eSPI_Demo.ino";
-const char szFileDate[]    = "3/25/21n";
+const char szFileDate[]    = "3/25/21p";
 
 //#include <SPI.h>
 #include <TFT_eSPI.h>
@@ -17,7 +17,7 @@ enum USBOrientationType {
 };
 
 USBOrientationType	eUSBOrientation= eUSBLeft;
-bool	bJustFont8= true;
+bool	bFont8Test= true;
 
 void setup(void) {
   Serial.begin(115200);
@@ -70,11 +70,22 @@ void setup(void) {
 	  // Set starting coordinates (x, y)
 	  tft.setCursor(0, 0);
 
-	  if (bJustFont8){
+	  if (bFont8Test){
 		  tft.setTextFont(8);	//75 pixels
+		  tft.setTextColor(TFT_RED);
+		  tft.print("82");
 		  tft.setTextColor(TFT_GREEN);
-		  tft.println("8234");
-	  }	//if(bJustFont8)
+		  tft.println("34");
+
+		  tft.setTextColor(TFT_PINK);
+		  tft.setTextFont(4);	//26 pixels
+		  tft.println("42345678901234567");
+
+		  tft.setTextColor(TFT_WHITE);
+		  tft.setTextFont(2);	//16 pixels
+		  tft.println("223456789012345678901234567890");
+		  tft.println("223456789012345678901234567890");
+	  }	//if(bFont8Test)
 	  else{
 		  tft.setTextFont(2);	//16 pixels
 		  tft.println("223456789012345678901234567890");
@@ -95,7 +106,7 @@ void setup(void) {
 		  tft.setTextColor(TFT_PINK);
 		  tft.println("8234");
 		  break;
-	    }	//if(bJustFont8)else
+	    }	//if(bFont8Test)else
 		default:
 		  Serial << "setup(): Bad switch, eUSBOrientation= " << eUSBOrientation << endl;
 	  }	//switch
