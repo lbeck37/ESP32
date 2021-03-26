@@ -1,11 +1,13 @@
 const char szSketchName[]  = "BeckE32_TFT_eSPI_Demo.ino";
-const char szFileDate[]    = "3/25/21p";
+const char szFileDate[]    = "3/25/21r";
 
 //#include <SPI.h>
 #include <TFT_eSPI.h>
+#include <Adafruit_GFX.h>
+//#include <Fonts/FreeSansBold18pt7b.h>
 #include <Streaming.h>
 
-TFT_eSPI tft = TFT_eSPI();
+TFT_eSPI tft= TFT_eSPI();
 
 int		wRotation;
 enum USBOrientationType {
