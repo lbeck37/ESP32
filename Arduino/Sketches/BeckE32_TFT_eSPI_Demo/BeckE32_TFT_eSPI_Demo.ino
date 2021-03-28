@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_TFT_eSPI_Demo.ino";
-const char szFileDate[]    = "3/25/21r";
+const char szFileDate[]    = "3/27/21b";
 
 //#include <SPI.h>
 #include <TFT_eSPI.h>
@@ -81,7 +81,8 @@ void setup(void) {
 
 		  tft.setTextColor(TFT_PINK);
 		  tft.setTextFont(4);	//26 pixels
-		  tft.println("42345678901234567");
+		  //tft.println("42345678901234567");
+		  tft.println("The Dude Rocks567");
 
 		  tft.setTextColor(TFT_WHITE);
 		  tft.setTextFont(2);	//16 pixels
@@ -107,11 +108,11 @@ void setup(void) {
 		  tft.setTextFont(8);	//75 pixels
 		  tft.setTextColor(TFT_PINK);
 		  tft.println("8234");
-		  break;
 	    }	//if(bFont8Test)else
-		default:
-		  Serial << "setup(): Bad switch, eUSBOrientation= " << eUSBOrientation << endl;
-	  }	//switch
+	break;
+  	default:
+		Serial << "setup(): Bad switch, eUSBOrientation= " << eUSBOrientation << endl;
+	}	//switch
 
   return;
 }	//setup
