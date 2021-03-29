@@ -6,8 +6,8 @@
 
  This sketch uses the GLCD and font 2 only.
  
- Make sure all the display driver and pin connections are correct by
- editing the User_Setup.h file in the TFT_eSPI library folder.
+ Make sure all the display driver and pin comnenctions are correct by
+ editting the User_Setup.h file in the TFT_eSPI library folder.
 
  #########################################################################
  ###### DON'T FORGET TO UPDATE THE User_Setup.h FILE IN THE LIBRARY ######
@@ -21,8 +21,6 @@
 #define TFT_GREY 0x7BEF
 
 TFT_eSPI myGLCD = TFT_eSPI();       // Invoke custom library
-
-int sMillisecDelay= 1000;
 
 unsigned long runTime = 0;
 void setup()
@@ -85,7 +83,7 @@ void loop()
     myGLCD.drawPixel(i,119+(tan(((i*1.13)*3.14)/180)),TFT_YELLOW);
   }
 
-  delay(sMillisecDelay);
+  delay(0);
 
   myGLCD.fillRect(1,15,317,209,TFT_BLACK);
 
@@ -111,7 +109,7 @@ int col = 0;
     buf[x-1]=y;
   }
 
-  delay(sMillisecDelay);
+  delay(0);
 
   myGLCD.fillRect(1,15,317,209,TFT_BLACK);
 
@@ -139,7 +137,7 @@ int col = 0;
     myGLCD.fillRect(70+(i*20), 30+(i*20), 60, 60,col);
   }
 
-  delay(sMillisecDelay);
+  delay(0);
 
   myGLCD.fillRect(1,15,317,209,TFT_BLACK);
 
@@ -167,7 +165,7 @@ int col = 0;
     myGLCD.fillRoundRect(190-(i*20), 30+(i*20), 60,60, 3,col);
   }
   
-  delay(sMillisecDelay);
+  delay(0);
 
   myGLCD.fillRect(1,15,317,209,TFT_BLACK);
 
@@ -195,7 +193,7 @@ int col = 0;
     myGLCD.fillCircle(100+(i*20),60+(i*20), 30,col);
   }
   
-  delay(sMillisecDelay);
+  delay(0);
 
   myGLCD.fillRect(1,15,317,209,TFT_BLACK);
 
@@ -221,7 +219,7 @@ int col = 0;
     myGLCD.drawLine(317, i, 330-(i*1.44), 223,TFT_CYAN);
   }
   
-  delay(sMillisecDelay);
+  delay(0);
 
 
   myGLCD.fillRect(1,15,317,209,TFT_BLACK);
@@ -235,7 +233,7 @@ int col = 0;
     myGLCD.drawCircle(x, y, r,random(0xFFFF));
   }
 
-  delay(sMillisecDelay);
+  delay(0);
 
   myGLCD.fillRect(1,15,317,209,TFT_BLACK);
 
@@ -255,7 +253,7 @@ int col = 0;
     myGLCD.drawRect(x, y, x2-x, y2-y,random(0xFFFF));
   }
 
-  delay(sMillisecDelay);
+  delay(0);
 
 
   myGLCD.fillRect(1,15,317,209,TFT_BLACK);
@@ -280,7 +278,7 @@ int col = 0;
     myGLCD.drawRoundRect(x, y, x2-x,y2-y, 3,random(0xFFFF));
   }
 
-  delay(sMillisecDelay);
+  delay(0);
 
   myGLCD.fillRect(1,15,317,209,TFT_BLACK);
 
@@ -296,7 +294,7 @@ int col = 0;
     myGLCD.drawLine(x, y, x2, y2,colour);
   }
 
-  delay(sMillisecDelay);
+  delay(0);
 
   myGLCD.fillRect(1,15,317,209,TFT_BLACK);
 
@@ -315,7 +313,7 @@ int col = 0;
   //  while (j--) myGLCD.drawPixel(i+110,j+70,i+j);
   //  //while (j--) myGLCD.drawPixel(i+110,j+70,0xFFFF);
   //}
-  delay(sMillisecDelay);
+  delay(0);
 
   myGLCD.fillScreen(TFT_BLUE);
   myGLCD.fillRoundRect(80, 70, 239-80,169-70, 3,TFT_RED);
