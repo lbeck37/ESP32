@@ -1,10 +1,10 @@
-//BeckWiFiLib.h, 4/18/19a
+//BeckWiFiLib.h, 3/29/21a  was 4/18/19a
 #pragma once
-#ifdef ESP8266
-  #include <ESP8266WiFi.h>
-#else
+#ifdef ESP32
   #include <WiFi.h>
-#endif    //ESP8266
+#else
+  #include <ESP8266WiFi.h>
+#endif    //ESP32
 
 extern        bool     _bWiFiConnected;
 

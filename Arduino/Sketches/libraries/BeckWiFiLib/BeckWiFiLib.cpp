@@ -1,12 +1,20 @@
-//BeckWiFiLib.cpp, 10/18/20a, was 2/4/20b
+//BeckWiFiLib.cpp, 3/29/21, was 10/18/20a, was 2/4/20b
 #include <BeckWiFiLib.h>
 #include <BeckLogLib.h>
 #include <BeckMiniLib.h>
 #include <Streaming.h>
-#include <ESP8266WiFiMulti.h>
+//#include <ESP8266WiFiMulti.h>
 #include <DNSServer.h>
-#include <ESP8266WebServer.h>
+//#include <ESP8266WebServer.h>
 //#include "WiFiManager.h"          //https://github.com/tzapu/WiFiManager
+
+#ifdef ESP32
+  #include <WiFiMulti.h>
+  #include <WebServer.h>
+#else
+  #include <ESP8266WiFiMulti.h>
+  #include <ESP8266WebServer.h>
+#endif    //ESP32
 
 bool          _bWiFiConnected;
 

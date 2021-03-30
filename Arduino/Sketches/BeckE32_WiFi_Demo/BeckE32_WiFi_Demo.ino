@@ -1,13 +1,13 @@
 const char szSketchName[]  = "BeckE32_WiFi_Demo.ino";
-const char szFileDate[]    = "3/29/21f";
+const char szFileDate[]    = "3/29/21j";
 
 //Ref- https://techtutorialsx.com/2017/06/29/esp32-arduino-getting-started-with-wifi/
 
 #include <WiFi.h>
 #include <Streaming.h>
 
-const char* ssid 		= "Aspot24";
-const char* password 	=  "Qazqaz11";
+const char* ssid        = "Aspot24";
+const char* password    = "Qazqaz11";
 
 String translateEncryptionType(wifi_auth_mode_t encryptionType) {
   switch (encryptionType) {
@@ -24,12 +24,11 @@ String translateEncryptionType(wifi_auth_mode_t encryptionType) {
     case (WIFI_AUTH_WPA2_ENTERPRISE):
       return "WPA2_ENTERPRISE";
     case (WIFI_AUTH_MAX):
-	  return "WIFI_AUTH_MAX";
+      return "WIFI_AUTH_MAX";
     default:
-	  Serial << "Bad case in translateEncryptionType(), encryptionType= " << encryptionType << endl;
-	  break;
-  }	//switch
-
+      Serial << "Bad case in translateEncryptionType(), encryptionType= " << encryptionType << endl;
+      break;
+  } //switch
   return("BadCase");
 }  //translateEncryptionType
 
@@ -54,9 +53,9 @@ void scanNetworks() {
     String encryptionTypeDescription = translateEncryptionType(WiFi.encryptionType(i));
     Serial.println(encryptionTypeDescription);
     Serial.println("-----------------------");
-  }	//for
+  } //for
   return;
-}	//scanNetworks
+}   //scanNetworks
 
 
 void connectToNetwork() {
@@ -66,11 +65,10 @@ void connectToNetwork() {
   while (WiFi.status() != WL_CONNECTED) {
     delay(1000);
     Serial.println("Establishing connection to WiFi..");
-  }	//while
+  } //while
   Serial.println("Connected to network");
-
   return;
-}	//connectToNetwork
+}   //connectToNetwork
 
 
 void setup() {
@@ -88,12 +86,11 @@ void setup() {
   Serial << "setup(): Call WiFi.disconnect(true)" << endl;
   WiFi.disconnect(true);
   Serial << "setup(): WiFi.localIP   = " << WiFi.localIP() << endl;
-
   return;
-}	//setup
+}   //setup
 
 
 void loop(){
-	return;
-}	//loop
+  return;
+}   //loop
 //Last line.

@@ -3,7 +3,12 @@
 #include "BeckOTALibHTML.h"
 #include <BeckMiniLib.h>
 #include <BeckWebServer.h>
-#include "ESP8266WiFi.h"
+//#include "ESP8266WiFi.h"
+#ifdef ESP32
+  #include <WiFi.h>
+#else
+  #include <ESP8266WiFi.h>
+#endif    //ESP32
 
 //These are set and used from Beck_Biota.ino
 unsigned long       _ulUpdateTimeoutMsec   = 0;
