@@ -18,6 +18,7 @@ Display::~Display() {
 
 ColorDisplay::ColorDisplay() {
 	Serial << "ColorDisplay::ColorDisplay(): " << szFileName << ", " << szFileDate << endl;
+	_eUSBOrientation= eUSBLeft;
 	return;
 }	//SetupDisplay
 
