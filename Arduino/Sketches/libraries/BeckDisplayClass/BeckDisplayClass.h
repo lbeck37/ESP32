@@ -1,39 +1,41 @@
-// BeckDisplayClass.h, 3/29/21a
+#pragma once
+const char szFileName2[]  = "BeckDisplayClass.h";
+const char szFileDate2[]  = "3/30/21d";
 
-#include <BeckBiotaLib.h>
+#include <Streaming.h>
+
+/*
+enum DisplayType{
+  eNoDisplay  = 0,
+  eColorTFT,
+  eMonoSSD1306,
+  eLastDisplayType
+};
+*/
 
 class Display {
 public:
-	Display						  	(int wType, ProjectType eDisplayProjectType);
-	virtual void  SetupDisplay		();
-	virtual void  ClearDisplay		();
-	virtual void  UpdateDisplay		();
-	virtual void  ClearZeros		();
+	//Display();
+	Display() {
+		Serial << "Display::Display(): " << szFileName2 << ", " << szFileDate2 << endl;}
+
+	virtual ~Display();
+
+	virtual void  SetupDisplay		(){}
+	virtual void  ClearDisplay		(){}
+	virtual void  UpdateDisplay		(){}
+	//virtual void  ClearZeros		(){}
 };  //Display
 
 
-class TFT_eSPI : public Display{
-	void  SetupDisplay            (ProjectType eDisplayProjectType);
+class ColorDisplay : public Display {
+public:
+	ColorDisplay();
+	virtual ~ColorDisplay();
+
+	void  SetupDisplay            ();
 	void  ClearDisplay            ();
 	void  UpdateDisplay           ();
-	void  ClearZeros              ();
+	//void  ClearZeros              ();
 };
 
-void TFT_eSPI::SetupDisplay(ProjectType eDisplayProjectType){
-	return;
-}
-
-
-void TFT_eSPI::ClearDisplay(){
-	return;
-}
-
-
-void TFT_eSPI::UpdateDisplay(){
-	return;
-}
-
-
-void TFT_eSPI::ClearZeros(){
-	return;
-}
