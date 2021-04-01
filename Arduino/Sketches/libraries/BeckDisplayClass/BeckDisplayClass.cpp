@@ -1,14 +1,13 @@
 const char szFileName[]  = "BeckDisplayClass.cpp";
-const char szFileDate[]  = "3/30/21d";
+const char szFileDate[]  = "3/31/21a";
 
 #include <BeckDisplayClass.h>
 #include <Streaming.h>
 
-/*
+
 Display::Display() {
 	Serial << "Display::Display(): " << szFileName << ", " << szFileDate << endl;
 }	//constructor
-*/
 
 
 Display::~Display() {
@@ -18,7 +17,16 @@ Display::~Display() {
 
 ColorDisplay::ColorDisplay() {
 	Serial << "ColorDisplay::ColorDisplay(): " << szFileName << ", " << szFileDate << endl;
-	_eUSBOrientation= eUSBLeft;
+	_eScreenOrientation= eUSBLeft;
+
+	tft.init();
+	tft.setRotation(_eScreenOrientation);
+	tft.fillScreen(TFT_BLACK);
+	tft.setTextColor(TFT_WHITE, TFT_BLACK);
+	tft.setTextFont(4);	 //26 pixels
+
+	// Set starting coordinates (x, y)
+	tft.setCursor(0, 0);
 	return;
 }	//SetupDisplay
 
@@ -28,8 +36,16 @@ ColorDisplay::~ColorDisplay() {
 }	//destructor
 
 
+/*
 void ColorDisplay::SetupDisplay() {
 	Serial << "ColorDisplay::SetupDisplay(): Begin" << endl;
+	return;
+}	//SetupDisplay
+*/
+
+void ColorDisplay::PrintLine(char* szLineToPrint) {
+	Serial << "ColorDisplay::PrintLine(): szLineToPrint= " << szLineToPrint << endl;
+	tft.println(szLineToPrint);
 	return;
 }	//SetupDisplay
 
@@ -40,8 +56,4 @@ void ColorDisplay::ClearDisplay(){
 }	//ClearDisplay
 
 
-void ColorDisplay::UpdateDisplay(){
-    Serial << "ColorDisplay::UpdateDisplay(): Begin" << endl;
-	return;
-}	//UpdateDisplay
 

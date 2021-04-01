@@ -1,21 +1,18 @@
 #pragma once
 const char szFileName2[]  = "BeckDisplayClass.h";
-const char szFileDate2[]  = "3/30/21d";
+const char szFileDate2[]  = "3/31/21b";
 
 #include <TFT_eSPI.h>
 #include <Adafruit_GFX.h>
 #include <Streaming.h>
 
-/*
-enum DisplayType{
-  eNoDisplay  = 0,
-  eColorTFT,
-  eMonoSSD1306,
-  eLastDisplayType
-};
-*/
+#include <string>
+using namespace std;
 
-enum USBOrientationType {
+//string	Larry= "hello";
+//char szBuffer[100] = "Hello";
+
+enum ScreenOrientationType {
 	eUSBDown= 0,
 	eUSBRight,
 	eUSBUp,
@@ -26,20 +23,24 @@ enum USBOrientationType {
 
 class Display {
 protected:
-	TFT_eSPI 			tft	= TFT_eSPI();
-	USBOrientationType	_eUSBOrientation;
+	TFT_eSPI 				tft	= TFT_eSPI();
+	ScreenOrientationType	_eScreenOrientation= eUSBLeft;
 	//int					_wRotation;
 
 public:
-	//Display();
+	Display();
+/*
 	Display() {
 		Serial << "Display::Display(): " << szFileName2 << ", " << szFileDate2 << endl;}
+*/
 
 	virtual ~Display();
 
-	virtual void  SetupDisplay		(){}
+	//virtual void  PrintLine			(string sLineToPrint){}
+	virtual void  PrintLine			(char* szLineToPrint){}
 	virtual void  ClearDisplay		(){}
-	virtual void  UpdateDisplay		(){}
+	//virtual void  SetupDisplay		(){}
+	//virtual void  UpdateDisplay		(){}
 	//virtual void  ClearZeros		(){}
 };  //Display
 
@@ -49,9 +50,11 @@ public:
 	ColorDisplay();
 	virtual ~ColorDisplay();
 
-	void  SetupDisplay            ();
-	void  ClearDisplay            ();
-	void  UpdateDisplay           ();
+	//void  PrintLine			(string sLineToPrint);
+	void  PrintLine			(char* szLineToPrint);
+	void  ClearDisplay      ();
+	//void  SetupDisplay            ();
+	//void  UpdateDisplay           ();
 	//void  ClearZeros              ();
 };
 

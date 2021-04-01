@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_TFT_eSPI_Demo.ino";
-const char szFileDate[]    = "3/30/21a";
+const char szFileDate[]    = "3/31/21a";
 
 //#include <SPI.h>
 #include <TFT_eSPI.h>
@@ -36,8 +36,10 @@ void setup(void) {
 	  tft.fillScreen(TFT_BLACK);
 
 	  // Set starting coordinates (x, y), font 4
-	  tft.setCursor(0, 0, 4);
+	  //tft.setCursor(0, 0, 4);
+	  tft.setCursor(0, 0);
 
+	  tft.setTextFont(4);
 	  tft.setTextColor(TFT_WHITE, TFT_BLACK);
 	  tft.println("#4 456789");
 
