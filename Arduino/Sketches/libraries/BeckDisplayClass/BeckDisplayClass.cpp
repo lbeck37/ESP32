@@ -1,5 +1,5 @@
 const char szFileName[]  = "BeckDisplayClass.cpp";
-const char szFileDate[]  = "3/31/21a";
+const char szFileDate[]  = "3/31/21b";
 
 #include <BeckDisplayClass.h>
 #include <Streaming.h>
@@ -36,13 +36,6 @@ ColorDisplay::~ColorDisplay() {
 }	//destructor
 
 
-/*
-void ColorDisplay::SetupDisplay() {
-	Serial << "ColorDisplay::SetupDisplay(): Begin" << endl;
-	return;
-}	//SetupDisplay
-*/
-
 void ColorDisplay::PrintLine(char* szLineToPrint) {
 	Serial << "ColorDisplay::PrintLine(): szLineToPrint= " << szLineToPrint << endl;
 	tft.println(szLineToPrint);
@@ -50,10 +43,15 @@ void ColorDisplay::PrintLine(char* szLineToPrint) {
 }	//SetupDisplay
 
 
-void ColorDisplay::ClearDisplay(){
-	Serial << "ColorDisplay::ClearDisplay(): Begin" << endl;
+void ColorDisplay::FillScreen(Colortype FillColor){
+	Serial << "ColorDisplay::FillScreen()" << endl;
+	tft.fillScreen(FillColor);
 	return;
 }	//ClearDisplay
 
 
-
+void  ColorDisplay::SetBackground(Colortype NewBackgroundColor){
+	_BackgroundColor= NewBackgroundColor;
+	return;
+}
+//Last line.

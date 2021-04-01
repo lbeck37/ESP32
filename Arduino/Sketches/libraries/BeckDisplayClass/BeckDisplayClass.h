@@ -1,6 +1,6 @@
 #pragma once
 const char szFileName2[]  = "BeckDisplayClass.h";
-const char szFileDate2[]  = "3/31/21b";
+const char szFileDate2[]  = "3/31/21c";
 
 #include <TFT_eSPI.h>
 #include <Adafruit_GFX.h>
@@ -20,12 +20,13 @@ enum ScreenOrientationType {
 	eLastUSBOrientation
 };
 
+typedef uint32_t	Colortype;
+
 
 class Display {
 protected:
 	TFT_eSPI 				tft	= TFT_eSPI();
 	ScreenOrientationType	_eScreenOrientation= eUSBLeft;
-	//int					_wRotation;
 
 public:
 	Display();
@@ -36,25 +37,23 @@ public:
 
 	virtual ~Display();
 
-	//virtual void  PrintLine			(string sLineToPrint){}
 	virtual void  PrintLine			(char* szLineToPrint){}
-	virtual void  ClearDisplay		(){}
-	//virtual void  SetupDisplay		(){}
-	//virtual void  UpdateDisplay		(){}
-	//virtual void  ClearZeros		(){}
+	//virtual void  FillScreen		(Colortype FillColor= TFT_RED){}
 };  //Display
 
 
 class ColorDisplay : public Display {
+protected:
+	Colortype	_BackgroundColor	= TFT_BLACK;
+	Colortype	_TextColor			= TFT_WHITE;
+	Colortype	_FillColor			= TFT_RED;
+
 public:
 	ColorDisplay();
 	virtual ~ColorDisplay();
 
-	//void  PrintLine			(string sLineToPrint);
 	void  PrintLine			(char* szLineToPrint);
-	void  ClearDisplay      ();
-	//void  SetupDisplay            ();
-	//void  UpdateDisplay           ();
-	//void  ClearZeros              ();
+	void  FillScreen      	(Colortype FillColor);
+	void  SetBackground		(Colortype NewBackgroundColor);
 };
 
