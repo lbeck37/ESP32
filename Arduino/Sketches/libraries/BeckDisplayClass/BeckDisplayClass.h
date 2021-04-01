@@ -1,6 +1,6 @@
 #pragma once
 const char szFileName2[]  = "BeckDisplayClass.h";
-const char szFileDate2[]  = "4/1/21a";
+const char szFileDate2[]  = "4/1/21c";
 
 #include <TFT_eSPI.h>
 #include <Adafruit_GFX.h>
@@ -20,34 +20,30 @@ enum ScreenOrientationType {
 typedef TFT_eSPI	GraphicsLibrary;
 typedef uint32_t	Colortype;
 typedef uint16_t	CursorUnit;
+typedef float		DegreeType;
 
-
+extern char	sz100CharBuffer[];
 class Display {
 protected:
-	//TFT_eSPI 				tft	= TFT_eSPI();
 	GraphicsLibrary 		GLib				= GraphicsLibrary();
 	ScreenOrientationType	_eScreenOrientation	= eUSBLeft;
 	Colortype				_BackgroundColor	= TFT_BLACK;
 	Colortype				_TextColor			= TFT_WHITE;
+	Colortype				_TextBGColor		= TFT_BLACK;
 	Colortype				_FillColor			= TFT_RED;
 	CursorUnit				_CursorX			= 0;
 	CursorUnit				_CursorY			= 0;
 
 public:
 	Display();
-/*
-	Display() {
-		Serial << "Display::Display(): " << szFileName2 << ", " << szFileDate2 << endl;}
-*/
-
 	virtual ~Display();
 
 	virtual void  PrintLine			(const char* szLineToPrint){}
-	virtual void  FillScreen      	(){}
+	virtual void  FillScreen      	(void){}
 	virtual void  FillScreen      	(Colortype FillColor){}
 	virtual void  SetBackground		(Colortype NewBackgroundColor){}
 	virtual void  SetTextColor		(Colortype NewTextColor){}
-	//virtual void  FillScreen		(Colortype FillColor= TFT_RED){}
+	virtual void  SetTextBGColor	(Colortype NewTextBGColor){}
 };  //Display
 
 
@@ -59,9 +55,10 @@ public:
 	virtual ~ColorDisplay();
 
 	void  PrintLine			(const char* szLineToPrint);
-	void  FillScreen      	();
+	void  FillScreen      	(void);
 	void  FillScreen      	(Colortype FillColor);
 	void  SetBackground		(Colortype NewBackgroundColor);
 	void  SetTextColor		(Colortype NewTextColor);
+	void  SetTextBGColor	(Colortype NewTextBGColor);
 };
-
+//Last line.

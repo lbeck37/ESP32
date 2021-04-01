@@ -1,9 +1,10 @@
 const char szFileName[]  = "BeckDisplayClass.cpp";
-const char szFileDate[]  = "3/31/21b";
+const char szFileDate[]  = "4/1/21d";
 
 #include <BeckDisplayClass.h>
 #include <Streaming.h>
 
+char	sz100CharBuffer[100];		//For use in char[[ functions, wish string or String would work
 
 Display::Display() {
 	Serial << "Display::Display(): " << szFileName << ", " << szFileDate << endl;
@@ -39,17 +40,18 @@ ColorDisplay::~ColorDisplay() {
 }	//destructor
 
 
-//void ColorDisplay::PrintLine(char* szLineToPrint) {
 void ColorDisplay::PrintLine(const char* szLineToPrint) {
 	Serial << "ColorDisplay::PrintLine(): szLineToPrint= " << szLineToPrint << endl;
+
 	GLib.println(szLineToPrint);
 	return;
 }	//SetupDisplay
 
 
-void ColorDisplay::FillScreen(){
+void ColorDisplay::FillScreen(void){
 	//Leave FillColor out and you get the current background.
 	Serial << "ColorDisplay::FillScreen()" << endl;
+
 	GLib.fillScreen(_BackgroundColor);
 	return;
 }	//ClearDisplay
@@ -57,6 +59,7 @@ void ColorDisplay::FillScreen(){
 
 void ColorDisplay::FillScreen(Colortype FillColor){
 	Serial << "ColorDisplay::FillScreen(FillColor), FillColor= " << FillColor << endl;
+
 	GLib.fillScreen(FillColor);
 	return;
 }	//ClearDisplay
@@ -70,8 +73,19 @@ void  ColorDisplay::SetBackground(Colortype NewBackgroundColor){
 
 
 void  ColorDisplay::SetTextColor(Colortype NewTextColor){
-	Serial << "ColorDisplay::SetTextColor(): SetTextColor= " << NewTextColor << endl;
-	_BackgroundColor= NewTextColor;
+	Serial << "ColorDisplay::SetTextColor(): NewTextColor= " << NewTextColor << endl;
+	_TextColor= NewTextColor;
+
+	GLib.setTextColor(_TextColor);
+	return;
+}
+
+
+void  ColorDisplay::SetTextBGColor(Colortype NewTextBGColor){
+	Serial << "ColorDisplay::SetTextBGColor(): NewTextBGColor= " << NewTextBGColor << endl;
+	_TextBGColor= NewTextBGColor;
+
+	GLib.setTextColor(_TextColor, _TextBGColor);		//No seperate call to set the Text BG color.
 	return;
 }
 //Last line.
