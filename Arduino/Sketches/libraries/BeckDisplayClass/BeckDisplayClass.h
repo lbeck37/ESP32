@@ -1,6 +1,6 @@
 #pragma once
 const char szFileName2[]  = "BeckDisplayClass.h";
-const char szFileDate2[]  = "3/31/21c";
+const char szFileDate2[]  = "4/1/21a";
 
 #include <TFT_eSPI.h>
 #include <Adafruit_GFX.h>
@@ -8,9 +8,6 @@ const char szFileDate2[]  = "3/31/21c";
 
 #include <string>
 using namespace std;
-
-//string	Larry= "hello";
-//char szBuffer[100] = "Hello";
 
 enum ScreenOrientationType {
 	eUSBDown= 0,
@@ -20,13 +17,21 @@ enum ScreenOrientationType {
 	eLastUSBOrientation
 };
 
+typedef TFT_eSPI	GraphicsLibrary;
 typedef uint32_t	Colortype;
+typedef uint16_t	CursorUnit;
 
 
 class Display {
 protected:
-	TFT_eSPI 				tft	= TFT_eSPI();
-	ScreenOrientationType	_eScreenOrientation= eUSBLeft;
+	//TFT_eSPI 				tft	= TFT_eSPI();
+	GraphicsLibrary 		GLib				= GraphicsLibrary();
+	ScreenOrientationType	_eScreenOrientation	= eUSBLeft;
+	Colortype				_BackgroundColor	= TFT_BLACK;
+	Colortype				_TextColor			= TFT_WHITE;
+	Colortype				_FillColor			= TFT_RED;
+	CursorUnit				_CursorX			= 0;
+	CursorUnit				_CursorY			= 0;
 
 public:
 	Display();
@@ -37,23 +42,26 @@ public:
 
 	virtual ~Display();
 
-	virtual void  PrintLine			(char* szLineToPrint){}
+	virtual void  PrintLine			(const char* szLineToPrint){}
+	virtual void  FillScreen      	(){}
+	virtual void  FillScreen      	(Colortype FillColor){}
+	virtual void  SetBackground		(Colortype NewBackgroundColor){}
+	virtual void  SetTextColor		(Colortype NewTextColor){}
 	//virtual void  FillScreen		(Colortype FillColor= TFT_RED){}
 };  //Display
 
 
 class ColorDisplay : public Display {
 protected:
-	Colortype	_BackgroundColor	= TFT_BLACK;
-	Colortype	_TextColor			= TFT_WHITE;
-	Colortype	_FillColor			= TFT_RED;
 
 public:
 	ColorDisplay();
 	virtual ~ColorDisplay();
 
-	void  PrintLine			(char* szLineToPrint);
+	void  PrintLine			(const char* szLineToPrint);
+	void  FillScreen      	();
 	void  FillScreen      	(Colortype FillColor);
 	void  SetBackground		(Colortype NewBackgroundColor);
+	void  SetTextColor		(Colortype NewTextColor);
 };
 
