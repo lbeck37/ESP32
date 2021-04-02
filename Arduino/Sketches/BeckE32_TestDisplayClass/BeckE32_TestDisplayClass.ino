@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_TestDisplayClass.ino";
-const char szFileDate[]    = "4/2/21b";
+const char szFileDate[]    = "4/2/21e";
 
 #include <BeckDisplayClass.h>
 #include <Streaming.h>
@@ -17,7 +17,9 @@ void setup(){
 
 	delay(2000);
 
-	cDisplay.SelectFont(eGFXFont, 0);
+	//Select Adafruit fonts
+  cDisplay.SelectFont(eGFXFont, 0);
+
 	//cDisplay.PrintLine("The Dude is cool! g");
 	cDisplay.PrintLine("Green on Red");
 	delay(2000);
@@ -56,6 +58,14 @@ void setup(){
 
 	sprintf(sz100CharBuffer, "%s %6.2f", szStringToPrint, fCurrentDegF);
 	cDisplay.PrintLine(sz100CharBuffer);
+
+	//Is it really 135 x 240?
+  CursorUnit  XLeft   =   5;
+  CursorUnit  YTop    =   5;
+  CursorUnit  Width   = 230;
+  CursorUnit  Height  = 125;
+
+  cDisplay.DrawRectangle(XLeft, YTop, Width, Height);
 
 	return;
 } //setup

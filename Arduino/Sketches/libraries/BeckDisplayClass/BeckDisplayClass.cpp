@@ -1,5 +1,5 @@
 const char szFileName[]  = "BeckDisplayClass.cpp";
-const char szFileDate[]  = "4/2/21a";
+const char szFileDate[]  = "4/2/21b";
 
 #include <BeckDisplayClass.h>
 //#include <Redressed_Regular_20.h>
@@ -8,6 +8,7 @@ const char szFileDate[]  = "4/2/21a";
 //#include <Adafruit_GFX.h>
 //#include <gfxfont.h>
 #include "Free_Fonts.h"
+//#include <Fonts/FreeMono18pt7b.h>
 
 char  sz100CharBuffer[100];   //For building strings for display
 
@@ -112,7 +113,12 @@ void  ColorDisplay::SelectFont(FontType eFontType, FontSize eFontSize){
   case eGFXFont:
     Serial << "ColorDisplay::SelectFont(): eGFXFont selected" << endl;
     //GLib.setFreeFont(FSB24);
-    GLib.setFreeFont(FSB12);
+    //GLib.setFreeFont(FSB12);
+    //GLib.setFreeFont(&FreeMono18pt7b);
+    //GLib.setFreeFont(&FreeMonoBold9pt7b);
+    GLib.setFreeFont(&FreeMonoBold12pt7b);
+    //GLib.setTextDatum(BL_DATUM);
+    GLib.setTextDatum(TL_DATUM);
     break;
   default:
     //GLib.set
@@ -120,6 +126,11 @@ void  ColorDisplay::SelectFont(FontType eFontType, FontSize eFontSize){
   }
   return;
 }
+
+
+void ColorDisplay::DrawRectangle(CursorUnit XUpperLeft, CursorUnit YUpperLeft, CursorUnit Width, CursorUnit Height){
+  GLib.drawRect(XUpperLeft, YUpperLeft, Width, Height, TFT_BLACK);
+  return;
+}
 //Last line.
-void  SelectFont          (FontType eFontType, FontSize eFontSize);
 

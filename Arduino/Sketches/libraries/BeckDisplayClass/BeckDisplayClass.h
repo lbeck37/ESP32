@@ -1,6 +1,6 @@
 #pragma once
 const char szFileName2[]  = "BeckDisplayClass.h";
-const char szFileDate2[]  = "4/2/21a";
+const char szFileDate2[]  = "4/2/21b";
 
 #include <TFT_eSPI.h>
 //#include <Adafruit_GFX.h>
@@ -8,6 +8,8 @@ const char szFileDate2[]  = "4/2/21a";
 
 //#include <string>
 //using namespace std;
+//Initially used for TTGO ESP32 module
+//  135 x 240, 1.14", 240dpi display
 
 enum ScreenOrientationType {
   eUSBDown= 0,
@@ -56,6 +58,7 @@ public:
   virtual void  SetTextColor        (Colortype NewTextColor){}
   virtual void  SetTextBGColor      (Colortype NewTextBGColor){}
   virtual void  SelectFont          (FontType eFontType, FontSize eFontSize){}
+  virtual void  DrawRectangle       (CursorUnit XUpperLeft, CursorUnit YUpperLeft, CursorUnit Width, CursorUnit Height){}
 };  //Display
 
 
@@ -73,5 +76,6 @@ public:
   void  SetTextColor        (Colortype NewTextColor);
   void  SetTextBGColor      (Colortype NewTextBGColor);
   void  SelectFont          (FontType eFontType, FontSize eFontSize);
+  void  DrawRectangle       (CursorUnit XUpperLeft, CursorUnit YUpperLeft, CursorUnit Width, CursorUnit Height);
 };
 //Last line.
