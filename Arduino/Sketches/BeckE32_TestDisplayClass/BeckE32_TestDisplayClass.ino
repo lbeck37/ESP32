@@ -22,7 +22,7 @@ void setup(){
 	delay(2000);
 
 	BackgroundColor= TFT_BLUE;
-	cDisplay.SetBackground(BackgroundColor);
+	cDisplay.SetBackgroundColor(BackgroundColor);
 
 	FillColor= BackgroundColor;
 	cDisplay.FillScreen(FillColor);
@@ -32,7 +32,7 @@ void setup(){
 	delay(2000);
 
 	BackgroundColor= TFT_MAGENTA;
-	cDisplay.SetBackground(BackgroundColor);
+	cDisplay.SetBackgroundColor(BackgroundColor);
 	cDisplay.FillScreen();			//No parameter, use current background color.
 
 	cDisplay.SetTextColor(TFT_ORANGE);
@@ -40,7 +40,7 @@ void setup(){
 	delay(2000);
 
 	BackgroundColor= TFT_WHITE;
-	cDisplay.SetBackground(BackgroundColor);
+	cDisplay.SetBackgroundColor(BackgroundColor);
 	cDisplay.FillScreen();			//No parameter, use current background color.
 
 	cDisplay.SetTextColor(TFT_BLACK);
