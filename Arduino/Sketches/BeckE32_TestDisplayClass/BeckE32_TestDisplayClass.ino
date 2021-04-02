@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_TestDisplayClass.ino";
-const char szFileDate[]    = "4/1/21d";
+const char szFileDate[]    = "4/2/21b";
 
 #include <BeckDisplayClass.h>
 #include <Streaming.h>
@@ -17,6 +17,7 @@ void setup(){
 
 	delay(2000);
 
+	cDisplay.SelectFont(eGFXFont, 0);
 	//cDisplay.PrintLine("The Dude is cool! g");
 	cDisplay.PrintLine("Green on Red");
 	delay(2000);

@@ -1,12 +1,13 @@
 const char szFileName[]  = "BeckDisplayClass.cpp";
-const char szFileDate[]  = "4/1/21e";
+const char szFileDate[]  = "4/2/21a";
 
 #include <BeckDisplayClass.h>
-#include <Redressed_Regular_20.h>
+//#include <Redressed_Regular_20.h>
 #include <Streaming.h>
 
 //#include <Adafruit_GFX.h>
-#include <gfxfont.h>
+//#include <gfxfont.h>
+#include "Free_Fonts.h"
 
 char  sz100CharBuffer[100];   //For building strings for display
 
@@ -103,13 +104,15 @@ void  ColorDisplay::SelectFont(FontType eFontType, FontSize eFontSize){
     break;
   case eFontCreatorFont:
     Serial << "ColorDisplay::SelectFont(): eFontCreatorFont selected" << endl;
+    Serial << "ColorDisplay::SelectFont(): eFontCreatorFont is not yet supported." << endl;
     //GLib.setFont(&Redressed_Regular_20);
     //GLib.setFreeFont(&Redressed_Regular_20);
-    GLib.setFreeFont((GFXFont*)&Redressed_Regular_20);
+    //GLib.setFreeFont((GFXFont*)&Redressed_Regular_20);
     break;
   case eGFXFont:
     Serial << "ColorDisplay::SelectFont(): eGFXFont selected" << endl;
-    Serial << "ColorDisplay::SelectFont(): eGFXFont is not yet supported." << endl;
+    //GLib.setFreeFont(FSB24);
+    GLib.setFreeFont(FSB12);
     break;
   default:
     //GLib.set

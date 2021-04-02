@@ -1,13 +1,13 @@
 #pragma once
 const char szFileName2[]  = "BeckDisplayClass.h";
-const char szFileDate2[]  = "4/1/21e";
+const char szFileDate2[]  = "4/2/21a";
 
 #include <TFT_eSPI.h>
-#include <Adafruit_GFX.h>
-#include <Streaming.h>
+//#include <Adafruit_GFX.h>
+//#include <Streaming.h>
 
-#include <string>
-using namespace std;
+//#include <string>
+//using namespace std;
 
 enum ScreenOrientationType {
   eUSBDown= 0,
@@ -43,6 +43,7 @@ protected:
   Colortype               _FillColor            = TFT_RED;
   CursorUnit              _CursorX              = 0;
   CursorUnit              _CursorY              = 0;
+  FontType                _FontType             = eTFTFont;
 
 public:
   Display();
