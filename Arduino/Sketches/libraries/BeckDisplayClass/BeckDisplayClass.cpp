@@ -1,14 +1,14 @@
 const char szFileName[]  = "BeckDisplayClass.cpp";
-const char szFileDate[]  = "4/2/21b";
+const char szFileDate[]  = "4/3/21a";
 
 #include <BeckDisplayClass.h>
-//#include <Redressed_Regular_20.h>
 #include <Streaming.h>
 
 //#include <Adafruit_GFX.h>
 //#include <gfxfont.h>
 #include "Free_Fonts.h"
 //#include <Fonts/FreeMono18pt7b.h>
+#include <Redressed_Regular_20.h>
 
 char  sz100CharBuffer[100];   //For building strings for display
 
@@ -54,6 +54,7 @@ void ColorDisplay::PrintLine(const char* szLineToPrint) {
 } //SetupDisplay
 
 
+/*
 void ColorDisplay::FillScreen(void){
   //Leave FillColor out and you get the current background.
   Serial << "ColorDisplay::FillScreen()" << endl;
@@ -61,6 +62,7 @@ void ColorDisplay::FillScreen(void){
   GLib.fillScreen(_BackgroundColor);
   return;
 } //ClearDisplay
+*/
 
 
 void ColorDisplay::FillScreen(Colortype FillColor){
@@ -117,6 +119,10 @@ void  ColorDisplay::SelectFont(FontType eFontType, FontSize eFontSize){
     //GLib.setFreeFont(&FreeMono18pt7b);
     //GLib.setFreeFont(&FreeMonoBold9pt7b);
     GLib.setFreeFont(&FreeMonoBold12pt7b);
+
+    //GFXfont *pFontToUse=  &Redressed_Regular_20;
+    //GLib.setFreeFont(pFontToUse);
+
     //GLib.setTextDatum(BL_DATUM);
     GLib.setTextDatum(TL_DATUM);
     break;

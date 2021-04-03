@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_TestDisplayClass.ino";
-const char szFileDate[]    = "4/2/21e";
+const char szFileDate[]    = "4/3/21e";
 
 #include <BeckDisplayClass.h>
 #include <Streaming.h>
@@ -36,7 +36,8 @@ void setup(){
 
 	BackgroundColor= TFT_MAGENTA;
 	cDisplay.SetBackgroundColor(BackgroundColor);
-	cDisplay.FillScreen();			//No parameter, use current background color.
+	//cDisplay.FillScreen(NULL);      //No parameter, use current background color.
+	cDisplay.FillScreen(BackgroundColor);      //No parameter, use current background color.
 
 	cDisplay.SetTextColor(TFT_ORANGE);
 	cDisplay.PrintLine("Orange on Magenta");
@@ -44,7 +45,8 @@ void setup(){
 
 	BackgroundColor= TFT_WHITE;
 	cDisplay.SetBackgroundColor(BackgroundColor);
-	cDisplay.FillScreen();			//No parameter, use current background color.
+	//cDisplay.FillScreen(NULL);      //No parameter, use current background color.
+	cDisplay.FillScreen(BackgroundColor);      //No parameter, use current background color.
 
 	cDisplay.SetTextColor(TFT_BLACK);
 	cDisplay.PrintLine("Black on White");
@@ -59,7 +61,7 @@ void setup(){
 	sprintf(sz100CharBuffer, "%s %6.2f", szStringToPrint, fCurrentDegF);
 	cDisplay.PrintLine(sz100CharBuffer);
 
-	//Is it really 135 x 240?
+	//Verify that TTGO is 135 x 240 (not 240 x 360 like I thought)
   CursorUnit  XLeft   =   5;
   CursorUnit  YTop    =   5;
   CursorUnit  Width   = 230;

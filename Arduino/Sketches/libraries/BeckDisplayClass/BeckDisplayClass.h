@@ -52,7 +52,7 @@ public:
   virtual ~Display();
 
   virtual void  PrintLine           (const char* szLineToPrint){}
-  virtual void  FillScreen          (void){}
+  //virtual void  FillScreen          (void){}
   virtual void  FillScreen          (Colortype FillColor){}
   virtual void  SetBackgroundColor  (Colortype NewBackgroundColor){}
   virtual void  SetTextColor        (Colortype NewTextColor){}
@@ -70,7 +70,7 @@ public:
   virtual ~ColorDisplay();
 
   void  PrintLine           (const char* szLineToPrint);
-  void  FillScreen          (void);
+  //void  FillScreen          (void);
   void  FillScreen          (Colortype FillColor);
   void  SetBackgroundColor  (Colortype NewBackgroundColor);
   void  SetTextColor        (Colortype NewTextColor);
