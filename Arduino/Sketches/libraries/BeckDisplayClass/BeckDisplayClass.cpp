@@ -1,5 +1,5 @@
 const char szFileName[]  = "BeckDisplayClass.cpp";
-const char szFileDate[]  = "4/3/21b";
+const char szFileDate[]  = "4/4/21b";
 
 #include <BeckDisplayClass.h>
 #include <Streaming.h>
@@ -9,6 +9,9 @@ const char szFileDate[]  = "4/3/21b";
 #include "Free_Fonts.h"
 //#include <Fonts/FreeMono18pt7b.h>
 #include <Redressed_Regular_20.h>
+
+PUnit  ScreenWidth    = 240;
+PUnit  ScreenHeight   = 135;
 
 char  sz100CharBuffer[100];   //For building strings for display
 
@@ -24,10 +27,12 @@ Display::~Display() {
 
 ColorDisplay::ColorDisplay() {
   Serial << "ColorDisplay::ColorDisplay(): " << szFileName << ", " << szFileDate << endl;
+/*
   _eScreenOrientation   = eUSBLeft;
   _BackgroundColor      = TFT_RED;
   _TextColor            = TFT_GREEN;
   _FillColor            = TFT_RED;
+*/
 
   GLib.init             ();
   GLib.setRotation      (_eScreenOrientation);
@@ -46,7 +51,7 @@ ColorDisplay::~ColorDisplay() {
 } //destructor
 
 
-void ColorDisplay::SetCursor(CursorUnit CursorX, CursorUnit CursorY){
+void ColorDisplay::SetCursor(PUnit CursorX, PUnit CursorY){
   Serial << "ColorDisplay::SetCursor(): CursorX= " << CursorX << ", CursorY= " << CursorY << endl;
   _CursorX= CursorX;
   _CursorY= CursorY;
@@ -108,6 +113,41 @@ void  ColorDisplay::SetTextBGColor(Colortype NewTextBGColor){
 } //void  SetTextSize         (FontSize NewFontSize)
 
 
+
+
+void ColorDisplay::SelectGFXFont(FontFaceType eFontFace, FontPointType eFontPoint){
+    _eFontLibrary= eGFXFont;
+    _eFontFace= eFontFace;
+    _eFontPoint= eFontPoint;
+  switch (eFontFace){
+    case eMonoFace:
+      Serial << "ColorDisplay::SelectGFXFont(): eMonoFace selected" << endl;
+      switch (eFontPoint){
+        case e12point:
+          GLib.setFreeFont(&FreeMonoBold12pt7b);
+          break;
+        default:
+          Serial << "ColorDisplay::SelectGFXFont() Font point not yet supported= " << eFontPoint << endl;
+          break;
+      } //switch(eFontPoint)
+    break;
+    default:
+      Serial << "ColorDisplay::SelectGFXFont() Font face not yet supported= " << eFontFace << endl;
+  } //switch (eFontFace)
+  return;
+} //SelectGFXFont
+
+
+void ColorDisplay::DrawLine(PUnit X1, PUnit Y1, PUnit X2, PUnit Y2){
+  GLib.drawLine(X1, Y1, X2, Y2, _LineColor);
+  return;
+}
+
+
+void ColorDisplay::DrawRectangle(PUnit XLeft, PUnit YTop, PUnit Width, PUnit Height){
+  GLib.drawRect(XLeft, YTop, Width, Height, _LineColor);
+  return;
+}
 /*
 void  ColorDisplay::SetTextSize(FontSize NewFontSize){
   Serial << "ColorDisplay::SetTextSize(): NewFontSize= " << NewFontSize << endl;
@@ -185,35 +225,5 @@ void ColorDisplay::SelectFont(FontLibraryType eFontLibrary, FontSize FontSize){
   return;
 }
 */
-
-
-void ColorDisplay::SelectGFXFont(FontFaceType eFontFace, FontPointType eFontPoint){
-    _eFontLibrary= eGFXFont;
-    _eFontFace= eFontFace;
-    _eFontPoint= eFontPoint;
-  switch (eFontFace){
-    case eMonoFace:
-      Serial << "ColorDisplay::SelectGFXFont(): eMonoFace selected" << endl;
-      switch (eFontPoint){
-        case e12point:
-          GLib.setFreeFont(&FreeMonoBold12pt7b);
-          break;
-        default:
-          Serial << "ColorDisplay::SelectGFXFont() Font point not yet supported= " << eFontPoint << endl;
-          break;
-      } //switch(eFontPoint)
-    break;
-    default:
-      Serial << "ColorDisplay::SelectGFXFont() Font face not yet supported= " << eFontFace << endl;
-  } //switch (eFontFace)
-  return;
-} //SelectGFXFont
-
-
-
-void ColorDisplay::DrawRectangle(CursorUnit XUpperLeft, CursorUnit UpperLeft, CursorUnit Width, CursorUnit Height){
-  GLib.drawRect(XUpperLeft, UpperLeft, Width, Height, TFT_BLACK);
-  return;
-}
 //Last line.
 
