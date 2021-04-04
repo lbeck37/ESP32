@@ -1,13 +1,12 @@
 const char szSketchName[]  = "BeckE32_TestDisplayClass.ino";
-const char szFileDate[]    = "4/3/21e";
+const char szFileDate[]    = "4/3/21f";
 
 #include <BeckDisplayClass.h>
 #include <Streaming.h>
 #include <string>
 
 void setup(){
-	Colortype	BackgroundColor;
-	Colortype	FillColor;
+	//Colortype	FillColor;
 
 	Serial.begin(115200);
 	delay(100);
@@ -15,8 +14,7 @@ void setup(){
 
 	ColorDisplay cDisplay;
 
-	delay(2000);
-
+#if false
 	//Select Adafruit fonts
   cDisplay.SelectFont(eGFXFont, 0);
 
@@ -42,15 +40,19 @@ void setup(){
 	cDisplay.SetTextColor(TFT_ORANGE);
 	cDisplay.PrintLine("Orange on Magenta");
 	delay(2000);
+#endif
 
-	BackgroundColor= TFT_WHITE;
+  Colortype BackgroundColor= TFT_WHITE;
 	cDisplay.SetBackgroundColor(BackgroundColor);
-	//cDisplay.FillScreen(NULL);      //No parameter, use current background color.
-	cDisplay.FillScreen(BackgroundColor);      //No parameter, use current background color.
+  cDisplay.FillScreen(BackgroundColor);      //No parameter, use current background color.
 
-	cDisplay.SetTextColor(TFT_BLACK);
-	cDisplay.PrintLine("Black on White");
-	delay(2000);
+  cDisplay.SelectGFXFont(eMonoFace, e12point);
+  cDisplay.SetTextColor(TFT_BLACK);
+
+  cDisplay.SetCursor(5, 5);
+  cDisplay.PrintLine("12ptA");
+  cDisplay.PrintLine("12ptB");
+  cDisplay.PrintLine("12ptC");
 
 	//Test printing a string composed of "Now: " and the current "temperature".
 	Serial << "setup(): Test printing the Now: temperature line." << endl;

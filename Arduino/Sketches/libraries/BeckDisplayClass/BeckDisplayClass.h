@@ -1,6 +1,6 @@
 #pragma once
 const char szFileName2[]  = "BeckDisplayClass.h";
-const char szFileDate2[]  = "4/2/21b";
+const char szFileDate2[]  = "4/3/21A";
 
 #include <TFT_eSPI.h>
 //#include <Adafruit_GFX.h>
@@ -19,12 +19,29 @@ enum ScreenOrientationType {
   eLastUSBOrientation
 };
 
-enum FontType {
+enum FontLibraryType {
   eNoFont= 0,
   eTFTFont,
   eFontCreatorFont,
   eGFXFont,
   eLastFontType
+};
+
+enum FontFaceType {
+  eNoFontFace= 0,
+  eSerifFace,
+  eSansFace,
+  eMonoFace,
+  eLastFaceType
+};
+
+enum FontPointType {
+  eNoFontPoint= 0,
+  e9point,
+  e12point,
+  e18point,
+  e24point,
+  eLastFontPointType
 };
 
 typedef TFT_eSPI    GraphicsLibrary;
@@ -45,20 +62,22 @@ protected:
   Colortype               _FillColor            = TFT_RED;
   CursorUnit              _CursorX              = 0;
   CursorUnit              _CursorY              = 0;
-  FontType                _FontType             = eTFTFont;
+  FontLibraryType         _eFontLibrary         = eGFXFont;
+  FontFaceType            _eFontFace            = eMonoFace;
+  FontPointType           _eFontPoint            = e12point;
 
 public:
   Display();
   virtual ~Display();
 
-  virtual void  PrintLine           (const char* szLineToPrint){}
-  //virtual void  FillScreen          (void){}
+  virtual void  SetCursor           (CursorUnit CursorX, CursorUnit CursorY){}
   virtual void  FillScreen          (Colortype FillColor){}
   virtual void  SetBackgroundColor  (Colortype NewBackgroundColor){}
   virtual void  SetTextColor        (Colortype NewTextColor){}
   virtual void  SetTextBGColor      (Colortype NewTextBGColor){}
-  virtual void  SelectFont          (FontType eFontType, FontSize eFontSize){}
-  virtual void  DrawRectangle       (CursorUnit XUpperLeft, CursorUnit YUpperLeft, CursorUnit Width, CursorUnit Height){}
+  virtual void  SelectGFXFont       (FontFaceType eFontFace, FontPointType eFontPoint){}
+  virtual void  DrawRectangle       (CursorUnit XUpperLeft, CursorUnit UpperLeft, CursorUnit Width, CursorUnit Height){}
+  virtual void  PrintLine           (const char* szLineToPrint){}
 };  //Display
 
 
@@ -69,13 +88,13 @@ public:
   ColorDisplay();
   virtual ~ColorDisplay();
 
-  void  PrintLine           (const char* szLineToPrint);
-  //void  FillScreen          (void);
+  void  SetCursor           (CursorUnit CursorX, CursorUnit CursorY);
   void  FillScreen          (Colortype FillColor);
   void  SetBackgroundColor  (Colortype NewBackgroundColor);
   void  SetTextColor        (Colortype NewTextColor);
   void  SetTextBGColor      (Colortype NewTextBGColor);
-  void  SelectFont          (FontType eFontType, FontSize eFontSize);
+  void  SelectGFXFont       (FontFaceType eFontFace, FontPointType eFontPoint);
   void  DrawRectangle       (CursorUnit XUpperLeft, CursorUnit YUpperLeft, CursorUnit Width, CursorUnit Height);
+  void  PrintLine           (const char* szLineToPrint);
 };
 //Last line.

@@ -1,5 +1,5 @@
 const char szFileName[]  = "BeckDisplayClass.cpp";
-const char szFileDate[]  = "4/3/21a";
+const char szFileDate[]  = "4/3/21b";
 
 #include <BeckDisplayClass.h>
 #include <Streaming.h>
@@ -44,6 +44,16 @@ ColorDisplay::ColorDisplay() {
 ColorDisplay::~ColorDisplay() {
   Serial << "~ColorDisplay(): Destructing" << endl;
 } //destructor
+
+
+void ColorDisplay::SetCursor(CursorUnit CursorX, CursorUnit CursorY){
+  Serial << "ColorDisplay::SetCursor(): CursorX= " << CursorX << ", CursorY= " << CursorY << endl;
+  _CursorX= CursorX;
+  _CursorY= CursorY;
+
+  GLib.setCursor(CursorX, CursorY);
+  return;
+}
 
 
 void ColorDisplay::PrintLine(const char* szLineToPrint) {
@@ -95,25 +105,26 @@ void  ColorDisplay::SetTextBGColor(Colortype NewTextBGColor){
 
   GLib.setTextColor(_TextColor, _TextBGColor);    //No seperate call to set the Text BG color.
   return;
-}
+} //void  SetTextSize         (FontSize NewFontSize)
 
 
-void  ColorDisplay::SelectFont(FontType eFontType, FontSize eFontSize){
-  Serial << "ColorDisplay::SelectFont(): eFontType= " << eFontType << ", eFontSoze= " << eFontSize << endl;
-  switch (eFontType){
+/*
+void  ColorDisplay::SetTextSize(FontSize NewFontSize){
+  Serial << "ColorDisplay::SetTextSize(): NewFontSize= " << NewFontSize << endl;
+  switch (eFontLibrary){
   case eTFTFont:
-    Serial << "ColorDisplay::SelectFont(): eTFTFont selected" << endl;
+    Serial << "ColorDisplay::SetTextSize(): eTFTFont selected" << endl;
     GLib.setTextFont(eFontSize);
     break;
   case eFontCreatorFont:
-    Serial << "ColorDisplay::SelectFont(): eFontCreatorFont selected" << endl;
-    Serial << "ColorDisplay::SelectFont(): eFontCreatorFont is not yet supported." << endl;
+    Serial << "ColorDisplay::SetTextSize(): eFontCreatorFont selected" << endl;
+    Serial << "ColorDisplay::SetTextSize(): eFontCreatorFont is not yet supported." << endl;
     //GLib.setFont(&Redressed_Regular_20);
     //GLib.setFreeFont(&Redressed_Regular_20);
     //GLib.setFreeFont((GFXFont*)&Redressed_Regular_20);
     break;
   case eGFXFont:
-    Serial << "ColorDisplay::SelectFont(): eGFXFont selected" << endl;
+    Serial << "ColorDisplay::SetTextSize(): eGFXFont selected" << endl;
     //GLib.setFreeFont(FSB24);
     //GLib.setFreeFont(FSB12);
     //GLib.setFreeFont(&FreeMono18pt7b);
@@ -128,14 +139,80 @@ void  ColorDisplay::SelectFont(FontType eFontType, FontSize eFontSize){
     break;
   default:
     //GLib.set
-    Serial << "ColorDisplay::SelectFont() Bad switch= " << eFontType << endl;
+    Serial << "ColorDisplay::SetTextSize() Bad switch= " << eFontLibrary << endl;
   }
   return;
 }
+*/
 
 
-void ColorDisplay::DrawRectangle(CursorUnit XUpperLeft, CursorUnit YUpperLeft, CursorUnit Width, CursorUnit Height){
-  GLib.drawRect(XUpperLeft, YUpperLeft, Width, Height, TFT_BLACK);
+/*
+void ColorDisplay::SelectFont(FontLibraryType eFontLibrary, FontSize FontSize){
+  Serial << "ColorDisplay::SelectFont(): eFontLibrary= " << eFontLibrary << ", FontSize= " << FontSize << endl;
+
+  _eFontLibrary= eFontLibrary;
+  switch (_eFontLibrary){
+    case eTFTFont:
+      Serial << "ColorDisplay::SelectFont(): eTFTFont selected" << endl;
+      //For the TFT fonts the size is the scaling (e.g. 1,2,3) to apply to the base size
+      GLib.setTextFont(FontSize);
+      break;
+    case eFontCreatorFont:
+      Serial << "ColorDisplay::SelectFont(): eFontCreatorFont selected" << endl;
+      Serial << "ColorDisplay::SelectFont(): eFontCreatorFont is not yet supported." << endl;
+      //GLib.setFont(&Redressed_Regular_20);
+      //GLib.setFreeFont(&Redressed_Regular_20);
+      //GLib.setFreeFont((GFXFont*)&Redressed_Regular_20);
+      break;
+    case eGFXFont:
+      Serial << "ColorDisplay::SelectFont(): eGFXFont selected" << endl;
+      //GLib.setFreeFont(FSB24);
+      //GLib.setFreeFont(FSB12);
+      //GLib.setFreeFont(&FreeMono18pt7b);
+      //GLib.setFreeFont(&FreeMonoBold9pt7b);
+      GLib.setFreeFont(&FreeMonoBold12pt7b);
+
+      //GFXfont *pFontToUse=  &Redressed_Regular_20;
+      //GLib.setFreeFont(pFontToUse);
+
+      //GLib.setTextDatum(BL_DATUM);
+      GLib.setTextDatum(TL_DATUM);
+      break;
+    default:
+      //GLib.set
+      Serial << "ColorDisplay::SelectFont() Bad switch= " << eFontLibrary << endl;
+  }
+  return;
+}
+*/
+
+
+void ColorDisplay::SelectGFXFont(FontFaceType eFontFace, FontPointType eFontPoint){
+    _eFontLibrary= eGFXFont;
+    _eFontFace= eFontFace;
+    _eFontPoint= eFontPoint;
+  switch (eFontFace){
+    case eMonoFace:
+      Serial << "ColorDisplay::SelectGFXFont(): eMonoFace selected" << endl;
+      switch (eFontPoint){
+        case e12point:
+          GLib.setFreeFont(&FreeMonoBold12pt7b);
+          break;
+        default:
+          Serial << "ColorDisplay::SelectGFXFont() Font point not yet supported= " << eFontPoint << endl;
+          break;
+      } //switch(eFontPoint)
+    break;
+    default:
+      Serial << "ColorDisplay::SelectGFXFont() Font face not yet supported= " << eFontFace << endl;
+  } //switch (eFontFace)
+  return;
+} //SelectGFXFont
+
+
+
+void ColorDisplay::DrawRectangle(CursorUnit XUpperLeft, CursorUnit UpperLeft, CursorUnit Width, CursorUnit Height){
+  GLib.drawRect(XUpperLeft, UpperLeft, Width, Height, TFT_BLACK);
   return;
 }
 //Last line.
