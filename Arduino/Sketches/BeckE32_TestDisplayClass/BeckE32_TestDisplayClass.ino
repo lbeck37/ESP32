@@ -43,44 +43,10 @@ void setup(){
     cDisplay.DrawLine(X1, Y1, X2, Y2);
   }   //for
 
-#if false
-	//Select Adafruit fonts
-  cDisplay.SelectFont(eGFXFont, 0);
 
-	//cDisplay.PrintLine("The Dude is cool! g");
-	cDisplay.PrintLine("Green on Red");
-	delay(2000);
-
-	BackgroundColor= TFT_BLUE;
-	cDisplay.SetBackgroundColor(BackgroundColor);
-
-	FillColor= BackgroundColor;
-	cDisplay.FillScreen(FillColor);
-
-	cDisplay.SetTextColor(TFT_WHITE);
-	cDisplay.PrintLine("White on Blue");
-	delay(2000);
-
-	BackgroundColor= TFT_MAGENTA;
-	cDisplay.SetBackgroundColor(BackgroundColor);
-	//cDisplay.FillScreen(NULL);      //No parameter, use current background color.
-	cDisplay.FillScreen(BackgroundColor);      //No parameter, use current background color.
-
-	cDisplay.SetTextColor(TFT_ORANGE);
-	cDisplay.PrintLine("Orange on Magenta");
-	delay(2000);
-#endif
-
-/*
-  Colortype BackgroundColor= TFT_WHITE;
-	cDisplay.SetBackgroundColor(BackgroundColor);
-  cDisplay.FillScreen(BackgroundColor);      //No parameter, use current background color.
-*/
 	cDisplay.SetCursor(5, 20);
   cDisplay.SelectGFXFont(eMonoFace, e12point);
-  //cDisplay.SetTextColor(TFT_BLACK);
 
-  //cDisplay.SetCursor(5, 5);
   cDisplay.PrintLine("12ptA");
   cDisplay.PrintLine("12ptB");
   cDisplay.PrintLine("12ptC");

@@ -1,15 +1,12 @@
 #pragma once
 const char szFileName2[]  = "BeckDisplayClass.h";
-const char szFileDate2[]  = "4/4/21a";
+const char szFileDate2[]  = "4/4/21b";
+//Initially used for TTGO ESP32 module. 135 x 240, 1.14", 240dpi display
 
 #include <TFT_eSPI.h>
 //#include <Adafruit_GFX.h>
 //#include <Streaming.h>
 
-//#include <string>
-//using namespace std;
-//Initially used for TTGO ESP32 module
-//  135 x 240, 1.14", 240dpi display
 
 enum ScreenOrientationType {
   eNoScreenOrientation= -1,
@@ -46,9 +43,7 @@ enum FontPointType {
 };
 
 typedef TFT_eSPI    GraphicsLibrary;
-typedef int32_t    Colortype;
-//typedef uint16_t  CursorUnit;
-//typedef uint16_t    PUnit;        //Pixel Unit, was CursorUnit but parameter lists were too long
+typedef int32_t     Colortype;
 typedef int32_t     PUnit;        //Pixel Unit, was CursorUnit but parameter lists were too long
 typedef uint8_t     FontSize;
 typedef float       DegreeType;
