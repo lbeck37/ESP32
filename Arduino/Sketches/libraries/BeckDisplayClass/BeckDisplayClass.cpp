@@ -1,5 +1,5 @@
 const char szFileName[]  = "BeckDisplayClass.cpp";
-const char szFileDate[]  = "4/4/21b";
+const char szFileDate[]  = "4/5/21a";
 
 #include <BeckDisplayClass.h>
 #include <Streaming.h>
@@ -7,8 +7,10 @@ const char szFileDate[]  = "4/4/21b";
 //#include <Adafruit_GFX.h>
 //#include <gfxfont.h>
 #include "Free_Fonts.h"
-//#include <Fonts/FreeMono18pt7b.h>
-#include <Redressed_Regular_20.h>
+//#include <Fonts/FreeMono12pt7b.h>   //Included in TFT_eSPI
+//#include <Redressed_Regular_20.h>
+//#include <Roboto_Medium_40.h>
+#include <Roboto_Medium_100.h>
 
 PUnit  ScreenWidth    = 240;
 PUnit  ScreenHeight   = 135;
@@ -55,12 +57,20 @@ void ColorDisplay::SetCursor(PUnit CursorX, PUnit CursorY){
 }
 
 
+void ColorDisplay::Print(const char* szLineToPrint) {
+  Serial << "ColorDisplay::PrintLine(): szLineToPrint= " << szLineToPrint << endl;
+
+  GLib.print(szLineToPrint);
+  return;
+} //Print
+
+
 void ColorDisplay::PrintLine(const char* szLineToPrint) {
   Serial << "ColorDisplay::PrintLine(): szLineToPrint= " << szLineToPrint << endl;
 
   GLib.println(szLineToPrint);
   return;
-} //SetupDisplay
+} //PrintLine
 
 
 void ColorDisplay::FillScreen(Colortype FillColor){
@@ -68,7 +78,7 @@ void ColorDisplay::FillScreen(Colortype FillColor){
 
   GLib.fillScreen(FillColor);
   return;
-} //ClearDisplay
+} //FillScreen
 
 
 void  ColorDisplay::SetBackgroundColor(Colortype NewBackgroundColor){
@@ -93,7 +103,7 @@ void  ColorDisplay::SetTextBGColor(Colortype NewTextBGColor){
 
   GLib.setTextColor(_TextColor, _TextBGColor);    //No seperate call to set the Text BG color.
   return;
-} //void  SetTextSize         (FontSize NewFontSize)
+}
 
 
 void ColorDisplay::SelectGFXFont(FontFaceType eFontFace, FontPointType eFontPoint){
@@ -105,15 +115,48 @@ void ColorDisplay::SelectGFXFont(FontFaceType eFontFace, FontPointType eFontPoin
       Serial << "ColorDisplay::SelectGFXFont(): eMonoFace selected" << endl;
       switch (eFontPoint){
         case e12point:
+          Serial << "ColorDisplay::SelectGFXFont(): Font set to FreeMonoBold12pt7b" << endl;
           GLib.setFreeFont(&FreeMonoBold12pt7b);
           break;
         default:
           Serial << "ColorDisplay::SelectGFXFont() Font point not yet supported= " << eFontPoint << endl;
           break;
+        } //switch(eFontPoint)
+      break;  //Redressed_Regular_20
+/*
+      case eRedressedFace:
+        Serial << "ColorDisplay::SelectGFXFont(): eRedressedFace selected" << endl;
+        switch (eFontPoint){
+          case e20point:
+            GLib.setFreeFont(&Redressed_Regular_20);
+            break;
+          default:
+            Serial << "ColorDisplay::SelectGFXFont() Font point not yet supported= " << eFontPoint << endl;
+            break;
+          } //switch(eFontPoint)
+        break;
+*/
+
+    case eRobotoFace:
+      Serial << "ColorDisplay::SelectGFXFont(): eRobotoFace selected" << endl;
+      switch (eFontPoint){
+      case e40point:
+        Serial << "ColorDisplay::SelectGFXFont(): Font set to Roboto_Medium_40" << endl;
+        //GLib.setFreeFont(&Roboto_Medium_40);
+        break;
+      case e100point:
+        Serial << "ColorDisplay::SelectGFXFont(): Font set to Roboto_Medium_100" << endl;
+        GLib.setFreeFont(&Roboto_Medium_100);
+        break;
+      default:
+        Serial << "ColorDisplay::SelectGFXFont() Font point not yet supported= " << eFontPoint << endl;
+        break;
       } //switch(eFontPoint)
-    break;
+      break;
+
     default:
       Serial << "ColorDisplay::SelectGFXFont() Font face not yet supported= " << eFontFace << endl;
+      break;
   } //switch (eFontFace)
   return;
 } //SelectGFXFont

@@ -1,6 +1,6 @@
 #pragma once
 const char szFileName2[]  = "BeckDisplayClass.h";
-const char szFileDate2[]  = "4/4/21b";
+const char szFileDate2[]  = "4/5/21a";
 //Initially used for TTGO ESP32 module. 135 x 240, 1.14", 240dpi display
 
 #include <TFT_eSPI.h>
@@ -27,7 +27,8 @@ enum FontLibraryType {
 
 enum FontFaceType {
   eNoFontFace= 0,
-  eSerifFace,
+  eRedressedFace,
+  eRobotoFace,
   eSansFace,
   eMonoFace,
   eLastFaceType
@@ -38,7 +39,11 @@ enum FontPointType {
   e9point,
   e12point,
   e18point,
+  e20point,
   e24point,
+  e40point,
+  e60point,
+  e100point,
   eLastFontPointType
 };
 
@@ -80,6 +85,7 @@ public:
   virtual void  SelectGFXFont       (FontFaceType eFontFace, FontPointType eFontPoint){}
   virtual void  DrawLine            (PUnit X1, PUnit Y1, PUnit X2, PUnit Y2){}
   virtual void  DrawRectangle       (PUnit XLeft, PUnit YTop, PUnit Width, PUnit Height){}
+  virtual void  Print               (const char* szLineToPrint){}
   virtual void  PrintLine           (const char* szLineToPrint){}
 };  //Display
 
@@ -99,6 +105,7 @@ public:
   void  SelectGFXFont       (FontFaceType eFontFace, FontPointType eFontPoint);
   void  DrawLine            (PUnit X1, PUnit Y1, PUnit X2, PUnit Y2);
   void  DrawRectangle       (PUnit XLeft, PUnit YTop, PUnit Width, PUnit Height);
+  void  Print               (const char* szLineToPrint);
   void  PrintLine           (const char* szLineToPrint);
 };
 //Last line.

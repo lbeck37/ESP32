@@ -1,13 +1,10 @@
 const char szSketchName[]  = "BeckE32_TestDisplayClass.ino";
-const char szFileDate[]    = "4/4/21c";
+const char szFileDate[]    = "4/5/21c";
 
 #include <BeckDisplayClass.h>
 #include <Streaming.h>
-#include <string>
 
 void setup(){
-	//Colortype	FillColor;
-
 	Serial.begin(115200);
 	delay(100);
 	Serial << endl << "setup(): Sketch: " << szSketchName << ", " << szFileDate << endl;
@@ -43,13 +40,23 @@ void setup(){
     cDisplay.DrawLine(X1, Y1, X2, Y2);
   }   //for
 
+  //cDisplay.SetCursor(0, 5);
+  //cDisplay.SetCursor(0, 125);
+  cDisplay.SetCursor(5, 115);
+  //cDisplay.SelectGFXFont(eMonoFace, e12point);
+  //cDisplay.SelectGFXFont(eRobotoFace, e40point);
+  //cDisplay.Print("40pt");
+  cDisplay.SelectGFXFont(eRobotoFace, e100point);
+  cDisplay.Print("8Xpg");
 
-	cDisplay.SetCursor(5, 20);
+
+#if true
+  cDisplay.SetCursor(5, 20);
   cDisplay.SelectGFXFont(eMonoFace, e12point);
 
   cDisplay.PrintLine("12ptA");
-  cDisplay.PrintLine("12ptB");
-  cDisplay.PrintLine("12ptC");
+  //cDisplay.PrintLine("12ptB");
+  //cDisplay.PrintLine("12ptC");
 
 	//Test printing a string composed of "Now: " and the current "temperature".
 	Serial << "setup(): Test printing the Now: temperature line." << endl;
@@ -59,8 +66,8 @@ void setup(){
 
 	//Construct string to print since TFT_eSPI.println only supports printing a string
 	sprintf(sz100CharBuffer, "%s %6.2f", szStringToPrint, fCurrentDegF);
-	cDisplay.PrintLine(sz100CharBuffer);
-
+	//cDisplay.PrintLine(sz100CharBuffer);
+#endif
 	return;
 } //setup
 
