@@ -65,9 +65,9 @@ protected:
   GraphicsLibrary         GLib                  = GraphicsLibrary();
   ScreenOrientationType   _eScreenOrientation   = eUSBLeft;
   Colortype               _BackgroundColor      = TFT_WHITE;
-  Colortype               _FillColor            = TFT_WHITE;
-  Colortype               _TextBGColor          = TFT_WHITE;
   Colortype               _TextColor            = TFT_RED;
+  Colortype               _TextBGColor          = TFT_WHITE;
+  Colortype               _FillColor            = TFT_WHITE;
   Colortype               _LineColor            = TFT_BLACK;
   PUnit                   _CursorX              = 0;
   PUnit                   _CursorY              = 0;
@@ -80,11 +80,13 @@ public:
   virtual ~Display();
 
   virtual void  SetCursor           (PUnit CursorX, PUnit CursorY){}
-  virtual void  FillScreen          (Colortype FillColor){}
   virtual void  SetBackgroundColor  (Colortype NewBackgroundColor){}
   virtual void  SetTextColor        (Colortype NewTextColor){}
   virtual void  SetTextBGColor      (Colortype NewTextBGColor){}
+  virtual void  SetFillColor        (Colortype NewFillColor){}
+  virtual void  SetLineColor        (Colortype NewLineColor){}
   virtual void  SelectFont          (FontFaceType eFontFace, FontPointType eFontPoint){}
+  virtual void  FillScreen          (Colortype FillColor){}
   virtual void  DrawLine            (PUnit X1, PUnit Y1, PUnit X2, PUnit Y2){}
   virtual void  DrawRectangle       (PUnit XLeft, PUnit YTop, PUnit Width, PUnit Height){}
   virtual void  Print               (const char* szLineToPrint){}
@@ -104,6 +106,8 @@ public:
   void  SetBackgroundColor  (Colortype NewBackgroundColor);
   void  SetTextColor        (Colortype NewTextColor);
   void  SetTextBGColor      (Colortype NewTextBGColor);
+  void  SetFillColor        (Colortype NewFillColor);
+  void  SetLineColor        (Colortype NewLineColor);
   void  SelectFont          (FontFaceType eFontFace, FontPointType eFontPoint);
   void  DrawLine            (PUnit X1, PUnit Y1, PUnit X2, PUnit Y2);
   void  DrawRectangle       (PUnit XLeft, PUnit YTop, PUnit Width, PUnit Height);

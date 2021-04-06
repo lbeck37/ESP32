@@ -12,13 +12,17 @@ void setup(){
 	ColorDisplay cDisplay;
 
   //Draw rectangle, TTGO is 135 x 240
+/*
   PUnit  XLeft;
   PUnit  YTop;
   PUnit  Width;
   PUnit  Height;
+*/
+  cDisplay.FillScreen(TFT_WHITE);
 
-#if false
+#if true
   //For reference, draw series of lines, first vertical then horizontal
+  cDisplay.SetLineColor(TFT_BLACK);
   PUnit StepSize    = 5;
   //Draw vertical lines
   PUnit OffsetStop  = ScreenWidth;
@@ -53,14 +57,26 @@ void setup(){
 
   //cDisplay.SetCursor(0, 5);
   //cDisplay.SetCursor(0, 125);
-  cDisplay.SetCursor(5, 115);
   //cDisplay.SelectGFXFont(eMonoFace, e12point);
   //cDisplay.SelectGFXFont(eRobotoFace, e40point);
   //cDisplay.Print("40pt");
+
+  //Test readability of color combo
+  cDisplay.SetCursor(0, 115);
   cDisplay.SelectFont(eRobotoFace, e150point);
-  cDisplay.SetTextColor(TFT_RED);
+
+  //White text on black
+  //cDisplay.FillScreen(TFT_BLACK);
+  //cDisplay.SetTextColor(TFT_WHITE);
+
+  //Black text on white
+  //cDisplay.FillScreen(TFT_WHITE);
   cDisplay.SetTextColor(TFT_BLACK);
+
+  //Red text on white
+  cDisplay.SetTextColor(TFT_RED);
   cDisplay.Print("86.");
+
 
 
 #if false

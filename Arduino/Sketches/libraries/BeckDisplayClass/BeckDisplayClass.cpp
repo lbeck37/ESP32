@@ -58,30 +58,6 @@ void ColorDisplay::SetCursor(PUnit CursorX, PUnit CursorY){
 }
 
 
-void ColorDisplay::Print(const char* szLineToPrint) {
-  Serial << "ColorDisplay::PrintLine(): szLineToPrint= " << szLineToPrint << endl;
-
-  GLib.print(szLineToPrint);
-  return;
-} //Print
-
-
-void ColorDisplay::PrintLine(const char* szLineToPrint) {
-  Serial << "ColorDisplay::PrintLine(): szLineToPrint= " << szLineToPrint << endl;
-
-  GLib.println(szLineToPrint);
-  return;
-} //PrintLine
-
-
-void ColorDisplay::FillScreen(Colortype FillColor){
-  Serial << "ColorDisplay::FillScreen(FillColor), FillColor= " << FillColor << endl;
-
-  GLib.fillScreen(FillColor);
-  return;
-} //FillScreen
-
-
 void  ColorDisplay::SetBackgroundColor(Colortype NewBackgroundColor){
   Serial << "ColorDisplay::SetBackgroundColor(): NewBackgroundColor= " << NewBackgroundColor << endl;
   _BackgroundColor= NewBackgroundColor;
@@ -101,6 +77,24 @@ void  ColorDisplay::SetTextColor(Colortype NewTextColor){
 void  ColorDisplay::SetTextBGColor(Colortype NewTextBGColor){
   Serial << "ColorDisplay::SetTextBGColor(): NewTextBGColor= " << NewTextBGColor << endl;
   _TextBGColor= NewTextBGColor;
+
+  GLib.setTextColor(_TextColor, _TextBGColor);    //No seperate call to set the Text BG color.
+  return;
+}
+
+
+void  ColorDisplay::SetFillColor(Colortype NewFillColor){
+  Serial << "ColorDisplay::SetFillColor(): NewFillColor= " << NewFillColor << endl;
+  _FillColor= NewFillColor;
+
+  GLib.setTextColor(_TextColor, _TextBGColor);    //No seperate call to set the Text BG color.
+  return;
+}
+
+
+void  ColorDisplay::SetLineColor(Colortype NewLineColor){
+  Serial << "ColorDisplay::SetFillColor(): NewLineColor= " << NewLineColor << endl;
+  _LineColor= NewLineColor;
 
   GLib.setTextColor(_TextColor, _TextBGColor);    //No seperate call to set the Text BG color.
   return;
@@ -168,6 +162,14 @@ void ColorDisplay::SelectFont(FontFaceType eFontFace, FontPointType eFontPoint){
 } //SelectFont
 
 
+void ColorDisplay::FillScreen(Colortype FillColor){
+  Serial << "ColorDisplay::FillScreen(FillColor), FillColor= " << FillColor << endl;
+
+  GLib.fillScreen(FillColor);
+  return;
+} //FillScreen
+
+
 void ColorDisplay::DrawLine(PUnit X1, PUnit Y1, PUnit X2, PUnit Y2){
   GLib.drawLine(X1, Y1, X2, Y2, _LineColor);
   return;
@@ -178,5 +180,21 @@ void ColorDisplay::DrawRectangle(PUnit XLeft, PUnit YTop, PUnit Width, PUnit Hei
   GLib.drawRect(XLeft, YTop, Width, Height, _LineColor);
   return;
 }
+
+
+void ColorDisplay::Print(const char* szLineToPrint) {
+  Serial << "ColorDisplay::PrintLine(): szLineToPrint= " << szLineToPrint << endl;
+
+  GLib.print(szLineToPrint);
+  return;
+} //Print
+
+
+void ColorDisplay::PrintLine(const char* szLineToPrint) {
+  Serial << "ColorDisplay::PrintLine(): szLineToPrint= " << szLineToPrint << endl;
+
+  GLib.println(szLineToPrint);
+  return;
+} //PrintLine
 //Last line.
 
