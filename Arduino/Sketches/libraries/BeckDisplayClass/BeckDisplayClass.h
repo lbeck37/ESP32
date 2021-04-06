@@ -1,6 +1,6 @@
 #pragma once
 const char szFileName2[]  = "BeckDisplayClass.h";
-const char szFileDate2[]  = "4/6/21";
+const char szFileDate2[]  = "4/6/21b";
 //Initially used for TTGO ESP32 module. 135 x 240, 1.14", 240dpi display
 
 #include <TFT_eSPI.h>
@@ -8,11 +8,12 @@ const char szFileDate2[]  = "4/6/21";
 //#include <Streaming.h>
 
 //Remove the "//" in front of the #define for a font you use
+//   Mono and Text files are included in TFT_eSPI library already.
 //#define REDRESSED__REGULAR_20
-#define ROBOTO_CONDENSED_30
+//#define ROBOTO_CONDENSED_30
 //#define ROBOTO_MEDIUM_40
 //#define ROBOTO_MEDIUM_100
-//#define ROBOTO_CONDENSED_130
+#define ROBOTO_CONDENSED_130
 //#define ROBOTO_CONDENSED_BOLD_130
 //#define ROBOTO_MEDIUM_150
 
@@ -36,19 +37,23 @@ enum FontLibraryType {
 enum FontFaceType {
   eNoFontFace= 0,
   eMonoFace,
-  eTextFace,        //eTextFace are the original Adafruit 1, 2, 4, 6, 7, 8 fonts
-  eRedressedRegularFace,
-  eRobotoMediumFace,
-  eRobotoCondensedFace,
-  eRobotoCondensedBoldFace,
-  //eRondoCondensedFace,
-  //eRondoCondensedBoldFace,
-  //eSansFace,
+  eTextFace,                  //Adafruit 1=9px, 2= 16px, 4= 26px, 6=48pt, 7=48px 7seg, 8=75px narrow
+  eRedressedRegularFace,      //20pt
+  eRobotoMediumFace,          //40, 100, 150pt
+  eRobotoCondensedFace,       //30, 130pt
+  eRobotoCondensedBoldFace,   //130pt
   eLastFaceType
 };
 
 enum FontPointType {
   eNoFontPoint= 0,
+  eText9px,
+  eText16px,
+  eText26px,
+  eText48px,
+  eText48px7seg,
+  eText75px,
+  eText75pxNarrow,
   e9point,
   e12point,
   e18point,
@@ -69,9 +74,9 @@ typedef int32_t     PUnit;        //Pixel Unit, was CursorUnit but parameter lis
 typedef uint8_t     FontSize;
 typedef float       DegreeType;
 
-extern PUnit      ScreenWidth;
-extern PUnit      ScreenHeight;
-extern uint8_t    DegreeSymbol;
+extern PUnit          ScreenWidth;
+extern PUnit          ScreenHeight;
+extern uint8_t        DegreeSymbol;
 
 extern char sz100CharBuffer[];    //For building strings for display
 
@@ -104,6 +109,7 @@ public:
   virtual void  FillScreen          (Colortype FillColor){}
   virtual void  DrawLine            (PUnit X1, PUnit Y1, PUnit X2, PUnit Y2){}
   virtual void  DrawRectangle       (PUnit XLeft, PUnit YTop, PUnit Width, PUnit Height){}
+  //virtual void  DrawGrid            (void){}
   virtual void  Print               (const char* szLineToPrint){}
   virtual void  PrintLine           (const char* szLineToPrint){}
 };  //Display
@@ -126,7 +132,11 @@ public:
   void  SelectFont          (FontFaceType eFontFace, FontPointType eFontPoint);
   void  DrawLine            (PUnit X1, PUnit Y1, PUnit X2, PUnit Y2);
   void  DrawRectangle       (PUnit XLeft, PUnit YTop, PUnit Width, PUnit Height);
+  //void  DrawGrid            (void);
   void  Print               (const char* szLineToPrint);
   void  PrintLine           (const char* szLineToPrint);
 };
+
+//extern ColorDisplay   cDisplay;
+
 //Last line.

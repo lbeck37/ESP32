@@ -1,5 +1,5 @@
 const char szFileName[]  = "BeckDisplayClass.cpp";
-const char szFileDate[]  = "4/6/21";
+const char szFileDate[]  = "4/6/21b";
 
 #include <BeckDisplayClass.h>
 #include <Streaming.h>
@@ -32,6 +32,8 @@ const char szFileDate[]  = "4/6/21";
 #ifdef ROBOTO_MEDIUM_150
   #include <Roboto_Medium_150.h>
 #endif
+
+//ColorDisplay cDisplay;
 
 PUnit     ScreenWidth    = 240;
 PUnit     ScreenHeight   = 135;
@@ -145,10 +147,14 @@ void ColorDisplay::SelectFont(FontFaceType eFontFace, FontPointType eFontPoint){
     case eTextFace:
       Serial << "ColorDisplay::SelectFont(): eTextFace selected" << endl;
       switch (eFontPoint){
-        case e9point:
-          Serial << "ColorDisplay::SelectFont(): Font set to Text #1" << endl;
-          GLib.setTextFont(1);
-          break;
+      case eText9px:
+        Serial << "ColorDisplay::SelectFont(): Font set to Text #1 (9px)" << endl;
+        GLib.setTextFont(1);
+        break;
+      case eText26px:
+        Serial << "ColorDisplay::SelectFont(): Font set to Text #4 (26px)" << endl;
+        GLib.setTextFont(4);
+        break;
         default:
           Serial << "ColorDisplay::SelectFont() Font point not yet supported= " << eFontPoint << endl;
           break;
@@ -261,6 +267,45 @@ void ColorDisplay::DrawRectangle(PUnit XLeft, PUnit YTop, PUnit Width, PUnit Hei
   GLib.drawRect(XLeft, YTop, Width, Height, _LineColor);
   return;
 }
+
+
+/*
+void ColorDisplay::DrawGrid(void){
+  cDisplay.SetLineColor(TFT_BLACK);
+  PUnit StepSize    = 5;
+  //Draw vertical lines
+  PUnit OffsetStop  = ScreenWidth;
+  for(PUnit Offset= StepSize; Offset < OffsetStop; Offset= (Offset + StepSize)){
+    PUnit X1= Offset;
+    PUnit X2= Offset;
+    PUnit Y1= 0;
+    PUnit Y2= ScreenHeight;
+    cDisplay.DrawLine(X1, Y1, X2, Y2);
+  }   //for
+  //Draw horizontal lines
+  OffsetStop  = ScreenHeight;
+  for(PUnit Offset= StepSize; Offset < OffsetStop; Offset= (Offset + StepSize)){
+    PUnit X1= 0;
+    PUnit X2= ScreenWidth;
+    PUnit Y1= Offset;
+    PUnit Y2= Offset;
+    cDisplay.DrawLine(X1, Y1, X2, Y2);
+  }   //for
+
+  //Put label under lines every 25 pixels (5 lines)
+  //PUnit OffsetStop  = ScreenWidth;
+  cDisplay.SelectFont(eTextFace, eText9px);
+  cDisplay.SetTextColor(TFT_RED);
+  for(PUnit Ypixel= 0; Ypixel < ScreenHeight; Ypixel= (Ypixel + 25)){
+    PUnit X1= 0;
+    cDisplay.SetCursor(X1, Ypixel);
+    sprintf(sz100CharBuffer, "%d", Ypixel);
+    cDisplay.Print(sz100CharBuffer);
+  }   //for
+
+  return;
+} //DrawGrid
+*/
 
 
 void ColorDisplay::Print(const char* szLineToPrint) {
