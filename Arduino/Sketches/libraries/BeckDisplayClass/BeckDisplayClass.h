@@ -1,6 +1,6 @@
 #pragma once
 const char szFileName2[]  = "BeckDisplayClass.h";
-const char szFileDate2[]  = "4/5/21a";
+const char szFileDate2[]  = "4/5/21b";
 //Initially used for TTGO ESP32 module. 135 x 240, 1.14", 240dpi display
 
 #include <TFT_eSPI.h>
@@ -27,6 +27,7 @@ enum FontLibraryType {
 
 enum FontFaceType {
   eNoFontFace= 0,
+  eTextFace,        //eTextFace are the original Adafruit 1, 2, 4, 6, 7, 8 fonts
   eRedressedFace,
   eRobotoFace,
   eSansFace,
@@ -44,6 +45,7 @@ enum FontPointType {
   e40point,
   e60point,
   e100point,
+  e150point,
   eLastFontPointType
 };
 
@@ -82,7 +84,7 @@ public:
   virtual void  SetBackgroundColor  (Colortype NewBackgroundColor){}
   virtual void  SetTextColor        (Colortype NewTextColor){}
   virtual void  SetTextBGColor      (Colortype NewTextBGColor){}
-  virtual void  SelectGFXFont       (FontFaceType eFontFace, FontPointType eFontPoint){}
+  virtual void  SelectFont          (FontFaceType eFontFace, FontPointType eFontPoint){}
   virtual void  DrawLine            (PUnit X1, PUnit Y1, PUnit X2, PUnit Y2){}
   virtual void  DrawRectangle       (PUnit XLeft, PUnit YTop, PUnit Width, PUnit Height){}
   virtual void  Print               (const char* szLineToPrint){}
@@ -102,7 +104,7 @@ public:
   void  SetBackgroundColor  (Colortype NewBackgroundColor);
   void  SetTextColor        (Colortype NewTextColor);
   void  SetTextBGColor      (Colortype NewTextBGColor);
-  void  SelectGFXFont       (FontFaceType eFontFace, FontPointType eFontPoint);
+  void  SelectFont          (FontFaceType eFontFace, FontPointType eFontPoint);
   void  DrawLine            (PUnit X1, PUnit Y1, PUnit X2, PUnit Y2);
   void  DrawRectangle       (PUnit XLeft, PUnit YTop, PUnit Width, PUnit Height);
   void  Print               (const char* szLineToPrint);

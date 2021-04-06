@@ -1,5 +1,5 @@
 const char szFileName[]  = "BeckDisplayClass.cpp";
-const char szFileDate[]  = "4/5/21a";
+const char szFileDate[]  = "4/5/21b";
 
 #include <BeckDisplayClass.h>
 #include <Streaming.h>
@@ -10,7 +10,8 @@ const char szFileDate[]  = "4/5/21a";
 //#include <Fonts/FreeMono12pt7b.h>   //Included in TFT_eSPI
 //#include <Redressed_Regular_20.h>
 //#include <Roboto_Medium_40.h>
-#include <Roboto_Medium_100.h>
+//#include <Roboto_Medium_100.h>
+#include <Roboto_Medium_150.h>
 
 PUnit  ScreenWidth    = 240;
 PUnit  ScreenHeight   = 135;
@@ -106,60 +107,65 @@ void  ColorDisplay::SetTextBGColor(Colortype NewTextBGColor){
 }
 
 
-void ColorDisplay::SelectGFXFont(FontFaceType eFontFace, FontPointType eFontPoint){
-    _eFontLibrary= eGFXFont;
-    _eFontFace= eFontFace;
-    _eFontPoint= eFontPoint;
+//void ColorDisplay::SelectGFXFont(FontFaceType eFontFace, FontPointType eFontPoint){
+void ColorDisplay::SelectFont(FontFaceType eFontFace, FontPointType eFontPoint){
+  //_eFontLibrary = eGFXFont;
+  _eFontFace    = eFontFace;
+  _eFontPoint   = eFontPoint;
+
   switch (eFontFace){
     case eMonoFace:
-      Serial << "ColorDisplay::SelectGFXFont(): eMonoFace selected" << endl;
+      Serial << "ColorDisplay::SelectFont(): eMonoFace selected" << endl;
       switch (eFontPoint){
         case e12point:
           Serial << "ColorDisplay::SelectGFXFont(): Font set to FreeMonoBold12pt7b" << endl;
           GLib.setFreeFont(&FreeMonoBold12pt7b);
           break;
         default:
-          Serial << "ColorDisplay::SelectGFXFont() Font point not yet supported= " << eFontPoint << endl;
+          Serial << "ColorDisplay::SelectFont() Font point not yet supported= " << eFontPoint << endl;
           break;
         } //switch(eFontPoint)
       break;  //Redressed_Regular_20
-/*
-      case eRedressedFace:
-        Serial << "ColorDisplay::SelectGFXFont(): eRedressedFace selected" << endl;
+
+      case eTextFace:
+        Serial << "ColorDisplay::SelectFont(): eTextFace selected" << endl;
         switch (eFontPoint){
-          case e20point:
-            GLib.setFreeFont(&Redressed_Regular_20);
+          case e9point:
+            GLib.setTextFont(1);
             break;
           default:
-            Serial << "ColorDisplay::SelectGFXFont() Font point not yet supported= " << eFontPoint << endl;
+            Serial << "ColorDisplay::SelectFont() Font point not yet supported= " << eFontPoint << endl;
             break;
           } //switch(eFontPoint)
         break;
-*/
+
 
     case eRobotoFace:
-      Serial << "ColorDisplay::SelectGFXFont(): eRobotoFace selected" << endl;
+      Serial << "ColorDisplay::SelectFont(): eRobotoFace selected" << endl;
       switch (eFontPoint){
       case e40point:
-        Serial << "ColorDisplay::SelectGFXFont(): Font set to Roboto_Medium_40" << endl;
+        Serial << "ColorDisplay::SelectFont(): Font set to Roboto_Medium_40" << endl;
         //GLib.setFreeFont(&Roboto_Medium_40);
         break;
       case e100point:
-        Serial << "ColorDisplay::SelectGFXFont(): Font set to Roboto_Medium_100" << endl;
-        GLib.setFreeFont(&Roboto_Medium_100);
+        Serial << "ColorDisplay::SelectFont(): Font set to Roboto_Medium_100" << endl;
+        //GLib.setFreeFont(&Roboto_Medium_100);
+      case e150point:
+        Serial << "ColorDisplay::SelectFont(): Font set to Roboto_Medium_150" << endl;
+        GLib.setFreeFont(&Roboto_Medium_150);
         break;
       default:
-        Serial << "ColorDisplay::SelectGFXFont() Font point not yet supported= " << eFontPoint << endl;
+        Serial << "ColorDisplay::SelectFont() Font point not yet supported= " << eFontPoint << endl;
         break;
       } //switch(eFontPoint)
       break;
 
     default:
-      Serial << "ColorDisplay::SelectGFXFont() Font face not yet supported= " << eFontFace << endl;
+      Serial << "ColorDisplay::SelectFont() Font face not yet supported= " << eFontFace << endl;
       break;
   } //switch (eFontFace)
   return;
-} //SelectGFXFont
+} //SelectFont
 
 
 void ColorDisplay::DrawLine(PUnit X1, PUnit Y1, PUnit X2, PUnit Y2){

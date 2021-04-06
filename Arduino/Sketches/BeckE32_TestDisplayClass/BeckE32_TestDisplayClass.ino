@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_TestDisplayClass.ino";
-const char szFileDate[]    = "4/5/21c";
+const char szFileDate[]    = "4/5/21d";
 
 #include <BeckDisplayClass.h>
 #include <Streaming.h>
@@ -17,9 +17,9 @@ void setup(){
   PUnit  Width;
   PUnit  Height;
 
+#if false
   //For reference, draw series of lines, first vertical then horizontal
   PUnit StepSize    = 5;
-
   //Draw vertical lines
   PUnit OffsetStop  = ScreenWidth;
   for(PUnit Offset= StepSize; Offset < OffsetStop; Offset= (Offset + StepSize)){
@@ -29,7 +29,6 @@ void setup(){
     PUnit Y2= ScreenHeight;
     cDisplay.DrawLine(X1, Y1, X2, Y2);
   }   //for
-
   //Draw horizontal lines
   OffsetStop  = ScreenHeight;
   for(PUnit Offset= StepSize; Offset < OffsetStop; Offset= (Offset + StepSize)){
@@ -40,19 +39,34 @@ void setup(){
     cDisplay.DrawLine(X1, Y1, X2, Y2);
   }   //for
 
+  //Put label under lines every 25 pixels (5 lines)
+  //PUnit OffsetStop  = ScreenWidth;
+  cDisplay.SelectFont(eTextFace, e9point);
+  cDisplay.SetTextColor(TFT_RED);
+  for(PUnit Ypixel= 0; Ypixel < ScreenHeight; Ypixel= (Ypixel + 25)){
+    PUnit X1= 0;
+    cDisplay.SetCursor(X1, Ypixel);
+    sprintf(sz100CharBuffer, "%d", Ypixel);
+    cDisplay.Print(sz100CharBuffer);
+  }   //for
+#endif
+
   //cDisplay.SetCursor(0, 5);
   //cDisplay.SetCursor(0, 125);
   cDisplay.SetCursor(5, 115);
   //cDisplay.SelectGFXFont(eMonoFace, e12point);
   //cDisplay.SelectGFXFont(eRobotoFace, e40point);
   //cDisplay.Print("40pt");
-  cDisplay.SelectGFXFont(eRobotoFace, e100point);
-  cDisplay.Print("8Xpg");
+  cDisplay.SelectFont(eRobotoFace, e150point);
+  cDisplay.SetTextColor(TFT_RED);
+  cDisplay.SetTextColor(TFT_BLACK);
+  cDisplay.Print("86.");
 
 
-#if true
+#if false
   cDisplay.SetCursor(5, 20);
-  cDisplay.SelectGFXFont(eMonoFace, e12point);
+  cDisplay.SelectFont(eMonoFace, e12point);
+  cDisplay.SetTextColor(TFT_RED);
 
   cDisplay.PrintLine("12ptA");
   //cDisplay.PrintLine("12ptB");
