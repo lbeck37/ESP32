@@ -1,12 +1,20 @@
 #pragma once
 const char szFileName2[]  = "BeckDisplayClass.h";
-const char szFileDate2[]  = "4/5/21b";
+const char szFileDate2[]  = "4/6/21";
 //Initially used for TTGO ESP32 module. 135 x 240, 1.14", 240dpi display
 
 #include <TFT_eSPI.h>
 //#include <Adafruit_GFX.h>
 //#include <Streaming.h>
 
+//Remove the "//" in front of the #define for a font you use
+//#define REDRESSED__REGULAR_20
+#define ROBOTO_CONDENSED_30
+//#define ROBOTO_MEDIUM_40
+//#define ROBOTO_MEDIUM_100
+//#define ROBOTO_CONDENSED_130
+//#define ROBOTO_CONDENSED_BOLD_130
+//#define ROBOTO_MEDIUM_150
 
 enum ScreenOrientationType {
   eNoScreenOrientation= -1,
@@ -27,11 +35,15 @@ enum FontLibraryType {
 
 enum FontFaceType {
   eNoFontFace= 0,
-  eTextFace,        //eTextFace are the original Adafruit 1, 2, 4, 6, 7, 8 fonts
-  eRedressedFace,
-  eRobotoFace,
-  eSansFace,
   eMonoFace,
+  eTextFace,        //eTextFace are the original Adafruit 1, 2, 4, 6, 7, 8 fonts
+  eRedressedRegularFace,
+  eRobotoMediumFace,
+  eRobotoCondensedFace,
+  eRobotoCondensedBoldFace,
+  //eRondoCondensedFace,
+  //eRondoCondensedBoldFace,
+  //eSansFace,
   eLastFaceType
 };
 
@@ -42,9 +54,11 @@ enum FontPointType {
   e18point,
   e20point,
   e24point,
+  e30point,
   e40point,
   e60point,
   e100point,
+  e130point,
   e150point,
   eLastFontPointType
 };
@@ -55,8 +69,9 @@ typedef int32_t     PUnit;        //Pixel Unit, was CursorUnit but parameter lis
 typedef uint8_t     FontSize;
 typedef float       DegreeType;
 
-extern PUnit  ScreenWidth;
-extern PUnit  ScreenHeight;
+extern PUnit      ScreenWidth;
+extern PUnit      ScreenHeight;
+extern uint8_t    DegreeSymbol;
 
 extern char sz100CharBuffer[];    //For building strings for display
 

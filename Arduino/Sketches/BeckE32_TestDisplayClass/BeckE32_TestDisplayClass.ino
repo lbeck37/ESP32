@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_TestDisplayClass.ino";
-const char szFileDate[]    = "4/5/21d";
+const char szFileDate[]    = "4/6/21b";
 
 #include <BeckDisplayClass.h>
 #include <Streaming.h>
@@ -20,8 +20,8 @@ void setup(){
 */
   cDisplay.FillScreen(TFT_WHITE);
 
-#if true
-  //For reference, draw series of lines, first vertical then horizontal
+//For reference, draw series of lines, first vertical then horizontal
+#if false
   cDisplay.SetLineColor(TFT_BLACK);
   PUnit StepSize    = 5;
   //Draw vertical lines
@@ -63,21 +63,14 @@ void setup(){
 
   //Test readability of color combo
   cDisplay.SetCursor(0, 115);
-  cDisplay.SelectFont(eRobotoFace, e150point);
-
-  //White text on black
-  //cDisplay.FillScreen(TFT_BLACK);
-  //cDisplay.SetTextColor(TFT_WHITE);
-
-  //Black text on white
-  //cDisplay.FillScreen(TFT_WHITE);
-  cDisplay.SetTextColor(TFT_BLACK);
+  //cDisplay.SelectFont(eRobotoMediumFace, e150point);
+ cDisplay.SelectFont(eRobotoCondensedFace, e30point);
 
   //Red text on white
   cDisplay.SetTextColor(TFT_RED);
-  cDisplay.Print("86.");
-
-
+  //cDisplay.Print("86.");
+  sprintf(sz100CharBuffer, "%04.1f%c", 86.9, DegreeSymbol);
+  cDisplay.Print(sz100CharBuffer);
 
 #if false
   cDisplay.SetCursor(5, 20);

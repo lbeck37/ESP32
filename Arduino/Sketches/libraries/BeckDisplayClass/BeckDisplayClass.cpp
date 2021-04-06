@@ -1,5 +1,5 @@
 const char szFileName[]  = "BeckDisplayClass.cpp";
-const char szFileDate[]  = "4/5/21b";
+const char szFileDate[]  = "4/6/21";
 
 #include <BeckDisplayClass.h>
 #include <Streaming.h>
@@ -8,13 +8,34 @@ const char szFileDate[]  = "4/5/21b";
 //#include <gfxfont.h>
 #include "Free_Fonts.h"
 //#include <Fonts/FreeMono12pt7b.h>   //Included in TFT_eSPI
-//#include <Redressed_Regular_20.h>
-//#include <Roboto_Medium_40.h>
-//#include <Roboto_Medium_100.h>
-#include <Roboto_Medium_150.h>
 
-PUnit  ScreenWidth    = 240;
-PUnit  ScreenHeight   = 135;
+//Scalable fonts created by Font Creator, http://oleddisplay.squix.ch/#/home
+
+#ifdef REDRESSED__REGULAR_20
+  #include <Redressed_Regular_20.h>
+#endif
+#ifdef ROBOTO_CONDENSED_30
+  #include <Roboto_Condensed_30.h>
+#endif
+#ifdef ROBOTO_MEDIUM_40
+  #include <Roboto_Medium_40.h>
+#endif
+#ifdef ROBOTO_MEDIUM_100
+  #include <Roboto_Medium_100.h>
+#endif
+#ifdef ROBOTO_CONDENSED_130
+  #include <Roboto_Condensed_130.h>
+#endif
+#ifdef ROBOTO_CONDENSED_BOLD_130
+  #include <Roboto_Condensed_Bold_130.h>
+#endif
+#ifdef ROBOTO_MEDIUM_150
+  #include <Roboto_Medium_150.h>
+#endif
+
+PUnit     ScreenWidth    = 240;
+PUnit     ScreenHeight   = 135;
+uint8_t   DegreeSymbol   = '\xA7';   //Decimal 167
 
 char  sz100CharBuffer[100];   //For building strings for display
 
@@ -119,44 +140,104 @@ void ColorDisplay::SelectFont(FontFaceType eFontFace, FontPointType eFontPoint){
           Serial << "ColorDisplay::SelectFont() Font point not yet supported= " << eFontPoint << endl;
           break;
         } //switch(eFontPoint)
-      break;  //Redressed_Regular_20
+      break;  //eRondoCondencedFace
 
-      case eTextFace:
-        Serial << "ColorDisplay::SelectFont(): eTextFace selected" << endl;
+    case eTextFace:
+      Serial << "ColorDisplay::SelectFont(): eTextFace selected" << endl;
+      switch (eFontPoint){
+        case e9point:
+          Serial << "ColorDisplay::SelectFont(): Font set to Text #1" << endl;
+          GLib.setTextFont(1);
+          break;
+        default:
+          Serial << "ColorDisplay::SelectFont() Font point not yet supported= " << eFontPoint << endl;
+          break;
+        } //switch(eFontPoint)
+      break;
+
+
+      case   eRedressedRegularFace:
+        Serial << "ColorDisplay::SelectFont(): eRedressedRegularFace selected" << endl;
         switch (eFontPoint){
-          case e9point:
-            GLib.setTextFont(1);
-            break;
+          #ifdef REDRESSED__REGULAR_20
+            case e20point:
+              Serial << "ColorDisplay::SelectFont(): Font set to Redressed_Regular_20" << endl;
+              GLib.setFreeFont(&Redressed_Regular_20);
+              break;
+          #endif
           default:
             Serial << "ColorDisplay::SelectFont() Font point not yet supported= " << eFontPoint << endl;
             break;
           } //switch(eFontPoint)
-        break;
+        break;  //eRedressedRegularFace
 
 
-    case eRobotoFace:
-      Serial << "ColorDisplay::SelectFont(): eRobotoFace selected" << endl;
-      switch (eFontPoint){
-      case e40point:
-        Serial << "ColorDisplay::SelectFont(): Font set to Roboto_Medium_40" << endl;
-        //GLib.setFreeFont(&Roboto_Medium_40);
-        break;
-      case e100point:
-        Serial << "ColorDisplay::SelectFont(): Font set to Roboto_Medium_100" << endl;
-        //GLib.setFreeFont(&Roboto_Medium_100);
-      case e150point:
-        Serial << "ColorDisplay::SelectFont(): Font set to Roboto_Medium_150" << endl;
-        GLib.setFreeFont(&Roboto_Medium_150);
-        break;
-      default:
-        Serial << "ColorDisplay::SelectFont() Font point not yet supported= " << eFontPoint << endl;
-        break;
-      } //switch(eFontPoint)
-      break;
+      case   eRobotoMediumFace:
+        Serial << "ColorDisplay::SelectFont(): eRobotoMediumFace selected" << endl;
+        switch (eFontPoint){
+          #ifdef ROBOTO_MEDIUM_40
+            case e40point:
+              Serial << "ColorDisplay::SelectFont(): Font set to Roboto_Medium_40" << endl;
+              GLib.setFreeFont(&Roboto_Medium_40);
+              break;
+          #endif
+          #ifdef ROBOTO_MEDIUM_100
+            case e40point:
+              Serial << "ColorDisplay::SelectFont(): Font set to Roboto_Medium_100" << endl;
+              GLib.setFreeFont(&Roboto_Medium_100);
+              break;
+          #endif
+          #ifdef ROBOTO_MEDIUM_150
+            case e150point:
+              Serial << "ColorDisplay::SelectFont(): Font set to Roboto_Medium_150" << endl;
+              GLib.setFreeFont(&Roboto_Medium_150);
+              break;
+          #endif
+          default:
+            Serial << "ColorDisplay::SelectFont() Font point not yet supported= " << eFontPoint << endl;
+            break;
+          } //switch(eFontPoint)
+        break;  //eRobotoMediumFace
 
-    default:
-      Serial << "ColorDisplay::SelectFont() Font face not yet supported= " << eFontFace << endl;
-      break;
+
+        case eRobotoCondensedFace:
+          Serial << "ColorDisplay::SelectFont(): eRobotoCondensedFace selected" << endl;
+          switch (eFontPoint){
+            #ifdef ROBOTO_CONDENSED_30
+              case e30point:
+                Serial << "ColorDisplay::SelectFont(): Font set to Roboto_Condensed_30" << endl;
+                  GLib.setFreeFont(&Roboto_Condensed_30);
+                break;
+            #endif
+            #ifdef ROBOTO_CONDENSED_130
+              case e130point:
+                Serial << "ColorDisplay::SelectFont(): Font set to Roboto_Condensed_130" << endl;
+                  GLib.setFreeFont(&Roboto_Condensed_130);
+                break;
+            #endif
+            default:
+              Serial << "ColorDisplay::SelectFont() Font point not yet supported= " << eFontPoint << endl;
+              break;
+          } //switch(eFontPoint)
+          break;
+
+        case eRobotoCondensedBoldFace:
+          Serial << "ColorDisplay::SelectFont(): eRobotoCondensedBoldFace selected" << endl;
+          switch (eFontPoint){
+            #ifdef ROBOTO_CONDENSED_BOLD_130
+              case e130point:
+                Serial << "ColorDisplay::SelectFont(): Font set to Roboto_Condensed_Bold_130" << endl;
+                  GLib.setFreeFont(&Roboto_Condensed_Bold_130);
+                break;
+            #endif
+            default:
+              Serial << "ColorDisplay::SelectFont() Font point not yet supported= " << eFontPoint << endl;
+              break;
+          } //switch(eFontPoint)
+          break;
+        default:
+          Serial << "ColorDisplay::SelectFont() Font face not yet supported= " << eFontFace << endl;
+          break;
   } //switch (eFontFace)
   return;
 } //SelectFont
