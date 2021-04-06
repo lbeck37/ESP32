@@ -109,6 +109,7 @@ public:
   virtual void  FillScreen          (Colortype FillColor){}
   virtual void  DrawLine            (PUnit X1, PUnit Y1, PUnit X2, PUnit Y2){}
   virtual void  DrawRectangle       (PUnit XLeft, PUnit YTop, PUnit Width, PUnit Height){}
+  virtual void  DrawFilledCircle    (PUnit XCenter, PUnit YCenter, PUnit Radius, Colortype FillColor){}
   //virtual void  DrawGrid            (void){}
   virtual void  Print               (const char* szLineToPrint){}
   virtual void  PrintLine           (const char* szLineToPrint){}
@@ -132,6 +133,7 @@ public:
   void  SelectFont          (FontFaceType eFontFace, FontPointType eFontPoint);
   void  DrawLine            (PUnit X1, PUnit Y1, PUnit X2, PUnit Y2);
   void  DrawRectangle       (PUnit XLeft, PUnit YTop, PUnit Width, PUnit Height);
+  void  DrawFilledCircle    (PUnit XCenter, PUnit YCenter, PUnit Radius, Colortype FillColor);
   //void  DrawGrid            (void);
   void  Print               (const char* szLineToPrint);
   void  PrintLine           (const char* szLineToPrint);

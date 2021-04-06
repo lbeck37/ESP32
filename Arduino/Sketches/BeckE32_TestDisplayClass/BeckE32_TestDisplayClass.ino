@@ -78,17 +78,25 @@ void setup(){
   float   fDummySetF      = 87.0;
   float   fDummyOffF      = 87.1;
 
-  cDisplay.SetCursor(5, 100);
+  cDisplay.SetCursor(5, 95);
   cDisplay.SelectFont(eRobotoCondensedFace, e130point);
   sprintf(sz100CharBuffer, "%04.1f", fDummyCurrentF);
   cDisplay.Print(sz100CharBuffer);
 
+  //Green circle when on.
+  PUnit   XCenter   =  20;  //Was 222, 118, 15
+  PUnit   YCenter   = 114;
+  PUnit   Radius    =  19;
+  cDisplay.DrawFilledCircle( XCenter, YCenter, Radius, TFT_GREEN);
+
   //Put the lower line in "Set= 87.0, Off= 87.1"
-  cDisplay.SetCursor(0, 110);
+  //cDisplay.SetCursor(0, 110);
+  PUnit   XLeft= XCenter + Radius;
+  cDisplay.SetCursor(XLeft , 110);
   //cDisplay.SelectFont(eMonoFace, e12point);
   cDisplay.SetTextColor(TFT_BLACK);
   cDisplay.SelectFont(eTextFace, eText26px);
-  sprintf(sz100CharBuffer, "Set= %4.1f, Off= %4.1f", fDummySetF, fDummyOffF);
+  sprintf(sz100CharBuffer, "Set=%4.1f, Off=%4.1f", fDummySetF, fDummyOffF);
   cDisplay.Print(sz100CharBuffer);
 
 

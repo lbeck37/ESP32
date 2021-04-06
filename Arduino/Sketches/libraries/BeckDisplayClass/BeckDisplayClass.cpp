@@ -264,7 +264,15 @@ void ColorDisplay::DrawLine(PUnit X1, PUnit Y1, PUnit X2, PUnit Y2){
 
 
 void ColorDisplay::DrawRectangle(PUnit XLeft, PUnit YTop, PUnit Width, PUnit Height){
+  Serial << "ColorDisplay::DrawRectangle()" << endl;
   GLib.drawRect(XLeft, YTop, Width, Height, _LineColor);
+  return;
+}
+
+
+void ColorDisplay::DrawFilledCircle(PUnit XCenter, PUnit YCenter, PUnit Radius, Colortype FillColor){
+  Serial << "ColorDisplay::DrawFilledCircle(FillColor): Center= " << XCenter << ", " << YCenter << ", Radius= " << Radius << ", FillColor= " << FillColor << endl;
+  GLib.fillCircle(XCenter, YCenter, Radius, FillColor);
   return;
 }
 
