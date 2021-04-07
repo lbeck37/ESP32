@@ -1,5 +1,5 @@
 const char szFileName[]  = "BeckDisplayClass.cpp";
-const char szFileDate[]  = "4/6/21b";
+const char szFileDate[]  = "4/6/21c";
 
 #include <BeckDisplayClass.h>
 #include <Streaming.h>
@@ -264,15 +264,25 @@ void ColorDisplay::DrawLine(PUnit X1, PUnit Y1, PUnit X2, PUnit Y2){
 
 
 void ColorDisplay::DrawRectangle(PUnit XLeft, PUnit YTop, PUnit Width, PUnit Height){
+  Serial << "ColorDisplay::DrawRectangle(): XLeft= " << XLeft << ", YTop= " << YTop <<
+      ", Width= " << Width << ", Height= " << Height << endl;
   Serial << "ColorDisplay::DrawRectangle()" << endl;
   GLib.drawRect(XLeft, YTop, Width, Height, _LineColor);
   return;
 }
 
 
-void ColorDisplay::DrawFilledCircle(PUnit XCenter, PUnit YCenter, PUnit Radius, Colortype FillColor){
-  Serial << "ColorDisplay::DrawFilledCircle(FillColor): Center= " << XCenter << ", " << YCenter << ", Radius= " << Radius << ", FillColor= " << FillColor << endl;
-  GLib.fillCircle(XCenter, YCenter, Radius, FillColor);
+void ColorDisplay::DrawFilledRectangle(PUnit XLeft, PUnit YTop, PUnit Width, PUnit Height){
+  Serial << "ColorDisplay::DrawFilledRectangle(): XLeft= " << XLeft << ", YTop= " << YTop <<
+      ", Width= " << Width << ", Height= " << Height << endl;
+  GLib.fillRect(XLeft, YTop, Width, Height, _FillColor);
+  return;
+}
+
+
+void ColorDisplay::DrawFilledCircle(PUnit XCenter, PUnit YCenter, PUnit Radius){
+  Serial << "ColorDisplay::DrawFilledCircle(FillColor): Center= " << XCenter << ", " << YCenter << ", Radius= " << Radius  << endl;
+  GLib.fillCircle(XCenter, YCenter, Radius, _FillColor);
   return;
 }
 

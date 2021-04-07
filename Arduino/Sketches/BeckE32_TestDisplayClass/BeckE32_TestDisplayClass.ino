@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_TestDisplayClass.ino";
-const char szFileDate[]    = "4/6/21c";
+const char szFileDate[]    = "4/6/21d";
 
 #include <BeckDisplayClass.h>
 #include <Streaming.h>
@@ -11,7 +11,6 @@ void setup(){
 
 	ColorDisplay cDisplay;
 
-  //Draw rectangle, TTGO is 135 x 240
 /*
   PUnit  XLeft;
   PUnit  YTop;
@@ -78,25 +77,37 @@ void setup(){
   float   fDummySetF      = 87.0;
   float   fDummyOffF      = 87.1;
 
-  cDisplay.SetCursor(5, 95);
+  PUnit   XLeftDegF =  5;
+  PUnit   YBaseline   = 95 + 2;
+  cDisplay.SetCursor(XLeftDegF, YBaseline);
   cDisplay.SelectFont(eRobotoCondensedFace, e130point);
   sprintf(sz100CharBuffer, "%04.1f", fDummyCurrentF);
   cDisplay.Print(sz100CharBuffer);
 
+/*
   //Green circle when on.
   PUnit   XCenter   =  20;  //Was 222, 118, 15
   PUnit   YCenter   = 114;
   PUnit   Radius    =  19;
   cDisplay.DrawFilledCircle( XCenter, YCenter, Radius, TFT_GREEN);
+*/
+  //Green line at top when on.
+  PUnit   BarLeft   = 0;  // PUnit XLeft, PUnit YTop, PUnit Width, PUnit Height
+  PUnit   BarTop    = 100 + 2;
+  PUnit   BarWidth  = 240;
+  PUnit   BarHeight = 10;
+  cDisplay.SetFillColor(TFT_BLACK);
+  cDisplay.DrawFilledRectangle( BarLeft, BarTop, BarWidth, BarHeight);
 
   //Put the lower line in "Set= 87.0, Off= 87.1"
   //cDisplay.SetCursor(0, 110);
-  PUnit   XLeft= XCenter + Radius;
-  cDisplay.SetCursor(XLeft , 110);
+  PUnit   XLeft = 20 - 10;
+  PUnit   YTop  = 110 + 5 - 2;
+  cDisplay.SetCursor(XLeft , YTop);
   //cDisplay.SelectFont(eMonoFace, e12point);
   cDisplay.SetTextColor(TFT_BLACK);
   cDisplay.SelectFont(eTextFace, eText26px);
-  sprintf(sz100CharBuffer, "Set=%4.1f, Off=%4.1f", fDummySetF, fDummyOffF);
+  sprintf(sz100CharBuffer, "Set= %4.1f    Off= %4.1f", fDummySetF, fDummyOffF);
   cDisplay.Print(sz100CharBuffer);
 
 
