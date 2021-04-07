@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_TestDisplayClass.ino";
-const char szFileDate[]    = "4/6/21j";
+const char szFileDate[]    = "4/7/21a";
 
 #include <BeckDisplayClass.h>
 #include <Streaming.h>
@@ -18,21 +18,24 @@ void setup(){
   float   fDummySetF      = 87.0;
   float   fDummyOffF      = 87.1;
 
+  //Show the current temperature in very large font as in "89.4"
   PUnit   XLeftDegF =  5;
   PUnit   YBaseline = 97;
   cDisplay.SetCursor(XLeftDegF, YBaseline);
-  cDisplay.SetTextColor(TFT_RED);
+  //cDisplay.SetTextColor(TFT_RED);
+  cDisplay.SetTextColor(TFT_BLACK);
   cDisplay.SelectFont(eRobotoCondensedFace, e130point);
 
   sprintf(sz100CharBuffer, "%04.1f", fDummyCurrentF);
   cDisplay.Print(sz100CharBuffer);
 
-  //Black line under DegF when on.
+  //Black or red fat line under DegF when on.
   PUnit   BarLeft   = 0;  // PUnit XLeft, PUnit YTop, PUnit Width, PUnit Height
   PUnit   BarTop    = 102;
   PUnit   BarWidth  = 240;
   PUnit   BarHeight = 10;
-  cDisplay.SetFillColor(TFT_BLACK);
+  //cDisplay.SetFillColor(TFT_BLACK);
+  cDisplay.SetFillColor(TFT_RED);
   cDisplay.DrawFilledRectangle( BarLeft, BarTop, BarWidth, BarHeight);
 
   //Put the lower line in "Set= 87.0, Off= 87.1"

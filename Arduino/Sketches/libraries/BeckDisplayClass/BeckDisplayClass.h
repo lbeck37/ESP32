@@ -1,6 +1,6 @@
 #pragma once
 const char szFileName2[]  = "BeckDisplayClass.h";
-const char szFileDate2[]  = "4/6/21f";
+const char szFileDate2[]  = "4/6/21g";
 //Initially used for TTGO ESP32 module. 135 x 240, 1.14", 240dpi display
 
 #include <TFT_eSPI.h>
@@ -17,7 +17,7 @@ const char szFileDate2[]  = "4/6/21f";
 
 typedef TFT_eSPI      GraphicsLibrary;
 typedef int32_t       Colortype;
-typedef int32_t       PUnit;        //Pixel Unit, was CursorUnit but parameter lists were too long
+typedef int32_t       PUnit;        //Pixel Unit
 typedef uint8_t       FontSize;
 typedef float         DegreeType;
 
