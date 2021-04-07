@@ -1,16 +1,11 @@
 const char szFileName[]  = "BeckDisplayClass.cpp";
-const char szFileDate[]  = "4/6/21c";
+const char szFileDate[]  = "4/6/21e";
 
 #include <BeckDisplayClass.h>
+#include "Free_Fonts.h"
 #include <Streaming.h>
 
-//#include <Adafruit_GFX.h>
-//#include <gfxfont.h>
-#include "Free_Fonts.h"
-//#include <Fonts/FreeMono12pt7b.h>   //Included in TFT_eSPI
-
 //Scalable fonts created by Font Creator, http://oleddisplay.squix.ch/#/home
-
 #ifdef REDRESSED__REGULAR_20
   #include <Redressed_Regular_20.h>
 #endif
@@ -37,7 +32,7 @@ const char szFileDate[]  = "4/6/21c";
 
 PUnit     ScreenWidth    = 240;
 PUnit     ScreenHeight   = 135;
-uint8_t   DegreeSymbol   = '\xA7';   //Decimal 167
+//uint8_t   DegreeSymbol   = '\xA7';   //Decimal 167
 
 char  sz100CharBuffer[100];   //For building strings for display
 
@@ -124,9 +119,7 @@ void  ColorDisplay::SetLineColor(Colortype NewLineColor){
 }
 
 
-//void ColorDisplay::SelectGFXFont(FontFaceType eFontFace, FontPointType eFontPoint){
 void ColorDisplay::SelectFont(FontFaceType eFontFace, FontPointType eFontPoint){
-  //_eFontLibrary = eGFXFont;
   _eFontFace    = eFontFace;
   _eFontPoint   = eFontPoint;
 
@@ -287,19 +280,22 @@ void ColorDisplay::DrawFilledCircle(PUnit XCenter, PUnit YCenter, PUnit Radius){
 }
 
 
-/*
+//For reference, draw a grid of lines with labels under every 25 horizontal lines.
 void ColorDisplay::DrawGrid(void){
-  cDisplay.SetLineColor(TFT_BLACK);
-  PUnit StepSize    = 5;
+  Serial << "ColorDisplay::DrawGrid()" << endl;
+  SetLineColor(TFT_BLACK);
+
   //Draw vertical lines
+  PUnit StepSize    = 5;
   PUnit OffsetStop  = ScreenWidth;
   for(PUnit Offset= StepSize; Offset < OffsetStop; Offset= (Offset + StepSize)){
     PUnit X1= Offset;
     PUnit X2= Offset;
     PUnit Y1= 0;
     PUnit Y2= ScreenHeight;
-    cDisplay.DrawLine(X1, Y1, X2, Y2);
+    DrawLine(X1, Y1, X2, Y2);
   }   //for
+
   //Draw horizontal lines
   OffsetStop  = ScreenHeight;
   for(PUnit Offset= StepSize; Offset < OffsetStop; Offset= (Offset + StepSize)){
@@ -307,23 +303,21 @@ void ColorDisplay::DrawGrid(void){
     PUnit X2= ScreenWidth;
     PUnit Y1= Offset;
     PUnit Y2= Offset;
-    cDisplay.DrawLine(X1, Y1, X2, Y2);
+    DrawLine(X1, Y1, X2, Y2);
   }   //for
 
   //Put label under lines every 25 pixels (5 lines)
-  //PUnit OffsetStop  = ScreenWidth;
-  cDisplay.SelectFont(eTextFace, eText9px);
-  cDisplay.SetTextColor(TFT_RED);
+  SelectFont(eTextFace, eText9px);
+  SetTextColor(TFT_RED);
   for(PUnit Ypixel= 0; Ypixel < ScreenHeight; Ypixel= (Ypixel + 25)){
     PUnit X1= 0;
-    cDisplay.SetCursor(X1, Ypixel);
+    SetCursor(X1, Ypixel);
     sprintf(sz100CharBuffer, "%d", Ypixel);
-    cDisplay.Print(sz100CharBuffer);
+    Print(sz100CharBuffer);
   }   //for
 
   return;
 } //DrawGrid
-*/
 
 
 void ColorDisplay::Print(const char* szLineToPrint) {

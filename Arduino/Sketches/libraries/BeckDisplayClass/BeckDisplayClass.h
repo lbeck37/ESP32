@@ -1,6 +1,6 @@
 #pragma once
 const char szFileName2[]  = "BeckDisplayClass.h";
-const char szFileDate2[]  = "4/6/21d";
+const char szFileDate2[]  = "4/6/21f";
 //Initially used for TTGO ESP32 module. 135 x 240, 1.14", 240dpi display
 
 #include <TFT_eSPI.h>
@@ -98,22 +98,22 @@ public:
   Display();
   virtual ~Display();
 
-  virtual void  SetCursor           (PUnit CursorX, PUnit CursorY){}
-  virtual void  SetBackgroundColor  (Colortype NewBackgroundColor){}
-  virtual void  SetTextColor        (Colortype NewTextColor){}
-  virtual void  SetTextBGColor      (Colortype NewTextBGColor){}
-  virtual void  SetFillColor        (Colortype NewFillColor){}
-  virtual void  SetLineColor        (Colortype NewLineColor){}
-  virtual void  SelectFont          (FontFaceType eFontFace, FontPointType eFontPoint){}
-  virtual void  FillScreen          (Colortype FillColor){}
-  virtual void  DrawLine            (PUnit X1, PUnit Y1, PUnit X2, PUnit Y2){}
-  virtual void  DrawRectangle       (PUnit XLeft, PUnit YTop, PUnit Width, PUnit Height){}
-  virtual void  DrawFilledRectangle       (PUnit XLeft, PUnit YTop, PUnit Width, PUnit Height){}
-  virtual void  DrawFilledCircle    (PUnit XCenter, PUnit YCenter, PUnit Radius){}
-  //virtual void  DrawGrid            (void){}
-  virtual void  Print               (const char* szLineToPrint){}
-  virtual void  PrintLine           (const char* szLineToPrint){}
-};  //Display
+  virtual void  SetCursor             (PUnit CursorX, PUnit CursorY){}
+  virtual void  SetBackgroundColor    (Colortype NewBackgroundColor){}
+  virtual void  SetTextColor          (Colortype NewTextColor){}
+  virtual void  SetTextBGColor        (Colortype NewTextBGColor){}
+  virtual void  SetFillColor          (Colortype NewFillColor){}
+  virtual void  SetLineColor          (Colortype NewLineColor){}
+  virtual void  SelectFont            (FontFaceType eFontFace, FontPointType eFontPoint){}
+  virtual void  FillScreen            (Colortype FillColor){}
+  virtual void  DrawLine              (PUnit X1, PUnit Y1, PUnit X2, PUnit Y2){}
+  virtual void  DrawRectangle         (PUnit XLeft, PUnit YTop, PUnit Width, PUnit Height){}
+  virtual void  DrawFilledRectangle   (PUnit XLeft, PUnit YTop, PUnit Width, PUnit Height){}
+  virtual void  DrawFilledCircle      (PUnit XCenter, PUnit YCenter, PUnit Radius){}
+  virtual void  DrawGrid              (void){}
+  virtual void  Print                 (const char* szLineToPrint){}
+  virtual void  PrintLine             (const char* szLineToPrint){}
+};  //Display class
 
 
 class ColorDisplay : public Display {
@@ -123,23 +123,20 @@ public:
   ColorDisplay();
   virtual ~ColorDisplay();
 
-  void  SetCursor           (PUnit CursorX, PUnit CursorY);
-  void  FillScreen          (Colortype FillColor);
-  void  SetBackgroundColor  (Colortype NewBackgroundColor);
-  void  SetTextColor        (Colortype NewTextColor);
-  void  SetTextBGColor      (Colortype NewTextBGColor);
-  void  SetFillColor        (Colortype NewFillColor);
-  void  SetLineColor        (Colortype NewLineColor);
-  void  SelectFont          (FontFaceType eFontFace, FontPointType eFontPoint);
-  void  DrawLine            (PUnit X1, PUnit Y1, PUnit X2, PUnit Y2);
-  void  DrawRectangle       (PUnit XLeft, PUnit YTop, PUnit Width, PUnit Height);
-  void  DrawFilledRectangle (PUnit XLeft, PUnit YTop, PUnit Width, PUnit Height);
-  void  DrawFilledCircle    (PUnit XCenter, PUnit YCenter, PUnit Radius);
-  //void  DrawGrid            (void);
-  void  Print               (const char* szLineToPrint);
-  void  PrintLine           (const char* szLineToPrint);
-};
-
-//extern ColorDisplay   cDisplay;
-
+  void  SetCursor             (PUnit CursorX, PUnit CursorY);
+  void  FillScreen            (Colortype FillColor);
+  void  SetBackgroundColor    (Colortype NewBackgroundColor);
+  void  SetTextColor          (Colortype NewTextColor);
+  void  SetTextBGColor        (Colortype NewTextBGColor);
+  void  SetFillColor          (Colortype NewFillColor);
+  void  SetLineColor          (Colortype NewLineColor);
+  void  SelectFont            (FontFaceType eFontFace, FontPointType eFontPoint);
+  void  DrawLine              (PUnit X1, PUnit Y1, PUnit X2, PUnit Y2);
+  void  DrawRectangle         (PUnit XLeft, PUnit YTop, PUnit Width, PUnit Height);
+  void  DrawFilledRectangle   (PUnit XLeft, PUnit YTop, PUnit Width, PUnit Height);
+  void  DrawFilledCircle      (PUnit XCenter, PUnit YCenter, PUnit Radius);
+  void  DrawGrid              (void);
+  void  Print                 (const char* szLineToPrint);
+  void  PrintLine             (const char* szLineToPrint);
+};  //ColorDisplay class
 //Last line.
