@@ -1,5 +1,5 @@
-const char szSketchName[]  = "Beck_Biota.ino";
-const char szFileDate[]    = "3/29/21b";	//Was 10/21/20d from 2/4/20n
+const char szSketchName[]  = "BeckE32_Biota.ino";
+const char szFileDate[]    = "4/8/21b";
 
 /*
 #ifndef ESP8266
@@ -11,15 +11,15 @@ const char szFileDate[]    = "3/29/21b";	//Was 10/21/20d from 2/4/20n
 #endif
 */
 
-/*
-#define DO_ALEXA              false
-#define DO_OTA                false
-#define DO_ACCESS_POINT       false
-#define DO_WEB_SERVER         false
-#define DO_NTP                false
+
+#define DO_ALEXA                false
+#define DO_OTA                  false
+#define DO_ACCESS_POINT         false
+#define DO_WEB_SERVER           false
+#define DO_NTP                  false
 //#define DO_ASYNC_WEB_SERVER   false
-#define USE_IMU		  		  false
-*/
+#define USE_IMU		  		        false
+
 
 #include <BeckBiotaDefines.h>
 
@@ -108,7 +108,14 @@ void setup(){
 
   _bSystemOk= SetupSystem(eProjectType);  //BeckBiotaib.cpp
   if(_bSystemOk){
-    SetupWiFi();
+    //Skip WiFi until ESP32 is coming up with the TTGO display
+    if (false){
+      SetupWiFi();
+    }
+    else{
+      Serial << LOG0 << "setup(): Skipping Wifi until TTGO graphics are up" << endl;
+      _bWiFiConnected= false;
+    }
     if (_bWiFiConnected){
 #if DO_OTA
       SetupOTAWebPages();
@@ -155,8 +162,10 @@ void setup(){
 #else
       Serial << LOG0 << "NTP is not enabled" << endl;
 #endif
+/* Apr 7, 2021
     SetupDisplay(_eProjectType);
     ClearDisplay();
+*/
     SetupSwitches();
     ulLastTaskMsec= millis();
   } //if(_bSystemOk)
@@ -196,14 +205,21 @@ void loop(){
     CheckTaskTime("loop(): HandleSoftAPClient()");
   } //if(_bWiFiConnected)
 #endif  //DO_ACCESS_POINT
+
+#if DO_OTA
   if (!_bOTA_Started){
+#else
+    if (true){
+#endif
     HandleSystem();
     CheckTaskTime("loop(): HandleSystem()");
   } //if(!_bOTA_Started)
   else{
     Serial << LOG0 << "loop(): Check for update timeout" << endl;
     if (millis() > _ulUpdateTimeoutMsec) {
+#if DO_OTA
       _bOTA_Started = false;
+#endif
       Serial << LOG0 << "loop(): Set bUpdating to " << _bOTA_Started << endl;
     } //if(millis()>ulUpdateTimeoutMsec)
   } //if(!_bOTA_Started)else
@@ -241,7 +257,7 @@ void HandleSystem(){
         //ulNextThermHandlerMsec= millis() + ulThermHandlerPeriodMsec;
         HandleThermostat();   //BeckThermoLib.cpp
         //HandleHeatSwitch();
-        UpdateDisplay();
+        //UpdateDisplay();      //Apr 7, 2021
       } //if(millis()>=ulNextThermHandlerMsec)
      break;
     case ePitchMeter:

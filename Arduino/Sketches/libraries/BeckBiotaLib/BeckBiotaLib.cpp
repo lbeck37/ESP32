@@ -1,4 +1,7 @@
-// BeckBiotaLib.cpp 10/21/20a, was 2/2/20b
+const char szFileName[]  = "BeckBiotaLib.cpp";
+const char szFileDate[]    = "4/7/21b";
+
+// BeckBiotaLib.cpp 4/7/21, was 10/21/20a, was 2/2/20b
 #include <BeckBiotaLib.h>
 #include <BeckSwitchLib.h>
 
@@ -7,7 +10,7 @@ ProjectType   _eProjectType;
 bool          _bSystemOk        = true;
 
 char          _acHostname       [50];
-//char          _acAlexaName      [50];
+char          _acAlexaName      [50];
 char          _acProjectType    [50];
 char          _acRouterName     [50];
 char          _acRouterPW       [50];
