@@ -1,16 +1,5 @@
 const char szSketchName[]  = "BeckE32_Biota.ino";
-const char szFileDate[]    = "4/8/21b";
-
-/*
-#ifndef ESP8266
-  #define ESP8266
-#endif
-
-#ifndef ESP32
-  #define ESP32
-#endif
-*/
-
+const char szFileDate[]    = "4/8/21d";
 
 #define DO_ALEXA                false
 #define DO_OTA                  false
@@ -24,9 +13,10 @@ const char szFileDate[]    = "4/8/21b";
 #include <BeckBiotaDefines.h>
 
 #include <BeckBiotaLib.h>
+#include <BeckDisplayClass.h>
 #include <BeckMiniLib.h>
-//#include <BeckOTALib.h>
 #include <BeckSwitchLib.h>
+#include <BeckThermoLib.h>
 
 #if DO_OTA
   #include <BeckOTALib.h>
@@ -72,8 +62,8 @@ const char szFileDate[]    = "4/8/21b";
 #define FIREBASE_AUTH   "AIzaSyAkFumb-wjDUQ9HQjTOoHeXqTKztFSqf6o"
 
 //static        ProjectType      eProjectType           = ePitchMeter;
-//static        ProjectType      eProjectType            = eThermoDev;
-static        ProjectType      eProjectType            = eFireplace;
+static        ProjectType      eProjectType            = eThermoDev;
+//static        ProjectType      eProjectType            = eFireplace;
 //static        ProjectType      eProjectType            = eHeater;
 //static        ProjectType      eProjectType            = eGarage;
 
@@ -98,13 +88,20 @@ static        int              _wGoodCount            = 0;
 extern bool            _bOTA_Started;
 extern unsigned long   _ulUpdateTimeoutMsec;
 
-//Protos
+Colortype       BackGroundColor= TFT_WHITE;
+ColorDisplay    cDisplay;
+
+//Prototype (forward reference?)
 void HandleSystem();
 
 void setup(){
   Serial.begin(lSerialMonitorBaud);
   delay(100);
   Serial << endl << LOG0 << "setup(): Sketch: " << szSketchName << ", " << szFileDate << endl;
+
+  //cDisplay.SetProjectType(eProjectType);
+  cDisplay.SetBackgroundColor(BackGroundColor);
+  cDisplay.FillScreen();
 
   _bSystemOk= SetupSystem(eProjectType);  //BeckBiotaib.cpp
   if(_bSystemOk){
@@ -258,6 +255,12 @@ void HandleSystem(){
         HandleThermostat();   //BeckThermoLib.cpp
         //HandleHeatSwitch();
         //UpdateDisplay();      //Apr 7, 2021
+        ThermoStruct    stData;
+        stData.fCurrentDegF   = _fLastDegF;
+        stData.fSetpointDegF  = _fSetpointF;
+        stData.fMaxHeatRangeF = _fMaxHeatRangeF;
+
+        cDisplay.Update(stData);
       } //if(millis()>=ulNextThermHandlerMsec)
      break;
     case ePitchMeter:

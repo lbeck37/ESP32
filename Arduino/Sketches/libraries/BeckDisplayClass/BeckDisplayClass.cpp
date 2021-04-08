@@ -1,6 +1,7 @@
 const char szFileName[]  = "BeckDisplayClass.cpp";
-const char szFileDate[]  = "4/6/21e";
+const char szFileDate[]  = "4/8/21a";
 #include <BeckDisplayClass.h>
+//#include <BeckThermoLib.h>
 #include "Free_Fonts.h"
 #include <Streaming.h>
 //Scalable fonts created by Font Creator, http://oleddisplay.squix.ch/#/home
@@ -56,6 +57,52 @@ ColorDisplay::~ColorDisplay() {
   Serial << "~ColorDisplay(): Destructing" << endl;
 } //destructor
 
+
+/*
+void  ColorDisplay::SetProjectType(ProjectType eProjectType){
+  Serial << "ColorDisplay::SetProjectType(): eProjectType= " << eProjectType << endl;
+  _eProjectType= eProjectType;
+  return;
+}
+*/
+
+void  ColorDisplay::Update(ThermoStruct stData){
+  //Serial << "ColorDisplay::Update()" << endl;
+  FillScreen(TFT_WHITE);
+  //cDisplay.DrawGrid();
+
+  //Show the current temperature in very large font as in "89.4"
+  PUnit   XLeftDegF =  5;
+  PUnit   YBaseline = 97;
+  SetCursor(XLeftDegF, YBaseline);
+  //cDisplay.SetTextColor(TFT_RED);
+  SetTextColor(TFT_BLACK);
+  SelectFont(eRobotoCondensedFace, e130point);
+
+  sprintf(sz100CharBuffer, "%04.1f", stData.fCurrentDegF);
+  Print(sz100CharBuffer);
+
+  //Black or red fat line under DegF when on.
+  PUnit   BarLeft   = 0;  // PUnit XLeft, PUnit YTop, PUnit Width, PUnit Height
+  PUnit   BarTop    = 102;
+  PUnit   BarWidth  = 240;
+  PUnit   BarHeight = 10;
+  //cDisplay.SetFillColor(TFT_BLACK);
+  SetFillColor(TFT_RED);
+  DrawFilledRectangle( BarLeft, BarTop, BarWidth, BarHeight);
+
+  //Put the lower line in "Set= 87.0, Off= 87.1"
+  PUnit   XLeft = 10;
+  PUnit   YTop  = 113;
+  SetCursor(XLeft , YTop);
+  SetTextColor(TFT_BLACK);
+  SelectFont(eTextFace, eText26px);
+
+  sprintf(sz100CharBuffer, "Set= %4.1f    Off= %4.1f", stData.fSetpointDegF, stData.fMaxHeatRangeF);
+  Print(sz100CharBuffer);
+
+  return;
+} //Update
 
 void ColorDisplay::SetCursor(PUnit CursorX, PUnit CursorY){
   Serial << "ColorDisplay::SetCursor(): CursorX= " << CursorX << ", CursorY= " << CursorY << endl;
@@ -217,11 +264,17 @@ void ColorDisplay::SelectFont(FontFaceType eFontFace, FontPointType eFontPoint){
   return;
 } //SelectFont
 
+void ColorDisplay::FillScreen(void){
+  Serial << "ColorDisplay::FillScreen(void): Fill with _BackgroundColor" << _BackgroundColor << endl;
+  GLib.fillScreen(_BackgroundColor);
+  return;
+} //FillScreen(void)
+
 void ColorDisplay::FillScreen(Colortype FillColor){
   Serial << "ColorDisplay::FillScreen(FillColor), FillColor= " << FillColor << endl;
   GLib.fillScreen(FillColor);
   return;
-} //FillScreen
+} //FillScreen(ColorType)
 
 void ColorDisplay::DrawLine(PUnit X1, PUnit Y1, PUnit X2, PUnit Y2){
   GLib.drawLine(X1, Y1, X2, Y2, _LineColor);

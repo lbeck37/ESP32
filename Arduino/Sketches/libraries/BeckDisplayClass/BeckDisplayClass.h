@@ -3,6 +3,7 @@ const char szFileName2[]  = "BeckDisplayClass.h";
 const char szFileDate2[]  = "4/6/21g";
 //Initially used for TTGO ESP32 module. 135 x 240, 1.14", 240dpi display
 
+#include <BeckBiotaLib.h>
 #include <TFT_eSPI.h>
 
 //Remove the "//" in front of the #define for a font you use
@@ -26,6 +27,13 @@ extern PUnit          ScreenHeight;
 extern uint8_t        DegreeSymbol;
 
 extern char sz100CharBuffer[];    //For building strings for display
+
+
+struct ThermoStruct {
+  float   fCurrentDegF;
+  float   fSetpointDegF;
+  float   fMaxHeatRangeF;
+};
 
 enum ScreenOrientationType {
   eNoScreenOrientation= -1,
@@ -82,6 +90,7 @@ enum FontPointType {
 class Display {
 protected:
   GraphicsLibrary         GLib                  = GraphicsLibrary();
+  ProjectType             _eProjectType         = eThermoDev;
   ScreenOrientationType   _eScreenOrientation   = eUSBLeft;
   Colortype               _BackgroundColor      = TFT_WHITE;
   Colortype               _TextColor            = TFT_RED;
@@ -98,6 +107,8 @@ public:
   Display();
   virtual ~Display();
 
+  //virtual void  SetProjectType        (ProjectType eProjectType){}
+  virtual void  Update                (ThermoStruct stData){}
   virtual void  SetCursor             (PUnit CursorX, PUnit CursorY){}
   virtual void  SetBackgroundColor    (Colortype NewBackgroundColor){}
   virtual void  SetTextColor          (Colortype NewTextColor){}
@@ -105,6 +116,7 @@ public:
   virtual void  SetFillColor          (Colortype NewFillColor){}
   virtual void  SetLineColor          (Colortype NewLineColor){}
   virtual void  SelectFont            (FontFaceType eFontFace, FontPointType eFontPoint){}
+  virtual void  FillScreen            (void){}
   virtual void  FillScreen            (Colortype FillColor){}
   virtual void  DrawLine              (PUnit X1, PUnit Y1, PUnit X2, PUnit Y2){}
   virtual void  DrawRectangle         (PUnit XLeft, PUnit YTop, PUnit Width, PUnit Height){}
@@ -123,7 +135,10 @@ public:
   ColorDisplay();
   virtual ~ColorDisplay();
 
+  //void  SetProjectType        (ProjectType eProjectType);
+  void  Update                (ThermoStruct stData);
   void  SetCursor             (PUnit CursorX, PUnit CursorY);
+  void  FillScreen            (void);
   void  FillScreen            (Colortype FillColor);
   void  SetBackgroundColor    (Colortype NewBackgroundColor);
   void  SetTextColor          (Colortype NewTextColor);
