@@ -18,7 +18,7 @@ float           _fMaxSetpoint         = 37.04;
 float           _fThermoOffDegF       = _fSetpointF + _fMaxHeatRangeF;
 int             sThermoTimesCount     = 0;      //Number of times temperature out of range
 bool            _bThermoOn;   					//Whether thermostat is running, set in BeckBiotaLib
-bool            bHeatOn               = false;  //If switch is on to turn on Heat.
+bool            _bHeatOn              = false;  //If switch is on to turn on Heat.
 unsigned long   ulNextThermPrintMsec  = 0;
 const uint32_t  ulThermPrintPeriodMsec= 10 * lMsecPerSec; //mSec between running system handler
 
@@ -38,7 +38,7 @@ void HandleThermostat(){
 
   //Only do something if the thermostat is turned on.
   if (_bThermoOn){
-    if (bHeatOn){
+    if (_bHeatOn){
       if (fDegF >= _fThermoOffDegF){
         bStateChanged= true;
         if (++sThermoTimesCount >= sThermoTimesInRow){
@@ -49,7 +49,7 @@ void HandleThermostat(){
       else{
         sThermoTimesCount= 0;
       } //if(fDegF>=_fThermoOffDegF)else
-    } //if(bHeatOn)
+    } //if(_bHeatOn)
     else{
       if (fDegF <= _fSetpointF){
         bStateChanged= true;
@@ -61,7 +61,7 @@ void HandleThermostat(){
       else{
         sThermoTimesCount= 0;
       } //if(fDegF<_fSetpointF)else
-    } //if(bHeatOn)else
+    } //if(_bHeatOn)else
 /*
     if(bStateChanged || (millis() >= ulNextThermPrintMsec)){
       bStateChanged= false;
@@ -91,19 +91,19 @@ void HandleThermostat(){
 
 
 void HandleHeatSwitch(){
-  if (bHeatOn){
+  if (_bHeatOn){
     SetSwitch(sHeatSwitchNum, sOn);
-  } //if(bHeatOn)
+  } //if(_bHeatOn)
   else{
     asSwitchState[sHeatSwitchNum]= sOff;
     SetSwitch(sHeatSwitchNum, sOff);
-  } //if(bHeatOn)else
+  } //if(_bHeatOn)else
   return;
 } //HandleHeatSwitch
 
 
 void LogThermostatData(float fDegF){
-  String szLogString= " " + String(bHeatOn) + String(sThermoTimesCount) + " " +
+  String szLogString= " " + String(_bHeatOn) + String(sThermoTimesCount) + " " +
                 String(fDegF) + " " + String(_fSetpointF) + " " + String(_fThermoOffDegF);
   LogToSerial(szLogString);
   return;
@@ -144,14 +144,14 @@ void TurnHeatOn(bool bTurnOn){
   if (bTurnOn){
     String szLogString= "TurnHeatOn(): ON";
     LogToSerial(szLogString);
-    bHeatOn= true;
+    _bHeatOn= true;
     SetHeatSwitch(sSwitchClosed);
     sThermoTimesCount= 0;
   } //if(bTurnOn)
   else{
     String szLogString= "TurnHeatOn(): OFF";
     LogToSerial(szLogString);
-    bHeatOn= false;
+    _bHeatOn= false;
     SetHeatSwitch(sSwitchOpen);
     sThermoTimesCount= 0;
   } //if(bTurnOn)else

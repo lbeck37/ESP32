@@ -88,8 +88,6 @@ static        int              _wGoodCount            = 0;
 extern bool            _bOTA_Started;
 extern unsigned long   _ulUpdateTimeoutMsec;
 
-//Colortype       BackGroundColor= TFT_WHITE;
-//ColorDisplay    cDisplay;
 ThermoColorDisplay    cDisplay;
 
 //Prototype (forward reference?)
@@ -99,10 +97,6 @@ void setup(){
   Serial.begin(lSerialMonitorBaud);
   delay(100);
   Serial << endl << LOG0 << "setup(): Sketch: " << szSketchName << ", " << szFileDate << endl;
-
-  //cDisplay.SetProjectType(eProjectType);
-  //cDisplay.SetBackgroundColor(BackGroundColor);
-  //cDisplay.FillScreen();
 
   _bSystemOk= SetupSystem(eProjectType);  //BeckBiotaib.cpp
   if(_bSystemOk){
@@ -160,10 +154,6 @@ void setup(){
 #else
       Serial << LOG0 << "NTP is not enabled" << endl;
 #endif
-/* Apr 7, 2021
-    SetupDisplay(_eProjectType);
-    ClearDisplay();
-*/
     SetupSwitches();
     ulLastTaskMsec= millis();
   } //if(_bSystemOk)
@@ -225,6 +215,17 @@ void loop(){
 } //loop
 
 
+  void UpdateDisplay(void){
+    ThermoStruct    stData;
+    stData.fCurrentDegF     = _fLastDegF;
+    stData.fSetpointDegF    = _fSetpointF;
+    stData.fMaxHeatRangeF   = _fMaxHeatRangeF;
+    stData.bThermoOn        = _bThermoOn;
+
+    cDisplay.Update(stData);
+    return;
+  }
+
 void HandleSystem(){
 #if DO_ALEXA
   if (_bWiFiConnected){
@@ -256,12 +257,16 @@ void HandleSystem(){
         HandleThermostat();   //BeckThermoLib.cpp
         //HandleHeatSwitch();
         //UpdateDisplay();      //Apr 7, 2021
+/*
         ThermoStruct    stData;
-        stData.fCurrentDegF   = _fLastDegF;
-        stData.fSetpointDegF  = _fSetpointF;
-        stData.fMaxHeatRangeF = _fMaxHeatRangeF;
+        stData.fCurrentDegF     = _fLastDegF;
+        stData.fSetpointDegF    = _fSetpointF;
+        stData.fMaxHeatRangeF   = _fMaxHeatRangeF;
+        stData.bThermoOn        = _bThermoOn;
 
         cDisplay.Update(stData);
+*/
+        UpdateDisplay();
       } //if(millis()>=ulNextThermHandlerMsec)
      break;
     case ePitchMeter:

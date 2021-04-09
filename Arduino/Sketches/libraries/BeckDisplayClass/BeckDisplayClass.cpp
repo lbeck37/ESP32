@@ -1,5 +1,5 @@
 const char szFileName[]  = "BeckDisplayClass.cpp";
-const char szFileDate[]  = "4/8/21d";
+const char szFileDate[]  = "4/8/21f";
 #include <BeckDisplayClass.h>
 #include "Free_Fonts.h"
 #include <Streaming.h>
@@ -58,7 +58,6 @@ ColorDisplay::~ColorDisplay() {
 
 
 void ColorDisplay::SetCursor(PUnit CursorX, PUnit CursorY){
-  //Serial << "ColorDisplay::SetCursor(): CursorX= " << CursorX << ", CursorY= " << CursorY << endl;
   _CursorX= CursorX;
   _CursorY= CursorY;
   GLib.setCursor(CursorX, CursorY);
@@ -66,34 +65,29 @@ void ColorDisplay::SetCursor(PUnit CursorX, PUnit CursorY){
 }
 
 void  ColorDisplay::SetBackgroundColor(Colortype NewBackgroundColor){
-  //Serial << "ColorDisplay::SetBackgroundColor(): NewBackgroundColor= " << NewBackgroundColor << endl;
   _BackgroundColor= NewBackgroundColor;
   return;
 }
 
 void  ColorDisplay::SetTextColor(Colortype NewTextColor){
-  //Serial << "ColorDisplay::SetTextColor(): NewTextColor= " << NewTextColor << endl;
   _TextColor= NewTextColor;
   GLib.setTextColor(_TextColor);
   return;
 }
 
 void  ColorDisplay::SetTextBGColor(Colortype NewTextBGColor){
-  //Serial << "ColorDisplay::SetTextBGColor(): NewTextBGColor= " << NewTextBGColor << endl;
   _TextBGColor= NewTextBGColor;
   GLib.setTextColor(_TextColor, _TextBGColor);    //No seperate call to set the Text BG color.
   return;
 }
 
 void  ColorDisplay::SetFillColor(Colortype NewFillColor){
-  //Serial << "ColorDisplay::SetFillColor(): NewFillColor= " << NewFillColor << endl;
   _FillColor= NewFillColor;
   GLib.setTextColor(_TextColor, _TextBGColor);    //No seperate call to set the Text BG color.
   return;
 }
 
 void  ColorDisplay::SetLineColor(Colortype NewLineColor){
-  //Serial << "ColorDisplay::SetFillColor(): NewLineColor= " << NewLineColor << endl;
   _LineColor= NewLineColor;
   GLib.setTextColor(_TextColor, _TextBGColor);    //No seperate call to set the Text BG color.
   return;
@@ -104,10 +98,8 @@ void ColorDisplay::SelectFont(FontFaceType eFontFace, FontPointType eFontPoint){
   _eFontPoint   = eFontPoint;
   switch (eFontFace){
     case eMonoFace:
-      //Serial << "ColorDisplay::SelectFont(): eMonoFace selected" << endl;
       switch (eFontPoint){
         case e12point:
-          //Serial << "ColorDisplay::SelectGFXFont(): Font set to FreeMonoBold12pt7b" << endl;
           GLib.setFreeFont(&FreeMonoBold12pt7b);
           break;
         default:
@@ -117,14 +109,11 @@ void ColorDisplay::SelectFont(FontFaceType eFontFace, FontPointType eFontPoint){
       break;  //eRondoCondencedFace
 
     case eTextFace:
-      //Serial << "ColorDisplay::SelectFont(): eTextFace selected" << endl;
       switch (eFontPoint){
       case eText9px:
-        //Serial << "ColorDisplay::SelectFont(): Font set to Text #1 (9px)" << endl;
         GLib.setTextFont(1);
         break;
       case eText26px:
-        //Serial << "ColorDisplay::SelectFont(): Font set to Text #4 (26px)" << endl;
         GLib.setTextFont(4);
         break;
         default:
@@ -134,12 +123,10 @@ void ColorDisplay::SelectFont(FontFaceType eFontFace, FontPointType eFontPoint){
       break;
 
       case   eRedressedRegularFace:
-        //Serial << "ColorDisplay::SelectFont(): eRedressedRegularFace selected" << endl;
         switch (eFontPoint){
           #ifdef REDRESSED__REGULAR_20
             case e20point:
-              //Serial << "ColorDisplay::SelectFont(): Font set to Redressed_Regular_20" << endl;
-              GLib.setFreeFont(&Redressed_Regular_20);
+               GLib.setFreeFont(&Redressed_Regular_20);
               break;
           #endif
           default:
@@ -149,18 +136,15 @@ void ColorDisplay::SelectFont(FontFaceType eFontFace, FontPointType eFontPoint){
         break;  //eRedressedRegularFace
 
       case eRobotoMediumFace:
-        //Serial << "ColorDisplay::SelectFont(): eRobotoMediumFace selected" << endl;
         switch (eFontPoint){
           #ifdef ROBOTO_MEDIUM_40
             case e40point:
-              //Serial << "ColorDisplay::SelectFont(): Font set to Roboto_Medium_40" << endl;
               GLib.setFreeFont(&Roboto_Medium_40);
               break;
           #endif
           #ifdef ROBOTO_MEDIUM_100
             case e40point:
-              //Serial << "ColorDisplay::SelectFont(): Font set to Roboto_Medium_100" << endl;
-              GLib.setFreeFont(&Roboto_Medium_100);
+               GLib.setFreeFont(&Roboto_Medium_100);
               break;
           #endif
           #ifdef ROBOTO_MEDIUM_150
@@ -176,17 +160,14 @@ void ColorDisplay::SelectFont(FontFaceType eFontFace, FontPointType eFontPoint){
         break;  //eRobotoMediumFace
 
         case eRobotoCondensedFace:
-          //Serial << "ColorDisplay::SelectFont(): eRobotoCondensedFace selected" << endl;
           switch (eFontPoint){
             #ifdef ROBOTO_CONDENSED_30
               case e30point:
-                //Serial << "ColorDisplay::SelectFont(): Font set to Roboto_Condensed_30" << endl;
-                  GLib.setFreeFont(&Roboto_Condensed_30);
+                   GLib.setFreeFont(&Roboto_Condensed_30);
                 break;
             #endif
             #ifdef ROBOTO_CONDENSED_130
               case e130point:
-                //Serial << "ColorDisplay::SelectFont(): Font set to Roboto_Condensed_130" << endl;
                   GLib.setFreeFont(&Roboto_Condensed_130);
                 break;
             #endif
@@ -197,11 +178,9 @@ void ColorDisplay::SelectFont(FontFaceType eFontFace, FontPointType eFontPoint){
           break;
 
         case eRobotoCondensedBoldFace:
-          //Serial << "ColorDisplay::SelectFont(): eRobotoCondensedBoldFace selected" << endl;
           switch (eFontPoint){
             #ifdef ROBOTO_CONDENSED_BOLD_130
               case e130point:
-                //Serial << "ColorDisplay::SelectFont(): Font set to Roboto_Condensed_Bold_130" << endl;
                   GLib.setFreeFont(&Roboto_Condensed_Bold_130);
                 break;
             #endif
@@ -218,13 +197,11 @@ void ColorDisplay::SelectFont(FontFaceType eFontFace, FontPointType eFontPoint){
 } //SelectFont
 
 void ColorDisplay::FillScreen(void){
-  //Serial << "ColorDisplay::FillScreen(void): Fill with _BackgroundColor" << _BackgroundColor << endl;
   GLib.fillScreen(_BackgroundColor);
   return;
 } //FillScreen(void)
 
 void ColorDisplay::FillScreen(Colortype FillColor){
-  //Serial << "ColorDisplay::FillScreen(FillColor), FillColor= " << FillColor << endl;
   GLib.fillScreen(FillColor);
   return;
 } //FillScreen(ColorType)
@@ -235,29 +212,16 @@ void ColorDisplay::DrawLine(PUnit X1, PUnit Y1, PUnit X2, PUnit Y2){
 }
 
 void ColorDisplay::DrawRectangle(PUnit XLeft, PUnit YTop, PUnit Width, PUnit Height){
-/*
-  Serial << "ColorDisplay::DrawRectangle(): XLeft= " << XLeft << ", YTop= " << YTop <<
-      ", Width= " << Width << ", Height= " << Height << endl;
-  Serial << "ColorDisplay::DrawRectangle()" << endl;
-*/
   GLib.drawRect(XLeft, YTop, Width, Height, _LineColor);
   return;
 }
 
 void ColorDisplay::DrawFilledRectangle(PUnit XLeft, PUnit YTop, PUnit Width, PUnit Height){
-/*
-  Serial << "ColorDisplay::DrawFilledRectangle(): XLeft= " << XLeft << ", YTop= " << YTop <<
-      ", Width= " << Width << ", Height= " << Height << endl;
-*/
   GLib.fillRect(XLeft, YTop, Width, Height, _FillColor);
   return;
 }
 
 void ColorDisplay::DrawFilledCircle(PUnit XCenter, PUnit YCenter, PUnit Radius){
-/*
-  Serial << "ColorDisplay::DrawFilledCircle(FillColor): Center= " << XCenter << ", " << YCenter <<
-    ", Radius= " << Radius  << endl;
-*/
   GLib.fillCircle(XCenter, YCenter, Radius, _FillColor);
   return;
 }
@@ -301,69 +265,86 @@ void ColorDisplay::DrawGrid(void){
 } //DrawGrid
 
 void ColorDisplay::Print(const char* szLineToPrint) {
-  //Serial << "ColorDisplay::PrintLine(): szLineToPrint= " << szLineToPrint << endl;
   GLib.print(szLineToPrint);
   return;
 } //Print
 
 void ColorDisplay::PrintLine(const char* szLineToPrint) {
-  //Serial << "ColorDisplay::PrintLine(): szLineToPrint= " << szLineToPrint << endl;
   GLib.println(szLineToPrint);
   return;
 } //PrintLine
 
 ThermoColorDisplay::ThermoColorDisplay() {
-  Serial << "ThermoColorDisplay::ThermoColorDisplay(): " << szFileName << ", " << szFileDate << endl;
-  GLib.init             ();
-  GLib.setRotation      (_eScreenOrientation);
-  GLib.fillScreen       (_FillColor);
-  GLib.setTextColor     (_TextColor, _BackgroundColor);
-  GLib.setTextFont      (4);   //26 pixels
-  GLib.setCursor        (_CursorX, _CursorY);
+  Serial << "ThermoColorDisplay::ThermoColorDisplay(): Constructing" << endl;
   return;
 } //constructor
 
 
 ThermoColorDisplay::~ThermoColorDisplay() {
-  Serial << "~ThermoColorDisplay(): Destructing" << endl;
+  Serial << LOG0 << "~ThermoColorDisplay(): Destructing" << endl;
 } //destructor
 
 
-void  ThermoColorDisplay::Update(ThermoStruct stData){
-  //Serial << LOG0 << "ThermoColorDisplay::Update()" << endl;
+void ThermoColorDisplay::Update(ThermoStruct stData){
+  Serial << LOG0 << "Update(): _szLastDegF= " << _szLastDegF << ", _wDisplayCount= " << _wDisplayCount << endl;
+  //Format the string to display.
+  sprintf(sz100CharBuffer, "%04.1f", stData.fCurrentDegF);
+
+  //Potentially update the display every _wFrequency times that Update() is called
+  bool  bUpdateDisplay= false;
+  if ((_wDisplayCount++ % _wFrequency) != 0){
+    if (strcmp(sz100CharBuffer, _szLastDegF) != 0){
+      //Strings are not the same, so we will update the display
+      bUpdateDisplay= true;
+    }
+    else{
+      Serial << LOG0 << "Update(): DegF hasn't changed: " << _szLastDegF << " = " << sz100CharBuffer << endl;
+      bUpdateDisplay= false;
+    }
+  }
+  else{
+    Serial << LOG0 << "Update(): Not MOD _Frequincy, _wDisplayCount= " << _wDisplayCount << endl;
+    bUpdateDisplay= false;
+  }
+
+  if (true && !bUpdateDisplay){
+    //Don't update the display.
+    return;
+  }
+
+  //_wDisplayCount++;
+  //Remember this string to compare to.
+  strcpy(_szLastDegF, sz100CharBuffer);
+
   FillScreen(_BackgroundColor);
   //cDisplay.DrawGrid();
 
   //Show the current temperature in very large font as in "89.4"
-  //PUnit   XLeftDegF =  5;
-  //PUnit   YBaseline = 97;
   SetCursor     (DegF_XLeftSide, DegF_YBaseline);
   SetTextColor  (DegF_Color);
-  //SelectFont    (eRobotoCondensedFace, e130point);
   SelectFont    (eDegF_Font, eDegF_PointSize);
 
-  sprintf(sz100CharBuffer, "%04.1f", stData.fCurrentDegF);
-  Print(sz100CharBuffer);
+  //sprintf(sz100CharBuffer, "%04.1f", stData.fCurrentDegF);
+  //Print(sz100CharBuffer);
 
-  //Black or red fat line under DegF when on.
-/*
-  PUnit   BarLeft   = 0;  // PUnit XLeft, PUnit YTop, PUnit Width, PUnit Height
-  PUnit   BarTop    = 102;
-  PUnit   BarWidth  = 240;
-  PUnit   BarHeight = 10;
-*/
-  SetFillColor(BarColor);
+  Print(_szLastDegF);
+
+  //Fat bar under the large current temperature display, present when thermostat is on.
+  if (stData.bThermoOn){
+    SetFillColor(BarColor);
+  }
+  else{
+    SetFillColor(_BackgroundColor);
+  }
+
   DrawFilledRectangle( BarLeft, BarTop, BarWidth, BarHeight);
 
-  //Put the lower line in "Set= 87.0, Off= 87.1"
-  //PUnit   XLeft = 10;
-  //PUnit   YTop  = 113;
+  //Display setpoint and offpoint at the bottom as in "Set= 87.0, Off= 87.1"
   SetCursor(Setpoint_XLeft , Setpoint_YTop);
   SetTextColor(Setpoint_Color);
-  //SelectFont(eTextFace, eText26px);
   SelectFont(eSetpoint_TextFace, eSetpoint_TextPointSize);
 
-  sprintf(sz100CharBuffer, "Set= %4.1f    Off= %4.1f", stData.fSetpointDegF, stData.fMaxHeatRangeF);
+  sprintf(sz100CharBuffer, "Set= %4.1f    Off= %4.1f", stData.fSetpointDegF, (stData.fSetpointDegF + stData.fMaxHeatRangeF));
   Print(sz100CharBuffer);
 
   return;

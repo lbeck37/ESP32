@@ -1,6 +1,6 @@
 #pragma once
 const char szFileName2[]  = "BeckDisplayClass.h";
-const char szFileDate2[]  = "4/8/21b";
+const char szFileDate2[]  = "4/8/21c";
 //Initially used for TTGO ESP32 module. 135 x 240, 1.14", 240dpi display
 
 #include <BeckBiotaLib.h>
@@ -33,6 +33,7 @@ struct ThermoStruct {
   float   fCurrentDegF;
   float   fSetpointDegF;
   float   fMaxHeatRangeF;
+  bool    bThermoOn;
 };
 
 enum ScreenOrientationType {
@@ -102,6 +103,9 @@ protected:
   FontLibraryType         _eFontLibrary         = eGFXFont;
   FontFaceType            _eFontFace            = eMonoFace;
   FontPointType           _eFontPoint           = e12point;
+  int                     _wDisplayCount        = 0;
+  int                     _wFrequency           = 5;          //Display updates every _wFrequency times Update() is called
+  char                    _szLastDegF[10]       = "99.9";
 
 public:
   Display();
@@ -138,6 +142,7 @@ public:
   //void  SetProjectType        (ProjectType eProjectType);
   //void  Update                (ThermoStruct stData);
   virtual void  Update        (ThermoStruct stData){}
+  //virtual bool  bIsDataNew    (ThermoStruct stData){}
   void  SetCursor             (PUnit CursorX, PUnit CursorY);
   void  FillScreen            (void);
   void  FillScreen            (Colortype FillColor);
@@ -167,15 +172,14 @@ protected:
   FontPointType   eDegF_PointSize   = e130point;
 
   //Fat bar under the large current temperature display
+  //Is present when thermostat (not just the heat) is on.
   PUnit     BarLeft     =   0;
   PUnit     BarTop      = 102;
-  //PUnit     BarLeft     =   0;
-  //PUnit     BarTop      = 102;
   PUnit     BarWidth    = 240;
   PUnit     BarHeight   =  10;
   Colortype BarColor    = TFT_RED;
 
-  //Display set point and off point at the bottom
+  //Display setpoint and offpoint at the bottom as in "Set= 87.0, Off= 87.1"
   PUnit           Setpoint_XLeft            = 10;
   PUnit           Setpoint_YTop             = 113;
   Colortype       Setpoint_Color            = TFT_BLACK;
@@ -187,6 +191,7 @@ public:
   virtual ~ThermoColorDisplay();
 
   void  Update        (ThermoStruct stData);
+  //bool  bIsDataNew    (ThermoStruct stData);
 };  //ThermoColorDisplay class
 
 //Last line.

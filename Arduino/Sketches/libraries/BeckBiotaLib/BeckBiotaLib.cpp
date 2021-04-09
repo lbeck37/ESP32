@@ -31,13 +31,13 @@ bool SetupSystem(ProjectType eProjectType){
       strcpy(_acRouterPW        , "Qazqaz11");
       strcpy(_acAccessPointSSID , "BiotaSpot");
       strcpy(_acAccessPointPW   , "Qazqaz11");
-      //Same as Garage
-				_bThermoOn				= true;
-				_fSetpointF       = 35.0;
-				_fMinSetpoint     = 33.0;
-				_fMaxSetpoint     = 41.0;
-				_fMaxHeatRangeF   = 1.00;
-				_fThermoOffDegF   = _fSetpointF + _fMaxHeatRangeF;
+
+      _bThermoOn				= true;
+      _fSetpointF       = 87.0;
+      _fMinSetpoint     = 60.0;
+      _fMaxSetpoint     = 100.0;
+      _fMaxHeatRangeF   =  0.1;
+      _fThermoOffDegF   = _fSetpointF + _fMaxHeatRangeF;
       LogToSerial("SetupSystem(): _bThermoOn set to ", _bThermoOn);
       break;
     case eFireplace:
@@ -48,18 +48,20 @@ bool SetupSystem(ProjectType eProjectType){
       strcpy(_acRouterPW        , "Qazqaz11");
       strcpy(_acAccessPointSSID , "FireplaceSpot");
       strcpy(_acAccessPointPW   , "Qazqaz11");
-/*
+
       _bThermoOn		= false;
       _fSetpointF       = 67.0;
       _fMinSetpoint     = 60.0;
       _fMaxSetpoint     = 74.0;
       _fMaxHeatRangeF   = 0.10;
-*/
+
+/*
       _bThermoOn		= true;
       _fSetpointF       = 42.0;
       _fMinSetpoint     = 40.0;
       _fMaxSetpoint     = 46.0;
       _fMaxHeatRangeF   = 0.10;
+*/
 
       _fThermoOffDegF   = _fSetpointF + _fMaxHeatRangeF;
       break;
