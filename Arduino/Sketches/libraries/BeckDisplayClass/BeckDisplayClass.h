@@ -1,6 +1,6 @@
 #pragma once
 const char szFileName2[]  = "BeckDisplayClass.h";
-const char szFileDate2[]  = "4/6/21g";
+const char szFileDate2[]  = "4/8/21b";
 //Initially used for TTGO ESP32 module. 135 x 240, 1.14", 240dpi display
 
 #include <BeckBiotaLib.h>
@@ -136,7 +136,8 @@ public:
   virtual ~ColorDisplay();
 
   //void  SetProjectType        (ProjectType eProjectType);
-  void  Update                (ThermoStruct stData);
+  //void  Update                (ThermoStruct stData);
+  virtual void  Update        (ThermoStruct stData){}
   void  SetCursor             (PUnit CursorX, PUnit CursorY);
   void  FillScreen            (void);
   void  FillScreen            (Colortype FillColor);
@@ -154,4 +155,38 @@ public:
   void  Print                 (const char* szLineToPrint);
   void  PrintLine             (const char* szLineToPrint);
 };  //ColorDisplay class
+
+
+class ThermoColorDisplay : public ColorDisplay {
+protected:
+  //Show the current temperature in very large font as in "89.4"
+  PUnit           DegF_XLeftSide    =  5;
+  PUnit           DegF_YBaseline    = 97;
+  Colortype       DegF_Color        = TFT_BLACK;
+  FontFaceType    eDegF_Font        = eRobotoCondensedFace;
+  FontPointType   eDegF_PointSize   = e130point;
+
+  //Fat bar under the large current temperature display
+  PUnit     BarLeft     =   0;
+  PUnit     BarTop      = 102;
+  //PUnit     BarLeft     =   0;
+  //PUnit     BarTop      = 102;
+  PUnit     BarWidth    = 240;
+  PUnit     BarHeight   =  10;
+  Colortype BarColor    = TFT_RED;
+
+  //Display set point and off point at the bottom
+  PUnit           Setpoint_XLeft            = 10;
+  PUnit           Setpoint_YTop             = 113;
+  Colortype       Setpoint_Color            = TFT_BLACK;
+  FontFaceType    eSetpoint_TextFace        = eTextFace;
+  FontPointType   eSetpoint_TextPointSize   = eText26px;
+
+public:
+  ThermoColorDisplay();
+  virtual ~ThermoColorDisplay();
+
+  void  Update        (ThermoStruct stData);
+};  //ThermoColorDisplay class
+
 //Last line.

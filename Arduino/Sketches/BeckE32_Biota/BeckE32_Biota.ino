@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_Biota.ino";
-const char szFileDate[]    = "4/8/21d";
+const char szFileDate[]    = "4/8/21e";
 
 #define DO_ALEXA                false
 #define DO_OTA                  false
@@ -88,8 +88,9 @@ static        int              _wGoodCount            = 0;
 extern bool            _bOTA_Started;
 extern unsigned long   _ulUpdateTimeoutMsec;
 
-Colortype       BackGroundColor= TFT_WHITE;
-ColorDisplay    cDisplay;
+//Colortype       BackGroundColor= TFT_WHITE;
+//ColorDisplay    cDisplay;
+ThermoColorDisplay    cDisplay;
 
 //Prototype (forward reference?)
 void HandleSystem();
@@ -100,8 +101,8 @@ void setup(){
   Serial << endl << LOG0 << "setup(): Sketch: " << szSketchName << ", " << szFileDate << endl;
 
   //cDisplay.SetProjectType(eProjectType);
-  cDisplay.SetBackgroundColor(BackGroundColor);
-  cDisplay.FillScreen();
+  //cDisplay.SetBackgroundColor(BackGroundColor);
+  //cDisplay.FillScreen();
 
   _bSystemOk= SetupSystem(eProjectType);  //BeckBiotaib.cpp
   if(_bSystemOk){

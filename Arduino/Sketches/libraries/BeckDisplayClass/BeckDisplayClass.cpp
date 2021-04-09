@@ -1,7 +1,6 @@
 const char szFileName[]  = "BeckDisplayClass.cpp";
-const char szFileDate[]  = "4/8/21a";
+const char szFileDate[]  = "4/8/21d";
 #include <BeckDisplayClass.h>
-//#include <BeckThermoLib.h>
 #include "Free_Fonts.h"
 #include <Streaming.h>
 //Scalable fonts created by Font Creator, http://oleddisplay.squix.ch/#/home
@@ -59,23 +58,14 @@ ColorDisplay::~ColorDisplay() {
 
 
 /*
-void  ColorDisplay::SetProjectType(ProjectType eProjectType){
-  Serial << "ColorDisplay::SetProjectType(): eProjectType= " << eProjectType << endl;
-  _eProjectType= eProjectType;
-  return;
-}
-*/
-
 void  ColorDisplay::Update(ThermoStruct stData){
-  //Serial << "ColorDisplay::Update()" << endl;
-  FillScreen(TFT_WHITE);
+  FillScreen(_BackgroundColor);
   //cDisplay.DrawGrid();
 
   //Show the current temperature in very large font as in "89.4"
   PUnit   XLeftDegF =  5;
   PUnit   YBaseline = 97;
   SetCursor(XLeftDegF, YBaseline);
-  //cDisplay.SetTextColor(TFT_RED);
   SetTextColor(TFT_BLACK);
   SelectFont(eRobotoCondensedFace, e130point);
 
@@ -87,7 +77,6 @@ void  ColorDisplay::Update(ThermoStruct stData){
   PUnit   BarTop    = 102;
   PUnit   BarWidth  = 240;
   PUnit   BarHeight = 10;
-  //cDisplay.SetFillColor(TFT_BLACK);
   SetFillColor(TFT_RED);
   DrawFilledRectangle( BarLeft, BarTop, BarWidth, BarHeight);
 
@@ -103,6 +92,7 @@ void  ColorDisplay::Update(ThermoStruct stData){
 
   return;
 } //Update
+*/
 
 void ColorDisplay::SetCursor(PUnit CursorX, PUnit CursorY){
   Serial << "ColorDisplay::SetCursor(): CursorX= " << CursorX << ", CursorY= " << CursorY << endl;
@@ -352,5 +342,61 @@ void ColorDisplay::PrintLine(const char* szLineToPrint) {
   GLib.println(szLineToPrint);
   return;
 } //PrintLine
+
+ThermoColorDisplay::ThermoColorDisplay() {
+  Serial << "ThermoColorDisplay::ThermoColorDisplay(): " << szFileName << ", " << szFileDate << endl;
+  GLib.init             ();
+  GLib.setRotation      (_eScreenOrientation);
+  GLib.fillScreen       (_FillColor);
+  GLib.setTextColor     (_TextColor, _BackgroundColor);
+  GLib.setTextFont      (4);   //26 pixels
+  GLib.setCursor        (_CursorX, _CursorY);
+  return;
+} //constructor
+
+
+ThermoColorDisplay::~ThermoColorDisplay() {
+  Serial << "~ThermoColorDisplay(): Destructing" << endl;
+} //destructor
+
+
+void  ThermoColorDisplay::Update(ThermoStruct stData){
+  FillScreen(_BackgroundColor);
+  //cDisplay.DrawGrid();
+
+  //Show the current temperature in very large font as in "89.4"
+  //PUnit   XLeftDegF =  5;
+  //PUnit   YBaseline = 97;
+  SetCursor     (DegF_XLeftSide, DegF_YBaseline);
+  SetTextColor  (DegF_Color);
+  //SelectFont    (eRobotoCondensedFace, e130point);
+  SelectFont    (eDegF_Font, eDegF_PointSize);
+
+  sprintf(sz100CharBuffer, "%04.1f", stData.fCurrentDegF);
+  Print(sz100CharBuffer);
+
+  //Black or red fat line under DegF when on.
+/*
+  PUnit   BarLeft   = 0;  // PUnit XLeft, PUnit YTop, PUnit Width, PUnit Height
+  PUnit   BarTop    = 102;
+  PUnit   BarWidth  = 240;
+  PUnit   BarHeight = 10;
+*/
+  SetFillColor(BarColor);
+  DrawFilledRectangle( BarLeft, BarTop, BarWidth, BarHeight);
+
+  //Put the lower line in "Set= 87.0, Off= 87.1"
+  //PUnit   XLeft = 10;
+  //PUnit   YTop  = 113;
+  SetCursor(Setpoint_XLeft , Setpoint_YTop);
+  SetTextColor(Setpoint_Color);
+  //SelectFont(eTextFace, eText26px);
+  SelectFont(eSetpoint_TextFace, eSetpoint_TextPointSize);
+
+  sprintf(sz100CharBuffer, "Set= %4.1f    Off= %4.1f", stData.fSetpointDegF, stData.fMaxHeatRangeF);
+  Print(sz100CharBuffer);
+
+  return;
+} //Update
 //Last line.
 
