@@ -1,9 +1,10 @@
 const char szSketchName[]  = "BeckE32_Biota.ino";
-const char szFileDate[]    = "4/8/21e";
+const char szFileDate[]    = "4/9/21b";
 
 #define DO_ALEXA                false
 #define DO_OTA                  false
 #define DO_ACCESS_POINT         false
+#define DO_FIREBASE             false
 #define DO_WEB_SERVER           false
 #define DO_NTP                  false
 //#define DO_ASYNC_WEB_SERVER   false
@@ -11,80 +12,76 @@ const char szFileDate[]    = "4/8/21e";
 
 
 #include <BeckBiotaDefines.h>
-
 #include <BeckBiotaLib.h>
 #include <BeckDisplayClass.h>
 #include <BeckMiniLib.h>
 #include <BeckSwitchLib.h>
 #include <BeckThermoLib.h>
-
-#if DO_OTA
-  #include <BeckOTALib.h>
-#endif
-
-#if DO_WEB_SERVER
-  #include <BeckWebPages.h>
-  #include <BeckWebServer.h>
-#endif
-
 #include <BeckWiFiLib.h>
-//#include <FirebaseArduino.h>
 #include <Streaming.h>
 #include <Time.h>
 #include <WiFiClient.h>
 
-/*
-#include <FirebaseArduino.h>
-#include <ArduinoJson.h>
-#include <ESP8266HTTPClient.h>
-*/
-
-#if DO_ALEXA
-  #include <BeckAlexaLib.h>
-#endif
-
-#if DO_ACCESS_POINT
-  #include <BeckAccessPointLib.h>
-#endif
-
-#if DO_NTP
-  #include <BeckNTPLib.h>
-#endif
-
-/*
-#define FIREBASE_HOST   "//test-70884.firebaseio.com"
-#define FIREBASE_HOST   "https://test-70884.firebaseio.com"
-
-#define FIREBASE_HOST   "https://test-70884.firebaseio.com/"
-#define FIREBASE_AUTH   "AIzaSyD-Nm1dYBV6ehphAOQgkM5sz4oYLKF9ahg"
-*/
-#define FIREBASE_HOST   "https://thermo-2b830.firebaseio.com/"
-#define FIREBASE_AUTH   "AIzaSyAkFumb-wjDUQ9HQjTOoHeXqTKztFSqf6o"
-
+//Select type of project to build for.
 //static        ProjectType      eProjectType           = ePitchMeter;
 static        ProjectType      eProjectType            = eThermoDev;
 //static        ProjectType      eProjectType            = eFireplace;
 //static        ProjectType      eProjectType            = eHeater;
 //static        ProjectType      eProjectType            = eGarage;
 
+#if DO_ALEXA || DO_OTA || DO_ACCESS_POINT || DO_FIREBASE || DO_WEB_SERVER || DO_NTP || USE_IMU
+  //#include <FirebaseArduino.h>
+  #if DO_OTA
+    #include <BeckOTALib.h>
+  #endif
+
+  #if DO_WEB_SERVER
+    #include <BeckWebPages.h>
+    #include <BeckWebServer.h>
+  #endif
+
+  #if DO_ALEXA
+    #include <BeckAlexaLib.h>
+  #endif
+
+  #if DO_ACCESS_POINT
+    #include <BeckAccessPointLib.h>
+  #endif
+
+  #if DO_NTP
+    #include <BeckNTPLib.h>
+  #endif
+
+  #if DO_FIREBASE
+    #include <FirebaseArduino.h>
+    #include <ArduinoJson.h>
+    #include <ESP8266HTTPClient.h>
+
+   /*
+    #define FIREBASE_HOST   "//test-70884.firebaseio.com"
+    #define FIREBASE_HOST   "https://test-70884.firebaseio.com"
+
+    #define FIREBASE_HOST   "https://test-70884.firebaseio.com/"
+    #define FIREBASE_AUTH   "AIzaSyD-Nm1dYBV6ehphAOQgkM5sz4oYLKF9ahg"
+    */
+    #define FIREBASE_HOST   "https://thermo-2b830.firebaseio.com/"
+    #define FIREBASE_AUTH   "AIzaSyAkFumb-wjDUQ9HQjTOoHeXqTKztFSqf6o"
+  #endif  //DO_FIREBASE
+
+  #if USE_IMU
+    //static const  uint32_t    ulMPU9150HandlerPeriodMsec  = 200;
+    static const  uint32_t    ulMPU9150HandlerPeriodMsec  = 0;
+    static const  uint32_t    ulMPU9150DisplayPeriodMsec  = 1000;
+    static        uint32_t    ulNextMPU9150DisplayMsec    = 0;
+    static        bool        bMPU9150_On;
+  #endif
+#endif  //All defines
+
 static const  uint32_t    ulThermHandlerPeriodMsec    = 1 * lMsecPerSec; //mSec between running system handler
 static        uint32_t    ulNextThermHandlerMsec      = 0;
+static        int         _wBadCount                  = 0;
+static        int         _wGoodCount                 = 0;
 
-//static const  uint32_t    ulMPU9150HandlerPeriodMsec  = 200;
-static const  uint32_t    ulMPU9150HandlerPeriodMsec  = 0;
-static const  uint32_t    ulMPU9150DisplayPeriodMsec  = 1000;
-static        uint32_t    ulNextMPU9150DisplayMsec    = 0;
-static        bool        bMPU9150_On;
-
-static        int              _wBadCount             = 0;
-static        int              _wGoodCount            = 0;
-
-/*
-#if !DO_OTA
-  bool            _bOTA_Started         = false;
-  unsigned long   _ulUpdateTimeoutMsec  = millis();
-#endif
-*/
 extern bool            _bOTA_Started;
 extern unsigned long   _ulUpdateTimeoutMsec;
 
@@ -108,52 +105,44 @@ void setup(){
       Serial << LOG0 << "setup(): Skipping Wifi until TTGO graphics are up" << endl;
       _bWiFiConnected= false;
     }
-    if (_bWiFiConnected){
-#if DO_OTA
-      SetupOTAWebPages();
-#else
-      Serial << LOG0 << "setup(): OTA is not enabled" << endl;
-#endif
-      //SetupTermoWebPage();
 
-#if DO_WEB_SERVER
-      StartWebServer(_acHostname);
-#else
-      Serial << LOG0 << "setup(): Web Server is not enabled" << endl;
-#endif
+    #if DO_ALEXA || DO_OTA || DO_ACCESS_POINT || DO_FIREBASE || DO_WEB_SERVER || DO_NTP || USE_IMU
+      if (_bWiFiConnected){
+        #if DO_OTA
+              SetupOTAWebPages();
+        #endif
 
-#if DO_ACCESS_POINT
-      SetupAccessPt(_acAccessPointSSID, _acAccessPointPW);
-#else
-      Serial << LOG0 << "setup(): Access Point is not enabled" << endl;
-#endif  //DO_ACCESS_POINT
+        #if DO_WEB_SERVER
+              //SetupTermoWebPage();
+              StartWebServer(_acHostname);
+        #endif
 
-#if DO_ALEXA
-      SetupAlexa(_acAlexaName);
-#else
-      Serial << LOG0 << "setup(): Alexa is not enabled" << endl;
-#endif
-    } //if(_bWiFiConnected)
+        #if DO_ACCESS_POINT
+              SetupAccessPt(_acAccessPointSSID, _acAccessPointPW);
+        #endif
+        #if DO_ALEXA
+              SetupAlexa(_acAlexaName);
+        #endif
+      } //if(_bWiFiConnected)
 
-/*
-    Serial << LOG0 << "setup(): SetupSystem(): Call Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH)" << endl;
-    Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);
-*/
+      #if DO_FIREBASE
+          Serial << LOG0 << "setup(): SetupSystem(): Call Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH)" << endl;
+          Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);
+      #endif
 
-    SetupI2C();
-#if USE_IMU
-    if(eProjectType == ePitchMeter){
-      bMPU9150_On= SetupMPU9150(szSketchName, szFileDate, ulMPU9150HandlerPeriodMsec);
-    } //if(eProjectType==ePitchMeter)
-#endif
+      #if USE_IMU
+          if(eProjectType == ePitchMeter){
+            bMPU9150_On= SetupMPU9150(szSketchName, szFileDate, ulMPU9150HandlerPeriodMsec);
+          } //if(eProjectType==ePitchMeter)
+      #endif
 
-#if DO_NTP
-		if (_bWiFiConnected){
-			SetupNTP();
-		} //if(_bWiFiConnected)
-#else
-      Serial << LOG0 << "NTP is not enabled" << endl;
-#endif
+      #if DO_NTP
+          if (_bWiFiConnected){
+            SetupNTP();
+          } //if(_bWiFiConnected)
+      #endif  //DO_NTP
+    #endif  //All defines
+
     SetupSwitches();
     ulLastTaskMsec= millis();
   } //if(_bSystemOk)
@@ -171,46 +160,49 @@ void setup(){
 void loop(){
   ulLastTaskMsec= millis();
 
-#if DO_WEB_SERVER
-  if (_bWiFiConnected){
-    HandleWebServer();
-    CheckTaskTime("loop(): HandleWebServer()");
-  } //if(_bWiFiConnected)
-#endif
-
-  //TestFirefox();
-  //CheckTaskTime("loop(): TestFirefox()");
-
-#if DO_NTP
-  if (_bWiFiConnected){
-    HandleNTPUpdate();
-    CheckTaskTime("loop(): HandleNTPUpdate()");
-  } //if(_bWiFiConnected)
-#endif
-#if DO_ACCESS_POINT
-  if (_bWiFiConnected){
-    HandleSoftAPClient();       //Listen for HTTP requests from clients
-    CheckTaskTime("loop(): HandleSoftAPClient()");
-  } //if(_bWiFiConnected)
-#endif  //DO_ACCESS_POINT
+  #if DO_ACCESS_POINT || DO_FIREBASE || DO_WEB_SERVER || DO_NTP
+    #if DO_WEB_SERVER
+      if (_bWiFiConnected){
+        HandleWebServer();
+        CheckTaskTime("loop(): HandleWebServer()");
+      } //if(_bWiFiConnected)
+    #endif
+    #if DO_FIREBASE
+      //TestFirefox();
+      //CheckTaskTime("loop(): TestFirefox()");
+    #endif
+    #if DO_NTP
+      if (_bWiFiConnected){
+        HandleNTPUpdate();
+        CheckTaskTime("loop(): HandleNTPUpdate()");
+      } //if(_bWiFiConnected)
+    #endif
+    #if DO_ACCESS_POINT
+      if (_bWiFiConnected){
+        HandleSoftAPClient();       //Listen for HTTP requests from clients
+        CheckTaskTime("loop(): HandleSoftAPClient()");
+      } //if(_bWiFiConnected)
+    #endif  //DO_ACCESS_POINT
+  #endif
 
 #if DO_OTA
   if (!_bOTA_Started){
-#else
-    if (true){
-#endif
+  #else
+  if (true){
+#endif  //DO_OTA
     HandleSystem();
     CheckTaskTime("loop(): HandleSystem()");
   } //if(!_bOTA_Started)
   else{
     Serial << LOG0 << "loop(): Check for update timeout" << endl;
     if (millis() > _ulUpdateTimeoutMsec) {
-#if DO_OTA
+    #if DO_OTA
       _bOTA_Started = false;
-#endif
+    #endif
       Serial << LOG0 << "loop(): Set bUpdating to " << _bOTA_Started << endl;
     } //if(millis()>ulUpdateTimeoutMsec)
   } //if(!_bOTA_Started)else
+
   return;
 } //loop
 
@@ -224,7 +216,7 @@ void loop(){
 
     cDisplay.Update(stData);
     return;
-  }
+  } //UpdateDisplay
 
 void HandleSystem(){
 #if DO_ALEXA
@@ -291,41 +283,41 @@ void HandleSystem(){
 } //HandleSystem
 
 
-/*
-void TestFirefox(){
-  unsigned long         ulTestFirefoxPeriodMsec = 5 * 1000;
-  static unsigned long  ulNextTestFirefoxMsec   = millis() + ulTestFirefoxPeriodMsec;
+#if DO_FIREBASE
+  void TestFirefox(){
+    unsigned long         ulTestFirefoxPeriodMsec = 5 * 1000;
+    static unsigned long  ulNextTestFirefoxMsec   = millis() + ulTestFirefoxPeriodMsec;
 
-  if (millis() >= ulNextTestFirefoxMsec){
-    ulNextTestFirefoxMsec= millis() + ulTestFirefoxPeriodMsec;
+    if (millis() >= ulNextTestFirefoxMsec){
+      ulNextTestFirefoxMsec= millis() + ulTestFirefoxPeriodMsec;
 
-    // set value
-    float fValue= 42.0;
-    //Serial << "TestFirefox(): Call Firebase.setFloat(\"number\", " << fValue << ")" << endl;
-    //Firebase.setFloat("number", fValue);
-    Serial << endl << LOG0 << "TestFirefox(): Call Firebase.setFloat(\"Setpoint\", " << fValue << ")" << endl;
-    Firebase.setFloat("Setpoint", fValue);
-    // handle error
-    if (Firebase.failed()) {
+      // set value
+      float fValue= 42.0;
+      //Serial << "TestFirefox(): Call Firebase.setFloat(\"number\", " << fValue << ")" << endl;
+      //Firebase.setFloat("number", fValue);
+      Serial << endl << LOG0 << "TestFirefox(): Call Firebase.setFloat(\"Setpoint\", " << fValue << ")" << endl;
+      Firebase.setFloat("Setpoint", fValue);
+      // handle error
+      if (Firebase.failed()) {
 
-      Serial.print("setting /Setpoint failed:");
-      Serial.println(Firebase.error());
+        Serial.print("setting /Setpoint failed:");
+        Serial.println(Firebase.error());
 
-      //Serial << LOG0 << "TestFirefox(): Firebase.setFloat() failed, error= |" << Firebase.error() << "|" << endl;
-      Serial << LOG0 << "TestFirefox(): Firebase.setFloat() failed, Call Firebase.error()" << endl;
-      Firebase.error();
-      return;
-    } //if(Firebase.failed())
-    delay(1000);
+        //Serial << LOG0 << "TestFirefox(): Firebase.setFloat() failed, error= |" << Firebase.error() << "|" << endl;
+        Serial << LOG0 << "TestFirefox(): Firebase.setFloat() failed, Call Firebase.error()" << endl;
+        Firebase.error();
+        return;
+      } //if(Firebase.failed())
+      delay(1000);
 
 
-    // get value
-    Serial << endl << LOG0 << "TestFirefox(): Call Firebase.getFloat(\"/DevBoard/DegF\")" << endl;
-    float fDegF= Firebase.getFloat("/DevBoard/DegF");
-    Serial << endl << LOG0 << "TestFirefox(): /DevBoard/DegF= " << fDegF << endl;
+      // get value
+      Serial << endl << LOG0 << "TestFirefox(): Call Firebase.getFloat(\"/DevBoard/DegF\")" << endl;
+      float fDegF= Firebase.getFloat("/DevBoard/DegF");
+      Serial << endl << LOG0 << "TestFirefox(): /DevBoard/DegF= " << fDegF << endl;
 
-  } //if (millis()>=ulNextTestFirefoxMsec)
-  return;
-} //TestFirefox
-*/
+    } //if (millis()>=ulNextTestFirefoxMsec)
+    return;
+  } //TestFirefox
+#endif
 //Last line.
