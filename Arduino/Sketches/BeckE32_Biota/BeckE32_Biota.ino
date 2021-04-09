@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_Biota.ino";
-const char szFileDate[]    = "4/9/21c";
+const char szFileDate[]    = "4/9/21d";
 
 #define DO_ALEXA                false
 #define DO_OTA                  false
@@ -13,9 +13,10 @@ const char szFileDate[]    = "4/9/21c";
 
 #include <BeckBiotaDefines.h>
 #include <BeckBiotaLib.h>
-#include <BeckDisplayClass.h>
 #include <BeckMiniLib.h>
 #include <BeckSwitchLib.h>
+//#include <BeckDisplayClass.h>
+#include <BeckThermoDisplayClass.h>
 #include <BeckThermoLib.h>
 #include <BeckWiFiLib.h>
 #include <Streaming.h>
@@ -23,11 +24,11 @@ const char szFileDate[]    = "4/9/21c";
 #include <WiFiClient.h>
 
 //Select type of project to build for.
-//static        ProjectType      eProjectType           = ePitchMeter;
 //static        ProjectType      eProjectType            = eThermoDev;
 //static        ProjectType      eProjectType            = eFireplace;
 //static        ProjectType      eProjectType            = eHeater;
 //static        ProjectType      eProjectType            = eGarage;
+//static        ProjectType      eProjectType           = ePitchMeter;
 
 ProjectType      eProjectType            = eThermoDev;
 
@@ -84,10 +85,14 @@ static        uint32_t    ulNextThermHandlerMsec      = 0;
 static        int         _wBadCount                  = 0;
 static        int         _wGoodCount                 = 0;
 
+/*
 extern bool            _bOTA_Started;
 extern unsigned long   _ulUpdateTimeoutMsec;
+*/
+bool            _bOTA_Started       = false;
+unsigned long   _ulOTATimeoutMsec   = millis();
 
-ThermoColorDisplay    cDisplay;
+ThermoDisplay    cDisplay;
 
 //Prototype (forward reference?)
 void HandleSystem();
@@ -186,22 +191,17 @@ void loop(){
       } //if(_bWiFiConnected)
     #endif  //DO_ACCESS_POINT
   #endif
-  #if DO_OTA
+
     if (!_bOTA_Started){
-      #else
-    if (true){
-  #endif  //DO_OTA
-    HandleSystem();
-    CheckTaskTime("loop(): HandleSystem()");
-  } //if(!_bOTA_Started)
+      HandleSystem();
+      CheckTaskTime("loop(): HandleSystem()");
+    } //if(!_bOTA_Started)
   else{
     Serial << LOG0 << "loop(): Check for update timeout" << endl;
-    if (millis() > _ulUpdateTimeoutMsec) {
-    #if DO_OTA
+    if (millis() > _ulOTATimeoutMsec) {
       _bOTA_Started = false;
-    #endif
       Serial << LOG0 << "loop(): Set bUpdating to " << _bOTA_Started << endl;
-    } //if(millis()>ulUpdateTimeoutMsec)
+    } //if(millis()>_ulOTATimeoutMsec)
   } //if(!_bOTA_Started)else
 
   return;

@@ -162,6 +162,7 @@ public:
 };  //ColorDisplay class
 
 
+/*
 class ThermoColorDisplay : public ColorDisplay {
 protected:
   //Show the current temperature in very large font as in "89.4"
@@ -193,5 +194,6 @@ public:
   void  Update        (ThermoStruct stData);
   //bool  bIsDataNew    (ThermoStruct stData);
 };  //ThermoColorDisplay class
+*/
 
 //Last line.

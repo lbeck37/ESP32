@@ -274,6 +274,7 @@ void ColorDisplay::PrintLine(const char* szLineToPrint) {
   return;
 } //PrintLine
 
+/*
 ThermoColorDisplay::ThermoColorDisplay() {
   Serial << "ThermoColorDisplay::ThermoColorDisplay(): Constructing" << endl;
   return;
@@ -349,5 +350,6 @@ void ThermoColorDisplay::Update(ThermoStruct stData){
 
   return;
 } //Update
+*/
 //Last line.
 
