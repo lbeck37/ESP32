@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_Biota.ino";
-const char szFileDate[]    = "4/9/21b";
+const char szFileDate[]    = "4/9/21c";
 
 #define DO_ALEXA                false
 #define DO_OTA                  false
@@ -8,7 +8,7 @@ const char szFileDate[]    = "4/9/21b";
 #define DO_WEB_SERVER           false
 #define DO_NTP                  false
 //#define DO_ASYNC_WEB_SERVER   false
-#define USE_IMU		  		        false
+#define USE_IMU                 false
 
 
 #include <BeckBiotaDefines.h>
@@ -24,10 +24,12 @@ const char szFileDate[]    = "4/9/21b";
 
 //Select type of project to build for.
 //static        ProjectType      eProjectType           = ePitchMeter;
-static        ProjectType      eProjectType            = eThermoDev;
+//static        ProjectType      eProjectType            = eThermoDev;
 //static        ProjectType      eProjectType            = eFireplace;
 //static        ProjectType      eProjectType            = eHeater;
 //static        ProjectType      eProjectType            = eGarage;
+
+ProjectType      eProjectType            = eThermoDev;
 
 #if DO_ALEXA || DO_OTA || DO_ACCESS_POINT || DO_FIREBASE || DO_WEB_SERVER || DO_NTP || USE_IMU
   //#include <FirebaseArduino.h>
@@ -184,12 +186,11 @@ void loop(){
       } //if(_bWiFiConnected)
     #endif  //DO_ACCESS_POINT
   #endif
-
-#if DO_OTA
-  if (!_bOTA_Started){
-  #else
-  if (true){
-#endif  //DO_OTA
+  #if DO_OTA
+    if (!_bOTA_Started){
+      #else
+    if (true){
+  #endif  //DO_OTA
     HandleSystem();
     CheckTaskTime("loop(): HandleSystem()");
   } //if(!_bOTA_Started)
@@ -218,6 +219,7 @@ void loop(){
     return;
   } //UpdateDisplay
 
+
 void HandleSystem(){
 #if DO_ALEXA
   if (_bWiFiConnected){
@@ -239,38 +241,28 @@ void HandleSystem(){
         ulNextThermHandlerMsec= millis() + ulThermHandlerPeriodMsec;
         _wGoodCount= 0;
         _wBadCount= 0;
-#if DO_ALEXA
-        if (false && (wAlexaHandleCount < 1000)){
-          //HandleAlexa() gets called ~8,000 times every 10 sec, except when it's 1 or 2
-          LogToSerial("HandleSystem():HandleAlexa() Times called=", wAlexaHandleCount);
-        } //if (wAlexaHandleCount<1000)
-#endif
+        #if DO_ALEXA
+          if (false && (wAlexaHandleCount < 1000)){
+            //HandleAlexa() gets called ~8,000 times every 10 sec, except when it's 1 or 2
+            LogToSerial("HandleSystem():HandleAlexa() Times called=", wAlexaHandleCount);
+          } //if (wAlexaHandleCount<1000)
+        #endif
         //ulNextThermHandlerMsec= millis() + ulThermHandlerPeriodMsec;
         HandleThermostat();   //BeckThermoLib.cpp
         //HandleHeatSwitch();
-        //UpdateDisplay();      //Apr 7, 2021
-/*
-        ThermoStruct    stData;
-        stData.fCurrentDegF     = _fLastDegF;
-        stData.fSetpointDegF    = _fSetpointF;
-        stData.fMaxHeatRangeF   = _fMaxHeatRangeF;
-        stData.bThermoOn        = _bThermoOn;
-
-        cDisplay.Update(stData);
-*/
         UpdateDisplay();
       } //if(millis()>=ulNextThermHandlerMsec)
      break;
     case ePitchMeter:
-#if USE_IMU
-      if (bMPU9150_On){
-        HandleMPU9150();
-      } //if(bMPU9150_On)
-      if (millis() >= ulNextMPU9150DisplayMsec){
-        ulNextMPU9150DisplayMsec= millis() + ulMPU9150DisplayPeriodMsec;
-        UpdateDisplay();
-      } //if(millis()>=ulNextMPU9150DisplayMsec)
-#endif
+      #if USE_IMU
+        if (bMPU9150_On){
+          HandleMPU9150();
+        } //if(bMPU9150_On)
+        if (millis() >= ulNextMPU9150DisplayMsec){
+          ulNextMPU9150DisplayMsec= millis() + ulMPU9150DisplayPeriodMsec;
+          UpdateDisplay();
+        } //if(millis()>=ulNextMPU9150DisplayMsec)
+      #endif  //USE_IMU
       break;
     case eFrontLights:
       //HandleFrontLights();
@@ -319,5 +311,5 @@ void HandleSystem(){
     } //if (millis()>=ulNextTestFirefoxMsec)
     return;
   } //TestFirefox
-#endif
+#endif  //DO_FIREBASE
 //Last line.
