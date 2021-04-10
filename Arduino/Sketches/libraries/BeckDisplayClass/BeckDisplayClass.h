@@ -1,6 +1,6 @@
 #pragma once
 const char szFileName2[]  = "BeckDisplayClass.h";
-const char szFileDate2[]  = "4/9/21a";
+const char szFileDate2[]  = "4/9/21c";
 //Initially used for TTGO ESP32 module. 135 x 240, 1.14", 240dpi display
 
 #include <BeckBiotaLib.h>
@@ -103,8 +103,10 @@ protected:
   FontLibraryType         _eFontLibrary         = eGFXFont;
   FontFaceType            _eFontFace            = eMonoFace;
   FontPointType           _eFontPoint           = e12point;
+/*
   int                     _wDisplayCount        = 0;
   int                     _wFrequency           = 5;          //Display updates every _wFrequency times Update() is called
+*/
   char                    _szLastDegF[10]       = "99.9";
 
 public:
@@ -160,40 +162,4 @@ public:
   void  Print                 (const char* szLineToPrint);
   void  PrintLine             (const char* szLineToPrint);
 };  //ColorDisplay class
-
-
-/*
-class ThermoColorDisplay : public ColorDisplay {
-protected:
-  //Show the current temperature in very large font as in "89.4"
-  PUnit           DegF_XLeftSide    =  5;
-  PUnit           DegF_YBaseline    = 97;
-  Colortype       DegF_Color        = TFT_BLACK;
-  FontFaceType    eDegF_Font        = eRobotoCondensedFace;
-  FontPointType   eDegF_PointSize   = e130point;
-
-  //Fat bar under the large current temperature display
-  //Is present when thermostat (not just the heat) is on.
-  PUnit     BarLeft     =   0;
-  PUnit     BarTop      = 102;
-  PUnit     BarWidth    = 240;
-  PUnit     BarHeight   =  10;
-  Colortype BarColor    = TFT_RED;
-
-  //Display setpoint and offpoint at the bottom as in "Set= 87.0, Off= 87.1"
-  PUnit           Setpoint_XLeft            = 10;
-  PUnit           Setpoint_YTop             = 113;
-  Colortype       Setpoint_Color            = TFT_BLACK;
-  FontFaceType    eSetpoint_TextFace        = eTextFace;
-  FontPointType   eSetpoint_TextPointSize   = eText26px;
-
-public:
-  ThermoColorDisplay();
-  virtual ~ThermoColorDisplay();
-
-  void  Update        (ThermoStruct stData);
-  //bool  bIsDataNew    (ThermoStruct stData);
-};  //ThermoColorDisplay class
-*/
-
 //Last line.

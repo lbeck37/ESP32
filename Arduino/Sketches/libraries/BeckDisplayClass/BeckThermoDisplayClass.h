@@ -1,8 +1,12 @@
-// 4/9/21a, BeckThermoDisplayClass.h
+#pragma once
+// 4/9/21b, BeckThermoDisplayClass.h
 #include <BeckDisplayClass.h>
 
 class ThermoDisplay : public ColorDisplay {
 protected:
+  const  uint32_t    ulThermDisplayrPeriodMsec    = 5 * lMsecPerSec; //mSec between updating the display
+         uint32_t    ulNextThermDisplayMsec       = 0;
+
   //Show the current temperature in very large font as in "89.4"
   PUnit           DegF_XLeftSide    =  5;
   PUnit           DegF_YBaseline    = 97;
@@ -29,7 +33,6 @@ public:
   ThermoDisplay();
   virtual ~ThermoDisplay();
 
-  void  Update        (ThermoStruct stData);
-  //bool  bIsDataNew    (ThermoStruct stData);
+  void  DrawScreen        (ThermoStruct stData);
 };  //ThermoDisplay class
 //Last line.

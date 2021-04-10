@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_Biota.ino";
-const char szFileDate[]    = "4/9/21d";
+const char szFileDate[]    = "4/9/21f";
 
 #define DO_ALEXA                false
 #define DO_OTA                  false
@@ -15,7 +15,6 @@ const char szFileDate[]    = "4/9/21d";
 #include <BeckBiotaLib.h>
 #include <BeckMiniLib.h>
 #include <BeckSwitchLib.h>
-//#include <BeckDisplayClass.h>
 #include <BeckThermoDisplayClass.h>
 #include <BeckThermoLib.h>
 #include <BeckWiFiLib.h>
@@ -24,13 +23,11 @@ const char szFileDate[]    = "4/9/21d";
 #include <WiFiClient.h>
 
 //Select type of project to build for.
-//static        ProjectType      eProjectType            = eThermoDev;
-//static        ProjectType      eProjectType            = eFireplace;
-//static        ProjectType      eProjectType            = eHeater;
-//static        ProjectType      eProjectType            = eGarage;
-//static        ProjectType      eProjectType           = ePitchMeter;
-
 ProjectType      eProjectType            = eThermoDev;
+//ProjectType      eProjectType            = eFireplace;
+//ProjectType      eProjectType            = eHeater;
+//ProjectType      eProjectType            = eGarage;
+//ProjectType      eProjectType           = ePitchMeter;
 
 #if DO_ALEXA || DO_OTA || DO_ACCESS_POINT || DO_FIREBASE || DO_WEB_SERVER || DO_NTP || USE_IMU
   //#include <FirebaseArduino.h>
@@ -85,16 +82,12 @@ static        uint32_t    ulNextThermHandlerMsec      = 0;
 static        int         _wBadCount                  = 0;
 static        int         _wGoodCount                 = 0;
 
-/*
-extern bool            _bOTA_Started;
-extern unsigned long   _ulUpdateTimeoutMsec;
-*/
 bool            _bOTA_Started       = false;
 unsigned long   _ulOTATimeoutMsec   = millis();
 
 ThermoDisplay    cDisplay;
 
-//Prototype (forward reference?)
+//Prototypes for functions in this file.
 void HandleSystem();
 
 void setup(){
@@ -215,7 +208,7 @@ void loop(){
     stData.fMaxHeatRangeF   = _fMaxHeatRangeF;
     stData.bThermoOn        = _bThermoOn;
 
-    cDisplay.Update(stData);
+    cDisplay.DrawScreen(stData);
     return;
   } //UpdateDisplay
 
