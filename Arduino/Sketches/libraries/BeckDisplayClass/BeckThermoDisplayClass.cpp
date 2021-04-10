@@ -34,12 +34,12 @@ void ThermoDisplay::DrawScreen(ThermoStruct stData){
       return;
    }  //if(strcmp(sz100CharBuffer, _szLastDegF)
 
-  //Remember the current value to check for changed on next screen draw
+  //Remember the current value to check for having changed on next screen draw
   strcpy(_szLastDegF, sz100CharBuffer);
 
   //FillScreen(_BackgroundColor);
   SetFillColor(_BackgroundColor);
-  DrawFilledRectangle( 0, 0, ScreenWidth, BarTop);
+  DrawFilledRectangle( 0, 0, ScreenWidth, ThermoOnBarTop);
 
   //Show the current temperature in very large font as in "89.4"
   SetCursor     (DegF_XLeftSide, DegF_YBaseline);
@@ -48,21 +48,21 @@ void ThermoDisplay::DrawScreen(ThermoStruct stData){
 
   Print(_szLastDegF);
 
-  bool bDebug= false;
-  //Fat bar under the large current temperature display, present when thermostat is on.
-  if (bDebug || (bThermoWasOn != stData.bThermoOn)){
+  //Draw a fat bar, the ThermoOnBar, under the large current temperature display, present when thermostat is on.
+  if (bThermoOnLast != stData.bThermoOn){
     if (stData.bThermoOn){
-      SetFillColor(BarColor);
-      bThermoWasOn= true;
+      SetFillColor(ThermoOnBarColor);
+      bThermoOnLast= true;
     } //if(stData.bThermoOn)
     else{
       SetFillColor(_BackgroundColor);
-      bThermoWasOn= false;
+      bThermoOnLast= false;
     } //if(stData.bThermoOn)else
-    DrawFilledRectangle( BarLeft, BarTop, BarWidth, BarHeight);
-  } //if(bThermoWasOn!=stData.bThermoOn)
+    DrawFilledRectangle(ThermoOnBarLeft, ThermoOnBarTop, ThermoOnBarWidth, ThermoOnBarHeight);
+  } //if(bThermoOnLast!=stData.bThermoOn)
 
-  if (bDebug || bFirstTimeDrawn){
+  //Print a line with the string containing the Setpoint and Offpoint values, call it SetpointLine
+  if (bFirstTimeDrawn){
     //Only draw the Setpoint and Offpoint since they currently don't change.
     //Display setpoint and offpoint at the bottom as in "Set= 87.0, Off= 87.1"
     SetCursor     (Setpoint_XLeft , Setpoint_YTop);
@@ -73,6 +73,20 @@ void ThermoDisplay::DrawScreen(ThermoStruct stData){
     Print(sz100CharBuffer);
     bFirstTimeDrawn= false;
   } //if(bFirstTimeDrawn)
+
+  //Draw a box, the HeatOnBox, between the Setpoint and Offpoint text, present when heat is on.
+  //Draws on top of SetpointText, position it to not overwrite text
+  if (bHeatOnLast != stData.bHeatOn){
+    if (stData.bHeatOn){
+      SetFillColor(HeatOnBoxColor);
+      bHeatOnLast= true;
+    } //if(stData.bThermoOn)
+    else{
+      SetFillColor(_BackgroundColor);
+      bHeatOnLast= false;
+    } //if(stData.bThermoOn)else
+    DrawFilledRectangle( HeatOnBoxLeft, HeatOnBoxTop, HeatOnBoxWidth, HeatOnBoxHeight);
+  } //if(bHeatOnLast!=stData.bHeatOn)
 
   return;
 } //DrawScreen

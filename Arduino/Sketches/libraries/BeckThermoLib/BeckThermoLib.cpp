@@ -18,7 +18,7 @@ float           _fMaxSetpoint         = 37.04;
 float           _fThermoOffDegF       = _fSetpointF + _fMaxHeatRangeF;
 int             sThermoTimesCount     = 0;      //Number of times temperature out of range
 bool            _bThermoOn;   					//Whether thermostat is running, set in BeckBiotaLib
-bool            _bHeatOn              = false;  //If switch is on to turn on Heat.
+bool            _bHeatOn              = true;  //If switch is on to turn on Heat.
 unsigned long   ulNextThermPrintMsec  = 0;
 const uint32_t  ulThermPrintPeriodMsec= 10 * lMsecPerSec; //mSec between running system handler
 

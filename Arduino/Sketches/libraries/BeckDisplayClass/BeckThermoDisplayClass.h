@@ -7,8 +7,9 @@ protected:
   const  uint32_t    ulThermDisplayrPeriodMsec    = 5 * lMsecPerSec; //mSec between updating the display
          uint32_t    ulNextThermDisplayMsec       = 0;
 
-  bool bFirstTimeDrawn = true;
-  bool bThermoWasOn     = false;    //Used to check if thermo on bar should be changed.
+  bool bFirstTimeDrawn  = true;
+  bool bThermoOnLast    = false;    //Used to check if thermo on bar should be changed.
+  bool bHeatOnLast      = false;    //Used to check if ThermoOnBar bar should be changed.
 
   //Show the current temperature in very large font as in "89.4"
   PUnit           DegF_XLeftSide    =  5;
@@ -19,11 +20,17 @@ protected:
 
   //Fat bar under the large current temperature display
   //Is present when thermostat (not just the heat) is on.
-  PUnit     BarLeft     =   0;
-  PUnit     BarTop      = 102;
-  PUnit     BarWidth    = 240;
-  PUnit     BarHeight   =  10;
-  Colortype BarColor    = TFT_RED;
+  PUnit     ThermoOnBarLeft     =   0;
+  PUnit     ThermoOnBarTop      = 102;
+  PUnit     ThermoOnBarWidth    = 240;
+  PUnit     ThermoOnBarHeight   =  10;
+  Colortype ThermoOnBarColor    = TFT_RED;
+
+  PUnit     HeatOnBoxLeft     = 110;
+  PUnit     HeatOnBoxTop      = ThermoOnBarTop + ThermoOnBarHeight;
+  PUnit     HeatOnBoxWidth    =  20;
+  PUnit     HeatOnBoxHeight   = ScreenHeight - HeatOnBoxTop;
+  Colortype HeatOnBoxColor    = TFT_RED;
 
   //Display setpoint and offpoint at the bottom as in "Set= 87.0, Off= 87.1"
   PUnit           Setpoint_XLeft            = 10;

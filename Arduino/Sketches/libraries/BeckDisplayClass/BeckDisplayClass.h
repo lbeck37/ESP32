@@ -34,6 +34,7 @@ struct ThermoStruct {
   float   fSetpointDegF;
   float   fMaxHeatRangeF;
   bool    bThermoOn;
+  bool    bHeatOn;
 };
 
 enum ScreenOrientationType {
@@ -141,10 +142,7 @@ public:
   ColorDisplay();
   virtual ~ColorDisplay();
 
-  //void  SetProjectType        (ProjectType eProjectType);
-  //void  Update                (ThermoStruct stData);
   virtual void  Update        (ThermoStruct stData){}
-  //virtual bool  bIsDataNew    (ThermoStruct stData){}
   void  SetCursor             (PUnit CursorX, PUnit CursorY);
   void  FillScreen            (void);
   void  FillScreen            (Colortype FillColor);

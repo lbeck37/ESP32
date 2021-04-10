@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_Biota.ino";
-const char szFileDate[]    = "4/9/21f";
+const char szFileDate[]    = "4/9/21g";
 
 #define DO_ALEXA                false
 #define DO_OTA                  false
@@ -30,7 +30,6 @@ ProjectType      eProjectType            = eThermoDev;
 //ProjectType      eProjectType           = ePitchMeter;
 
 #if DO_ALEXA || DO_OTA || DO_ACCESS_POINT || DO_FIREBASE || DO_WEB_SERVER || DO_NTP || USE_IMU
-  //#include <FirebaseArduino.h>
   #if DO_OTA
     #include <BeckOTALib.h>
   #endif
@@ -183,12 +182,12 @@ void loop(){
         CheckTaskTime("loop(): HandleSoftAPClient()");
       } //if(_bWiFiConnected)
     #endif  //DO_ACCESS_POINT
-  #endif
+  #endif  //Multiple conditionals
 
-    if (!_bOTA_Started){
-      HandleSystem();
-      CheckTaskTime("loop(): HandleSystem()");
-    } //if(!_bOTA_Started)
+  if (!_bOTA_Started){
+    HandleSystem();
+    CheckTaskTime("loop(): HandleSystem()");
+  } //if(!_bOTA_Started)
   else{
     Serial << LOG0 << "loop(): Check for update timeout" << endl;
     if (millis() > _ulOTATimeoutMsec) {
@@ -207,6 +206,7 @@ void loop(){
     stData.fSetpointDegF    = _fSetpointF;
     stData.fMaxHeatRangeF   = _fMaxHeatRangeF;
     stData.bThermoOn        = _bThermoOn;
+    stData.bHeatOn          = _bThermoOn;
 
     cDisplay.DrawScreen(stData);
     return;
