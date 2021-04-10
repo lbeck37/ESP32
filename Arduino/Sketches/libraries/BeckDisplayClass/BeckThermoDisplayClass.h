@@ -7,6 +7,9 @@ protected:
   const  uint32_t    ulThermDisplayrPeriodMsec    = 5 * lMsecPerSec; //mSec between updating the display
          uint32_t    ulNextThermDisplayMsec       = 0;
 
+  bool bFirstTimeDrawn = true;
+  bool bThermoWasOn     = false;    //Used to check if thermo on bar should be changed.
+
   //Show the current temperature in very large font as in "89.4"
   PUnit           DegF_XLeftSide    =  5;
   PUnit           DegF_YBaseline    = 97;
