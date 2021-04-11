@@ -1,6 +1,6 @@
 #pragma once
 const char szFileName2[]  = "BeckDisplayClass.h";
-const char szFileDate2[]  = "4/9/21c";
+const char szFileDate2[]  = "4/10/21b";
 //Initially used for TTGO ESP32 module. 135 x 240, 1.14", 240dpi display
 
 #include <BeckBiotaLib.h>
@@ -104,10 +104,6 @@ protected:
   FontLibraryType         _eFontLibrary         = eGFXFont;
   FontFaceType            _eFontFace            = eMonoFace;
   FontPointType           _eFontPoint           = e12point;
-/*
-  int                     _wDisplayCount        = 0;
-  int                     _wFrequency           = 5;          //Display updates every _wFrequency times Update() is called
-*/
   char                    _szLastDegF[10]       = "99.9";
 
 public:

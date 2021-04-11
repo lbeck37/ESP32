@@ -1,5 +1,5 @@
 const char szFileName[]  = "BeckDisplayClass.cpp";
-const char szFileDate[]  = "4/9/21c";
+const char szFileDate[]  = "4/10/21b";
 #include <BeckDisplayClass.h>
 #include "Free_Fonts.h"
 #include <Streaming.h>
@@ -64,7 +64,6 @@ PUnit ColorDisplay::Invert_Y(PUnit Y1){
 void ColorDisplay::SetCursor(PUnit CursorX, PUnit CursorY){
   _CursorX= CursorX;
   _CursorY= CursorY;
-  //GLib.setCursor(CursorX, CursorY);
   GLib.setCursor(CursorX, Invert_Y(CursorY));
   return;
 }
@@ -82,13 +81,13 @@ void  ColorDisplay::SetTextColor(Colortype NewTextColor){
 
 void  ColorDisplay::SetTextBGColor(Colortype NewTextBGColor){
   _TextBGColor= NewTextBGColor;
-  GLib.setTextColor(_TextColor, _TextBGColor);    //No seperate call to set the Text BG color.
+  GLib.setTextColor(_TextColor, _TextBGColor);    //No separate call to set the Text BG color.
   return;
 }
 
 void  ColorDisplay::SetFillColor(Colortype NewFillColor){
   _FillColor= NewFillColor;
-  GLib.setTextColor(_TextColor, _TextBGColor);    //No seperate call to set the Text BG color.
+  GLib.setTextColor(_TextColor, _TextBGColor);    //No separate call to set the Text BG color.
   return;
 }
 
@@ -217,11 +216,8 @@ void ColorDisplay::DrawLine(PUnit X1, PUnit Y1, PUnit X2, PUnit Y2){
 }
 
 void ColorDisplay::DrawRectangle(PUnit XLeft, PUnit YBottom, PUnit Width, PUnit Height){
-  //GLib.drawRect(XLeft, YTop, Width, Height, _LineColor);
-  //GLib.drawRect(XLeft, Invert_Y(YTop), Width, Height, _LineColor);
   PUnit   X1= XLeft;
   PUnit   Y1= ScreenHeight - (YBottom + Height);
-
   GLib.drawRect(X1, Y1, Width, Height, _LineColor);
   return;
 }
@@ -232,18 +228,14 @@ void ColorDisplay::DrawFilledRectangle(PUnit XLeft, PUnit YTop, PUnit Width, PUn
   GLib.fillRect(XLeft, Invert_Y(YTop), Width, Height, _FillColor);
 */
 void ColorDisplay::DrawFilledRectangle(PUnit XLeft, PUnit YBottom, PUnit Width, PUnit Height){
-  //To handle the transpose to Yaxix up, only requires feeding Ybottom as the Y top value it espects (I hope)
-  //GLib.fillRect(XLeft, YBottom, Width, Height, _FillColor);
   PUnit   X1= XLeft;
   PUnit   Y1= ScreenHeight - (YBottom + Height);
-
   GLib.fillRect(X1, Y1, Width, Height, _FillColor);
   return;
 }
 
 void ColorDisplay::DrawFilledCircle(PUnit XCenter, PUnit YCenter, PUnit Radius){
   GLib.fillCircle(XCenter, Invert_Y(YCenter), Radius, _FillColor);
-  //GLib.fillCircle(XCenter, YCenter, Radius, _FillColor);
   return;
 }
 

@@ -1,5 +1,5 @@
 #pragma once
-// 4/10/21a, BeckThermoDisplayClass.h
+// 4/10/21b, BeckThermoDisplayClass.h
 #include <BeckDisplayClass.h>
 
 class ThermoDisplay : public ColorDisplay {
@@ -13,7 +13,6 @@ protected:
 
   //Show the current temperature in very large font as in "89.4"
   PUnit           DegF_XLeftSide    =  5;
-  //PUnit           DegF_YBaseline    = 97;
   PUnit           DegF_YBaseline    = 38;         //ScreenHeight - 97
   Colortype       DegF_Color        = TFT_BLACK;
   FontFaceType    eDegF_Font        = eRobotoCondensedFace;
@@ -22,18 +21,14 @@ protected:
   //Fat bar under the large current temperature display
   //Is present when thermostat (not just the heat) is on.
   PUnit     ThermoOnBarLeft     =  0;
-  //PUnit     ThermoOnBarTop      = 102;
-  //PUnit     ThermoOnBarTop      = 33;            //ScreenHeight - 102
   PUnit     ThermoOnBarBottom   = 23;
   PUnit     ThermoOnBarWidth    = ScreenWidth;
   PUnit     ThermoOnBarHeight   = 10;
   Colortype ThermoOnBarColor    = TFT_RED;
 
-  PUnit     HeatOnBoxCenter   = (ScreenWidth / 2) - 3;
-  //PUnit     HeatOnBoxTop      = ThermoOnBarTop + ThermoOnBarHeight;
+  PUnit     HeatOnBoxCenter   = (ScreenWidth / 2);
   PUnit     HeatOnBoxBottom   = 0;
-  PUnit     HeatOnBoxWidth    = 20 + 10;
-  //PUnit     HeatOnBoxHeight   = ScreenHeight - HeatOnBoxTop;
+  PUnit     HeatOnBoxWidth    = 24;
   PUnit     HeatOnBoxHeight   = ThermoOnBarBottom - HeatOnBoxBottom;
   Colortype HeatOnBoxColor    = TFT_RED;
 

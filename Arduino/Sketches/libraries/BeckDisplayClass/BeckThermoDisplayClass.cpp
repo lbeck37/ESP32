@@ -1,5 +1,5 @@
 const char szFileName[]  = "BeckThermoDisplayClass.cpp";
-const char szFileDate[]  = "4/10/21a";
+const char szFileDate[]  = "4/10/21b";
 
 #include <BeckThermoDisplayClass.h>
 
@@ -17,7 +17,7 @@ ThermoDisplay::~ThermoDisplay() {
 void ThermoDisplay::DrawScreen(ThermoStruct stData){
   //Serial << LOG0 << "DrawScreen(): _szLastDegF= " << _szLastDegF << ", _wDisplayCount= " << _wDisplayCount << endl;
 
-  //Screen is potentially redrawn every 5(?) seconds.
+  //Screen is currently (4/10/21) redrawn every  seconds.
   if (millis() < ulNextThermDisplayMsec){
     return;
   } //if(millis()<ulNextThermDisplayMsec)
@@ -39,8 +39,6 @@ void ThermoDisplay::DrawScreen(ThermoStruct stData){
 
   //Clear the rectangular area where the DegF is displayed
   SetFillColor(_BackgroundColor);
-  //DrawFilledRectangle( 0, 0, ScreenWidth, ThermoOnBarTop);
-  //DrawFilledRectangle( 0, 0, ScreenWidth, (ThermoOnBarBottom + ThermoOnBarHeight));
   DrawFilledRectangle( 0, (ThermoOnBarBottom + ThermoOnBarHeight), ScreenWidth, ScreenHeight);
 
   //Show the current temperature in very large font as in "89.4"
