@@ -114,7 +114,8 @@ public:
   Display();
   virtual ~Display();
 
-  //virtual void  SetProjectType        (ProjectType eProjectType){}
+  PUnit Invert_Y                      (PUnit Y1);       //Implemented at the Display Class level
+
   virtual void  Update                (ThermoStruct stData){}
   virtual void  SetCursor             (PUnit CursorX, PUnit CursorY){}
   virtual void  SetBackgroundColor    (Colortype NewBackgroundColor){}
@@ -143,6 +144,8 @@ public:
   virtual ~ColorDisplay();
 
   virtual void  Update        (ThermoStruct stData){}
+
+  PUnit Invert_Y              (PUnit Y1);
   void  SetCursor             (PUnit CursorX, PUnit CursorY);
   void  FillScreen            (void);
   void  FillScreen            (Colortype FillColor);

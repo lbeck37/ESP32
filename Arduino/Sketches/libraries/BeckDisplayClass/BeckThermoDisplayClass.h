@@ -1,5 +1,5 @@
 #pragma once
-// 4/9/21b, BeckThermoDisplayClass.h
+// 4/10/21a, BeckThermoDisplayClass.h
 #include <BeckDisplayClass.h>
 
 class ThermoDisplay : public ColorDisplay {
@@ -13,28 +13,34 @@ protected:
 
   //Show the current temperature in very large font as in "89.4"
   PUnit           DegF_XLeftSide    =  5;
-  PUnit           DegF_YBaseline    = 97;
+  //PUnit           DegF_YBaseline    = 97;
+  PUnit           DegF_YBaseline    = 38;         //ScreenHeight - 97
   Colortype       DegF_Color        = TFT_BLACK;
   FontFaceType    eDegF_Font        = eRobotoCondensedFace;
   FontPointType   eDegF_PointSize   = e130point;
 
   //Fat bar under the large current temperature display
   //Is present when thermostat (not just the heat) is on.
-  PUnit     ThermoOnBarLeft     =   0;
-  PUnit     ThermoOnBarTop      = 102;
-  PUnit     ThermoOnBarWidth    = 240;
-  PUnit     ThermoOnBarHeight   =  10;
+  PUnit     ThermoOnBarLeft     =  0;
+  //PUnit     ThermoOnBarTop      = 102;
+  //PUnit     ThermoOnBarTop      = 33;            //ScreenHeight - 102
+  PUnit     ThermoOnBarBottom   = 23;
+  PUnit     ThermoOnBarWidth    = ScreenWidth;
+  PUnit     ThermoOnBarHeight   = 10;
   Colortype ThermoOnBarColor    = TFT_RED;
 
-  PUnit     HeatOnBoxLeft     = 110;
-  PUnit     HeatOnBoxTop      = ThermoOnBarTop + ThermoOnBarHeight;
-  PUnit     HeatOnBoxWidth    =  20;
-  PUnit     HeatOnBoxHeight   = ScreenHeight - HeatOnBoxTop;
+  PUnit     HeatOnBoxCenter   = (ScreenWidth / 2) - 3;
+  //PUnit     HeatOnBoxTop      = ThermoOnBarTop + ThermoOnBarHeight;
+  PUnit     HeatOnBoxBottom   = 0;
+  PUnit     HeatOnBoxWidth    = 20 + 10;
+  //PUnit     HeatOnBoxHeight   = ScreenHeight - HeatOnBoxTop;
+  PUnit     HeatOnBoxHeight   = ThermoOnBarBottom - HeatOnBoxBottom;
   Colortype HeatOnBoxColor    = TFT_RED;
 
   //Display setpoint and offpoint at the bottom as in "Set= 87.0, Off= 87.1"
-  PUnit           Setpoint_XLeft            = 10;
-  PUnit           Setpoint_YTop             = 113;
+  PUnit           Setpoint_XLeft            =  0;
+  //PUnit           Setpoint_YTop             = 113;
+  PUnit           Setpoint_YTop             = 22;            //ScreenHeight - 102
   Colortype       Setpoint_Color            = TFT_BLACK;
   FontFaceType    eSetpoint_TextFace        = eTextFace;
   FontPointType   eSetpoint_TextPointSize   = eText26px;

@@ -57,10 +57,15 @@ ColorDisplay::~ColorDisplay() {
 } //destructor
 
 
+PUnit ColorDisplay::Invert_Y(PUnit Y1){
+  return(ScreenHeight - Y1);
+}
+
 void ColorDisplay::SetCursor(PUnit CursorX, PUnit CursorY){
   _CursorX= CursorX;
   _CursorY= CursorY;
-  GLib.setCursor(CursorX, CursorY);
+  //GLib.setCursor(CursorX, CursorY);
+  GLib.setCursor(CursorX, Invert_Y(CursorY));
   return;
 }
 
@@ -207,22 +212,38 @@ void ColorDisplay::FillScreen(Colortype FillColor){
 } //FillScreen(ColorType)
 
 void ColorDisplay::DrawLine(PUnit X1, PUnit Y1, PUnit X2, PUnit Y2){
-  GLib.drawLine(X1, Y1, X2, Y2, _LineColor);
+  GLib.drawLine(X1, Invert_Y(Y1), X2, Invert_Y(Y2), _LineColor);
   return;
 }
 
-void ColorDisplay::DrawRectangle(PUnit XLeft, PUnit YTop, PUnit Width, PUnit Height){
-  GLib.drawRect(XLeft, YTop, Width, Height, _LineColor);
+void ColorDisplay::DrawRectangle(PUnit XLeft, PUnit YBottom, PUnit Width, PUnit Height){
+  //GLib.drawRect(XLeft, YTop, Width, Height, _LineColor);
+  //GLib.drawRect(XLeft, Invert_Y(YTop), Width, Height, _LineColor);
+  PUnit   X1= XLeft;
+  PUnit   Y1= ScreenHeight - (YBottom + Height);
+
+  GLib.drawRect(X1, Y1, Width, Height, _LineColor);
   return;
 }
 
+/*
 void ColorDisplay::DrawFilledRectangle(PUnit XLeft, PUnit YTop, PUnit Width, PUnit Height){
-  GLib.fillRect(XLeft, YTop, Width, Height, _FillColor);
+  //GLib.fillRect(XLeft, YTop, Width, Height, _FillColor);
+  GLib.fillRect(XLeft, Invert_Y(YTop), Width, Height, _FillColor);
+*/
+void ColorDisplay::DrawFilledRectangle(PUnit XLeft, PUnit YBottom, PUnit Width, PUnit Height){
+  //To handle the transpose to Yaxix up, only requires feeding Ybottom as the Y top value it espects (I hope)
+  //GLib.fillRect(XLeft, YBottom, Width, Height, _FillColor);
+  PUnit   X1= XLeft;
+  PUnit   Y1= ScreenHeight - (YBottom + Height);
+
+  GLib.fillRect(X1, Y1, Width, Height, _FillColor);
   return;
 }
 
 void ColorDisplay::DrawFilledCircle(PUnit XCenter, PUnit YCenter, PUnit Radius){
-  GLib.fillCircle(XCenter, YCenter, Radius, _FillColor);
+  GLib.fillCircle(XCenter, Invert_Y(YCenter), Radius, _FillColor);
+  //GLib.fillCircle(XCenter, YCenter, Radius, _FillColor);
   return;
 }
 

@@ -1,5 +1,5 @@
 const char szFileName[]  = "BeckThermoDisplayClass.cpp";
-const char szFileDate[]  = "4/9/21b";
+const char szFileDate[]  = "4/10/21a";
 
 #include <BeckThermoDisplayClass.h>
 
@@ -37,9 +37,11 @@ void ThermoDisplay::DrawScreen(ThermoStruct stData){
   //Remember the current value to check for having changed on next screen draw
   strcpy(_szLastDegF, sz100CharBuffer);
 
-  //FillScreen(_BackgroundColor);
+  //Clear the rectangular area where the DegF is displayed
   SetFillColor(_BackgroundColor);
-  DrawFilledRectangle( 0, 0, ScreenWidth, ThermoOnBarTop);
+  //DrawFilledRectangle( 0, 0, ScreenWidth, ThermoOnBarTop);
+  //DrawFilledRectangle( 0, 0, ScreenWidth, (ThermoOnBarBottom + ThermoOnBarHeight));
+  DrawFilledRectangle( 0, (ThermoOnBarBottom + ThermoOnBarHeight), ScreenWidth, ScreenHeight);
 
   //Show the current temperature in very large font as in "89.4"
   SetCursor     (DegF_XLeftSide, DegF_YBaseline);
@@ -58,7 +60,7 @@ void ThermoDisplay::DrawScreen(ThermoStruct stData){
       SetFillColor(_BackgroundColor);
       bThermoOnLast= false;
     } //if(stData.bThermoOn)else
-    DrawFilledRectangle(ThermoOnBarLeft, ThermoOnBarTop, ThermoOnBarWidth, ThermoOnBarHeight);
+    DrawFilledRectangle(ThermoOnBarLeft, ThermoOnBarBottom, ThermoOnBarWidth, ThermoOnBarHeight);
   } //if(bThermoOnLast!=stData.bThermoOn)
 
   //Print a line with the string containing the Setpoint and Offpoint values, call it SetpointLine
@@ -69,7 +71,7 @@ void ThermoDisplay::DrawScreen(ThermoStruct stData){
     SetTextColor  (Setpoint_Color);
     SelectFont    (eSetpoint_TextFace, eSetpoint_TextPointSize);
 
-    sprintf(sz100CharBuffer, "Set= %4.1f    Off= %4.1f", stData.fSetpointDegF, (stData.fSetpointDegF + stData.fMaxHeatRangeF));
+    sprintf(sz100CharBuffer, "Set= %4.1f       Off= %4.1f", stData.fSetpointDegF, (stData.fSetpointDegF + stData.fMaxHeatRangeF));
     Print(sz100CharBuffer);
     bFirstTimeDrawn= false;
   } //if(bFirstTimeDrawn)
@@ -85,7 +87,7 @@ void ThermoDisplay::DrawScreen(ThermoStruct stData){
       SetFillColor(_BackgroundColor);
       bHeatOnLast= false;
     } //if(stData.bThermoOn)else
-    DrawFilledRectangle( HeatOnBoxLeft, HeatOnBoxTop, HeatOnBoxWidth, HeatOnBoxHeight);
+    DrawFilledRectangle( (HeatOnBoxCenter - HeatOnBoxWidth/2), HeatOnBoxBottom, HeatOnBoxWidth, HeatOnBoxHeight);
   } //if(bHeatOnLast!=stData.bHeatOn)
 
   return;
