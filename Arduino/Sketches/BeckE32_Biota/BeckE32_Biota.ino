@@ -240,7 +240,6 @@ void HandleSystem(){
             LogToSerial("HandleSystem():HandleAlexa() Times called=", wAlexaHandleCount);
           } //if (wAlexaHandleCount<1000)
         #endif
-        //ulNextThermHandlerMsec= millis() + ulThermHandlerPeriodMsec;
         HandleThermostat();   //BeckThermoLib.cpp
         //HandleHeatSwitch();
         UpdateDisplay();

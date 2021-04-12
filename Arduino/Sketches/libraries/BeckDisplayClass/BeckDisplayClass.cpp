@@ -1,5 +1,5 @@
 const char szFileName[]  = "BeckDisplayClass.cpp";
-const char szFileDate[]  = "4/10/21b";
+const char szFileDate[]  = "4/10/21d";
 #include <BeckDisplayClass.h>
 #include "Free_Fonts.h"
 #include <Streaming.h>

@@ -1,10 +1,9 @@
 #pragma once
-// 4/10/21b, BeckThermoDisplayClass.h
+// 4/10/21f, BeckThermoDisplayClass.h
 #include <BeckDisplayClass.h>
 
 class ThermoDisplay : public ColorDisplay {
 protected:
-  //uint32_t    ulUpdatePeriodSeconds     = 5;
   uint32_t    ulCurrentDegFOnTimeSeconds  = 4;
   uint32_t    ulSetpointOnTimeSeconds     = 2;
 
@@ -16,10 +15,6 @@ protected:
 
   uint32_t    ulVeryLargeExtraWaitMsec  = 1000 * lMsecPerSec;   //Time to do next display needs this.
 
-  //uint32_t    ulThermDisplayPeriodMsec    = ulUpdatePeriodSeconds     * lMsecPerSec; //mSec between updating the display
-  //uint32_t    ulSetpointOnTimeMsec        = ulSetpointOnTimeSeconds   * lMsecPerSec;
-  //uint32_t    ulNextThermDisplayMsec      = 0;
-
   bool bFirstTimeDrawn  = true;
   bool bThermoOnLast    = false;    //Used to check if thermo on bar should be changed.
   bool bHeatOnLast      = false;    //Used to check if ThermoOnBar bar should be changed.
@@ -28,8 +23,7 @@ protected:
   PUnit           DegF_XLeftSide          =  5;
   PUnit           DegF_YBaseline          = 38;         //ScreenHeight - 97
   Colortype       DegF_Color              = TFT_BLACK;
-  Colortype       ThermoSetpoint_Color    = TFT_RED;
-  //Colortype       Setpoint_Color    = TFT_ORANGE;
+  Colortype       ThermoSetpoint_Color    = TFT_RED;    //Trying to call it Setpoint_Color and it blew up TFT_eSPI.h
   FontFaceType    eDegF_Font              = eRobotoCondensedFace;
   FontPointType   eDegF_PointSize         = e130point;
 
@@ -56,7 +50,7 @@ protected:
 
   void  DisplayCurrentTemperature   (ThermoStruct stData);
   void  DisplayCurrentSetpoint      (ThermoStruct stData);
-  void  UpdateDisplay               (ThermoStruct stData);
+  void  UpdateScreen                (ThermoStruct stData);
 
 public:
   ThermoDisplay();

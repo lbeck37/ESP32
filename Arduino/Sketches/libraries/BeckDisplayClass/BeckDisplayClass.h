@@ -1,6 +1,6 @@
 #pragma once
 const char szFileName2[]  = "BeckDisplayClass.h";
-const char szFileDate2[]  = "4/10/21b";
+const char szFileDate2[]  = "4/10/21d";
 //Initially used for TTGO ESP32 module. 135 x 240, 1.14", 240dpi display
 
 #include <BeckBiotaLib.h>
