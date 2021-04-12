@@ -1,5 +1,5 @@
 const char szFileName[]  = "BeckThermoDisplayClass.cpp";
-const char szFileDate[]  = "4/10/21d";
+const char szFileDate[]  = "4/12/21a";
 
 #include <BeckThermoDisplayClass.h>
 
@@ -95,7 +95,9 @@ void ThermoDisplay::UpdateScreen(ThermoStruct stData){
   } //if(bThermoOnLast!=stData.bThermoOn)
 
   //Print a line with the string containing the Setpoint and Offpoint values, call it SetpointLine
-  if (bFirstTimeDrawn){
+  //if (bFirstTimeDrawn){
+  if (fSetpointLast != stData.fSetpointDegF){
+    fSetpointLast= stData.fSetpointDegF;
     //Only draw the Setpoint and Offpoint since they currently don't change.
     //Display setpoint and offpoint at the bottom as in "Set= 87.0, Off= 87.1"
     SetCursor     (Setpoint_XLeft , Setpoint_YTop);

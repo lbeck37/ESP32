@@ -1,5 +1,5 @@
 #pragma once
-// 4/10/21f, BeckThermoDisplayClass.h
+// 4/12/21a, BeckThermoDisplayClass.h
 #include <BeckDisplayClass.h>
 
 class ThermoDisplay : public ColorDisplay {
@@ -15,9 +15,10 @@ protected:
 
   uint32_t    ulVeryLargeExtraWaitMsec  = 1000 * lMsecPerSec;   //Time to do next display needs this.
 
-  bool bFirstTimeDrawn  = true;
-  bool bThermoOnLast    = false;    //Used to check if thermo on bar should be changed.
-  bool bHeatOnLast      = false;    //Used to check if ThermoOnBar bar should be changed.
+  bool  bFirstTimeDrawn  = true;
+  bool  bThermoOnLast    = false;    //Used to check if thermo on bar should be changed.
+  bool  bHeatOnLast      = false;    //Used to check if ThermoOnBar bar should be changed.
+  float fSetpointLast    = 0.00;    //Used to check if Setpoint text at bottom should be changed.
 
   //Current temperature or Setpoint in very large font as in "89.4"
   PUnit           DegF_XLeftSide          =  5;
@@ -48,6 +49,7 @@ protected:
   FontFaceType    eSetpoint_TextFace        = eTextFace;
   FontPointType   eSetpoint_TextPointSize   = eText26px;
 
+  //Protected methods
   void  DisplayCurrentTemperature   (ThermoStruct stData);
   void  DisplayCurrentSetpoint      (ThermoStruct stData);
   void  UpdateScreen                (ThermoStruct stData);
