@@ -104,7 +104,7 @@ protected:
   FontLibraryType         _eFontLibrary         = eGFXFont;
   FontFaceType            _eFontFace            = eMonoFace;
   FontPointType           _eFontPoint           = e12point;
-  char                    _szLastDegF[10]       = "99.9";
+  //char                    _szLastDegF[10]       = "99.9";
 
 public:
   Display();

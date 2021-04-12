@@ -4,7 +4,7 @@ const char szFileDate[]  = "4/10/21b";
 #include <BeckThermoDisplayClass.h>
 
 ThermoDisplay::ThermoDisplay() {
-  Serial << "ThermoDisplay::ThermoDisplay(): " << szFileName << ", " << szFileDate << endl;
+  Serial << LOG0 << "ThermoDisplay::ThermoDisplay(): " << szFileName << ", " << szFileDate << endl;
   return;
 } //constructor
 
@@ -14,19 +14,105 @@ ThermoDisplay::~ThermoDisplay() {
 } //destructor
 
 
-void ThermoDisplay::DrawScreen(ThermoStruct stData){
+void ThermoDisplay::DisplayCurrentTemperature(ThermoStruct stData){
+  Serial << LOG0 << "ThermoDisplay::DisplayCurrentTemperature(): Begin" << endl;
+  //Clear the rectangular area where the DegF is displayed
+  SetFillColor(_BackgroundColor);
+  DrawFilledRectangle( 0, (ThermoOnBarBottom + ThermoOnBarHeight), ScreenWidth, ScreenHeight);
+
+  SetCursor     (DegF_XLeftSide, DegF_YBaseline);
+  SetTextColor  (DegF_Color);
+  SelectFont    (eDegF_Font, eDegF_PointSize);
+
+  sprintf(sz100CharBuffer, "%04.1f", stData.fCurrentDegF);
+  Print(sz100CharBuffer);
+  return;
+}
+
+void ThermoDisplay::DisplayCurrentSetpoint(ThermoStruct stData){
+  //Serial << LOG0 << "ThermoDisplay::DisplayCurrentSetpoint(): Begin" << endl;
+  //Clear the rectangular area where the Setpoint is displayed
+  SetFillColor(_BackgroundColor);
+
+  PUnit YBottom= (ThermoOnBarBottom + ThermoOnBarHeight);
+  //DrawFilledRectangle( 0, (ThermoOnBarBottom + ThermoOnBarHeight), ScreenWidth, ScreenHeight);
+  DrawFilledRectangle( 0, YBottom, ScreenWidth, ScreenHeight);
+
+  SetCursor     (DegF_XLeftSide, DegF_YBaseline);
+  //SetTextColor  (Setpoint_Color);
+  SetTextColor  (ThermoSetpoint_Color);
+  SelectFont    (eDegF_Font, eDegF_PointSize);
+
+  sprintf(sz100CharBuffer, "%04.1f", stData.fSetpointDegF);
+  Print(sz100CharBuffer);
+  return;
+}
+
+void ThermoDisplay::UpdateDisplay(ThermoStruct stData){
+  if (millis() > ulNextCurrentDegFDisplay){
+    DisplayCurrentTemperature(stData);
+
+    //Set time for Setpoint to display, it will do same for me
+    ulNextSetpointDisplay= millis() + ulCurrentDegFOnTimeMsec;
+
+    //Set next DegF does't fire before Setpoint
+    ulNextCurrentDegFDisplay= millis() + ulVeryLargeExtraWaitMsec;
+  }
+
+  if(millis() > ulNextSetpointDisplay){
+    DisplayCurrentSetpoint(stData);
+
+    //Serial << LOG0 << "ThermoDisplay::UpdateDisplay(): Set ulNextCurrentDegFDisplay, ulSetpointOnTimeMsec= " << ulSetpointOnTimeMsec << endl;
+    //Set time for CurrentDegF to display, it will do same for me
+    ulNextCurrentDegFDisplay= millis() + ulSetpointOnTimeMsec;
+
+    //Set next Setpoint does't fire before next DegF
+    ulNextSetpointDisplay= millis() + ulVeryLargeExtraWaitMsec;
+  }
+  return;
+} //UpdateDisplay
+
+  void ThermoDisplay::DrawScreen(ThermoStruct stData){
   //Serial << LOG0 << "DrawScreen(): _szLastDegF= " << _szLastDegF << ", _wDisplayCount= " << _wDisplayCount << endl;
 
-  //Screen is currently (4/10/21) redrawn every  seconds.
+/*
+  //Screen is currently (4/10/21) redrawn every 5 seconds.
   if (millis() < ulNextThermDisplayMsec){
     return;
   } //if(millis()<ulNextThermDisplayMsec)
+*/
+  //See if it's time for DegF display to start and if not, check if it's time for Setpoint.
 
+  //DisplayCurrentTemperature(stData);
+
+/*
+  if (millis() > ulNextCurrentDegFDisplay){
+    DisplayCurrentTemperature(stData);
+
+    //Set time for Setpoint to display, it will do same for me
+    ulNextSetpointDisplay= millis() + ulCurrentDegFOnTimeMsec;
+
+    //Set next DegF does't fire before Setpoint
+    ulNextCurrentDegFDisplay= millis() + ulVeryLargeExtraWaitMsec;
+  }
+
+  if(millis() < ulNextSetpointDisplay){
+    DisplayCurrentSetpoint(stData);
+
+    //Set time for CurrentDegF to display, it will do same for me
+    ulNextCurrentDegFDisplay= millis() + ulSetpointOnTimeMsec;
+
+    //Set next Setpoint does't fire before next DegF
+    ulNextSetpointDisplay= millis() + ulVeryLargeExtraWaitMsec;
+  }
+*/
+/*
   //Set the next time to update display.
-  ulNextThermDisplayMsec= millis() + ulThermDisplayrPeriodMsec;
+  //ulNextThermDisplayMsec= millis() + ulThermDisplayPeriodMsec;
 
   //Format the string to display.
-  sprintf(sz100CharBuffer, "%04.1f", stData.fCurrentDegF);
+  //sprintf(sz100CharBuffer, "%04.1f", stData.fCurrentDegF);
+
 
   if (strcmp(sz100CharBuffer, _szLastDegF) == 0){
       //Strings are  the same, so return without updating the display.
@@ -37,16 +123,43 @@ void ThermoDisplay::DrawScreen(ThermoStruct stData){
   //Remember the current value to check for having changed on next screen draw
   strcpy(_szLastDegF, sz100CharBuffer);
 
+
+
   //Clear the rectangular area where the DegF is displayed
   SetFillColor(_BackgroundColor);
   DrawFilledRectangle( 0, (ThermoOnBarBottom + ThermoOnBarHeight), ScreenWidth, ScreenHeight);
 
+
   //Show the current temperature in very large font as in "89.4"
+
   SetCursor     (DegF_XLeftSide, DegF_YBaseline);
   SetTextColor  (DegF_Color);
   SelectFont    (eDegF_Font, eDegF_PointSize);
-
   Print(_szLastDegF);
+
+
+  //delay(ulSetpointOnTimeMsec);
+
+
+    ulNextCurrentDegFDisplay= millis() + ulSetpointOnTimeMsec;
+
+    //Set next Setpoint does't fire before next DegF
+    ulNextSetpointDisplay= millis() + ulVeryLargeExtraWaitMsec;
+*/
+
+  PUnit MsecUntilNextDegF;
+  PUnit MsecUntilNextSetpoint;
+
+  MsecUntilNextDegF       = ulNextCurrentDegFDisplay  - millis();
+  MsecUntilNextSetpoint   = ulNextSetpointDisplay     - millis();
+  Serial << endl << LOG0 << "ThermoDisplay::DrawScreen(): Before UpdateDisplay(), Msec until next firing: DegF= " << MsecUntilNextDegF << ", Set= " << MsecUntilNextSetpoint << endl;
+
+  //Display the current temperature and setpoint temperatures, cycling though selected on times
+  UpdateDisplay(stData);
+
+  MsecUntilNextDegF       = ulNextCurrentDegFDisplay  - millis();
+  MsecUntilNextSetpoint   = ulNextSetpointDisplay     - millis();
+  Serial << LOG0 << "ThermoDisplay::DrawScreen(): After UpdateDisplay(), Msec until next firing: DegF= " << MsecUntilNextDegF << ", Set= " << MsecUntilNextSetpoint << endl;
 
   //Draw a fat bar, the ThermoOnBar, under the large current temperature display, present when thermostat is on.
   if (bThermoOnLast != stData.bThermoOn){
