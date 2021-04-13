@@ -15,10 +15,11 @@ protected:
 
   uint32_t    ulVeryLargeExtraWaitMsec  = 1000 * lMsecPerSec;   //Time to do next display needs this.
 
-  bool  bFirstTimeDrawn  = true;
-  bool  bThermoOnLast    = false;    //Used to check if thermo on bar should be changed.
-  bool  bHeatOnLast      = false;    //Used to check if ThermoOnBar bar should be changed.
-  float fSetpointLast    = 0.00;    //Used to check if Setpoint text at bottom should be changed.
+  bool  bFirstTimeDrawn   = true;
+  bool  bThermoOnLast     = false;    //Used to check if thermo on bar should be changed.
+  bool  bHeatOnLast       = false;    //Used to check if ThermoOnBar bar should be changed.
+  float fSetpointLast     = 0.00;     //Used to check if Setpoint text at bottom should be changed.
+  bool  bSetPointChanged  = true;     //Used to force the Heat On box to redraw itself after Setpoint text is drawn
 
   //Current temperature or Setpoint in very large font as in "89.4"
   PUnit           DegF_XLeftSide          =  5;

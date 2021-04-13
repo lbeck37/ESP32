@@ -24,7 +24,6 @@ void ThermoHandleAlexa      (bool bState, unsigned char ucValue);
 void PitchMeterHandleAlexa  (unsigned char ucValue);
 
 void SetupAlexa(char szAlexaName[]){
-  Serial << "SetupAlexa(): szAlexaName= " << szAlexaName << endl;
   String szLogString= "SetupAlexa(): Begin";
   LogToSerial(szLogString);
   bAlexaOn= true;

@@ -1,5 +1,5 @@
 const char szFileName[]  = "BeckThermoDisplayClass.cpp";
-const char szFileDate[]  = "4/12/21b";
+const char szFileDate[]  = "4/13/21a";
 
 #include <BeckThermoDisplayClass.h>
 
@@ -93,19 +93,26 @@ void ThermoDisplay::UpdateScreen(ThermoStruct stData){
   //Print a line with the string containing the Setpoint and Offpoint values, call it SetpointLine
   if (fSetpointLast != stData.fSetpointDegF){
     fSetpointLast= stData.fSetpointDegF;
-    //Display setpoint and offpoint at the bottom as in "Set= 87.0, Off= 87.1"
+    bSetPointChanged= true;
+
+    //Clear the Setpoint area
+    SetFillColor(_BackgroundColor);
+    DrawFilledRectangle(0, 0, ScreenWidth, ThermoOnBarBottom);
+
+    //Display set-point and off-point at the bottom as in "Set= 87.0, Off= 87.1"
     SetCursor     (Setpoint_XLeft , Setpoint_YTop);
     SetTextColor  (Setpoint_Color);
     SelectFont    (eSetpoint_TextFace, eSetpoint_TextPointSize);
 
     sprintf(sz100CharBuffer, "Set= %4.1f       Off= %4.1f", stData.fSetpointDegF, (stData.fSetpointDegF + stData.fMaxHeatRangeF));
     Print(sz100CharBuffer);
-    bFirstTimeDrawn= false;
+    //bFirstTimeDrawn= false;
   } //if(fSetpointLast!=stData.fSetpointDegF)
 
   //Draw a box, the HeatOnBox, between the Setpoint and Offpoint text, present when heat is on.
   //Draws on top of SetpointText, position it to not overwrite text
-  if (bHeatOnLast != stData.bHeatOn){
+  if (bSetPointChanged || (bHeatOnLast != stData.bHeatOn)){
+    bSetPointChanged= false;
     if (stData.bHeatOn){
       SetFillColor(HeatOnBoxColor);
       bHeatOnLast= true;
