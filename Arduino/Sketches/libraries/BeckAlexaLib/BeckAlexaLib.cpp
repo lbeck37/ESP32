@@ -1,11 +1,14 @@
-// BeckAlexaLib.cpp 2/2/20a
+const char szFileName[]  = "BeckAlexaLib.cpp";
+const char szFileDate[]  = "4/12/21a";
+
 #include <BeckAlexaLib.h>
 #include <BeckBiotaLib.h>
-#include <BeckDisplayLib.h>
+//#include <BeckDisplayLib.h>
 #include <BeckLogLib.h>
 #include <BeckSwitchLib.h>
 #include <BeckThermoLib.h>
 #include <BeckAccessPointLib.h>
+#include <Streaming.h>
 
 //#include <fauxmoESP.h>        //Alexa Phillips Hue light emulation
 #include <fauxmoESP.h>
@@ -13,7 +16,7 @@
 int            wAlexaHandleCount     = 0;      //Incremented each time HandleAlexa() called
 bool           bAlexaOn              = false;  //Only projects that use Alexa set this true.
 bool           _bAlexaChanged        = false;  //Set true when display data changed
-char           _acAlexaName[50];
+//char           _acAlexaName[50];
 fauxmoESP      Alexa;                          //Alexa emulation of Philips Hue Bulb
 
 //Function protos
@@ -21,6 +24,7 @@ void ThermoHandleAlexa      (bool bState, unsigned char ucValue);
 void PitchMeterHandleAlexa  (unsigned char ucValue);
 
 void SetupAlexa(char szAlexaName[]){
+  Serial << "SetupAlexa(): szAlexaName= " << szAlexaName << endl;
   String szLogString= "SetupAlexa(): Begin";
   LogToSerial(szLogString);
   bAlexaOn= true;
@@ -112,7 +116,7 @@ void PitchMeterHandleAlexa(unsigned char ucValue){
 */
   switch (wValuePercent){
   case 11:
-    ClearZeros();
+    //ClearZeros();   //Getting Alexa to build for Fireplace
     break;
   case 20:
     SwitchProjectType(eThermoDev);

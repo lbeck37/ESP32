@@ -1,13 +1,30 @@
-//BeckAccessPointLib.cpp, 4/10/19a
+//BeckAccessPointLib.cpp, 4/12/21
 #include <BeckAccessPointLib.h>
 #include <BeckLogLib.h>
 #include <BeckMiniLib.h>
-#include <ESP8266WebServer.h>
+//#include <ESP8266WebServer.h>
+
+#ifdef ESP8266
+  #include <ESP8266WebServer.h>
+  #include <ESP8266WiFi.h>
+  //ESP8266WebServer    oWebServer(80);    //Use normal port 80
+  ESP8266WebServer    *_pSoftAPWebServer;
+#else   //ESP32
+  #include <WebServer.h>
+  #include <WiFi.h>
+  //WebServer           oWebServer(80);
+  WebServer           *_pSoftAPWebServer;
+#endif    //ESP8266
 
 const int      wWebServerPort        = 80;
 
 IPAddress             _oAccessPtIPAddress;
-ESP8266WebServer     *_pSoftAPWebServer;
+//ESP8266WebServer     *_pSoftAPWebServer;
+
+//From another file
+//ESP8266WebServer    oWebServer(80);    //Use normal port 80
+//WebServer           oWebServer(80);
+
 
 //Local function prototypes
 void      StartAccessPtWebServer  (IPAddress oIPAddress);
@@ -34,7 +51,11 @@ void HandleSoftAPClient(){
 
 void StartAccessPtWebServer(IPAddress oIPAddress){
   Serial << LOG0 << "StartAccessPtWebServer(): Begin" << endl;
+#ifdef ESP8266
   _pSoftAPWebServer= new ESP8266WebServer(oIPAddress, wWebServerPort);
+#else
+  _pSoftAPWebServer= new WebServer(oIPAddress, wWebServerPort);
+#endif
 
   _pSoftAPWebServer->on("/", HTTP_GET, handleRoot);         //Function to call when a client requests URI "/"
   _pSoftAPWebServer->on("/WiFiSubmit", HTTP_POST, HandleWiFiCredentials);  //Function to call when a POST request is made to URI "/LED"

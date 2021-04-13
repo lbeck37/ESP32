@@ -1,5 +1,5 @@
 const char szFileName[]  = "BeckThermoDisplayClass.cpp";
-const char szFileDate[]  = "4/12/21a";
+const char szFileDate[]  = "4/12/21b";
 
 #include <BeckThermoDisplayClass.h>
 
@@ -39,6 +39,7 @@ void ThermoDisplay::DisplayCurrentTemperature(ThermoStruct stData){
   return;
 } //DisplayCurrentTemperature
 
+
 void ThermoDisplay::DisplayCurrentSetpoint(ThermoStruct stData){
   //Serial << LOG0 << "ThermoDisplay::DisplayCurrentSetpoint(): Begin" << endl;
   //Clear the rectangular area where the Setpoint is displayed
@@ -73,11 +74,6 @@ void ThermoDisplay::UpdateScreen(ThermoStruct stData){
 
 
   void ThermoDisplay::DrawScreen(ThermoStruct stData){
-/* Old debug line
-  PUnit MsecUntilNextDegF       = ulNextCurrentDegFDisplay  - millis();
-  PUnit MsecUntilNextSetpoint   = ulNextSetpointDisplay     - millis();
-  Serial << endl << LOG0 << "ThermoDisplay::DrawScreen(): Before UpdateDisplay(), Msec until next firing: DegF= " << MsecUntilNextDegF << ", Set= " << MsecUntilNextSetpoint << endl;
-*/
   //Display the current temperature and setpoint temperatures, cycling though selected on times
   UpdateScreen(stData);
 
@@ -95,10 +91,8 @@ void ThermoDisplay::UpdateScreen(ThermoStruct stData){
   } //if(bThermoOnLast!=stData.bThermoOn)
 
   //Print a line with the string containing the Setpoint and Offpoint values, call it SetpointLine
-  //if (bFirstTimeDrawn){
   if (fSetpointLast != stData.fSetpointDegF){
     fSetpointLast= stData.fSetpointDegF;
-    //Only draw the Setpoint and Offpoint since they currently don't change.
     //Display setpoint and offpoint at the bottom as in "Set= 87.0, Off= 87.1"
     SetCursor     (Setpoint_XLeft , Setpoint_YTop);
     SetTextColor  (Setpoint_Color);
@@ -107,7 +101,7 @@ void ThermoDisplay::UpdateScreen(ThermoStruct stData){
     sprintf(sz100CharBuffer, "Set= %4.1f       Off= %4.1f", stData.fSetpointDegF, (stData.fSetpointDegF + stData.fMaxHeatRangeF));
     Print(sz100CharBuffer);
     bFirstTimeDrawn= false;
-  } //if(bFirstTimeDrawn)
+  } //if(fSetpointLast!=stData.fSetpointDegF)
 
   //Draw a box, the HeatOnBox, between the Setpoint and Offpoint text, present when heat is on.
   //Draws on top of SetpointText, position it to not overwrite text
@@ -122,7 +116,6 @@ void ThermoDisplay::UpdateScreen(ThermoStruct stData){
     } //if(stData.bThermoOn)else
     DrawFilledRectangle( (HeatOnBoxCenter - HeatOnBoxWidth/2), HeatOnBoxBottom, HeatOnBoxWidth, HeatOnBoxHeight);
   } //if(bHeatOnLast!=stData.bHeatOn)
-
   return;
 } //DrawScreen
 //Last line.

@@ -1,15 +1,5 @@
 const char szSketchName[]  = "BeckE32_Biota.ino";
-const char szFileDate[]    = "4/12/21a";
-
-#define DO_ALEXA                false
-#define DO_OTA                  false
-#define DO_ACCESS_POINT         false
-#define DO_FIREBASE             false
-#define DO_WEB_SERVER           false
-#define DO_NTP                  false
-//#define DO_ASYNC_WEB_SERVER   false
-#define USE_IMU                 false
-
+const char szFileDate[]    = "4/12/21c";
 
 #include <BeckBiotaDefines.h>
 #include <BeckBiotaLib.h>
@@ -97,7 +87,7 @@ void setup(){
   _bSystemOk= SetupSystem(eProjectType);  //BeckBiotaib.cpp
   if(_bSystemOk){
     //Skip WiFi until ESP32 is coming up with the TTGO display
-    if (false){
+    if (true){
       SetupWiFi();
     }
     else{
@@ -123,6 +113,9 @@ void setup(){
               SetupAlexa(_acAlexaName);
         #endif
       } //if(_bWiFiConnected)
+      else{
+        Serial << "setup(): WiFi is not connected" << endl;
+      }
 
       #if DO_FIREBASE
           Serial << LOG0 << "setup(): SetupSystem(): Call Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH)" << endl;
