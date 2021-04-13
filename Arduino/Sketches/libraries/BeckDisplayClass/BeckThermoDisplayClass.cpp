@@ -43,7 +43,7 @@ void ThermoDisplay::DisplayCurrentTemperature(ThermoStruct stData){
 void ThermoDisplay::DisplayCurrentSetpoint(ThermoStruct stData){
   //Serial << LOG0 << "ThermoDisplay::DisplayCurrentSetpoint(): Begin" << endl;
   //Clear the rectangular area where the Setpoint is displayed
-  if(millis() > ulNextSetpointDisplay){
+  if(bSetPointChanged || (millis() > ulNextSetpointDisplay)){
     SetFillColor(_BackgroundColor);
 
     PUnit YBottom= (ThermoOnBarBottom + ThermoOnBarHeight);
@@ -56,7 +56,7 @@ void ThermoDisplay::DisplayCurrentSetpoint(ThermoStruct stData){
     sprintf(sz100CharBuffer, "%04.1f", stData.fSetpointDegF);
     Print(sz100CharBuffer);
 
-    //Set time for CurrentDegF to display, it will do same for me
+    //Set next time the CurrentDegF is displayed, it will do same for me
     ulNextCurrentDegFDisplay= millis() + ulSetpointOnTimeMsec;
 
     //Set next Setpoint does't fire before next DegF
@@ -66,17 +66,14 @@ void ThermoDisplay::DisplayCurrentSetpoint(ThermoStruct stData){
 } //DisplayCurrentSetpoint
 
 
-void ThermoDisplay::UpdateScreen(ThermoStruct stData){
-  DisplayCurrentTemperature   (stData);
+void ThermoDisplay::UpdateMainScreen(ThermoStruct stData){
   DisplayCurrentSetpoint      (stData);
+  DisplayCurrentTemperature   (stData);
   return;
-} //UpdateScreen
+} //UpdateMainScreen
 
 
   void ThermoDisplay::DrawScreen(ThermoStruct stData){
-  //Display the current temperature and setpoint temperatures, cycling though selected on times
-  UpdateScreen(stData);
-
   //Draw a fat bar, the ThermoOnBar, under the large current temperature display, present when thermostat is on.
   if (bThermoOnLast != stData.bThermoOn){
     if (stData.bThermoOn){
@@ -112,7 +109,6 @@ void ThermoDisplay::UpdateScreen(ThermoStruct stData){
   //Draw a box, the HeatOnBox, between the Setpoint and Offpoint text, present when heat is on.
   //Draws on top of SetpointText, position it to not overwrite text
   if (bSetPointChanged || (bHeatOnLast != stData.bHeatOn)){
-    bSetPointChanged= false;
     if (stData.bHeatOn){
       SetFillColor(HeatOnBoxColor);
       bHeatOnLast= true;
@@ -123,6 +119,11 @@ void ThermoDisplay::UpdateScreen(ThermoStruct stData){
     } //if(stData.bThermoOn)else
     DrawFilledRectangle( (HeatOnBoxCenter - HeatOnBoxWidth/2), HeatOnBoxBottom, HeatOnBoxWidth, HeatOnBoxHeight);
   } //if(bHeatOnLast!=stData.bHeatOn)
+
+  //Display the current temperature and setpoint temperatures, cycling though selected on times
+  UpdateMainScreen(stData);
+  bSetPointChanged= false;      //All done with this, used for getting Setpoint up quickly and drawing Heat On box.
+
   return;
 } //DrawScreen
 //Last line.

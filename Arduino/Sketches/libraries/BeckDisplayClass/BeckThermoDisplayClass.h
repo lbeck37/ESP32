@@ -53,7 +53,7 @@ protected:
   //Protected methods
   void  DisplayCurrentTemperature   (ThermoStruct stData);
   void  DisplayCurrentSetpoint      (ThermoStruct stData);
-  void  UpdateScreen                (ThermoStruct stData);
+  void  UpdateMainScreen            (ThermoStruct stData);
 
 public:
   ThermoDisplay();
