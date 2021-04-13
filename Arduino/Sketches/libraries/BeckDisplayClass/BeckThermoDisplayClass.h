@@ -1,5 +1,5 @@
 #pragma once
-// 4/12/21a, BeckThermoDisplayClass.h
+// 4/13/21a, BeckThermoDisplayClass.h
 #include <BeckDisplayClass.h>
 
 class ThermoDisplay : public ColorDisplay {
@@ -53,7 +53,7 @@ protected:
   //Protected methods
   void  DisplayCurrentTemperature   (ThermoStruct stData);
   void  DisplayCurrentSetpoint      (ThermoStruct stData);
-  void  UpdateMainScreen            (ThermoStruct stData);
+  void  DisplayMainScreen           (ThermoStruct stData);
   void  DisplayThermoOnBar          (ThermoStruct stData);
   void  DisplaySetpointLine         (ThermoStruct stData);
   void  DisplayHeatOnBox            (ThermoStruct stData);
