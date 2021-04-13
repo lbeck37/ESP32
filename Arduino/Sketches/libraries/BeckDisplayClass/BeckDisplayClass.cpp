@@ -1,5 +1,5 @@
 const char szFileName[]  = "BeckDisplayClass.cpp";
-const char szFileDate[]  = "4/12/21a";
+const char szFileDate[]  = "4/13/21a";
 #include <BeckDisplayClass.h>
 #include "Free_Fonts.h"
 #include <Streaming.h>
@@ -44,10 +44,17 @@ ColorDisplay::ColorDisplay() {
   Serial << "ColorDisplay::ColorDisplay(): " << szFileName << ", " << szFileDate << endl;
   GLib.init             ();
   GLib.setRotation      (_eScreenOrientation);
-  GLib.fillScreen       (_FillColor);
   GLib.setTextColor     (_TextColor, _BackgroundColor);
   GLib.setTextFont      (4);   //26 pixels
-  GLib.setCursor        (_CursorX, _CursorY);
+  GLib.fillScreen       (_FillColor);
+
+  GLib.setCursor(0, 10);             //Upper left corner, no inverting, good with text
+  GLib.println("Setting up WiFi.");
+  GLib.println("Why so long?");
+  //GLib.println();
+  GLib.println("\nShould be- BOOM!");
+
+  GLib.setCursor(_CursorX, _CursorY);
   return;
 } //SetupDisplay
 

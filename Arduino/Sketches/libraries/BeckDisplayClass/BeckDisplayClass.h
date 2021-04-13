@@ -95,7 +95,7 @@ protected:
   ProjectType             _eProjectType         = eThermoDev;
   ScreenOrientationType   _eScreenOrientation   = eUSBLeft;
   Colortype               _BackgroundColor      = TFT_WHITE;
-  Colortype               _TextColor            = TFT_RED;
+  Colortype               _TextColor            = TFT_BLACK;
   Colortype               _TextBGColor          = TFT_WHITE;
   Colortype               _FillColor            = TFT_WHITE;
   Colortype               _LineColor            = TFT_BLACK;
