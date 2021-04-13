@@ -1,5 +1,5 @@
 const char szFileName[]  = "BeckThermoDisplayClass.cpp";
-const char szFileDate[]  = "4/13/21a";
+const char szFileDate[]  = "4/13/21b";
 
 #include <BeckThermoDisplayClass.h>
 
@@ -73,7 +73,7 @@ void ThermoDisplay::UpdateMainScreen(ThermoStruct stData){
 } //UpdateMainScreen
 
 
-  void ThermoDisplay::DrawScreen(ThermoStruct stData){
+void ThermoDisplay::DisplayThermoOnBar(ThermoStruct stData){
   //Draw a fat bar, the ThermoOnBar, under the large current temperature display, present when thermostat is on.
   if (bThermoOnLast != stData.bThermoOn){
     if (stData.bThermoOn){
@@ -86,7 +86,11 @@ void ThermoDisplay::UpdateMainScreen(ThermoStruct stData){
     } //if(stData.bThermoOn)else
     DrawFilledRectangle(ThermoOnBarLeft, ThermoOnBarBottom, ThermoOnBarWidth, ThermoOnBarHeight);
   } //if(bThermoOnLast!=stData.bThermoOn)
+  return;
+} //DisplayThermoOnBar
 
+
+void ThermoDisplay::DisplaySetpointLine(ThermoStruct stData){
   //Print a line with the string containing the Setpoint and Offpoint values, call it SetpointLine
   if (fSetpointLast != stData.fSetpointDegF){
     fSetpointLast= stData.fSetpointDegF;
@@ -105,7 +109,11 @@ void ThermoDisplay::UpdateMainScreen(ThermoStruct stData){
     Print(sz100CharBuffer);
     //bFirstTimeDrawn= false;
   } //if(fSetpointLast!=stData.fSetpointDegF)
+  return;
+} //DisplaySetpointLine
 
+
+void ThermoDisplay::DisplayHeatOnBox(ThermoStruct stData){
   //Draw a box, the HeatOnBox, between the Setpoint and Offpoint text, present when heat is on.
   //Draws on top of SetpointText, position it to not overwrite text
   if (bSetPointChanged || (bHeatOnLast != stData.bHeatOn)){
@@ -119,6 +127,66 @@ void ThermoDisplay::UpdateMainScreen(ThermoStruct stData){
     } //if(stData.bThermoOn)else
     DrawFilledRectangle( (HeatOnBoxCenter - HeatOnBoxWidth/2), HeatOnBoxBottom, HeatOnBoxWidth, HeatOnBoxHeight);
   } //if(bHeatOnLast!=stData.bHeatOn)
+  return;
+} //DisplayHeatOnBox
+
+
+void ThermoDisplay::DrawScreen(ThermoStruct stData){
+/*
+  //Draw a fat bar, the ThermoOnBar, under the large current temperature display, present when thermostat is on.
+  if (bThermoOnLast != stData.bThermoOn){
+    if (stData.bThermoOn){
+      SetFillColor(ThermoOnBarColor);
+      bThermoOnLast= true;
+    } //if(stData.bThermoOn)
+    else{
+      SetFillColor(_BackgroundColor);
+      bThermoOnLast= false;
+    } //if(stData.bThermoOn)else
+    DrawFilledRectangle(ThermoOnBarLeft, ThermoOnBarBottom, ThermoOnBarWidth, ThermoOnBarHeight);
+  } //if(bThermoOnLast!=stData.bThermoOn)
+*/
+
+/*
+  //Print a line with the string containing the Setpoint and Offpoint values, call it SetpointLine
+  if (fSetpointLast != stData.fSetpointDegF){
+    fSetpointLast= stData.fSetpointDegF;
+    bSetPointChanged= true;
+
+    //Clear the Setpoint area
+    SetFillColor(_BackgroundColor);
+    DrawFilledRectangle(0, 0, ScreenWidth, ThermoOnBarBottom);
+
+    //Display set-point and off-point at the bottom as in "Set= 87.0, Off= 87.1"
+    SetCursor     (Setpoint_XLeft , Setpoint_YTop);
+    SetTextColor  (Setpoint_Color);
+    SelectFont    (eSetpoint_TextFace, eSetpoint_TextPointSize);
+
+    sprintf(sz100CharBuffer, "Set= %4.1f       Off= %4.1f", stData.fSetpointDegF, (stData.fSetpointDegF + stData.fMaxHeatRangeF));
+    Print(sz100CharBuffer);
+    //bFirstTimeDrawn= false;
+  } //if(fSetpointLast!=stData.fSetpointDegF)
+*/
+
+/*
+  //Draw a box, the HeatOnBox, between the Setpoint and Offpoint text, present when heat is on.
+  //Draws on top of SetpointText, position it to not overwrite text
+  if (bSetPointChanged || (bHeatOnLast != stData.bHeatOn)){
+    if (stData.bHeatOn){
+      SetFillColor(HeatOnBoxColor);
+      bHeatOnLast= true;
+    } //if(stData.bThermoOn)
+    else{
+      SetFillColor(_BackgroundColor);
+      bHeatOnLast= false;
+    } //if(stData.bThermoOn)else
+    DrawFilledRectangle( (HeatOnBoxCenter - HeatOnBoxWidth/2), HeatOnBoxBottom, HeatOnBoxWidth, HeatOnBoxHeight);
+  } //if(bHeatOnLast!=stData.bHeatOn)
+*/
+
+  DisplayThermoOnBar    (stData);
+  DisplaySetpointLine   (stData);
+  DisplayHeatOnBox      (stData);
 
   //Display the current temperature and setpoint temperatures, cycling though selected on times
   UpdateMainScreen(stData);

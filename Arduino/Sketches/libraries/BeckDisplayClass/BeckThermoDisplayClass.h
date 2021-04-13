@@ -54,6 +54,9 @@ protected:
   void  DisplayCurrentTemperature   (ThermoStruct stData);
   void  DisplayCurrentSetpoint      (ThermoStruct stData);
   void  UpdateMainScreen            (ThermoStruct stData);
+  void  DisplayThermoOnBar          (ThermoStruct stData);
+  void  DisplaySetpointLine         (ThermoStruct stData);
+  void  DisplayHeatOnBox            (ThermoStruct stData);
 
 public:
   ThermoDisplay();
