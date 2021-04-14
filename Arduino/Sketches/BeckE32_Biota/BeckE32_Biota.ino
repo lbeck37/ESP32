@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_Biota.ino";
-const char szFileDate[]    = "4/14/21b";
+const char szFileDate[]    = "4/14/21c";
 
 #include <BeckBiotaDefines.h>
 #include <BeckBiotaLib.h>
@@ -76,12 +76,13 @@ bool            _bOTA_Started       = false;
 unsigned long   _ulOTATimeoutMsec   = millis();
 
 ThermoDisplay     cDisplay;
-Thermostat        BiotaThermostat;
+//Thermostat        BiotaThermostat;
 
 //Prototypes for functions in this file.
 void HandleSystem();
 
 void setup(){
+  //Thermostat        BiotaThermostat;
   Serial.begin(lSerialMonitorBaud);
   delay(100);
   Serial << endl << LOG0 << "setup(): Sketch: " << szSketchName << ", " << szFileDate << endl;
@@ -197,11 +198,18 @@ void loop(){
 
   void UpdateDisplay(void){
     ThermoStruct    stData;
+/*
     stData.fCurrentDegF     = _fLastDegF;
     stData.fSetpointDegF    = _fSetpointF;
     stData.fMaxHeatRangeF   = _fMaxHeatRangeF;
     stData.bThermoOn        = _bThermoOn;
     stData.bHeatOn          = _bHeatOn;
+*/
+    stData.fCurrentDegF     = BiotaThermostat.Get_CurrentDegF();
+    stData.fSetpointDegF    = BiotaThermostat.Get_Setpoint();
+    stData.fMaxHeatRangeF   = BiotaThermostat.Get_MaxHeatRangeF();
+    stData.bThermoOn        = BiotaThermostat.ThermostatIsOn();
+    stData.bHeatOn          = BiotaThermostat.HeatIsOn();
 
     cDisplay.DrawScreen(stData);
     return;

@@ -1,6 +1,7 @@
 #pragma once
-// 4/13/21a, BeckThermoDisplayClass.h
+// 4/14/21a, BeckThermoDisplayClass.h
 #include <BeckDisplayClass.h>
+#include <BeckThermostatClass.h>
 
 class ThermoDisplay : public ColorDisplay {
 protected:
@@ -51,6 +52,8 @@ protected:
   FontFaceType    eSetpoint_TextFace        = eTextFace;
   FontPointType   eSetpoint_TextPointSize   = eText26px;
 
+  Thermostat      BiotaThermostat;
+
   //Protected methods
   void  DisplayCurrentTemperature   (ThermoStruct stData);
   void  DisplayCurrentSetpoint      (ThermoStruct stData);
@@ -61,6 +64,7 @@ protected:
 
 public:
   ThermoDisplay();
+  //ThermoDisplay(Thermostat &BiotaThermostatObject);
   virtual ~ThermoDisplay();
 
   void  DrawScreen        (ThermoStruct stData);

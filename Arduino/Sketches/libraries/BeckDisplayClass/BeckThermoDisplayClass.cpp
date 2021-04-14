@@ -1,13 +1,21 @@
 const char szFileName[]  = "BeckThermoDisplayClass.cpp";
-const char szFileDate[]  = "4/13/21b";
+const char szFileDate[]  = "4/14/21a";
 
 #include <BeckThermoDisplayClass.h>
+#include <Streaming.h>
 
 ThermoDisplay::ThermoDisplay() {
   Serial << LOG0 << "ThermoDisplay::ThermoDisplay(): " << szFileName << ", " << szFileDate << endl;
   return;
 } //constructor
 
+/*
+ThermoDisplay::ThermoDisplay(Thermostat &BiotaThermostatObject) {
+  Serial << LOG0 << "ThermoDisplay::ThermoDisplay(Thermostat): " << szFileName << ", " << szFileDate << endl;
+  BiotaThermostat= BiotaThermostatObject;
+  return;
+} //constructor
+*/
 
 ThermoDisplay::~ThermoDisplay() {
   Serial << LOG0 << "~ThermoDisplay(): Destructing" << endl;
@@ -65,7 +73,6 @@ void ThermoDisplay::DisplayCurrentSetpoint(ThermoStruct stData){
   return;
 } //DisplayCurrentSetpoint
 
-
 void ThermoDisplay::DisplayMainScreen(ThermoStruct stData){
   if (stData.bThermoOn){
     DisplayCurrentSetpoint(stData);
@@ -77,7 +84,6 @@ void ThermoDisplay::DisplayMainScreen(ThermoStruct stData){
   DisplayCurrentTemperature(stData);
   return;
 } //DisplayMainScreen
-
 
 void ThermoDisplay::DisplayThermoOnBar(ThermoStruct stData){
   //Draw a fat bar, the ThermoOnBar, under the large current temperature display, present when thermostat is on.
@@ -96,10 +102,8 @@ void ThermoDisplay::DisplayThermoOnBar(ThermoStruct stData){
   else{
     bThermoOnChanged= true;
   }
-
   return;
 } //DisplayThermoOnBar
-
 
 void ThermoDisplay::DisplaySetpointLine(ThermoStruct stData){
   //Print a line with the string containing the Setpoint and Offpoint values, call it SetpointLine
@@ -123,7 +127,6 @@ void ThermoDisplay::DisplaySetpointLine(ThermoStruct stData){
   return;
 } //DisplaySetpointLine
 
-
 void ThermoDisplay::DisplayHeatOnBox(ThermoStruct stData){
   //Draw a box, the HeatOnBox, between the Setpoint and Offpoint text, present when heat is on.
   //Draws on top of SetpointText, position it to not overwrite text
@@ -141,14 +144,12 @@ void ThermoDisplay::DisplayHeatOnBox(ThermoStruct stData){
   return;
 } //DisplayHeatOnBox
 
-
 void ThermoDisplay::DrawScreen(ThermoStruct stData){
-
+  Serial << LOG0 << "ThermoDisplay::DrawScreen(): Begin" << endl;
   DisplayThermoOnBar    (stData);
   DisplaySetpointLine   (stData);
   DisplayHeatOnBox      (stData);
   DisplayMainScreen     (stData);
-
   bSetPointChanged= false;    //All done with this, used for getting Setpoint up quickly and drawing Heat On box.
   return;
 } //DrawScreen

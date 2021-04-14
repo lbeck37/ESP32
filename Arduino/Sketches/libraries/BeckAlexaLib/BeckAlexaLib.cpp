@@ -1,24 +1,27 @@
 const char szFileName[]  = "BeckAlexaLib.cpp";
-const char szFileDate[]  = "4/13/21a";
+const char szFileDate[]  = "4/14/21a";
 
 #include <BeckAlexaLib.h>
 #include <BeckBiotaLib.h>
 #include <BeckLogLib.h>
 #include <BeckSwitchLib.h>
-#include <BeckThermoLib.h>
+//#include <BeckThermoLib.h>
 #include <BeckAccessPointLib.h>
 #include <Streaming.h>
 
 #include <fauxmoESP.h>        //Alexa Phillips Hue light emulation
 
-int            wAlexaHandleCount     = 0;      //Incremented each time HandleAlexa() called
-bool           bAlexaOn              = false;  //Only projects that use Alexa set this true.
-bool           _bAlexaChanged        = false;  //Set true when display data changed
-fauxmoESP      Alexa;                          //Alexa emulation of Philips Hue Bulb
+int           wAlexaHandleCount     = 0;      //Incremented each time HandleAlexa() called
+bool          bAlexaOn              = false;  //Only projects that use Alexa set this true.
+bool          _bAlexaChanged        = false;  //Set true when display data changed
+
+fauxmoESP     Alexa;                          //Alexa emulation of Philips Hue Bulb
+Thermostat    ThermostatObject;
 
 //Function protos
 void ThermoHandleAlexa      (bool bState, unsigned char ucValue);
 
+//void SetupAlexa(char szAlexaName[]){
 void SetupAlexa(char szAlexaName[]){
   String szLogString= "SetupAlexa(): Begin";
   LogToSerial(szLogString);
@@ -92,11 +95,13 @@ void ThermoHandleAlexa(bool bState, unsigned char ucValue){
   SetThermoSwitch(bState);
   if(wValuePercent == 100){
     //Alexa thinks the setpoint is 100% on power-up until Alexa is used to set the setpoint.
-    //Use _fSetPoint which will most likely be the hardcoded one since the only way to change it is through Alexa!
-    fSetThermoSetpoint(_fSetpointF);
+    //Don't do anything and it will continue to use the existing Setpoint.
+    //fSetThermoSetpoint(_fSetpointF);
   } //if(wValuePercent==100)
   else{
-    fSetThermoSetpoint(ucValue);
+    //fSetThermoSetpoint(ucValue);
+    ThermostatObject.Set_Setpoint(ucValue);
+    //BiotaThermostat.Set_Setpoint(ucValue);
   } //if(wValuePercent==100)else
   return;
 } //ThermoHandleAlexa

@@ -1,4 +1,4 @@
-// BeckThermostatClass.h 4/14/21a
+// BeckThermostatClass.h 4/14/21b
 #pragma once
 #include <BeckSwitchLib.h>
 #include <DallasTemperature.h>
@@ -26,19 +26,26 @@ protected:
   //DallasTemperature   DallasTempSensor(&OneWire);
 
 
-void    LogThermostatData         (float fDegF);
-void    HandleHeatSwitch          (void);
-void    TurnHeatOn                (bool bTurnOn);
-void    UpdateDisplay             (void);
+  void    LogThermostatData         (float fDegF);
+  void    HandleHeatSwitch          (void);
+  void    TurnHeatOn                (bool bTurnOn);
+  void    UpdateDisplay             (void);
 
-public:
-Thermostat();
-virtual ~Thermostat();
+  public:
+  Thermostat();
+  virtual ~Thermostat();
 
-void    HandleThermostat          (void);
-void    Set_Setpoint              (float fSetpoint);
-void    Set_Setpoint              (unsigned char ucSetpoint);
-float   fGet_CurrentDegF          (void);
+  void    HandleThermostat          (void);
+  void    Set_Setpoint              (float fSetpoint);
+  void    Set_Setpoint              (unsigned char ucSetpoint);
+  float   Get_Setpoint              (void);
+  float   Get_CurrentDegF           (void);
+  void    Set_MaxHeatRangeF         (float fNewMaxHeatRangeF);
+  float   Get_MaxHeatRangeF         (void);
+  bool    ThermostatIsOn            (void);
+  bool    HeatIsOn                  (void);
 };  //Thermostat class
+
+extern Thermostat          BiotaThermostat;
 
 //Last line.

@@ -11,8 +11,14 @@ const char szFileDate[]  = "4/14/21a";
 #include <Streaming.h>
 
 //Create OneWire instance and tell Dallas Temperature Library to use oneWire Library
+/*
 OneWire             oOneWire(sOneWireGPIO);
 DallasTemperature   oDallasTempSensor(&oOneWire);
+*/
+OneWire             BiotaOneWire(sOneWireGPIO);
+DallasTemperature   BiotaTempSensor(&BiotaOneWire);
+
+Thermostat          BiotaThermostat;
 
 Thermostat::Thermostat() {
   Serial << "Display::Display(): " << szFileName << ", " << szFileDate << endl;
@@ -30,7 +36,7 @@ void Thermostat::HandleThermostat(){
   unsigned long   ulStartTime;
 
   //Read the Dallas One-wire temperature sensor
-  float fDegF= fGet_CurrentDegF();
+  float fDegF= Get_CurrentDegF();
 
   //Only do something if the thermostat is turned on.
   if (bThermoOn){
@@ -104,13 +110,11 @@ void Thermostat::LogThermostatData(float fDegF){
   return;
 } //LogThermostatData
 
-
 void Thermostat::Set_Setpoint(unsigned char ucSetpoint){
   float fSetpoint= round( ((float)ucSetpoint / 255.0) * 100.0);
   Set_Setpoint(fSetpoint);
   return;
 } //Set_Setpoint(unsigned char)
-
 
 void Thermostat::Set_Setpoint(float fSetpoint){
   float fLastSetpoint= fSetpointF;
@@ -127,13 +131,33 @@ void Thermostat::Set_Setpoint(float fSetpoint){
   return;
 } //Set_Setpoint(float)
 
+float Thermostat::Get_CurrentDegF(){
+  //This routine reads and also sets the new current temperature.
+  BiotaTempSensor.requestTemperatures(); // Send the command to get temperatures
+  fLastDegF= BiotaTempSensor.getTempFByIndex(0);
 
-float Thermostat::fGet_CurrentDegF(){
-  oDallasTempSensor.requestTemperatures(); // Send the command to get temperatures
-  fLastDegF= oDallasTempSensor.getTempFByIndex(0);
   return fLastDegF;
-}  //fGet_CurrentDegF
+}  //Get_CurrentDegF
 
+float Thermostat::Get_Setpoint(){
+  return fSetpointF;
+}  //fGet_Setpoint
+
+void Thermostat::Set_MaxHeatRangeF(float fNewMaxHeatRangeF){
+  return;
+} //Set_MaxHeatRangeF
+
+float Thermostat::Get_MaxHeatRangeF(){
+  return fMaxHeatRangeF;
+}  //Get_MaxHeatRangeF
+
+bool Thermostat::ThermostatIsOn(){
+  return bThermoOn;
+}  //ThermostatIsOn
+
+bool Thermostat::HeatIsOn(){
+  return bHeatOn;
+}  //HeatIsOn
 
 void Thermostat::TurnHeatOn(bool bTurnOn){
   if (bTurnOn){

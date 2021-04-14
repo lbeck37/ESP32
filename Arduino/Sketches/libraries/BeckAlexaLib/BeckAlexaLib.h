@@ -1,7 +1,8 @@
-// BeckAlexaLib.h 12/27/19b
+// BeckAlexaLib.h 4/14/21a
 #pragma once
 
 #include <BeckBiotaLib.h>
+#include <BeckThermostatClass.h>
 
 extern int            wAlexaHandleCount;
 extern bool           _bAlexaChanged;
