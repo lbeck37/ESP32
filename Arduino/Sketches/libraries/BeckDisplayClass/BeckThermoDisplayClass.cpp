@@ -67,8 +67,14 @@ void ThermoDisplay::DisplayCurrentSetpoint(ThermoStruct stData){
 
 
 void ThermoDisplay::DisplayMainScreen(ThermoStruct stData){
-  DisplayCurrentSetpoint      (stData);
-  DisplayCurrentTemperature   (stData);
+  if (stData.bThermoOn){
+    DisplayCurrentSetpoint(stData);
+  }
+  else{
+    //Set so that CurrentDegF is continuously displayed, done in DisplayCurrentSetpoint when it's called. (called tight coupling)
+    ulNextCurrentDegFDisplay= millis() + ulCurrentDegFOnTimeSeconds;
+  }
+  DisplayCurrentTemperature(stData);
   return;
 } //DisplayMainScreen
 
@@ -76,6 +82,7 @@ void ThermoDisplay::DisplayMainScreen(ThermoStruct stData){
 void ThermoDisplay::DisplayThermoOnBar(ThermoStruct stData){
   //Draw a fat bar, the ThermoOnBar, under the large current temperature display, present when thermostat is on.
   if (bThermoOnLast != stData.bThermoOn){
+    bThermoOnChanged= true;
     if (stData.bThermoOn){
       SetFillColor(ThermoOnBarColor);
       bThermoOnLast= true;
@@ -86,6 +93,10 @@ void ThermoDisplay::DisplayThermoOnBar(ThermoStruct stData){
     } //if(stData.bThermoOn)else
     DrawFilledRectangle(ThermoOnBarLeft, ThermoOnBarBottom, ThermoOnBarWidth, ThermoOnBarHeight);
   } //if(bThermoOnLast!=stData.bThermoOn)
+  else{
+    bThermoOnChanged= true;
+  }
+
   return;
 } //DisplayThermoOnBar
 
@@ -116,8 +127,8 @@ void ThermoDisplay::DisplaySetpointLine(ThermoStruct stData){
 void ThermoDisplay::DisplayHeatOnBox(ThermoStruct stData){
   //Draw a box, the HeatOnBox, between the Setpoint and Offpoint text, present when heat is on.
   //Draws on top of SetpointText, position it to not overwrite text
-  if (bSetPointChanged || (bHeatOnLast != stData.bHeatOn)){
-    if (stData.bHeatOn){
+  if (bThermoOnChanged || bSetPointChanged || (bHeatOnLast != stData.bHeatOn)){
+    if (stData.bThermoOn && stData.bHeatOn){
       SetFillColor(HeatOnBoxColor);
       bHeatOnLast= true;
     } //if(stData.bThermoOn)
@@ -126,7 +137,7 @@ void ThermoDisplay::DisplayHeatOnBox(ThermoStruct stData){
       bHeatOnLast= false;
     } //if(stData.bThermoOn)else
     DrawFilledRectangle( (HeatOnBoxCenter - HeatOnBoxWidth/2), HeatOnBoxBottom, HeatOnBoxWidth, HeatOnBoxHeight);
-  } //if(bHeatOnLast!=stData.bHeatOn)
+  } //if(stData.bThermoOn&&...
   return;
 } //DisplayHeatOnBox
 

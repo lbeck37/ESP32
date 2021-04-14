@@ -98,8 +98,13 @@ void ThermoHandleAlexa(bool bState, unsigned char ucValue){
   } //if(wValuePercent==10)
   else{
     _bThermoOn= bState;
-	SetThermoSwitch(bState);
-    fSetThermoSetpoint(ucValue);
+    SetThermoSwitch(bState);
+    if(wValuePercent == 100){
+      fSetThermoSetpoint(_fSetpointF);
+    }
+    else{
+      fSetThermoSetpoint(ucValue);
+    } //if(wValuePercent==10)else
   } //if(wValuePercent==10)else
   return;
 } //PitchMeterHandleAlexa

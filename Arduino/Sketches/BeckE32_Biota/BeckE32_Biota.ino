@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_Biota.ino";
-const char szFileDate[]    = "4/13/21f";
+const char szFileDate[]    = "4/13/21m";
 
 #include <BeckBiotaDefines.h>
 #include <BeckBiotaLib.h>
@@ -199,7 +199,7 @@ void loop(){
     stData.fSetpointDegF    = _fSetpointF;
     stData.fMaxHeatRangeF   = _fMaxHeatRangeF;
     stData.bThermoOn        = _bThermoOn;
-    stData.bHeatOn          = _bThermoOn;
+    stData.bHeatOn          = _bHeatOn;
 
     cDisplay.DrawScreen(stData);
     return;
