@@ -6,7 +6,8 @@ const char szFileDate[]    = "4/14/21b";
 #include <BeckMiniLib.h>
 #include <BeckSwitchLib.h>
 #include <BeckThermoDisplayClass.h>
-#include <BeckThermoLib.h>
+//#include <BeckThermoLib.h>
+#include <BeckThermostatClass.h>
 #include <BeckWiFiLib.h>
 #include <Streaming.h>
 #include <Time.h>
@@ -74,7 +75,8 @@ static        int         _wGoodCount                 = 0;
 bool            _bOTA_Started       = false;
 unsigned long   _ulOTATimeoutMsec   = millis();
 
-ThermoDisplay    cDisplay;
+ThermoDisplay     cDisplay;
+Thermostat        BiotaThermostat;
 
 //Prototypes for functions in this file.
 void HandleSystem();
@@ -234,7 +236,8 @@ void HandleSystem(){
           } //if (wAlexaHandleCount<1000)
         #endif
         Serial << endl << LOG0 << "BeckE32_Biota.ino: HandleSystem(): Call HandleThermostat()" << endl;
-        HandleThermostat();   //BeckThermoLib.cpp
+        //HandleThermostat();   //BeckThermoLib.cpp
+        BiotaThermostat.HandleThermostat();   //BeckThermoLib.cpp
         //HandleHeatSwitch();
         UpdateDisplay();
       } //if(millis()>=ulNextThermHandlerMsec)

@@ -6,16 +6,7 @@
 
 class Thermostat{
 protected:
-  const long    sThermoTimesInRow = 3;      //Max times temp is outside range before switch
-  //bool          bThermoOn;
-  //bool          bHeatOn;
-  //float         fLastDegF;
-  //float         fSetpointF;
-  //float         fMaxHeatRangeF;
-  //float         fThermoOffDegF;
-  //float         fMinSetpoint;
-  //float         fMaxSetpoint;
-
+  int             sThermoTimesInRow       = 3;      //Max times temperature is outside range before switch
   float           fMaxHeatRangeF          = 0.10;     //Temp above setpoint before heat is turned off
   float           fLastDegF               = 99.9;     //Last temperature reading.
   float           fSetpointF              = 70.0;
