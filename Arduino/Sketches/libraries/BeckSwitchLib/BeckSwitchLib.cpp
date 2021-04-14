@@ -18,12 +18,14 @@ void SetupSwitches(){
 
 
 void SetHeatSwitch(int sSwitchState){
+  Serial << "BeckSwitchLib.cpp: SetHeatSwitch(): call SetSwitch(), Heat Switch State= " << sSwitchState << endl;
   SetSwitch(sHeatSwitchNum, sSwitchState);
   return;
 } //SetHeatSwitch
 
 
 void SetThermoSwitch(int sSwitchState){
+  Serial << "BeckSwitchLib.cpp: SetThermoSwitch(): call SetSwitch(), Thermo Switch State= " << sSwitchState << endl;
   SetSwitch(sThermoSwitchNum, sSwitchState);
   return;
 } //SetThermoSwitch
@@ -39,6 +41,7 @@ void SetSwitch(int sSwitch, int sSwitchState){
   else{
     bPinSetting= sSwitchState;
   } //if(abSwitchInverted[sSwitch])else
+/*
   String szLogString= "SetSwitch:  ";
   szLogString += sSwitch;
   szLogString += ",";
@@ -47,8 +50,11 @@ void SetSwitch(int sSwitch, int sSwitchState){
   szLogString += sSwitchPin;
   szLogString += ",";
   szLogString += bPinSetting;
-  //LogToSerial(szLogString);
+  LogToSerial(szLogString);
+*/
 
+  Serial << LOG0 << "SetSwitch(): Switch= " << sSwitch << ", Switch State= " << sSwitchState << ", Switch Pin= " << sSwitchPin <<
+      ", Pin Setting= " << bPinSetting << endl;
   //Some switch positions don't have pins, just Blynk LEDs.
   if (sSwitchPin >= 0){
     digitalWrite(sSwitchPin, bPinSetting);

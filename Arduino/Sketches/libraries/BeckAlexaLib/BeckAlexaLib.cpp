@@ -1,27 +1,23 @@
 const char szFileName[]  = "BeckAlexaLib.cpp";
-const char szFileDate[]  = "4/12/21a";
+const char szFileDate[]  = "4/13/21a";
 
 #include <BeckAlexaLib.h>
 #include <BeckBiotaLib.h>
-//#include <BeckDisplayLib.h>
 #include <BeckLogLib.h>
 #include <BeckSwitchLib.h>
 #include <BeckThermoLib.h>
 #include <BeckAccessPointLib.h>
 #include <Streaming.h>
 
-//#include <fauxmoESP.h>        //Alexa Phillips Hue light emulation
-#include <fauxmoESP.h>
+#include <fauxmoESP.h>        //Alexa Phillips Hue light emulation
 
 int            wAlexaHandleCount     = 0;      //Incremented each time HandleAlexa() called
 bool           bAlexaOn              = false;  //Only projects that use Alexa set this true.
 bool           _bAlexaChanged        = false;  //Set true when display data changed
-//char           _acAlexaName[50];
 fauxmoESP      Alexa;                          //Alexa emulation of Philips Hue Bulb
 
 //Function protos
 void ThermoHandleAlexa      (bool bState, unsigned char ucValue);
-void PitchMeterHandleAlexa  (unsigned char ucValue);
 
 void SetupAlexa(char szAlexaName[]){
   String szLogString= "SetupAlexa(): Begin";
@@ -63,7 +59,7 @@ void HandleAlexa(){
 } //HandleAlexa
 
 
-void DoAlexaCommand(unsigned char ucDdeviceID, const char* szDeviceName, bool bState, unsigned char ucValue){
+void DoAlexaCommand(unsigned char ucDdeviceID,const char* szDeviceName,bool bState,unsigned char ucValue){
   char    szCharString[100];
   sprintf(szCharString, "DoAlexaCommand(): Device #%d (%s) bState: %s value: %d",
       ucDdeviceID, szDeviceName, (bState ? "ON " : "OFF"), ucValue);
@@ -77,7 +73,6 @@ void DoAlexaCommand(unsigned char ucDdeviceID, const char* szDeviceName, bool bS
       ThermoHandleAlexa(bState, ucValue);
       break;
     case ePitchMeter:
-      PitchMeterHandleAlexa(ucValue);
       break;
     case eFrontLights:
       break;
@@ -93,41 +88,16 @@ void DoAlexaCommand(unsigned char ucDdeviceID, const char* szDeviceName, bool bS
 void ThermoHandleAlexa(bool bState, unsigned char ucValue){
   int wValuePercent= round(((float)ucValue / 255.0) * 100);
   Serial << LOG0 << "ThermoHandleAlexa(): Received wValuePercent= " << wValuePercent << endl;
-  if(wValuePercent == 10){    //"Alexa set Larry's Device to 10"
-    SwitchProjectType(ePitchMeter);
-  } //if(wValuePercent==10)
+  _bThermoOn= bState;
+  SetThermoSwitch(bState);
+  if(wValuePercent == 100){
+    //Alexa thinks the setpoint is 100% on power-up until Alexa is used to set the setpoint.
+    //Use _fSetPoint which will most likely be the hardcoded one since the only way to change it is through Alexa!
+    fSetThermoSetpoint(_fSetpointF);
+  } //if(wValuePercent==100)
   else{
-    _bThermoOn= bState;
-    SetThermoSwitch(bState);
-    if(wValuePercent == 100){
-      fSetThermoSetpoint(_fSetpointF);
-    }
-    else{
-      fSetThermoSetpoint(ucValue);
-    } //if(wValuePercent==10)else
-  } //if(wValuePercent==10)else
+    fSetThermoSetpoint(ucValue);
+  } //if(wValuePercent==100)else
   return;
-} //PitchMeterHandleAlexa
-
-
-void PitchMeterHandleAlexa(unsigned char ucValue){
-  int wValuePercent= round(((float)ucValue / 255.0) * 100);
-  Serial << LOG0 << "PitchMeterHandleAlexa(): Received wValuePercent= " << wValuePercent << endl;
-/*
-  if(wValuePercent == 10){    //"Alexa set Larry's Device to 10"
-    ClearZeros();
-  } //if(wValuePercent==10)
-*/
-  switch (wValuePercent){
-  case 11:
-    //ClearZeros();   //Getting Alexa to build for Fireplace
-    break;
-  case 20:
-    SwitchProjectType(eThermoDev);
-    break;
-    default:
-      break;
-  } //switch
-  return;
-} //PitchMeterHandleAlexa
+} //ThermoHandleAlexa
 //Last line.
