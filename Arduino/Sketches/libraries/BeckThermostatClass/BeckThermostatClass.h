@@ -1,4 +1,4 @@
-// BeckThermostatClass.h 4/14/21c
+// BeckThermostatClass.h 4/15/21a
 #pragma once
 #include <BeckSwitchLib.h>
 #include <DallasTemperature.h>

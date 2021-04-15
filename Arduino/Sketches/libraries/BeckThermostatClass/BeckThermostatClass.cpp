@@ -1,7 +1,6 @@
 const char szFileName[]  = "BeckThermostatClass.cpp";
-const char szFileDate[]  = "4/14/21a";
+const char szFileDate[]  = "4/15/21a";
 
-// BeckThermoLib.cpp 4/8/21a
 #include <BeckThermostatClass.h>
 //#include <BeckMiniLib.h>
 #include <BeckSwitchLib.h>
