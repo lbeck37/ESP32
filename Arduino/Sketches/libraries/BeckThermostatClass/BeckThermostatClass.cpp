@@ -21,30 +21,30 @@ DallasTemperature   BiotaTempSensor(&BiotaOneWire);
 Thermostat          BiotaThermostat;
 
 Thermostat::Thermostat() {
-  Serial << "Display::Display(): " << szFileName << ", " << szFileDate << endl;
+  Serial << "Thermostat::Thermostat(): " << szFileName << ", " << szFileDate << endl;
 } //constructor
 
 
 Thermostat::~Thermostat() {
-  Serial << "~Display(): Destructing" << endl;
+  Serial << "~Thermostat(): Destructing" << endl;
 } //destructor
 
 
 void Thermostat::HandleThermostat(){
-//HandleThermostat(){
+  //Serial << LOG0 << "Thermostat::HandleThermostat(): Begin" << endl;
   static bool     bStateChanged= false;
   unsigned long   ulStartTime;
 
   //Read the Dallas One-wire temperature sensor
   float fDegF= Get_CurrentDegF();
 
-  //Only do something if the thermostat is turned on.
   if (bThermoOn){
     if (bHeatOn){
       if (fDegF >= fThermoOffDegF){
         bStateChanged= true;
         if (++sThermoTimesCount >= sThermoTimesInRow){
           TurnHeatOn(false);
+          DidHeatOnChange= true;
           sThermoTimesCount= 0;
         } //if(sThermoTimesCount>=sThermoTimesInRow)
       } //if(fDegF>=_fThermoOffDegF)
@@ -57,6 +57,7 @@ void Thermostat::HandleThermostat(){
         bStateChanged= true;
         if (++sThermoTimesCount >= sThermoTimesInRow){
           TurnHeatOn(true);
+          DidHeatOnChange= true;
           sThermoTimesCount= 0;
         } //if(sThermoTimesCount>=sThermoTimesInRow)
       } //if(fDegF<_fSetpointF)
@@ -80,22 +81,26 @@ void Thermostat::HandleThermostat(){
       //LogToSerial(szLogString);
     } //if(_bThermoOn)else
   }
-  Serial << LOG0 << "BeckThermoLib.cpp: HandleThermostat(): Call HandleHeatSwitch()" << endl;
+  //Serial << LOG0 << "Thermostat::HandleThermostat(): Call HandleHeatSwitch()" << endl;
   HandleHeatSwitch();
   return;
 } //HandleThermostat
 
 
 void Thermostat::HandleHeatSwitch(){
-  if (bHeatOn){
-    Serial << LOG0 << "BeckThermoLib.cpp: HandleHeatSwitch(): _bHeatOn, Call SetSwitch()" << endl;
-    SetSwitch(sHeatSwitchNum, sOn);
-  } //if(_bHeatOn)
-  else{
-    asSwitchState[sHeatSwitchNum]= sOff;
-    Serial << LOG0 << "BeckThermoLib.cpp: HandleHeatSwitch(): NOT _bHeatOn, Call SetSwitch()" << endl;
-    SetSwitch(sHeatSwitchNum, sOff);
-  } //if(_bHeatOn)else
+  //Serial << LOG0 << "Thermostat::HandleHeatSwitch(): Begin" << endl;
+  if (DidHeatOnChange){
+    if (bHeatOn){
+      Serial << LOG0 << "Thermostat::HandleHeatSwitch(): bHeatOn is TRUE, Call SetSwitch()" << endl;
+      SetSwitch(sHeatSwitchNum, sOn);
+    } //if(_bHeatOn)
+    else{
+      asSwitchState[sHeatSwitchNum]= sOff;
+      Serial << LOG0 << "Thermostat::HandleHeatSwitch(): bHeatOn is FALSE, Call SetSwitch()" << endl;
+      SetSwitch(sHeatSwitchNum, sOff);
+    } //if(_bHeatOn)else
+    DidHeatOnChange= false;
+  } //if(DidHeatOnChange)
   return;
 } //HandleHeatSwitch
 
@@ -131,6 +136,7 @@ void Thermostat::Set_Setpoint(float fSetpoint){
   return;
 } //Set_Setpoint(float)
 
+
 float Thermostat::Get_CurrentDegF(){
   //This routine reads and also sets the new current temperature.
   BiotaTempSensor.requestTemperatures(); // Send the command to get temperatures
@@ -139,25 +145,31 @@ float Thermostat::Get_CurrentDegF(){
   return fLastDegF;
 }  //Get_CurrentDegF
 
+
 float Thermostat::Get_Setpoint(){
   return fSetpointF;
 }  //fGet_Setpoint
+
 
 void Thermostat::Set_MaxHeatRangeF(float fNewMaxHeatRangeF){
   return;
 } //Set_MaxHeatRangeF
 
+
 float Thermostat::Get_MaxHeatRangeF(){
   return fMaxHeatRangeF;
 }  //Get_MaxHeatRangeF
+
 
 bool Thermostat::ThermostatIsOn(){
   return bThermoOn;
 }  //ThermostatIsOn
 
+
 bool Thermostat::HeatIsOn(){
   return bHeatOn;
 }  //HeatIsOn
+
 
 void Thermostat::TurnHeatOn(bool bTurnOn){
   if (bTurnOn){

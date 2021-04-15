@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_Biota.ino";
-const char szFileDate[]    = "4/14/21c";
+const char szFileDate[]    = "4/14/21d";
 
 #include <BeckBiotaDefines.h>
 #include <BeckBiotaLib.h>
@@ -243,10 +243,11 @@ void HandleSystem(){
             LogToSerial("HandleSystem():HandleAlexa() Times called=", wAlexaHandleCount);
           } //if (wAlexaHandleCount<1000)
         #endif
-        Serial << endl << LOG0 << "BeckE32_Biota.ino: HandleSystem(): Call HandleThermostat()" << endl;
+        //Serial << endl << LOG0 << "BeckE32_Biota.ino: HandleSystem(): Call BiotaThermostat.HandleThermostat()" << endl;
         //HandleThermostat();   //BeckThermoLib.cpp
         BiotaThermostat.HandleThermostat();   //BeckThermoLib.cpp
         //HandleHeatSwitch();
+        //Serial << LOG0 << "BeckE32_Biota.ino: HandleSystem(): Call UpdateDisplay()" << endl;
         UpdateDisplay();
       } //if(millis()>=ulNextThermHandlerMsec)
      break;

@@ -1,4 +1,4 @@
-// BeckThermostatClass.h 4/14/21b
+// BeckThermostatClass.h 4/14/21c
 #pragma once
 #include <BeckSwitchLib.h>
 #include <DallasTemperature.h>
@@ -9,13 +9,14 @@ protected:
   int             sThermoTimesInRow       = 3;      //Max times temperature is outside range before switch
   float           fMaxHeatRangeF          = 0.10;     //Temp above setpoint before heat is turned off
   float           fLastDegF               = 99.9;     //Last temperature reading.
-  float           fSetpointF              = 70.0;
+  float           fSetpointF              = 80.0;
   float           fMinSetpoint            = 40.0;
   float           fMaxSetpoint            = 80.0;
   float           fThermoOffDegF          = fSetpointF + fMaxHeatRangeF;
   int             sThermoTimesCount       = 0;        //Number of times temperature out of range
-  bool            bThermoOn               = false;    //Whether thermostat is running, set in BeckBiotaLib
-  bool            bHeatOn                 = false;    //If switch is on to turn on Heat.
+  bool            bThermoOn               = true;    //Whether thermostat is running, set in BeckBiotaLib
+  bool            bHeatOn                 = true;    //If switch is on to turn on Heat.
+  bool            DidHeatOnChange         = true;
   unsigned long   ulNextThermPrintMsec    = 0;
   unsigned long   ulThermPrintPeriodMsec  = 10 * lMsecPerSec; //mSec between running system handler
   OneWire         OneWireInstance         = OneWire(sOneWireGPIO);

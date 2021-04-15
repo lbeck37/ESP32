@@ -51,7 +51,7 @@ void ThermoDisplay::DisplayCurrentTemperature(ThermoStruct stData){
 void ThermoDisplay::DisplayCurrentSetpoint(ThermoStruct stData){
   //Serial << LOG0 << "ThermoDisplay::DisplayCurrentSetpoint(): Begin" << endl;
   //Clear the rectangular area where the Setpoint is displayed
-  if(bSetPointChanged || (millis() > ulNextSetpointDisplay)){
+  if(stData.bThermoOn &&(bSetPointChanged || (millis() > ulNextSetpointDisplay))){
     SetFillColor(_BackgroundColor);
 
     PUnit YBottom= (ThermoOnBarBottom + ThermoOnBarHeight);
@@ -74,13 +74,8 @@ void ThermoDisplay::DisplayCurrentSetpoint(ThermoStruct stData){
 } //DisplayCurrentSetpoint
 
 void ThermoDisplay::DisplayMainScreen(ThermoStruct stData){
-  if (stData.bThermoOn){
-    DisplayCurrentSetpoint(stData);
-  }
-  else{
-    //Set so that CurrentDegF is continuously displayed, done in DisplayCurrentSetpoint when it's called. (called tight coupling)
-    ulNextCurrentDegFDisplay= millis() + ulCurrentDegFOnTimeSeconds;
-  }
+  //Serial << LOG0 << "ThermoDisplay::DisplayMainScreen(): Begin" << endl;
+  DisplayCurrentSetpoint(stData);
   DisplayCurrentTemperature(stData);
   return;
 } //DisplayMainScreen
@@ -145,7 +140,7 @@ void ThermoDisplay::DisplayHeatOnBox(ThermoStruct stData){
 } //DisplayHeatOnBox
 
 void ThermoDisplay::DrawScreen(ThermoStruct stData){
-  Serial << LOG0 << "ThermoDisplay::DrawScreen(): Begin" << endl;
+  //Serial << LOG0 << "ThermoDisplay::DrawScreen(): Begin" << endl;
   DisplayThermoOnBar    (stData);
   DisplaySetpointLine   (stData);
   DisplayHeatOnBox      (stData);
