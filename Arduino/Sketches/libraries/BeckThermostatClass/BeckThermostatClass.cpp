@@ -44,7 +44,7 @@ void Thermostat::HandleThermostat(){
         bStateChanged= true;
         if (++sThermoTimesCount >= sThermoTimesInRow){
           TurnHeatOn(false);
-          DidHeatOnChange= true;
+          //DidHeatOnChange= true;
           sThermoTimesCount= 0;
         } //if(sThermoTimesCount>=sThermoTimesInRow)
       } //if(fDegF>=_fThermoOffDegF)
@@ -53,17 +53,17 @@ void Thermostat::HandleThermostat(){
       } //if(fDegF>=_fThermoOffDegF)else
     } //if(_bHeatOn)
     else{
-      if (fDegF <= fSetpointF){
+      if (fDegF <= fSetpoint){
         bStateChanged= true;
         if (++sThermoTimesCount >= sThermoTimesInRow){
           TurnHeatOn(true);
-          DidHeatOnChange= true;
+          //DidHeatOnChange= true;
           sThermoTimesCount= 0;
         } //if(sThermoTimesCount>=sThermoTimesInRow)
-      } //if(fDegF<_fSetpointF)
+      } //if(fDegF<_fSetpoint)
       else{
         sThermoTimesCount= 0;
-      } //if(fDegF<_fSetpointF)else
+      } //if(fDegF<_fSetpoint)else
     } //if(_bHeatOn)else
   } //if(_bThermoOn)
   else{
@@ -88,32 +88,35 @@ void Thermostat::HandleThermostat(){
 
 
 void Thermostat::HandleHeatSwitch(){
-  //Serial << LOG0 << "Thermostat::HandleHeatSwitch(): Begin" << endl;
-  if (DidHeatOnChange){
+  static bool   bLastHeatOn= false;
+  //Serial << LOG0 << "Thermostat::HandleHeatSwitch(): Begin, bLastHeatOn= " << bLastHeatOn << endl;
+  if (bHeatOn != bLastHeatOn){
+    bLastHeatOn= bHeatOn;
     if (bHeatOn){
-      Serial << LOG0 << "Thermostat::HandleHeatSwitch(): bHeatOn is TRUE, Call SetSwitch()" << endl;
+      asSwitchState[sHeatSwitchNum]= sOn;
+      Serial << LOG0 << "Thermostat::HandleHeatSwitch(): bHeatOn is now TRUE, Call SetSwitch(" <<
+          sHeatSwitchNum << ", " << sOff << ")" << endl;
       SetSwitch(sHeatSwitchNum, sOn);
     } //if(_bHeatOn)
     else{
       asSwitchState[sHeatSwitchNum]= sOff;
-      Serial << LOG0 << "Thermostat::HandleHeatSwitch(): bHeatOn is FALSE, Call SetSwitch()" << endl;
+      Serial << LOG0 << "Thermostat::HandleHeatSwitch(): bHeatOn is now FALSE, Call SetSwitch(" <<
+          sHeatSwitchNum << ", " << sOff << ")" << endl;
       SetSwitch(sHeatSwitchNum, sOff);
     } //if(_bHeatOn)else
-    DidHeatOnChange= false;
-  } //if(DidHeatOnChange)
+  } //if (bHeatOn != bLastHeatOn)
+  //Serial << LOG0 << "Thermostat::HandleHeatSwitch(): End, bLastHeatOn= " << bLastHeatOn << endl;
   return;
 } //HandleHeatSwitch
 
 
 void Thermostat::LogThermostatData(float fDegF){
-/*
-  String szLogString= " " + String(bHeatOn) + String(sThermoTimesCount) + " " +
-                String(fDegF) + " " + String(fSetpointF) + " " + String(fThermoOffDegF);
-*/
-  char* szLogString= "LogThermostatData(): Log string needs fixing";
-  LogToSerial(szLogString);
+  static char    sz100CharBuffer[100];
+  sprintf(sz100CharBuffer, " %d %d %4.2f %4.2f %4.2f", bHeatOn, sThermoTimesCount, fDegF, fSetpoint, fThermoOffDegF);
+  LogToSerial(sz100CharBuffer);
   return;
 } //LogThermostatData
+
 
 void Thermostat::Set_Setpoint(unsigned char ucSetpoint){
   float fSetpoint= round( ((float)ucSetpoint / 255.0) * 100.0);
@@ -121,18 +124,20 @@ void Thermostat::Set_Setpoint(unsigned char ucSetpoint){
   return;
 } //Set_Setpoint(unsigned char)
 
-void Thermostat::Set_Setpoint(float fSetpoint){
-  float fLastSetpoint= fSetpointF;
-  if( (fSetpoint >= fMinSetpoint) && (fSetpoint <= fMaxSetpoint)){
-    if(fSetpoint != fSetpointF){
-      fSetpointF      = fSetpoint;
-      fThermoOffDegF  = fSetpointF + fMaxHeatRangeF;
-      Serial << LOG0 << "fSetThermoSetpoint(): Set fSetpointF to " << fSetpointF << endl;
-    } //if(fSetpoint!=_fSetpointF)
+
+void Thermostat::Set_Setpoint(float fNewSetpoint){
+  Serial << LOG0 << "Thermostat::Set_Setpoint(" << fNewSetpoint << "): Begin" << endl;
+  float fOriginalSetpoint= fSetpoint;
+  if( (fNewSetpoint >= fMinSetpoint) && (fNewSetpoint <= fMaxSetpoint)){
+    if(fNewSetpoint != fOriginalSetpoint){
+      fSetpoint      = fNewSetpoint;
+      fThermoOffDegF = fSetpoint + fMaxHeatRangeF;
+      Serial << LOG0 << "Thermostat::Set_Setpoint(): Set fSetpoint to " << fSetpoint << endl;
+    } //if(fSetpoint!=_fSetpoint)
   } //if((fSetpoint>=...
-  if(fSetpointF == fLastSetpoint){
-    Serial << LOG0 << "fSetThermoSetpoint(): fSetpointF remains at " << fSetpointF << endl;
-  } //if((_fSetpointF==fLastSetpoint)
+  if(fSetpoint == fOriginalSetpoint){
+    Serial << LOG0 << "Thermostat::Set_Setpoint(): fSetpoint remains at " << fSetpoint << endl;
+  } //if((_fSetpoint==fLastSetpoint)
   return;
 } //Set_Setpoint(float)
 
@@ -147,7 +152,7 @@ float Thermostat::Get_CurrentDegF(){
 
 
 float Thermostat::Get_Setpoint(){
-  return fSetpointF;
+  return fSetpoint;
 }  //fGet_Setpoint
 
 

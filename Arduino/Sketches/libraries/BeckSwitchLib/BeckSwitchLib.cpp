@@ -18,7 +18,7 @@ void SetupSwitches(){
 
 
 void SetHeatSwitch(int sSwitchState){
-  Serial << "BeckSwitchLib.cpp: SetHeatSwitch(): call SetSwitch(), Heat Switch State= " << sSwitchState << endl;
+  Serial << LOG0 << "BeckSwitchLib.cpp: SetHeatSwitch(): call SetSwitch(), Heat Switch State= " << sSwitchState << endl;
   SetSwitch(sHeatSwitchNum, sSwitchState);
   return;
 } //SetHeatSwitch
