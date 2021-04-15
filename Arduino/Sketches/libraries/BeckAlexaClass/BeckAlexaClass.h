@@ -19,7 +19,7 @@ protected:
   fauxmoESP     AlexaDevice;                          //Alexa emulation of Philips Hue Bulb
 
   //void DoAlexaCommand         (unsigned char ucDdeviceID, const char* szDeviceName, bool bState, unsigned char ucValue);
-  void  HandleThermostatProject (bool bState, unsigned char ucValue);
+  //void  HandleThermostatProject (bool bState, unsigned char ucValue);
 public:
   Alexa();
   virtual ~Alexa();
