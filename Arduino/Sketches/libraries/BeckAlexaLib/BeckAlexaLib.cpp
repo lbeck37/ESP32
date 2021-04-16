@@ -16,7 +16,7 @@ bool          bAlexaOn              = false;  //Only projects that use Alexa set
 bool          _bAlexaChanged        = false;  //Set true when display data changed
 
 fauxmoESP     Alexa;                          //Alexa emulation of Philips Hue Bulb
-Thermostat    ThermostatObject;
+ThermostatClass    ThermostatObject;
 
 //Function protos
 void ThermoHandleAlexa      (bool bState, unsigned char ucValue);

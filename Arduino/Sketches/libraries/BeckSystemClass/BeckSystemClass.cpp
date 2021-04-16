@@ -3,25 +3,29 @@ const char szFileDate[]  = "4/15/21a";
 
 #include <BeckSystemClass.h>
 
-System::System() {
-  Serial << "System::System(): " << szFileName << ", " << szFileDate << endl;
+SystemClass::SystemClass() {
+  Serial << "SystemClass::SystemClass(): " << szFileName << ", " << szFileDate << endl;
 } //constructor
 
 
-System::~System() {
-  Serial << "~System(): Destructing" << endl;
+SystemClass::~SystemClass() {
+  Serial << "~SystemClass(): Destructing" << endl;
 } //destructor
 
 
-void System::Setup(){
-  String szLogString= "System::Setup(): Begin";
+void SystemClass::Setup(){
+  String szLogString= "SystemClass::Setup(): Begin";
   LogToSerial(szLogString);
+  strcpy(szAlexaName, "Larry's Device");
+
+  SystemAlexa.Setup       ((char *)szAlexaName);
+  SystemThermostat.Setup  ();
   return;
-} //SetupAlexa
+} //Setup
 
 
-void System::Handle(){
-  //wAlexaHandleCount++;  //Track how many times this is called before next handle system (10 sec)
-  SystemAlexa.Handle();
+void SystemClass::Handle(){
+  SystemAlexa.Handle        ();
+  SystemThermostat.Handle   ();
   return;
-} //HandleAlexa
+} //Handle

@@ -9,10 +9,10 @@ extern int            wAlexaHandleCount;
 extern bool           _bAlexaChanged;
 */
 
-class Alexa{
+class AlexaClass{
 protected:
-  int   wAlexaHandleCount  = 0;
-  bool  bAlexaChanged     = false;
+  int   wAlexaHandleCount   = 0;
+  bool  bAlexaChanged       = false;
 
   bool          LastThermostatOnState     = false;
   float         LastTemperatureSetting     = 80.0;
@@ -21,12 +21,13 @@ protected:
   //void DoAlexaCommand         (unsigned char ucDdeviceID, const char* szDeviceName, bool bState, unsigned char ucValue);
   //void  HandleThermostatProject (bool bState, unsigned char ucValue);
 public:
-  Alexa();
-  virtual ~Alexa();
+  AlexaClass();
+  virtual ~AlexaClass();
 
+//void  Setup                         (char acAlexaName[]);
 void  Setup                         (char acAlexaName[]);
 void  Handle                        (void);
 float GetCurrentTemperatureSetting  (void);
 bool  GetLastThermostatOnState      (void);
 
-};  //Alexa class
+};  //AlexaClass

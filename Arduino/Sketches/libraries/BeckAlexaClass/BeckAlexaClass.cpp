@@ -7,7 +7,7 @@ const char szFileDate[]  = "4/15/21a";
 //Prototypes
 void    CallbackAlexaCommand    (unsigned char ucDdeviceID,const char* szDeviceName,bool bState,unsigned char ucValue);
 void    HandleThermostat  (bool bState, unsigned char ucValue);
-void  HandleThermostatProject (bool bState, unsigned char ucValue);
+//void  HandleThermostatProject (bool bState, unsigned char ucValue);
 
 
 void CallbackAlexaCommand(unsigned char ucDdeviceID,const char* szDeviceName,bool bState,unsigned char ucValue){
@@ -21,7 +21,7 @@ void CallbackAlexaCommand(unsigned char ucDdeviceID,const char* szDeviceName,boo
     case eGarage:
     case eThermoDev:
     case eHeater:
-      HandleThermostatProject(bState, ucValue);
+      HandleThermostat(bState, ucValue);
       break;
     case ePitchMeter:
       break;
@@ -36,10 +36,10 @@ void CallbackAlexaCommand(unsigned char ucDdeviceID,const char* szDeviceName,boo
 } //CallbackAlexaCommand
 
 
-//void Alexa::HandleThermostatProject(bool bState, unsigned char ucValue){
+//void AlexaClass::HandleThermostatProject(bool bState, unsigned char ucValue){
 void HandleThermostat(bool bState, unsigned char ucValue){
   int wValuePercent= round(((float)ucValue / 255.0) * 100);
-  Serial << LOG0 << "Alexa::HandleThermostatProject(): Received wValuePercent= " << wValuePercent << endl;
+  Serial << LOG0 << "HandleThermostat(): Received wValuePercent= " << wValuePercent << endl;
   //LastThermostatOnState= bState;
   //SetThermoSwitch(bState);
   if(wValuePercent == 100){
@@ -57,18 +57,18 @@ void HandleThermostat(bool bState, unsigned char ucValue){
 } //HandleThermostatProject
 
 
-Alexa::Alexa() {
-  Serial << "Alexa::Alexa(): " << szFileName << ", " << szFileDate << endl;
+AlexaClass::AlexaClass() {
+  Serial << "AlexaClass::AlexaClass(): " << szFileName << ", " << szFileDate << endl;
 } //constructor
 
 
-Alexa::~Alexa() {
-  Serial << "~Alexa(): Destructing" << endl;
+AlexaClass::~AlexaClass() {
+  Serial << "~AlexaClass(): Destructing" << endl;
 } //destructor
 
 
-void Alexa::Setup(char szAlexaName[]){
-  String szLogString= "Alexa::Setup(): Begin";
+void AlexaClass::Setup(char szAlexaName[]){
+  String szLogString= "AlexaClass::Setup(): Begin";
   LogToSerial(szLogString);
   // You have to call enable(true) once you have a WiFi connection
   // You can enable or disable the library at any moment
@@ -90,32 +90,32 @@ void Alexa::Setup(char szAlexaName[]){
   AlexaDevice.onSetState([](unsigned char device_id, const char *device_name, bool state, unsigned char value)
     {
     CallbackAlexaCommand(device_id, device_name, state, value);
-    } );  //Alexa.onSetState
+    } );  //AlexaClass.onSetState
 
   Serial << LOG0 << "SetupAlexa(): Alexa set up for " << szAlexaName << endl;
   return;
 } //SetupAlexa
 
 
-void Alexa::Handle(){
+void AlexaClass::Handle(){
   wAlexaHandleCount++;  //Track how many times this is called before next handle system (10 sec)
   AlexaDevice.handle();
   return;
 } //HandleAlexa
 
 
-bool Alexa::GetLastThermostatOnState(){
+bool AlexaClass::GetLastThermostatOnState(){
   return(LastThermostatOnState);
 }
 
 
-float Alexa::GetCurrentTemperatureSetting(){
+float AlexaClass::GetCurrentTemperatureSetting(){
   return(LastTemperatureSetting);
 }
 
 
 /*
-void Alexa::DoAlexaCommand(unsigned char ucDdeviceID,const char* szDeviceName,bool bState,unsigned char ucValue){
+void AlexaClass::DoAlexaCommand(unsigned char ucDdeviceID,const char* szDeviceName,bool bState,unsigned char ucValue){
   char    szCharString[100];
   sprintf(szCharString, "DoAlexaCommand(): Device #%d (%s) bState: %s value: %d",
       ucDdeviceID, szDeviceName, (bState ? "ON " : "OFF"), ucValue);

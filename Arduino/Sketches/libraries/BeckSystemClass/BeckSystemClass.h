@@ -3,15 +3,21 @@
 
 #include <BeckBiotaLib.h>
 #include <BeckAlexaClass.h>
+#include <BeckThermostatClass.h>
 
 
-class System{
+class SystemClass{
 protected:
-  Alexa   SystemAlexa;
+  char        szAlexaName[50];
+  //char        *pAlexaName         = "Larry's Device";
+  float         fSetpoint     = 88.0;
+
+  AlexaClass        SystemAlexa;
+  ThermostatClass   SystemThermostat;
 
 public:
-  System();
-  virtual ~System();
+  SystemClass();
+  virtual ~SystemClass();
 
 void  Setup                         ();
 void  Handle                        (void);

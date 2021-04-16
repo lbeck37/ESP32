@@ -13,6 +13,8 @@ const char szFileDate[]    = "4/14/21d";
 #include <Time.h>
 #include <WiFiClient.h>
 
+#include <BeckSystemClass.h>
+
 //Select type of project to build for.
 ProjectType      eProjectType            = eThermoDev;
 //ProjectType      eProjectType            = eFireplace;
@@ -77,6 +79,7 @@ unsigned long   _ulOTATimeoutMsec   = millis();
 
 ThermoDisplay     cDisplay;
 //Thermostat        BiotaThermostat;
+SystemClass       ThermoSystem;
 
 //Prototypes for functions in this file.
 void HandleSystem();
@@ -113,8 +116,9 @@ void setup(){
               SetupAccessPt(_acAccessPointSSID, _acAccessPointPW);
         #endif
         #if DO_ALEXA
-              SetupAlexa(_acAlexaName);
+              //SetupAlexa(_acAlexaName);
         #endif
+        ThermoSystem.Setup();
       } //if(_bWiFiConnected)
       else{
         Serial << "setup(): WiFi is not connected" << endl;
@@ -217,17 +221,21 @@ void loop(){
 
 
 void HandleSystem(){
-#if DO_ALEXA
   if (_bWiFiConnected){
-    HandleAlexa();
-    CheckTaskTime("HandleAlexa");
+    //HandleAlexa();
+    //CheckTaskTime("HandleAlexa");
+    ThermoSystem.Handle();
+/*
     if(_bAlexaChanged){
       _bAlexaChanged= false;
       UpdateDisplay();
     } //if(bAlexaChanged)
+*/
   } //if(_bWiFiConnected)
+  UpdateDisplay();
   wAlexaHandleCount= 0;
-#endif
+
+/*
   switch (_eProjectType){
     case eFireplace:
     case eHeater:
@@ -245,7 +253,7 @@ void HandleSystem(){
         #endif
         //Serial << endl << LOG0 << "BeckE32_Biota.ino: HandleSystem(): Call BiotaThermostat.HandleThermostat()" << endl;
         //HandleThermostat();   //BeckThermoLib.cpp
-        BiotaThermostat.HandleThermostat();   //BeckThermoLib.cpp
+        BiotaThermostat.Handle();   //BeckThermostatClass.cpp
         //HandleHeatSwitch();
         //Serial << LOG0 << "BeckE32_Biota.ino: HandleSystem(): Call UpdateDisplay()" << endl;
         UpdateDisplay();
@@ -269,6 +277,7 @@ void HandleSystem(){
       Serial << LOG0 << "HandleSystem(): Bad switch, _eProjectType= " << _eProjectType << endl;
       break;
   } //switch
+*/
   return;
 } //HandleSystem
 

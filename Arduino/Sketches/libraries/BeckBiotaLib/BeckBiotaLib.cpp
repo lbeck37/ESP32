@@ -43,7 +43,7 @@ bool SetupSystem(ProjectType eProjectType){
     case eFireplace:
       strcpy(_acHostname        , "BeckFireplace");
       strcpy(_acProjectType     , "FIREPLACE");
-      strcpy(_acAlexaName       , "Fireplace");
+      //strcpy(_acAlexaName       , "Fireplace");
       strcpy(_acRouterName      , "Aspot24");
       strcpy(_acRouterPW        , "Qazqaz11");
       strcpy(_acAccessPointSSID , "FireplaceSpot");

@@ -4,7 +4,7 @@
 #include <DallasTemperature.h>
 #include <OneWire.h>
 
-class Thermostat{
+class ThermostatClass{
 protected:
   int             sThermoTimesInRow       = 3;      //Max times temperature is outside range before switch
   float           fMaxHeatRangeF          = 0.10;     //Temp above setpoint before heat is turned off
@@ -33,10 +33,11 @@ protected:
   void    UpdateDisplay             (void);
 
   public:
-  Thermostat();
-  virtual ~Thermostat();
+  ThermostatClass();
+  virtual ~ThermostatClass();
 
-  void    HandleThermostat          (void);
+  void    Setup                     (void);
+  void    Handle                    (void);
   void    Set_Setpoint              (float fSetpoint);
   void    Set_Setpoint              (unsigned char ucSetpoint);
   float   Get_Setpoint              (void);
@@ -45,8 +46,8 @@ protected:
   float   Get_MaxHeatRangeF         (void);
   bool    ThermostatIsOn            (void);
   bool    HeatIsOn                  (void);
-};  //Thermostat class
+};  //ThermostatClass
 
-extern Thermostat          BiotaThermostat;
+extern ThermostatClass          BiotaThermostat;
 
 //Last line.

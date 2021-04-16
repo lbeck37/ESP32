@@ -52,7 +52,7 @@ protected:
   FontFaceType    eSetpoint_TextFace        = eTextFace;
   FontPointType   eSetpoint_TextPointSize   = eText26px;
 
-  Thermostat      BiotaThermostat;
+  ThermostatClass      BiotaThermostat;
 
   //Protected methods
   void  DisplayCurrentTemperature   (ThermoStruct stData);
