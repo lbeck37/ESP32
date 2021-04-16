@@ -4,6 +4,15 @@
 #include <DallasTemperature.h>
 #include <OneWire.h>
 
+extern bool         _bThermoOn;
+extern bool         _bHeatOn;
+extern float        _fLastDegF;
+extern float        _fSetpointF;
+extern float        _fMaxHeatRangeF;
+extern float        _fThermoOffDegF;
+extern float        _fMinSetpoint;
+extern float        _fMaxSetpoint;
+
 class ThermostatClass{
 protected:
   int             sThermoTimesInRow       = 3;      //Max times temperature is outside range before switch

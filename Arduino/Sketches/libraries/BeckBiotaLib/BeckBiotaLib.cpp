@@ -4,6 +4,7 @@ const char szFileDate[]    = "4/7/21b";
 // BeckBiotaLib.cpp 4/7/21, was 10/21/20a, was 2/2/20b
 #include <BeckBiotaLib.h>
 #include <BeckSwitchLib.h>
+#include <BeckSystemClass.h>
 
 ProjectType   _eProjectType;
 

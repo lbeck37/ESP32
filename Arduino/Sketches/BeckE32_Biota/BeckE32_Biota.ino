@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_Biota.ino";
-const char szFileDate[]    = "4/15/21b";
+const char szFileDate[]    = "4/16/21c";
 
 #include <BeckBiotaDefines.h>
 #include <BeckBiotaLib.h>
@@ -73,10 +73,12 @@ unsigned long   _ulOTATimeoutMsec   = millis();
 
 //ThermoDisplay     cDisplay;
 //Thermostat        BiotaThermostat;
-SystemClass       ThermoSystem;
+//SystemClass       ThermoSystem;
 
 //Prototypes for functions in this file.
-void HandleSystem();
+void SetupOptionalModules   (void);
+void HandleOptionalModules  (void);
+void HandleSystem           (void);
 
 void setup(){
   //Thermostat        BiotaThermostat;
@@ -86,56 +88,8 @@ void setup(){
 
   _bSystemOk= SetupSystem(eProjectType);  //BeckBiotaib.cpp
   if(_bSystemOk){
-    //Skip WiFi until ESP32 is coming up with the TTGO display
-    if (true){
-      SetupWiFi();
-    }
-    else{
-      Serial << LOG0 << "setup(): Skipping Wifi until TTGO graphics are up" << endl;
-      _bWiFiConnected= false;
-    }
-
-    #if DO_ALEXA || DO_OTA || DO_ACCESS_POINT || DO_FIREBASE || DO_WEB_SERVER || DO_NTP || USE_IMU
-      if (_bWiFiConnected){
-        #if DO_OTA
-              SetupOTAWebPages();
-        #endif
-
-        #if DO_WEB_SERVER
-              //SetupTermoWebPage();
-              StartWebServer(_acHostname);
-        #endif
-
-        #if DO_ACCESS_POINT
-              SetupAccessPt(_acAccessPointSSID, _acAccessPointPW);
-        #endif
-        #if DO_ALEXA
-              //SetupAlexa(_acAlexaName);
-        #endif
-        ThermoSystem.Setup();
-      } //if(_bWiFiConnected)
-      else{
-        Serial << "setup(): WiFi is not connected" << endl;
-      }
-
-      #if DO_FIREBASE
-          Serial << LOG0 << "setup(): SetupSystem(): Call Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH)" << endl;
-          Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);
-      #endif
-
-      #if USE_IMU
-          if(eProjectType == ePitchMeter){
-            bMPU9150_On= SetupMPU9150(szSketchName, szFileDate, ulMPU9150HandlerPeriodMsec);
-          } //if(eProjectType==ePitchMeter)
-      #endif
-
-      #if DO_NTP
-          if (_bWiFiConnected){
-            SetupNTP();
-          } //if(_bWiFiConnected)
-      #endif  //DO_NTP
-    #endif  //All defines
-
+    SetupWiFi();
+    SetupOptionalModules();
     SetupSwitches();
     ulLastTaskMsec= millis();
   } //if(_bSystemOk)
@@ -152,7 +106,7 @@ void setup(){
 
 void loop(){
   ulLastTaskMsec= millis();
-
+/*
   #if DO_ACCESS_POINT || DO_FIREBASE || DO_WEB_SERVER || DO_NTP
     #if DO_WEB_SERVER
       if (_bWiFiConnected){
@@ -177,6 +131,8 @@ void loop(){
       } //if(_bWiFiConnected)
     #endif  //DO_ACCESS_POINT
   #endif  //Multiple conditionals
+*/
+  HandleOptionalModules();
 
   if (!_bOTA_Started){
     HandleSystem();
@@ -192,6 +148,78 @@ void loop(){
 
   return;
 } //loop
+
+
+void SetupOptionalModules(){
+  if (_bWiFiConnected){
+    #if DO_OTA
+          SetupOTAWebPages();
+    #endif
+
+    #if DO_WEB_SERVER
+          //SetupTermoWebPage();
+          StartWebServer(_acHostname);
+    #endif
+
+    #if DO_ACCESS_POINT
+          SetupAccessPt(_acAccessPointSSID, _acAccessPointPW);
+    #endif
+    #if DO_ALEXA
+          //SetupAlexa(_acAlexaName);
+    #endif
+  } //if(_bWiFiConnected)
+  else{
+    Serial << "setup(): WiFi is not connected" << endl;
+  }
+
+  #if DO_FIREBASE
+      Serial << LOG0 << "setup(): SetupSystem(): Call Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH)" << endl;
+      Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);
+  #endif
+
+  #if USE_IMU
+      if(eProjectType == ePitchMeter){
+        bMPU9150_On= SetupMPU9150(szSketchName, szFileDate, ulMPU9150HandlerPeriodMsec);
+      } //if(eProjectType==ePitchMeter)
+  #endif
+
+  #if DO_NTP
+      if (_bWiFiConnected){
+        SetupNTP();
+      } //if(_bWiFiConnected)
+  #endif  //DO_NTP
+  return;
+} //SetupOptionalModules
+
+
+void HandleOptionalModules(void){
+#if DO_ACCESS_POINT || DO_FIREBASE || DO_WEB_SERVER || DO_NTP
+  #if DO_WEB_SERVER
+    if (_bWiFiConnected){
+      HandleWebServer();
+      CheckTaskTime("loop(): HandleWebServer()");
+    } //if(_bWiFiConnected)
+  #endif
+  #if DO_FIREBASE
+    //TestFirefox();
+    //CheckTaskTime("loop(): TestFirefox()");
+  #endif
+  #if DO_NTP
+    if (_bWiFiConnected){
+      HandleNTPUpdate();
+      CheckTaskTime("loop(): HandleNTPUpdate()");
+    } //if(_bWiFiConnected)
+  #endif
+  #if DO_ACCESS_POINT
+    if (_bWiFiConnected){
+      HandleSoftAPClient();       //Listen for HTTP requests from clients
+      CheckTaskTime("loop(): HandleSoftAPClient()");
+    } //if(_bWiFiConnected)
+  #endif  //DO_ACCESS_POINT
+#endif  //Multiple conditionals
+
+  return;
+} //HandleOptionalModules
 
 
   void UpdateDisplay(void){
@@ -218,7 +246,7 @@ void HandleSystem(){
   if (_bWiFiConnected){
     //HandleAlexa();
     //CheckTaskTime("HandleAlexa");
-    ThermoSystem.Handle();
+    BiotaSystem.Handle();
   } //if(_bWiFiConnected)
   UpdateDisplay();
   wAlexaHandleCount= 0;

@@ -8,12 +8,22 @@
 
 //extern AlexaClass        SystemAlexa;
 
+//Externs defined in BeckBiotaLib.cpp
+extern bool         _bThermoOn;
+extern bool         _bHeatOn;
+extern float        _fLastDegF;
+extern float        _fSetpointF;
+extern float        _fMaxHeatRangeF;
+extern float        _fThermoOffDegF;
+extern float        _fMinSetpoint;
+extern float        _fMaxSetpoint;
+
 class SystemClass{
 protected:
-  char          szAlexaName[50];
+  char          szAlexaName[50]= "Larry's Device";
   //char        *pAlexaName         = "Larry's Device";
   float         fSetpoint     = 88.0;
-  bool          bThermostatOn;
+  bool          bThermostatOn ;
 
   //ThermostatClass   SystemThermostat;
 
@@ -23,5 +33,8 @@ public:
 
   void  Setup                         ();
   void  Handle                        (void);
-};  //System class
+};  //SystemClass
+
+extern SystemClass        BiotaSystem;       //This is so every module can use the same object
+
 //Last line.

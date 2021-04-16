@@ -1,4 +1,4 @@
-//BeckBiotaLib.h, "4/7/21b";   //was 3/29/21b, was 12/28/19a
+//BeckBiotaLib.h, "4/16/21b";   //was 3/29/21b, was 12/28/19a
 #pragma once
 
 enum ProjectType{
@@ -28,7 +28,7 @@ extern char          _acAccessPointPW[];
 #include <BeckI2cLib.h>
 #include <BeckLogLib.h>
 //#include <BeckMPU9150Lib.h>
-#include <BeckThermoLib.h>
+//#include <BeckThermoLib.h>
 
 #if USE_IMU
   #include <BeckMPU9150Lib.h>

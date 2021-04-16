@@ -72,6 +72,6 @@ public:
   void  DrawScreen        (ThermoStruct stData);
 };  //ThermoDisplayClass
 
-extern ThermoDisplayClass        SystemThermoDisplay;       //This is so every module can use the same Alexa object
+extern ThermoDisplayClass        SystemThermoDisplay;       //This is so every module can use the same object
 
 //Last line.
