@@ -1,8 +1,11 @@
 const char szFileName[]  = "BeckAlexaClass.cpp";
-const char szFileDate[]  = "4/15/21a";
+const char szFileDate[]  = "4/15/21b";
 
 #include <BeckAlexaClass.h>
 #include <BeckBiotaLib.h>
+#include <BeckThermoDataClass.h>
+
+AlexaClass        SystemAlexa;
 
 //Prototypes
 void    CallbackAlexaCommand    (unsigned char ucDdeviceID,const char* szDeviceName,bool bState,unsigned char ucValue);
@@ -51,8 +54,11 @@ void HandleThermostat(bool bState, unsigned char ucValue){
     //fSetThermoSetpoint(ucValue);
     //ThermostatObject.Set_Setpoint(ucValue);
     //BiotaThermostat.Set_Setpoint(ucValue);
-    float LastTemperatureSetting= round( ((float)ucValue / 255.0) * 100.0);
+    //_fSetpoint= round( ((float)ucValue / 255.0) * 100.0);
+    SystemAlexa.SetLastSetpoint(round( ((float)ucValue / 255.0) * 100.0));
   } //if(wValuePercent==100)else
+  //_bThermostatOn= bState;
+  SystemAlexa.SetLastThermostatOnState(bState);
   return;
 } //HandleThermostatProject
 
@@ -70,6 +76,7 @@ AlexaClass::~AlexaClass() {
 void AlexaClass::Setup(char szAlexaName[]){
   String szLogString= "AlexaClass::Setup(): Begin";
   LogToSerial(szLogString);
+
   // You have to call enable(true) once you have a WiFi connection
   // You can enable or disable the library at any moment
   // Disabling it will prevent the devices from being discovered and switched
@@ -104,40 +111,23 @@ void AlexaClass::Handle(){
 } //HandleAlexa
 
 
+void AlexaClass::SetLastThermostatOnState(bool bNewThermostatOnState){
+  LastThermostatOnState= bNewThermostatOnState;
+}
+
+
+void AlexaClass::SetLastSetpoint(float fNewSetpoint){
+  LastSetpoint= fNewSetpoint;
+  return;
+}
+
+
 bool AlexaClass::GetLastThermostatOnState(){
   return(LastThermostatOnState);
 }
 
 
-float AlexaClass::GetCurrentTemperatureSetting(){
-  return(LastTemperatureSetting);
+float AlexaClass::GetLastSetpoint(){
+  return(LastSetpoint);
 }
-
-
-/*
-void AlexaClass::DoAlexaCommand(unsigned char ucDdeviceID,const char* szDeviceName,bool bState,unsigned char ucValue){
-  char    szCharString[100];
-  sprintf(szCharString, "DoAlexaCommand(): Device #%d (%s) bState: %s value: %d",
-      ucDdeviceID, szDeviceName, (bState ? "ON " : "OFF"), ucValue);
-  String szLogString= szCharString;
-  LogToSerial(szLogString);
-  switch (_eProjectType){
-    case eFireplace:
-    case eGarage:
-    case eThermoDev:
-    case eHeater:
-      HandleThermostat(bState, ucValue);
-      break;
-    case ePitchMeter:
-      break;
-    case eFrontLights:
-      break;
-    default:
-      Serial << LOG0 << "DoAlexaCommand(): Bad switch, _eProjectType= " << _eProjectType << endl;
-      break;
-  } //switch
-  bAlexaChanged= true;
-  return;
-} //DoAlexaCommand
-*/
 //Last line.

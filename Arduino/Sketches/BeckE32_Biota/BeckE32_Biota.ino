@@ -1,12 +1,11 @@
 const char szSketchName[]  = "BeckE32_Biota.ino";
-const char szFileDate[]    = "4/14/21d";
+const char szFileDate[]    = "4/15/21b";
 
 #include <BeckBiotaDefines.h>
 #include <BeckBiotaLib.h>
 #include <BeckMiniLib.h>
 #include <BeckSwitchLib.h>
 #include <BeckThermoDisplayClass.h>
-//#include <BeckThermoLib.h>
 #include <BeckThermostatClass.h>
 #include <BeckWiFiLib.h>
 #include <Streaming.h>
@@ -68,11 +67,6 @@ ProjectType      eProjectType            = eThermoDev;
     static        bool        bMPU9150_On;
   #endif
 #endif  //All defines
-
-static const  uint32_t    ulThermHandlerPeriodMsec    = 1 * lMsecPerSec; //mSec between running system handler
-static        uint32_t    ulNextThermHandlerMsec      = 0;
-static        int         _wBadCount                  = 0;
-static        int         _wGoodCount                 = 0;
 
 bool            _bOTA_Started       = false;
 unsigned long   _ulOTATimeoutMsec   = millis();
@@ -225,59 +219,10 @@ void HandleSystem(){
     //HandleAlexa();
     //CheckTaskTime("HandleAlexa");
     ThermoSystem.Handle();
-/*
-    if(_bAlexaChanged){
-      _bAlexaChanged= false;
-      UpdateDisplay();
-    } //if(bAlexaChanged)
-*/
   } //if(_bWiFiConnected)
   UpdateDisplay();
   wAlexaHandleCount= 0;
 
-/*
-  switch (_eProjectType){
-    case eFireplace:
-    case eHeater:
-    case eGarage:
-    case eThermoDev:
-      if (millis() >= ulNextThermHandlerMsec){
-        ulNextThermHandlerMsec= millis() + ulThermHandlerPeriodMsec;
-        _wGoodCount= 0;
-        _wBadCount= 0;
-        #if DO_ALEXA
-          if (false && (wAlexaHandleCount < 1000)){
-            //HandleAlexa() gets called ~8,000 times every 10 sec, except when it's 1 or 2
-            LogToSerial("HandleSystem():HandleAlexa() Times called=", wAlexaHandleCount);
-          } //if (wAlexaHandleCount<1000)
-        #endif
-        //Serial << endl << LOG0 << "BeckE32_Biota.ino: HandleSystem(): Call BiotaThermostat.HandleThermostat()" << endl;
-        //HandleThermostat();   //BeckThermoLib.cpp
-        BiotaThermostat.Handle();   //BeckThermostatClass.cpp
-        //HandleHeatSwitch();
-        //Serial << LOG0 << "BeckE32_Biota.ino: HandleSystem(): Call UpdateDisplay()" << endl;
-        UpdateDisplay();
-      } //if(millis()>=ulNextThermHandlerMsec)
-     break;
-    case ePitchMeter:
-      #if USE_IMU
-        if (bMPU9150_On){
-          HandleMPU9150();
-        } //if(bMPU9150_On)
-        if (millis() >= ulNextMPU9150DisplayMsec){
-          ulNextMPU9150DisplayMsec= millis() + ulMPU9150DisplayPeriodMsec;
-          UpdateDisplay();
-        } //if(millis()>=ulNextMPU9150DisplayMsec)
-      #endif  //USE_IMU
-      break;
-    case eFrontLights:
-      //HandleFrontLights();
-      break;
-    default:
-      Serial << LOG0 << "HandleSystem(): Bad switch, _eProjectType= " << _eProjectType << endl;
-      break;
-  } //switch
-*/
   return;
 } //HandleSystem
 
