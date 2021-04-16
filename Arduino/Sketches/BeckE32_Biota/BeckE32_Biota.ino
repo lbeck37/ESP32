@@ -71,7 +71,7 @@ ProjectType      eProjectType            = eThermoDev;
 bool            _bOTA_Started       = false;
 unsigned long   _ulOTATimeoutMsec   = millis();
 
-ThermoDisplay     cDisplay;
+//ThermoDisplay     cDisplay;
 //Thermostat        BiotaThermostat;
 SystemClass       ThermoSystem;
 
@@ -209,7 +209,7 @@ void loop(){
     stData.bThermoOn        = BiotaThermostat.ThermostatIsOn();
     stData.bHeatOn          = BiotaThermostat.HeatIsOn();
 
-    cDisplay.DrawScreen(stData);
+    SystemThermoDisplay.DrawScreen(stData);
     return;
   } //UpdateDisplay
 

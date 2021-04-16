@@ -3,7 +3,7 @@
 #include <BeckDisplayClass.h>
 #include <BeckThermostatClass.h>
 
-class ThermoDisplay : public ColorDisplay {
+class ThermoDisplayClass : public ColorDisplay {
 protected:
   uint32_t    ulCurrentDegFOnTimeSeconds  = 4;
   uint32_t    ulSetpointOnTimeSeconds     = 2;
@@ -63,10 +63,15 @@ protected:
   void  DisplayHeatOnBox            (ThermoStruct stData);
 
 public:
-  ThermoDisplay();
-  //ThermoDisplay(Thermostat &BiotaThermostatObject);
-  virtual ~ThermoDisplay();
+  ThermoDisplayClass();
+  //ThermoDisplayClass(Thermostat &BiotaThermostatObject);
+  virtual ~ThermoDisplayClass();
 
+  void  Setup             (void){}
+  void  Handle            (void){}
   void  DrawScreen        (ThermoStruct stData);
-};  //ThermoDisplay class
+};  //ThermoDisplayClass
+
+extern ThermoDisplayClass        SystemThermoDisplay;       //This is so every module can use the same Alexa object
+
 //Last line.

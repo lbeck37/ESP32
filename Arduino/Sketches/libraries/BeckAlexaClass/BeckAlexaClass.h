@@ -1,4 +1,4 @@
-//4/15/21b, BeckAlexaClass.h
+//4/16/21a, BeckAlexaClass.h
 #pragma once
 
 #include <BeckBiotaLib.h>
@@ -27,3 +27,6 @@ public:
   float GetLastSetpoint               (void);
   bool  GetLastThermostatOnState      (void);
 };  //AlexaClass
+
+extern AlexaClass        SystemAlexa;       //This is so every module can use the same Alexa object
+//Last line.

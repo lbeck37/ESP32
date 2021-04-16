@@ -18,15 +18,17 @@ void SystemClass::Setup(){
   LogToSerial(szLogString);
   strcpy(szAlexaName, "Larry's Device");
 
-  SystemAlexa.Setup       ((char *)szAlexaName);
-  SystemThermostat.Setup  ();
+  SystemAlexa.Setup           ((char *)szAlexaName);
+  BiotaThermostat.Setup       ();
+  SystemThermoDisplay.Setup   ();
   return;
 } //Setup
 
 
 void SystemClass::Handle(){
-  SystemAlexa.Handle        ();
-  SystemThermostat.Handle   ();
+  SystemAlexa.Handle          ();
+  BiotaThermostat.Handle      ();
+  SystemThermoDisplay.Handle  ();
   return;
 } //Handle
 //Last line.

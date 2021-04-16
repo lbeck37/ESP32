@@ -1,20 +1,21 @@
-//4/15/21b, BeckSystemClass.h
+//4/16/21a, BeckSystemClass.h
 #pragma once
 
 #include <BeckBiotaLib.h>
 #include <BeckAlexaClass.h>
 #include <BeckThermostatClass.h>
+#include <BeckThermoDisplayClass.h>
 
-extern AlexaClass        SystemAlexa;
+//extern AlexaClass        SystemAlexa;
 
 class SystemClass{
 protected:
-  char        szAlexaName[50];
+  char          szAlexaName[50];
   //char        *pAlexaName         = "Larry's Device";
   float         fSetpoint     = 88.0;
   bool          bThermostatOn;
 
-  ThermostatClass   SystemThermostat;
+  //ThermostatClass   SystemThermostat;
 
 public:
   SystemClass();

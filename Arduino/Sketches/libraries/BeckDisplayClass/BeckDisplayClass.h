@@ -112,6 +112,8 @@ public:
 
   PUnit Invert_Y                      (PUnit Y1);       //Implemented at the Display Class level
 
+  virtual void  Setup                 (void){}
+  virtual void  Handle                (void){}
   virtual void  Update                (ThermoStruct stData){}
   virtual void  SetCursor             (PUnit CursorX, PUnit CursorY){}
   virtual void  SetBackgroundColor    (Colortype NewBackgroundColor){}
