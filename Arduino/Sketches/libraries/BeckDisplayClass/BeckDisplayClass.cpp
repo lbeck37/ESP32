@@ -26,7 +26,7 @@ const char szFileDate[]  = "4/17/21a";
   #include <Roboto_Medium_150.h>
 #endif
 
-ThermoDisplayClass   BiotaDisplay;
+//ThermoDisplayClass   BiotaDisplay;
 
 PUnit     ScreenWidth           = 240;
 PUnit     ScreenHeight          = 135;

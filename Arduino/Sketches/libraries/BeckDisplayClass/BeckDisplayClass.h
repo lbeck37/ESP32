@@ -166,6 +166,7 @@ public:
 };  //ColorDisplay class
 
 
+/*
 class ThermoDisplayClass : public ColorDisplay {
 protected:
   uint32_t    ulCurrentDegFOnTimeSeconds  = 4;
@@ -237,5 +238,6 @@ public:
 };  //ThermoDisplayClass
 
 extern ThermoDisplayClass              BiotaDisplay;       //This is so every module can use the same object
+*/
 
 //Last line.

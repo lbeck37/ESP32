@@ -1,14 +1,13 @@
 const char szFileName[]  = "BeckSystemClass.cpp";
-const char szFileDate[]  = "4/16/21b";
+const char szFileDate[]  = "4/16/21d";
 
 #include <BeckSystemClass.h>
 #include <BeckAlexaClass.h>
-#include <BeckDisplayClass.h>
+#include <BeckThermoDisplayClass.h>
+#include <Streaming.h>
 
 SystemClass           BiotaSystem;       //This is so every module can use the same object
 AlexaClass            BiotaAlexa;
-//ThermoDisplayClass    BiotaDisplay;       //This is so every module can use the same object
-//ThermostatClass       BiotaThermostat;
 
 SystemClass::SystemClass() {
   Serial << "SystemClass::SystemClass(): " << szFileName << ", " << szFileDate << endl;

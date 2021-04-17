@@ -1,17 +1,9 @@
-// 4/17/21a, BeckThermoDisplayClass.h
+// 4/17/21b, BeckThermoDisplayClass.h
 #pragma once
-/*
-#include <BeckBiotaLib.h>
 #include <BeckMiniLib.h>
-
 #include <BeckDisplayClass.h>
-#include <BeckThermostatClass.h>
-
-//typedef int32_t       PUnit;        //Pixel Unit
-
 
 class ThermoDisplayClass : public ColorDisplay {
-//class ThermoDisplayClass : public ColorDisplay {
 protected:
   uint32_t    ulCurrentDegFOnTimeSeconds  = 4;
   uint32_t    ulSetpointOnTimeSeconds     = 2;
@@ -60,7 +52,7 @@ protected:
   FontFaceType    eSetpoint_TextFace        = eTextFace;
   FontPointType   eSetpoint_TextPointSize   = eText26px;
 
-  ThermostatClass      BiotaThermostat;
+  //ThermostatClass      BiotaThermostat;
 
   //Protected methods
   void  DisplayCurrentTemperature   (ThermoStruct stData);
@@ -78,9 +70,8 @@ public:
   void  Setup             (void){}
   void  Handle            (void){}
   void  DrawScreen        (ThermoStruct stData);
+  //void  DrawScreen        (void);
 };  //ThermoDisplayClass
 
-//extern ThermoDisplayClass        BiotaDisplay;       //This is so every module can use the same object
-*/
-
+extern ThermoDisplayClass              BiotaDisplay;       //This is so every module can use the same object
 //Last line.

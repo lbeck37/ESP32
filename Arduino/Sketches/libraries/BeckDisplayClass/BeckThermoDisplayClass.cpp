@@ -1,11 +1,11 @@
 const char szFileName[]  = "BeckThermoDisplayClass.cpp";
 const char szFileDate[]  = "4/17/21a";
 
-//#include <BeckThermoDisplayClass.h>
-#include <BeckDisplayClass.h>
+#include <BeckThermoDisplayClass.h>
+//#include <BeckDisplayClass.h>
 #include <Streaming.h>
 
-//ThermoDisplayClass        BiotaDisplay;      //Declared in BeckThermoDisplayClass.cpp
+ThermoDisplayClass        BiotaDisplay;
 
 ThermoDisplayClass::ThermoDisplayClass() {
   Serial << LOG0 << "ThermoDisplayClass::ThermoDisplayClass(): " << szFileName << ", " << szFileDate << endl;
