@@ -1,9 +1,13 @@
+// 4/17/21a, BeckThermoDisplayClass.h
 #pragma once
-// 4/14/21a, BeckThermoDisplayClass.h
-#include <BeckDisplayClass.h>
-//#include <BeckThermostatClass.h>
+/*
+#include <BeckBiotaLib.h>
+#include <BeckMiniLib.h>
 
-typedef int32_t       PUnit;        //Pixel Unit
+#include <BeckDisplayClass.h>
+#include <BeckThermostatClass.h>
+
+//typedef int32_t       PUnit;        //Pixel Unit
 
 
 class ThermoDisplayClass : public ColorDisplay {
@@ -77,5 +81,6 @@ public:
 };  //ThermoDisplayClass
 
 //extern ThermoDisplayClass        BiotaDisplay;       //This is so every module can use the same object
+*/
 
 //Last line.

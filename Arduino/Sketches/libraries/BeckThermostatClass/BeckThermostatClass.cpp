@@ -1,5 +1,5 @@
 const char szFileName[]  = "BeckThermostatClass.cpp";
-const char szFileDate[]  = "4/15/21a";
+const char szFileDate[]  = "4/17/21a";
 
 #include <BeckThermostatClass.h>
 //#include <BeckMiniLib.h>
@@ -14,6 +14,7 @@ const char szFileDate[]  = "4/15/21a";
 OneWire             oOneWire(sOneWireGPIO);
 DallasTemperature   oDallasTempSensor(&oOneWire);
 */
+
 OneWire             BiotaOneWire(sOneWireGPIO);
 DallasTemperature   BiotaTempSensor(&BiotaOneWire);
 ThermostatClass     BiotaThermostat;
@@ -39,11 +40,11 @@ void ThermostatClass::Setup(){
   unsigned long   ulStartTime;
 
   //Read the Dallas One-wire temperature sensor
-  float fDegF= Get_CurrentDegF();
+  float fDegF= GetCurrentDegF();
 
   if (bThermoOn){
     if (bHeatOn){
-      if (fDegF >= fThermoOffDegF){
+      if (fDegF >= fThermoOffDeg){
         bStateChanged= true;
         if (++sThermoTimesCount >= sThermoTimesInRow){
           TurnHeatOn(false);
@@ -115,68 +116,96 @@ void ThermostatClass::HandleHeatSwitch(){
 
 void ThermostatClass::LogThermostatData(float fDegF){
   static char    sz100CharBuffer[100];
-  sprintf(sz100CharBuffer, " %d %d %4.2f %4.2f %4.2f", bHeatOn, sThermoTimesCount, fDegF, fSetpoint, fThermoOffDegF);
+  sprintf(sz100CharBuffer, " %d %d %4.2f %4.2f %4.2f", bHeatOn, sThermoTimesCount, fDegF, fSetpoint, fThermoOffDeg);
   LogToSerial(sz100CharBuffer);
   return;
 } //LogThermostatData
 
 
-void ThermostatClass::Set_Setpoint(unsigned char ucSetpoint){
+/*
+void ThermostatClass::SetSetpoint(unsigned char ucSetpoint){
   float fSetpoint= round( ((float)ucSetpoint / 255.0) * 100.0);
-  Set_Setpoint(fSetpoint);
+  SetSetpoint(fSetpoint);
   return;
-} //Set_Setpoint(unsigned char)
+} //SetSetpoint(unsigned char)
+*/
 
 
-void ThermostatClass::Set_Setpoint(float fNewSetpoint){
-  Serial << LOG0 << "ThermostatClass::Set_Setpoint(" << fNewSetpoint << "): Begin" << endl;
+void ThermostatClass::SetSetpoint(float fNewSetpoint){
+  Serial << LOG0 << "ThermostatClass::SetSetpoint(" << fNewSetpoint << "): Begin" << endl;
   float fOriginalSetpoint= fSetpoint;
   if( (fNewSetpoint >= fMinSetpoint) && (fNewSetpoint <= fMaxSetpoint)){
     if(fNewSetpoint != fOriginalSetpoint){
       fSetpoint      = fNewSetpoint;
-      fThermoOffDegF = fSetpoint + fMaxHeatRangeF;
-      Serial << LOG0 << "ThermostatClass::Set_Setpoint(): Set fSetpoint to " << fSetpoint << endl;
+      fThermoOffDeg = fSetpoint + fMaxHeatRange;
+      Serial << LOG0 << "ThermostatClass::SetSetpoint(): Set fSetpoint to " << fSetpoint << endl;
     } //if(fSetpoint!=_fSetpoint)
   } //if((fSetpoint>=...
   if(fSetpoint == fOriginalSetpoint){
-    Serial << LOG0 << "ThermostatClass::Set_Setpoint(): fSetpoint remains at " << fSetpoint << endl;
+    Serial << LOG0 << "ThermostatClass::SetSetpoint(): fSetpoint remains at " << fSetpoint << endl;
   } //if((_fSetpoint==fLastSetpoint)
   return;
-} //Set_Setpoint(float)
+} //SetSetpoint(float)
 
 
-float ThermostatClass::Get_CurrentDegF(){
+float ThermostatClass::GetSetpoint(){
+  return fSetpoint;
+}
+
+
+float ThermostatClass::GetCurrentDegF(){
   //This routine reads and also sets the new current temperature.
   BiotaTempSensor.requestTemperatures(); // Send the command to get temperatures
   fLastDegF= BiotaTempSensor.getTempFByIndex(0);
-
   return fLastDegF;
-}  //Get_CurrentDegF
+}
 
 
-float ThermostatClass::Get_Setpoint(){
-  return fSetpoint;
-}  //fGet_Setpoint
-
-
-void ThermostatClass::Set_MaxHeatRangeF(float fNewMaxHeatRangeF){
+void ThermostatClass::SetMaxHeatRange(float NewMaxHeatRange){
+  fMaxHeatRange= NewMaxHeatRange;
   return;
-} //Set_MaxHeatRangeF
+}
 
 
-float ThermostatClass::Get_MaxHeatRangeF(){
-  return fMaxHeatRangeF;
-}  //Get_MaxHeatRangeF
+float ThermostatClass::GetMaxHeatRange(){
+  return fMaxHeatRange;
+}
 
 
-bool ThermostatClass::ThermostatIsOn(){
+void ThermostatClass::SetMinSetpoint(float NewMinSetpoint){
+  fMinSetpoint= NewMinSetpoint;
+  return;
+}
+
+float ThermostatClass::GetMinSetpoint(void){
+  return fMinSetpoint;
+}
+
+
+void ThermostatClass::SetMaxSetpoint(float NewMaxSetpoint){
+  fMaxSetpoint= NewMaxSetpoint;
+  return;
+}
+
+float ThermostatClass::GetMaxSetpoint(void){
+  return fMaxSetpoint;
+}
+
+
+void ThermostatClass::SetThermostatOn(bool bNewThermoOn){
+  bThermoOn= bNewThermoOn;
+  return;
+}
+
+
+bool ThermostatClass::GetThermostatOn(){
   return bThermoOn;
-}  //ThermostatIsOn
+}  //GetThermostatOn
 
 
-bool ThermostatClass::HeatIsOn(){
+bool ThermostatClass::GetHeatOn(){
   return bHeatOn;
-}  //HeatIsOn
+}
 
 
 void ThermostatClass::TurnHeatOn(bool bTurnOn){

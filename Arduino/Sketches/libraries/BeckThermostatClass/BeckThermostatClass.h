@@ -1,42 +1,30 @@
-// BeckThermostatClass.h 4/16/21a
+// BeckThermostatClass.h 4/17/21b
 #pragma once
 #include <BeckSwitchLib.h>
 #include <DallasTemperature.h>
 #include <OneWire.h>
 
-/*
-extern bool         _bThermoOn;
-extern bool         _bHeatOn;
-extern float        _fLastDegF;
-extern float        _fSetpointF;
-extern float        _fMaxHeatRangeF;
-extern float        _fThermoOffDegF;
-extern float        _fMinSetpoint;
-extern float        _fMaxSetpoint;
-*/
-
 class ThermostatClass{
 protected:
   int             sThermoTimesInRow       = 3;      //Max times temperature is outside range before switch
-  float           fMaxHeatRangeF          = 0.10;     //Temp above setpoint before heat is turned off
+  float           fMaxHeatRange           = 0.10;     //Temp above setpoint before heat is turned off
   float           fLastDegF               = 99.9;     //Last temperature reading.
   float           fSetpoint               = 80.0;
   float           fMinSetpoint            = 40.0;
   float           fMaxSetpoint            = 80.0;
-  float           fThermoOffDegF          = fSetpoint + fMaxHeatRangeF;
+  float           fThermoOffDeg           = fSetpoint + fMaxHeatRange;
   int             sThermoTimesCount       = 0;        //Number of times temperature out of range
   bool            bThermoOn               = true;    //Whether thermostat is running, set in BeckBiotaLib
   bool            bHeatOn                 = true;    //If switch is on to turn on Heat.
-  //bool            DidHeatOnChange         = true;
   unsigned long   ulNextThermPrintMsec    = 0;
   unsigned long   ulThermPrintPeriodMsec  = 10 * lMsecPerSec; //mSec between running system handler
+
   OneWire         OneWireInstance         = OneWire(sOneWireGPIO);
   DallasTemperature  DallasTemperatureInstance= DallasTemperature(&OneWireInstance);
 
   //Create OneWire instance and tell Dallas Temperature Library to use oneWire Library
   //OneWire             OneWire(sOneWireGPIO);
   //DallasTemperature   DallasTempSensor(&OneWire);
-
 
   void    LogThermostatData         (float fDegF);
   void    HandleHeatSwitch          (void);
@@ -49,16 +37,22 @@ protected:
 
   void    Setup                     (void);
   void    Handle                    (void);
-  void    Set_Setpoint              (float fSetpoint);
-  void    Set_Setpoint              (unsigned char ucSetpoint);
-  float   Get_Setpoint              (void);
-  float   Get_CurrentDegF           (void);
-  void    Set_MaxHeatRangeF         (float fNewMaxHeatRangeF);
-  float   Get_MaxHeatRangeF         (void);
-  bool    ThermostatIsOn            (void);
-  bool    HeatIsOn                  (void);
+  void    SetSetpoint               (float Setpoint);
+  //void    SetSetpoint               (unsigned char Setpoint);
+  float   GetSetpoint               (void);
+  float   GetCurrentDegF            (void);
+  void    SetMaxHeatRange           (float NewMaxHeatRange);
+  float   GetMaxHeatRange           (void);
+  void    SetMinSetpoint            (float NewMinSetpoint);
+  float   GetMinSetpoint            (void);
+  void    SetMaxSetpoint            (float NewMaxSetpoint);
+  float   GetMaxSetpoint            (void);
+
+  void    SetThermostatOn           (bool bNewThermoOn);
+  bool    GetThermostatOn           (void);
+  bool    GetHeatOn                 (void);
 };  //ThermostatClass
 
-//extern ThermostatClass          BiotaThermostat;
+extern ThermostatClass          BiotaThermostat;      //Gives access from other files
 
 //Last line.

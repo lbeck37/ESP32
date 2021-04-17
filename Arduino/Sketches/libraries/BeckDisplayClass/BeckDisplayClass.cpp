@@ -1,5 +1,5 @@
 const char szFileName[]  = "BeckDisplayClass.cpp";
-const char szFileDate[]  = "4/13/21a";
+const char szFileDate[]  = "4/17/21a";
 #include <BeckDisplayClass.h>
 #include "Free_Fonts.h"
 #include <Streaming.h>
@@ -26,9 +26,11 @@ const char szFileDate[]  = "4/13/21a";
   #include <Roboto_Medium_150.h>
 #endif
 
-PUnit   ScreenWidth    = 240;
-PUnit   ScreenHeight   = 135;
-char    sz100CharBuffer[100];   //For building strings for display
+ThermoDisplayClass   BiotaDisplay;
+
+PUnit     ScreenWidth           = 240;
+PUnit     ScreenHeight          = 135;
+char      sz100CharBuffer[100];           //For building strings for display
 
 Display::Display() {
   Serial << "Display::Display(): " << szFileName << ", " << szFileDate << endl;

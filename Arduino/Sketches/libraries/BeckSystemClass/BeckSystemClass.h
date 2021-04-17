@@ -1,10 +1,11 @@
 //4/16/21c, BeckSystemClass.h
 #pragma once
 
+#include <BeckDisplayClass.h>
 #include <BeckBiotaLib.h>
 #include <BeckAlexaClass.h>
 #include <BeckThermostatClass.h>
-#include <BeckThermoDisplayClass.h>
+//#include <BeckThermoDisplayClass.h>
 
 
 enum ProjectType{
@@ -38,7 +39,8 @@ public:
 
 extern SystemClass          BiotaSystem;       //This is so every module can use the same object
 extern AlexaClass           BiotaAlexa;       //This is so every module can use the same Alexa object
-extern ThermoDisplayClass   BiotaDisplay;       //This is so every module can use the same object
+//extern ThermoDisplayClass   BiotaDisplay;       //This is so every module can use the same object
+//extern Display              BiotaDisplay;       //This is so every module can use the same object
 extern ThermostatClass      BiotaThermostat;
 
 //Last line.

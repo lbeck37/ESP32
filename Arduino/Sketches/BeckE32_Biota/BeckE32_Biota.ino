@@ -7,7 +7,8 @@ const char szFileDate[]    = "4/16/21e";
 #include <BeckMiniLib.h>
 #include <BeckSwitchLib.h>
 #include <BeckSystemClass.h>
-#include <BeckThermoDisplayClass.h>
+//#include <BeckThermoDisplayClass.h>
+#include <BeckDisplayClass.h>
 #include <BeckThermostatClass.h>
 #include <BeckWiFiLib.h>
 #include <Streaming.h>
@@ -75,11 +76,11 @@ void loop(){
 
 void UpdateDisplay(void){
   ThermoStruct    stData;
-  stData.fCurrentDegF     = BiotaThermostat.Get_CurrentDegF();
-  stData.fSetpointDegF    = BiotaThermostat.Get_Setpoint();
-  stData.fMaxHeatRangeF   = BiotaThermostat.Get_MaxHeatRangeF();
-  stData.bThermoOn        = BiotaThermostat.ThermostatIsOn();
-  stData.bHeatOn          = BiotaThermostat.HeatIsOn();
+  stData.fCurrentDegF     = BiotaThermostat.GetCurrentDegF();
+  stData.fSetpointDegF    = BiotaThermostat.GetSetpoint();
+  stData.fMaxHeatRangeF   = BiotaThermostat.GetMaxHeatRange();
+  stData.bThermoOn        = BiotaThermostat.GetThermostatOn();
+  stData.bHeatOn          = BiotaThermostat.GetHeatOn();
 
   BiotaDisplay.DrawScreen(stData);
   return;

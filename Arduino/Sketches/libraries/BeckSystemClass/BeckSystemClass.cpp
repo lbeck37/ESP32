@@ -3,6 +3,7 @@ const char szFileDate[]  = "4/16/21b";
 
 #include <BeckSystemClass.h>
 #include <BeckAlexaClass.h>
+#include <BeckDisplayClass.h>
 
 SystemClass           BiotaSystem;       //This is so every module can use the same object
 AlexaClass            BiotaAlexa;

@@ -35,11 +35,11 @@ bool SetupSystem(void){
       strcpy(_acAccessPointSSID , "BiotaSpot");
       strcpy(_acAccessPointPW   , "Qazqaz11");
 
-      BiotaSystem.SetLastDegF     (68.0);
-      BiotaSystem.SetSetpoint     (71.0);
-      BiotaSystem.SetMaxHeatRange ( 0.1);
-      BiotaSystem.SetMinSetpoint  (60.0);
-      BiotaSystem.SetMaxSetpoint  (95.0);
+      //BiotaThermostat.SetLastDegF     (68.0);
+      BiotaThermostat.SetSetpoint     (71.0);
+      BiotaThermostat.SetMaxHeatRange ( 0.1);
+      BiotaThermostat.SetMinSetpoint  (60.0);
+      BiotaThermostat.SetMaxSetpoint  (95.0);
       break;
     case eFireplace:
       strcpy(_acHostname        , "BeckFireplace");
@@ -50,11 +50,11 @@ bool SetupSystem(void){
       strcpy(_acAccessPointSSID , "FireplaceSpot");
       strcpy(_acAccessPointPW   , "Qazqaz11");
 
-      BiotaSystem.SetLastDegF     (68.0);
-      BiotaSystem.SetSetpoint     (71.0);
-      BiotaSystem.SetMaxHeatRange ( 0.1);
-      BiotaSystem.SetMinSetpoint  (60.0);
-      BiotaSystem.SetMaxSetpoint  (95.0);
+      BiotaThermostat.SetLastDegF     (68.0);
+      BiotaThermostat.SetSetpoint     (71.0);
+      BiotaThermostat.SetMaxHeatRange ( 0.1);
+      BiotaThermostat.SetMinSetpoint  (60.0);
+      BiotaThermostat.SetMaxSetpoint  (95.0);
     case eHeater:
       strcpy(_acHostname        , "BeckHeater");
       strcpy(_acProjectType     , "HEATER");
@@ -64,11 +64,11 @@ bool SetupSystem(void){
       strcpy(_acAccessPointSSID , "HeaterSpot");
       strcpy(_acAccessPointPW   , "Qazqaz11");
 
-      BiotaSystem.SetLastDegF     (68.0);
-      BiotaSystem.SetSetpoint     (75.0);
-      BiotaSystem.SetMaxHeatRange ( 0.1);
-      BiotaSystem.SetMinSetpoint  (60.0);
-      BiotaSystem.SetMaxSetpoint  (80.0);
+      BiotaThermostat.SetLastDegF     (68.0);
+      BiotaThermostat.SetSetpoint     (75.0);
+      BiotaThermostat.SetMaxHeatRange ( 0.1);
+      BiotaThermostat.SetMinSetpoint  (60.0);
+      BiotaThermostat.SetMaxSetpoint  (80.0);
       break;
     case eGarage:
       strcpy(_acHostname        , "BeckGarage");
@@ -79,11 +79,11 @@ bool SetupSystem(void){
       strcpy(_acAccessPointSSID , "GarageSpot");
       strcpy(_acAccessPointPW   , "Qazqaz11");
 
-      BiotaSystem.SetLastDegF     (55.0);
-      BiotaSystem.SetSetpoint     (35.0);
-      BiotaSystem.SetMaxHeatRange ( 0.1);
-      BiotaSystem.SetMinSetpoint  (33.0);
-      BiotaSystem.SetMaxSetpoint  (70.0);
+      BiotaThermostat.SetLastDegF     (55.0);
+      BiotaThermostat.SetSetpoint     (35.0);
+      BiotaThermostat.SetMaxHeatRange ( 0.1);
+      BiotaThermostat.SetMinSetpoint  (33.0);
+      BiotaThermostat.SetMaxSetpoint  (70.0);
       break;
     case ePitchMeter:
       strcpy(_acHostname        , "BeckPitch");
@@ -116,9 +116,9 @@ bool SetupSystem(void){
     case eHeater:
     case eGarage:
     	SetupSwitches();
-      SetThermoSwitch(BiotaSystem.GetThermoOn());
+      SetThermoSwitch(BiotaThermostat.GetThermoOn());
       //SetThermoSwitch(_bThermoOn);
-      //BiotaSystem.SetThermoOn(70.0);
+      //BiotaThermostat.SetThermoOn(70.0);
 
     	break;
     case ePitchMeter:
