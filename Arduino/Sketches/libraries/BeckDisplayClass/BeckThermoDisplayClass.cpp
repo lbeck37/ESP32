@@ -4,7 +4,7 @@ const char szFileDate[]  = "4/16/21a";
 #include <BeckThermoDisplayClass.h>
 #include <Streaming.h>
 
-ThermoDisplayClass        SystemThermoDisplay;      //Declared in BeckThermoDisplayClass.cpp
+//ThermoDisplayClass        BiotaDisplay;      //Declared in BeckThermoDisplayClass.cpp
 
 ThermoDisplayClass::ThermoDisplayClass() {
   Serial << LOG0 << "ThermoDisplayClass::ThermoDisplayClass(): " << szFileName << ", " << szFileDate << endl;

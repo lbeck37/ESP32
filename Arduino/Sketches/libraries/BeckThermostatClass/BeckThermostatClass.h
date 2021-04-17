@@ -1,9 +1,10 @@
-// BeckThermostatClass.h 4/15/21a
+// BeckThermostatClass.h 4/16/21a
 #pragma once
 #include <BeckSwitchLib.h>
 #include <DallasTemperature.h>
 #include <OneWire.h>
 
+/*
 extern bool         _bThermoOn;
 extern bool         _bHeatOn;
 extern float        _fLastDegF;
@@ -12,6 +13,7 @@ extern float        _fMaxHeatRangeF;
 extern float        _fThermoOffDegF;
 extern float        _fMinSetpoint;
 extern float        _fMaxSetpoint;
+*/
 
 class ThermostatClass{
 protected:
@@ -57,6 +59,6 @@ protected:
   bool    HeatIsOn                  (void);
 };  //ThermostatClass
 
-extern ThermostatClass          BiotaThermostat;
+//extern ThermostatClass          BiotaThermostat;
 
 //Last line.

@@ -1,6 +1,7 @@
 //BeckBiotaLib.h, "4/16/21b";   //was 3/29/21b, was 12/28/19a
 #pragma once
 
+/*
 enum ProjectType{
   eNoProject  = 0,
   eThermoDev,
@@ -11,7 +12,9 @@ enum ProjectType{
   ePitchMeter,
   eLastProjectType
 };
+*/
 
+/*
 extern ProjectType   _eProjectType;
 
 extern bool          _bSystemOk;
@@ -23,6 +26,7 @@ extern char          _acRouterName[];
 extern char          _acRouterPW[];
 extern char          _acAccessPointSSID[];
 extern char          _acAccessPointPW[];
+*/
 
 //#include <BeckDisplayLib.h>
 #include <BeckI2cLib.h>
@@ -34,6 +38,6 @@ extern char          _acAccessPointPW[];
   #include <BeckMPU9150Lib.h>
 #endif
 
-bool  SetupSystem           (ProjectType eProjectType);
-void  SwitchProjectType     (ProjectType eProjectType);
+bool  SetupSystem           (void);
+//void  SwitchProjectType     (ProjectType eProjectType);
 //Last line.

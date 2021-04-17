@@ -1,12 +1,12 @@
 const char szFileName[]  = "BeckBiotaLib.cpp";
-const char szFileDate[]    = "4/7/21b";
+const char szFileDate[]    = "4/16/21a";
 
 // BeckBiotaLib.cpp 4/7/21, was 10/21/20a, was 2/2/20b
 #include <BeckBiotaLib.h>
 #include <BeckSwitchLib.h>
 #include <BeckSystemClass.h>
 
-ProjectType   _eProjectType;
+//ProjectType   _eProjectType;
 
 bool          _bSystemOk        = true;
 
@@ -19,11 +19,13 @@ char          _acAccessPointSSID[50];
 char          _acAccessPointPW  [50];
 
 
-bool SetupSystem(ProjectType eProjectType){
+//bool SetupSystem(ProjectType eProjectType){
+bool SetupSystem(void){
   Serial << LOG0 << "SetupSystem(): Begin" << endl;
   bool  bOk= true;
-  _eProjectType= eProjectType;
-  switch (_eProjectType){
+  //_eProjectType= eProjectType;
+  //switch (_eProjectType){
+  switch (BiotaSystem.GetProjectType()){
     case eThermoDev:
       strcpy(_acHostname        , "BeckThermoDev");
       strcpy(_acProjectType     , "THERMO_DEV");
@@ -33,13 +35,11 @@ bool SetupSystem(ProjectType eProjectType){
       strcpy(_acAccessPointSSID , "BiotaSpot");
       strcpy(_acAccessPointPW   , "Qazqaz11");
 
-      _bThermoOn				= true;
-      _fSetpointF       = 87.0;
-      _fMinSetpoint     = 60.0;
-      _fMaxSetpoint     = 100.0;
-      _fMaxHeatRangeF   =  0.1;
-      _fThermoOffDegF   = _fSetpointF + _fMaxHeatRangeF;
-      LogToSerial("SetupSystem(): _bThermoOn set to ", _bThermoOn);
+      BiotaSystem.SetLastDegF     (68.0);
+      BiotaSystem.SetSetpoint     (71.0);
+      BiotaSystem.SetMaxHeatRange ( 0.1);
+      BiotaSystem.SetMinSetpoint  (60.0);
+      BiotaSystem.SetMaxSetpoint  (95.0);
       break;
     case eFireplace:
       strcpy(_acHostname        , "BeckFireplace");
@@ -50,22 +50,11 @@ bool SetupSystem(ProjectType eProjectType){
       strcpy(_acAccessPointSSID , "FireplaceSpot");
       strcpy(_acAccessPointPW   , "Qazqaz11");
 
-      _bThermoOn		= false;
-      _fSetpointF       = 67.0;
-      _fMinSetpoint     = 60.0;
-      _fMaxSetpoint     = 74.0;
-      _fMaxHeatRangeF   = 0.10;
-
-/*
-      _bThermoOn		= true;
-      _fSetpointF       = 42.0;
-      _fMinSetpoint     = 40.0;
-      _fMaxSetpoint     = 46.0;
-      _fMaxHeatRangeF   = 0.10;
-*/
-
-      _fThermoOffDegF   = _fSetpointF + _fMaxHeatRangeF;
-      break;
+      BiotaSystem.SetLastDegF     (68.0);
+      BiotaSystem.SetSetpoint     (71.0);
+      BiotaSystem.SetMaxHeatRange ( 0.1);
+      BiotaSystem.SetMinSetpoint  (60.0);
+      BiotaSystem.SetMaxSetpoint  (95.0);
     case eHeater:
       strcpy(_acHostname        , "BeckHeater");
       strcpy(_acProjectType     , "HEATER");
@@ -74,12 +63,12 @@ bool SetupSystem(ProjectType eProjectType){
       strcpy(_acRouterPW        , "Qazqaz11");
       strcpy(_acAccessPointSSID , "HeaterSpot");
       strcpy(_acAccessPointPW   , "Qazqaz11");
-      _bThermoOn		= false;
-      _fSetpointF       = 75.0;
-      _fMinSetpoint     = 55.0;
-      _fMaxSetpoint     = 80.0;
-      _fMaxHeatRangeF   = 0.10;
-      _fThermoOffDegF   = _fSetpointF + _fMaxHeatRangeF;
+
+      BiotaSystem.SetLastDegF     (68.0);
+      BiotaSystem.SetSetpoint     (75.0);
+      BiotaSystem.SetMaxHeatRange ( 0.1);
+      BiotaSystem.SetMinSetpoint  (60.0);
+      BiotaSystem.SetMaxSetpoint  (80.0);
       break;
     case eGarage:
       strcpy(_acHostname        , "BeckGarage");
@@ -89,12 +78,12 @@ bool SetupSystem(ProjectType eProjectType){
       strcpy(_acRouterPW        , "Qazqaz11");
       strcpy(_acAccessPointSSID , "GarageSpot");
       strcpy(_acAccessPointPW   , "Qazqaz11");
-      _bThermoOn				= true;
-      _fSetpointF       = 35.0;
-      _fMinSetpoint     = 33.0;
-      _fMaxSetpoint     = 41.0;
-      _fMaxHeatRangeF   = 1.00;
-      _fThermoOffDegF   = _fSetpointF + _fMaxHeatRangeF;
+
+      BiotaSystem.SetLastDegF     (55.0);
+      BiotaSystem.SetSetpoint     (35.0);
+      BiotaSystem.SetMaxHeatRange ( 0.1);
+      BiotaSystem.SetMinSetpoint  (33.0);
+      BiotaSystem.SetMaxSetpoint  (70.0);
       break;
     case ePitchMeter:
       strcpy(_acHostname        , "BeckPitch");
@@ -127,7 +116,10 @@ bool SetupSystem(ProjectType eProjectType){
     case eHeater:
     case eGarage:
     	SetupSwitches();
-    	SetThermoSwitch(_bThermoOn);
+      SetThermoSwitch(BiotaSystem.GetThermoOn());
+      //SetThermoSwitch(_bThermoOn);
+      //BiotaSystem.SetThermoOn(70.0);
+
     	break;
     case ePitchMeter:
     case eFrontLights:
@@ -143,9 +135,11 @@ bool SetupSystem(ProjectType eProjectType){
 } //SetupSystem
 
 
+/*
 void SwitchProjectType(ProjectType eProjectType){
   Serial << LOG0 << "SwitchProjectType(): Switch _eProjectType to: " << eProjectType << endl;
   _eProjectType= eProjectType;
   return;
 } //SwitchProjectType
+*/
 //Last line.

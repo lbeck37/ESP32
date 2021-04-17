@@ -1,9 +1,11 @@
+// 4/16/21b, BeckDisplayClass.h
 #pragma once
-const char szFileName2[]  = "BeckDisplayClass.h";
-const char szFileDate2[]  = "4/12/21a";
+//const char szFileName2[]  = "BeckDisplayClass.h";
+//const char szFileDate2[]  = "4/16/21a";
 //Initially used for TTGO ESP32 module. 135 x 240, 1.14", 240dpi display
 
 #include <BeckBiotaLib.h>
+#include <BeckSystemClass.h>
 #include <TFT_eSPI.h>
 
 //Remove the "//" in front of the #define for a font you use
@@ -89,10 +91,11 @@ enum FontPointType {
 };
 
 
+
 class Display {
 protected:
   GraphicsLibrary         GLib                  = GraphicsLibrary();
-  ProjectType             _eProjectType         = eThermoDev;
+  //ProjectType             _eProjectType         = eThermoDev;
   ScreenOrientationType   _eScreenOrientation   = eUSBLeft;
   Colortype               _BackgroundColor      = TFT_WHITE;
   Colortype               _TextColor            = TFT_BLACK;

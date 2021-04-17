@@ -5,6 +5,7 @@ const char szFileDate[]  = "4/14/21a";
 #include <BeckBiotaLib.h>
 #include <BeckLogLib.h>
 #include <BeckSwitchLib.h>
+#include <BeckSystemClass.h>
 //#include <BeckThermoLib.h>
 #include <BeckAccessPointLib.h>
 #include <Streaming.h>
@@ -68,7 +69,8 @@ void DoAlexaCommand(unsigned char ucDdeviceID,const char* szDeviceName,bool bSta
       ucDdeviceID, szDeviceName, (bState ? "ON " : "OFF"), ucValue);
   String szLogString= szCharString;
   LogToSerial(szLogString);
-  switch (_eProjectType){
+  //switch (_eProjectType){
+  switch (BiotaSystem.GetProjectType()){
     case eFireplace:
     case eGarage:
     case eThermoDev:

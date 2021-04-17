@@ -3,9 +3,10 @@ const char szFileDate[]  = "4/15/21b";
 
 #include <BeckAlexaClass.h>
 #include <BeckBiotaLib.h>
+#include <BeckSystemClass.h>
 #include <BeckThermoDataClass.h>
 
-AlexaClass        SystemAlexa;
+//AlexaClass        BiotaAlexa;
 
 //Prototypes
 void    CallbackAlexaCommand    (unsigned char ucDdeviceID,const char* szDeviceName,bool bState,unsigned char ucValue);
@@ -19,7 +20,8 @@ void CallbackAlexaCommand(unsigned char ucDdeviceID,const char* szDeviceName,boo
       ucDdeviceID, szDeviceName, (bState ? "ON " : "OFF"), ucValue);
   String szLogString= szCharString;
   LogToSerial(szLogString);
-  switch (_eProjectType){
+  //switch (_eProjectType){
+  switch (BiotaSystem.GetProjectType()){
     case eFireplace:
     case eGarage:
     case eThermoDev:
@@ -31,7 +33,7 @@ void CallbackAlexaCommand(unsigned char ucDdeviceID,const char* szDeviceName,boo
     case eFrontLights:
       break;
     default:
-      Serial << LOG0 << "DoAlexaCommand(): Bad switch, _eProjectType= " << _eProjectType << endl;
+      Serial << LOG0 << "DoAlexaCommand(): Bad switch, _eProjectType= " << BiotaSystem.GetProjectType() << endl;
       break;
   } //switch
   //bAlexaChanged= true;
@@ -55,10 +57,10 @@ void HandleThermostat(bool bState, unsigned char ucValue){
     //ThermostatObject.Set_Setpoint(ucValue);
     //BiotaThermostat.Set_Setpoint(ucValue);
     //_fSetpoint= round( ((float)ucValue / 255.0) * 100.0);
-    SystemAlexa.SetLastSetpoint(round( ((float)ucValue / 255.0) * 100.0));
+    BiotaAlexa.SetLastSetpoint(round( ((float)ucValue / 255.0) * 100.0));
   } //if(wValuePercent==100)else
   //_bThermostatOn= bState;
-  SystemAlexa.SetLastThermostatOnState(bState);
+  BiotaAlexa.SetLastThermostatOnState(bState);
   return;
 } //HandleThermostatProject
 

@@ -28,5 +28,5 @@ public:
   bool  GetLastThermostatOnState      (void);
 };  //AlexaClass
 
-extern AlexaClass        SystemAlexa;       //This is so every module can use the same Alexa object
+//extern AlexaClass        BiotaAlexa;       //This is so every module can use the same Alexa object
 //Last line.

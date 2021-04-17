@@ -2,19 +2,12 @@ const char szFileName[]  = "BeckSystemClass.cpp";
 const char szFileDate[]  = "4/16/21b";
 
 #include <BeckSystemClass.h>
+#include <BeckAlexaClass.h>
 
-//These are from BeckThermoLib.cpp
-float           _fMaxHeatRangeF       = 0.10;   //Temp above setpoint before heat is turned off
-float           _fLastDegF            = 37.01;  //Last temperature reading.
-float           _fSetpointF           = 70.0;
-float           _fMinSetpoint         = 32.0;
-float           _fMaxSetpoint         = 80.0;
-float           _fThermoOffDegF       = _fSetpointF + _fMaxHeatRangeF;
-int             sThermoTimesCount     = 0;      //Number of times temperature out of range
-bool            _bThermoOn;             //Whether thermostat is running, set in BeckBiotaLib
-bool            _bHeatOn              = true;  //If switch is on to turn on Heat.
-
-SystemClass        BiotaSystem;       //This is so every module can use the same object
+SystemClass           BiotaSystem;       //This is so every module can use the same object
+AlexaClass            BiotaAlexa;
+ThermoDisplayClass    BiotaDisplay;       //This is so every module can use the same object
+ThermostatClass       BiotaThermostat;
 
 SystemClass::SystemClass() {
   Serial << "SystemClass::SystemClass(): " << szFileName << ", " << szFileDate << endl;
@@ -32,18 +25,28 @@ void SystemClass::Setup(){
   //strcpy(szAlexaName, "Larry's Device");
 
   //SystemAlexa.Setup           ((char *)szAlexaName);
-  SystemAlexa.Setup           ((char *)_acAlexaName);
+  BiotaAlexa.Setup           ((char *)szAlexaName);
   //SystemAlexa.Setup           (pAlexaName);
   BiotaThermostat.Setup       ();
-  SystemThermoDisplay.Setup   ();
+  BiotaDisplay.Setup   ();
   return;
 } //Setup
 
 
 void SystemClass::Handle(){
-  SystemAlexa.Handle          ();
+  BiotaAlexa.Handle          ();
   BiotaThermostat.Handle      ();
-  SystemThermoDisplay.Handle  ();
+  BiotaDisplay.Handle  ();
   return;
 } //Handle
+
+ProjectType SystemClass::GetProjectType(void){
+  return eProjectType;
+}
+
+void SystemClass::SetProjectType(ProjectType eNewProjectType){
+  eProjectType= eNewProjectType;
+ return;
+}
+
 //Last line.

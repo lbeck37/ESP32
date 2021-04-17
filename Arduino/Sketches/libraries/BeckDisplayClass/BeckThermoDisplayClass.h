@@ -1,9 +1,13 @@
 #pragma once
 // 4/14/21a, BeckThermoDisplayClass.h
 #include <BeckDisplayClass.h>
-#include <BeckThermostatClass.h>
+//#include <BeckThermostatClass.h>
+
+typedef int32_t       PUnit;        //Pixel Unit
+
 
 class ThermoDisplayClass : public ColorDisplay {
+//class ThermoDisplayClass : public ColorDisplay {
 protected:
   uint32_t    ulCurrentDegFOnTimeSeconds  = 4;
   uint32_t    ulSetpointOnTimeSeconds     = 2;
@@ -72,6 +76,6 @@ public:
   void  DrawScreen        (ThermoStruct stData);
 };  //ThermoDisplayClass
 
-extern ThermoDisplayClass        SystemThermoDisplay;       //This is so every module can use the same object
+//extern ThermoDisplayClass        BiotaDisplay;       //This is so every module can use the same object
 
 //Last line.
