@@ -35,7 +35,6 @@ bool SetupSystem(void){
       strcpy(_acAccessPointSSID , "BiotaSpot");
       strcpy(_acAccessPointPW   , "Qazqaz11");
 
-      //BiotaThermostat.SetLastDegF     (68.0);
       BiotaThermostat.SetSetpoint     (71.0);
       BiotaThermostat.SetMaxHeatRange ( 0.1);
       BiotaThermostat.SetMinSetpoint  (60.0);
@@ -50,7 +49,6 @@ bool SetupSystem(void){
       strcpy(_acAccessPointSSID , "FireplaceSpot");
       strcpy(_acAccessPointPW   , "Qazqaz11");
 
-      BiotaThermostat.SetLastDegF     (68.0);
       BiotaThermostat.SetSetpoint     (71.0);
       BiotaThermostat.SetMaxHeatRange ( 0.1);
       BiotaThermostat.SetMinSetpoint  (60.0);
@@ -64,7 +62,6 @@ bool SetupSystem(void){
       strcpy(_acAccessPointSSID , "HeaterSpot");
       strcpy(_acAccessPointPW   , "Qazqaz11");
 
-      BiotaThermostat.SetLastDegF     (68.0);
       BiotaThermostat.SetSetpoint     (75.0);
       BiotaThermostat.SetMaxHeatRange ( 0.1);
       BiotaThermostat.SetMinSetpoint  (60.0);
@@ -79,7 +76,6 @@ bool SetupSystem(void){
       strcpy(_acAccessPointSSID , "GarageSpot");
       strcpy(_acAccessPointPW   , "Qazqaz11");
 
-      BiotaThermostat.SetLastDegF     (55.0);
       BiotaThermostat.SetSetpoint     (35.0);
       BiotaThermostat.SetMaxHeatRange ( 0.1);
       BiotaThermostat.SetMinSetpoint  (33.0);
@@ -106,17 +102,17 @@ bool SetupSystem(void){
       break;
     case eNoProject:
     default:
-      Serial << LOG0 << "SetupSystem(): Bad switch, _eProjectType= " << _eProjectType << endl;
+      Serial << LOG0 << "SetupSystem(): Bad switch, _ProjectType= " << BiotaSystem.GetProjectType() << endl;
       bOk= false;
       break;
   } //switch
-  switch (_eProjectType){
+  switch (BiotaSystem.GetProjectType()){
     case eThermoDev:
     case eFireplace:
     case eHeater:
     case eGarage:
     	SetupSwitches();
-      SetThermoSwitch(BiotaThermostat.GetThermoOn());
+      SetThermoSwitch(BiotaThermostat.GetThermostatOn());
       //SetThermoSwitch(_bThermoOn);
       //BiotaThermostat.SetThermoOn(70.0);
 
@@ -126,7 +122,7 @@ bool SetupSystem(void){
       break;
     case eNoProject:
     default:
-      Serial << LOG0 << "SetupSystem(): Bad switch, _eProjectType= " << _eProjectType << endl;
+      Serial << LOG0 << "SetupSystem(): Bad switch, ProjectType= " << BiotaSystem.GetProjectType() << endl;
       bOk= false;
       break;
   } //switch

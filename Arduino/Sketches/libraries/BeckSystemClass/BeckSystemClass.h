@@ -39,8 +39,9 @@ public:
 
 extern SystemClass          BiotaSystem;       //This is so every module can use the same object
 extern AlexaClass           BiotaAlexa;       //This is so every module can use the same Alexa object
+
 //extern ThermoDisplayClass   BiotaDisplay;       //This is so every module can use the same object
 //extern Display              BiotaDisplay;       //This is so every module can use the same object
-extern ThermostatClass      BiotaThermostat;
+//extern ThermostatClass      BiotaThermostat;
 
 //Last line.

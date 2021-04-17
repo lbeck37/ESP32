@@ -7,8 +7,8 @@ const char szFileDate[]  = "4/16/21b";
 
 SystemClass           BiotaSystem;       //This is so every module can use the same object
 AlexaClass            BiotaAlexa;
-ThermoDisplayClass    BiotaDisplay;       //This is so every module can use the same object
-ThermostatClass       BiotaThermostat;
+//ThermoDisplayClass    BiotaDisplay;       //This is so every module can use the same object
+//ThermostatClass       BiotaThermostat;
 
 SystemClass::SystemClass() {
   Serial << "SystemClass::SystemClass(): " << szFileName << ", " << szFileDate << endl;
