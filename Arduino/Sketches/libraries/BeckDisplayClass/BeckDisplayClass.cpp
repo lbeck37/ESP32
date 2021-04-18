@@ -1,8 +1,8 @@
 const char szDisplayClassFileName[]  = "BeckDisplayClass.cpp";
-const char szDisplayClassFileDate[]  = "4/17/21b";
+const char szDisplayClassFileDate[]  = "4/18/21d";
 
 #include <BeckDisplayClass.h>
-#include <BeckSystemClass.h>
+//#include <BeckSystemClass.h>
 #include "Free_Fonts.h"
 #include <Streaming.h>
 
@@ -29,11 +29,11 @@ const char szDisplayClassFileDate[]  = "4/17/21b";
   #include <Roboto_Medium_150.h>
 #endif
 
+char    sz100CharDisplayBuffer[100];    //For building strings for display
 
 DisplayClass::DisplayClass() {
   Serial << "Display::Display(): " << szDisplayClassFileName << ", " << szDisplayClassFileDate << endl;
 } //constructor
-
 
 DisplayClass::~DisplayClass() {
   Serial << "~Display(): Destructing" << endl;
@@ -47,22 +47,18 @@ ColorDisplayClass::ColorDisplayClass() {
   GLib.setTextColor     (_TextColor, _BackgroundColor);
   GLib.setTextFont      (4);   //26 pixels
   GLib.fillScreen       (_FillColor);
-
-  GLib.setCursor(0, 10);             //Upper left corner, no inverting, good with text
+  GLib.setCursor        (0, 10);             //Upper left corner, no inverting, good with text
   GLib.println("Setting up WiFi.");
   GLib.println("Why so long?");
-  //GLib.println();
   GLib.println("\nShould be- BOOM!");
 
   GLib.setCursor(_CursorX, _CursorY);
   return;
-} //SetupDisplay
-
+} //constructor
 
 ColorDisplayClass::~ColorDisplayClass() {
   Serial << "~ColorDisplay(): Destructing" << endl;
 } //destructor
-
 
 PUnit ColorDisplayClass::Invert_Y(PUnit Y1){
   return(ScreenHeight - Y1);
@@ -132,7 +128,6 @@ void ColorDisplayClass::SelectFont(FontFaceType eFontFace, FontPointType eFontPo
           break;
         } //switch(eFontPoint)
       break;
-
       case   eRedressedRegularFace:
         switch (eFontPoint){
           #ifdef REDRESSED__REGULAR_20
@@ -187,7 +182,6 @@ void ColorDisplayClass::SelectFont(FontFaceType eFontFace, FontPointType eFontPo
               break;
           } //switch(eFontPoint)
           break;
-
         case eRobotoCondensedBoldFace:
           switch (eFontPoint){
             #ifdef ROBOTO_CONDENSED_BOLD_130
@@ -229,11 +223,6 @@ void ColorDisplayClass::DrawRectangle(PUnit XLeft, PUnit YBottom, PUnit Width, P
   return;
 }
 
-/*
-void ColorDisplay::DrawFilledRectangle(PUnit XLeft, PUnit YTop, PUnit Width, PUnit Height){
-  //GLib.fillRect(XLeft, YTop, Width, Height, _FillColor);
-  GLib.fillRect(XLeft, Invert_Y(YTop), Width, Height, _FillColor);
-*/
 void ColorDisplayClass::DrawFilledRectangle(PUnit XLeft, PUnit YBottom, PUnit Width, PUnit Height){
   PUnit   X1= XLeft;
   PUnit   Y1= ScreenHeight - (YBottom + Height);
@@ -278,8 +267,8 @@ void ColorDisplayClass::DrawGrid(void){
   for(PUnit Ypixel= 0; Ypixel < ScreenHeight; Ypixel= (Ypixel + 25)){
     PUnit X1= 0;
     SetCursor(X1, Ypixel);
-    sprintf(sz100CharBuffer, "%d", Ypixel);
-    Print(sz100CharBuffer);
+    sprintf(sz100CharDisplayBuffer, "%d", Ypixel);
+    Print(sz100CharDisplayBuffer);
   }   //for
   return;
 } //DrawGrid

@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_TestDisplayClass.ino";
-const char szFileDate[]    = "4/17/21a";
+const char szFileDate[]    = "4/18/21a";
 
 #include <BeckDisplayClass.h>
 #include <Streaming.h>
@@ -26,8 +26,8 @@ void setup(){
   cDisplay.SetTextColor(TFT_BLACK);
   cDisplay.SelectFont(eRobotoCondensedFace, e130point);
 
-  sprintf(sz100CharBuffer, "%04.1f", fDummyCurrentF);
-  cDisplay.Print(sz100CharBuffer);
+  sprintf(sz100CharDisplayBuffer, "%04.1f", fDummyCurrentF);
+  cDisplay.Print(sz100CharDisplayBuffer);
 
   //Black or red fat line under DegF when on.
   PUnit   BarLeft   = 0;  // PUnit XLeft, PUnit YTop, PUnit Width, PUnit Height
@@ -45,8 +45,8 @@ void setup(){
   cDisplay.SetTextColor(TFT_BLACK);
   cDisplay.SelectFont(eTextFace, eText26px);
 
-  sprintf(sz100CharBuffer, "Set= %4.1f    Off= %4.1f", fDummySetF, fDummyOffF);
-  cDisplay.Print(sz100CharBuffer);
+  sprintf(sz100CharDisplayBuffer, "Set= %4.1f    Off= %4.1f", fDummySetF, fDummyOffF);
+  cDisplay.Print(sz100CharDisplayBuffer);
 
 	return;
 } //setup

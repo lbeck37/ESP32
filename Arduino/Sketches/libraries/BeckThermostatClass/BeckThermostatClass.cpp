@@ -1,5 +1,5 @@
-const char szFileName[]  = "BeckThermostatClass.cpp";
-const char szFileDate[]  = "4/17/21a";
+const char szThermostatFileName[]  = "BeckThermostatClass.cpp";
+const char szThermostatFileDate[]  = "4/17/21a";
 
 #include <BeckThermostatClass.h>
 //#include <BeckMiniLib.h>
@@ -20,7 +20,7 @@ DallasTemperature   BiotaTempSensor(&BiotaOneWire);
 ThermostatClass     BiotaThermostat;
 
 ThermostatClass::ThermostatClass() {
-  Serial << "ThermostatClass::ThermostatClass(): " << szFileName << ", " << szFileDate << endl;
+  Serial << "ThermostatClass::ThermostatClass(): " << szThermostatFileName << ", " << szThermostatFileDate << endl;
 } //constructor
 
 

@@ -1,11 +1,11 @@
-// 4/17/21a, BeckDisplayClass.h
+// 4/18/21b, BeckDisplayClass.h
 #pragma once
 //const char szFileName2[]  = "BeckDisplayClass.h";
 //const char szFileDate2[]  = "4/16/21a";
 //Initially used for TTGO ESP32 module. 135 x 240, 1.14", 240dpi display
 
-#include <BeckBiotaLib.h>
-#include <BeckSystemClass.h>
+//#include <BeckBiotaLib.h>
+//#include <BeckSystemClass.h>
 #include <TFT_eSPI.h>
 
 //Remove the "//" in front of the #define for a font you use
@@ -24,20 +24,12 @@ typedef int32_t       PUnit;        //Pixel Unit
 typedef uint8_t       FontSize;
 typedef float         DegreeType;
 
-extern PUnit          ScreenWidth;
-extern PUnit          ScreenHeight;
-extern uint8_t        DegreeSymbol;
+//TTGO 1.4" display
+const PUnit          ScreenWidth  = 240;
+const PUnit          ScreenHeight = 135;;
+//uint8_t        DegreeSymbol;
 
-extern char sz100CharBuffer[];    //For building strings for display
-
-
-struct ThermoStruct {
-  float   fCurrentDegF;
-  float   fSetpointDegF;
-  float   fMaxHeatRangeF;
-  bool    bThermoOn;
-  bool    bHeatOn;
-};
+extern char           sz100CharDisplayBuffer[100];    //For building strings for display
 
 enum ScreenOrientationType {
   eNoScreenOrientation= -1,
@@ -94,7 +86,6 @@ enum FontPointType {
 class DisplayClass {
 protected:
   GraphicsLibrary         GLib                  = GraphicsLibrary();
-  //ProjectType             _eProjectType         = eThermoDev;
   ScreenOrientationType   _eScreenOrientation   = eUSBLeft;
   Colortype               _BackgroundColor      = TFT_WHITE;
   Colortype               _TextColor            = TFT_BLACK;
@@ -106,7 +97,6 @@ protected:
   FontLibraryType         _eFontLibrary         = eGFXFont;
   FontFaceType            _eFontFace            = eMonoFace;
   FontPointType           _eFontPoint           = e12point;
-  //char                    _szLastDegF[10]       = "99.9";
 
 public:
   DisplayClass();
@@ -116,7 +106,7 @@ public:
 
   virtual void  Setup                 (void){}
   virtual void  Handle                (void){}
-  virtual void  Update                (void){}
+  //virtual void  Update                (void){}
   virtual void  SetCursor             (PUnit CursorX, PUnit CursorY){}
   virtual void  SetBackgroundColor    (Colortype NewBackgroundColor){}
   virtual void  SetTextColor          (Colortype NewTextColor){}
@@ -142,7 +132,7 @@ public:
   ColorDisplayClass();
   virtual ~ColorDisplayClass();
 
-  virtual void  Update        (void){}
+  //virtual void  Update        (void){}
 
   PUnit Invert_Y              (PUnit Y1);
   void  SetCursor             (PUnit CursorX, PUnit CursorY);
@@ -164,19 +154,26 @@ public:
 };  //ColorDisplayClass
 
 
+struct DisplayThermoStruct {
+  float   fCurrentDegF;
+  float   fSetpoint;
+  float   fMaxHeatRange;
+  bool    bThermoOn;
+  bool    bHeatOn;
+};
 
 class ThermoDisplayClass : public ColorDisplayClass {
 protected:
   uint32_t    ulCurrentDegFOnTimeSeconds  = 4;
   uint32_t    ulSetpointOnTimeSeconds     = 2;
 
-  uint32_t    ulCurrentDegFOnTimeMsec   = ulCurrentDegFOnTimeSeconds   * lMsecPerSec;
-  uint32_t    ulSetpointOnTimeMsec      = ulSetpointOnTimeSeconds      * lMsecPerSec;
+  uint32_t    ulCurrentDegFOnTimeMsec   = ulCurrentDegFOnTimeSeconds * 1000;
+  uint32_t    ulSetpointOnTimeMsec      = ulSetpointOnTimeSeconds    * 1000;
 
   uint32_t    ulNextCurrentDegFDisplay  = 0;
   uint32_t    ulNextSetpointDisplay     = 0;
 
-  uint32_t    ulVeryLargeExtraWaitMsec  = 1000 * lMsecPerSec;   //Time to do next display needs this.
+  uint32_t    ulVeryLargeExtraWaitMsec  = 1000 * 1000;   //Time to do next display needs this.
 
   bool  bFirstTimeDrawn   = true;
   bool  bThermoOnLast     = false;    //Used to check if thermo on bar should be changed.
@@ -214,8 +211,6 @@ protected:
   FontFaceType    eSetpoint_TextFace        = eTextFace;
   FontPointType   eSetpoint_TextPointSize   = eText26px;
 
-  //ThermostatClass      BiotaThermostat;
-
   //Protected methods
   void  DisplayCurrentTemperature   (void);
   void  DisplayCurrentSetpoint      (void);
@@ -229,13 +224,11 @@ public:
   //ThermoDisplayClass(Thermostat &BiotaThermostatObject);
   virtual ~ThermoDisplayClass();
 
-  void  Setup             (void){}
-  void  Handle            (void){}
+  void  Setup             (void);
+  void  Handle            (DisplayThermoStruct ThermoData);
   void  DrawScreen        (void);
-  //void  DrawScreen        (void);
 };  //ThermoDisplayClass
 
-extern ThermoDisplayClass              BiotaDisplay;       //This is so every module can use the same object
-
+extern ThermoDisplayClass   BiotaDisplay;       //This is so every module can use the same object
 
 //Last line.
