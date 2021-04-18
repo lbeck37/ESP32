@@ -1,4 +1,4 @@
-// BeckBiotaDefines.h, 4/15/21a
+// BeckBiotaDefines.h, 4/17/21a
 #pragma once
 
 #define DO_ALEXA                true

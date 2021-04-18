@@ -7,8 +7,8 @@ const char szFileDate[]    = "4/17/21b";
 #include <BeckMiniLib.h>
 #include <BeckSwitchLib.h>
 #include <BeckSystemClass.h>
+#include <BeckDisplayClass.h>
 #include <BeckThermoDisplayClass.h>
-//#include <BeckDisplayClass.h>
 #include <BeckThermostatClass.h>
 #include <BeckWiFiLib.h>
 #include <Streaming.h>
@@ -28,6 +28,7 @@ unsigned long   _ulOTATimeoutMsec   = millis();
 //Prototypes for functions in this file.
 void SetupOptionalModules   (void);
 void HandleOptionalModules  (void);
+
 
 void setup(){
   Serial.begin(lSerialMonitorBaud);
@@ -82,9 +83,10 @@ void UpdateDisplay(void){
   stData.bThermoOn        = BiotaThermostat.GetThermostatOn();
   stData.bHeatOn          = BiotaThermostat.GetHeatOn();
 
-  BiotaDisplay.DrawScreen(stData);
+  BiotaDisplay.DrawScreen();
   return;
 } //UpdateDisplay
+
 
 void SetupOptionalModules(){
   if (_bWiFiConnected){
@@ -98,15 +100,12 @@ void SetupOptionalModules(){
 #if DO_ACCESS_POINT
     SetupAccessPt(_acAccessPointSSID, _acAccessPointPW);
 #endif
-#if DO_ALEXA
-    //SetupAlexa(_acAlexaName);
-#endif
   } //if(_bWiFiConnected)
   else{
-    Serial << "setup(): WiFi is not connected" << endl;
+    Serial << "SetupOptionalModules(): WiFi is not connected" << endl;
   }
 #if DO_FIREBASE
-  Serial << LOG0 << "setup(): SetupSystem(): Call Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH)" << endl;
+  Serial << LOG0 << "SetupOptionalModules(): Call Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH)" << endl;
   Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);
 #endif
 #if USE_IMU
@@ -122,11 +121,12 @@ void SetupOptionalModules(){
   return;
 } //SetupOptionalModules
 
+
 void HandleOptionalModules(void){
 #if DO_WEB_SERVER
   if (_bWiFiConnected){
     HandleWebServer();
-    CheckTaskTime("loop(): HandleWebServer()");
+    CheckTaskTime("HandleOptionalModules(): HandleWebServer()");
   } //if(_bWiFiConnected)
 #endif
 #if DO_FIREBASE
@@ -136,13 +136,13 @@ void HandleOptionalModules(void){
 #if DO_NTP
   if (_bWiFiConnected){
     HandleNTPUpdate();
-    CheckTaskTime("loop(): HandleNTPUpdate()");
+    CheckTaskTime("HandleOptionalModules(): HandleNTPUpdate()");
   } //if(_bWiFiConnected)
 #endif
 #if DO_ACCESS_POINT
   if (_bWiFiConnected){
     HandleSoftAPClient();       //Listen for HTTP requests from clients
-    CheckTaskTime("loop(): HandleSoftAPClient()");
+    CheckTaskTime("HandleOptionalModules(): HandleSoftAPClient()");
   } //if(_bWiFiConnected)
 #endif  //DO_ACCESS_POINT
   return;

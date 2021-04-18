@@ -1,8 +1,11 @@
-const char szFileName[]  = "BeckDisplayClass.cpp";
-const char szFileDate[]  = "4/17/21a";
+const char szDisplayClassFileName[]  = "BeckDisplayClass.cpp";
+const char szDisplayClassFileDate[]  = "4/17/21b";
+
 #include <BeckDisplayClass.h>
+#include <BeckSystemClass.h>
 #include "Free_Fonts.h"
 #include <Streaming.h>
+
 //Scalable fonts created by Font Creator, http://oleddisplay.squix.ch/#/home
 #ifdef REDRESSED__REGULAR_20
   #include <Redressed_Regular_20.h>
@@ -26,24 +29,19 @@ const char szFileDate[]  = "4/17/21a";
   #include <Roboto_Medium_150.h>
 #endif
 
-//ThermoDisplayClass   BiotaDisplay;
 
-PUnit     ScreenWidth           = 240;
-PUnit     ScreenHeight          = 135;
-char      sz100CharBuffer[100];           //For building strings for display
-
-Display::Display() {
-  Serial << "Display::Display(): " << szFileName << ", " << szFileDate << endl;
+DisplayClass::DisplayClass() {
+  Serial << "Display::Display(): " << szDisplayClassFileName << ", " << szDisplayClassFileDate << endl;
 } //constructor
 
 
-Display::~Display() {
+DisplayClass::~DisplayClass() {
   Serial << "~Display(): Destructing" << endl;
 } //destructor
 
 
-ColorDisplay::ColorDisplay() {
-  Serial << "ColorDisplay::ColorDisplay(): " << szFileName << ", " << szFileDate << endl;
+ColorDisplayClass::ColorDisplayClass() {
+  Serial << "ColorDisplay::ColorDisplay(): " << szDisplayClassFileName << ", " << szDisplayClassFileDate << endl;
   GLib.init             ();
   GLib.setRotation      (_eScreenOrientation);
   GLib.setTextColor     (_TextColor, _BackgroundColor);
@@ -61,52 +59,52 @@ ColorDisplay::ColorDisplay() {
 } //SetupDisplay
 
 
-ColorDisplay::~ColorDisplay() {
+ColorDisplayClass::~ColorDisplayClass() {
   Serial << "~ColorDisplay(): Destructing" << endl;
 } //destructor
 
 
-PUnit ColorDisplay::Invert_Y(PUnit Y1){
+PUnit ColorDisplayClass::Invert_Y(PUnit Y1){
   return(ScreenHeight - Y1);
 }
 
-void ColorDisplay::SetCursor(PUnit CursorX, PUnit CursorY){
+void ColorDisplayClass::SetCursor(PUnit CursorX, PUnit CursorY){
   _CursorX= CursorX;
   _CursorY= CursorY;
   GLib.setCursor(CursorX, Invert_Y(CursorY));
   return;
 }
 
-void  ColorDisplay::SetBackgroundColor(Colortype NewBackgroundColor){
+void  ColorDisplayClass::SetBackgroundColor(Colortype NewBackgroundColor){
   _BackgroundColor= NewBackgroundColor;
   return;
 }
 
-void  ColorDisplay::SetTextColor(Colortype NewTextColor){
+void  ColorDisplayClass::SetTextColor(Colortype NewTextColor){
   _TextColor= NewTextColor;
   GLib.setTextColor(_TextColor);
   return;
 }
 
-void  ColorDisplay::SetTextBGColor(Colortype NewTextBGColor){
+void  ColorDisplayClass::SetTextBGColor(Colortype NewTextBGColor){
   _TextBGColor= NewTextBGColor;
   GLib.setTextColor(_TextColor, _TextBGColor);    //No separate call to set the Text BG color.
   return;
 }
 
-void  ColorDisplay::SetFillColor(Colortype NewFillColor){
+void  ColorDisplayClass::SetFillColor(Colortype NewFillColor){
   _FillColor= NewFillColor;
   GLib.setTextColor(_TextColor, _TextBGColor);    //No separate call to set the Text BG color.
   return;
 }
 
-void  ColorDisplay::SetLineColor(Colortype NewLineColor){
+void  ColorDisplayClass::SetLineColor(Colortype NewLineColor){
   _LineColor= NewLineColor;
   GLib.setTextColor(_TextColor, _TextBGColor);    //No seperate call to set the Text BG color.
   return;
 }
 
-void ColorDisplay::SelectFont(FontFaceType eFontFace, FontPointType eFontPoint){
+void ColorDisplayClass::SelectFont(FontFaceType eFontFace, FontPointType eFontPoint){
   _eFontFace    = eFontFace;
   _eFontPoint   = eFontPoint;
   switch (eFontFace){
@@ -209,22 +207,22 @@ void ColorDisplay::SelectFont(FontFaceType eFontFace, FontPointType eFontPoint){
   return;
 } //SelectFont
 
-void ColorDisplay::FillScreen(void){
+void ColorDisplayClass::FillScreen(void){
   GLib.fillScreen(_BackgroundColor);
   return;
 } //FillScreen(void)
 
-void ColorDisplay::FillScreen(Colortype FillColor){
+void ColorDisplayClass::FillScreen(Colortype FillColor){
   GLib.fillScreen(FillColor);
   return;
 } //FillScreen(ColorType)
 
-void ColorDisplay::DrawLine(PUnit X1, PUnit Y1, PUnit X2, PUnit Y2){
+void ColorDisplayClass::DrawLine(PUnit X1, PUnit Y1, PUnit X2, PUnit Y2){
   GLib.drawLine(X1, Invert_Y(Y1), X2, Invert_Y(Y2), _LineColor);
   return;
 }
 
-void ColorDisplay::DrawRectangle(PUnit XLeft, PUnit YBottom, PUnit Width, PUnit Height){
+void ColorDisplayClass::DrawRectangle(PUnit XLeft, PUnit YBottom, PUnit Width, PUnit Height){
   PUnit   X1= XLeft;
   PUnit   Y1= ScreenHeight - (YBottom + Height);
   GLib.drawRect(X1, Y1, Width, Height, _LineColor);
@@ -236,20 +234,20 @@ void ColorDisplay::DrawFilledRectangle(PUnit XLeft, PUnit YTop, PUnit Width, PUn
   //GLib.fillRect(XLeft, YTop, Width, Height, _FillColor);
   GLib.fillRect(XLeft, Invert_Y(YTop), Width, Height, _FillColor);
 */
-void ColorDisplay::DrawFilledRectangle(PUnit XLeft, PUnit YBottom, PUnit Width, PUnit Height){
+void ColorDisplayClass::DrawFilledRectangle(PUnit XLeft, PUnit YBottom, PUnit Width, PUnit Height){
   PUnit   X1= XLeft;
   PUnit   Y1= ScreenHeight - (YBottom + Height);
   GLib.fillRect(X1, Y1, Width, Height, _FillColor);
   return;
 }
 
-void ColorDisplay::DrawFilledCircle(PUnit XCenter, PUnit YCenter, PUnit Radius){
+void ColorDisplayClass::DrawFilledCircle(PUnit XCenter, PUnit YCenter, PUnit Radius){
   GLib.fillCircle(XCenter, Invert_Y(YCenter), Radius, _FillColor);
   return;
 }
 
 //For reference, draw a grid of lines with labels under every 25 horizontal lines.
-void ColorDisplay::DrawGrid(void){
+void ColorDisplayClass::DrawGrid(void){
   Serial << "ColorDisplay::DrawGrid()" << endl;
   SetLineColor(TFT_BLACK);
 
@@ -286,12 +284,12 @@ void ColorDisplay::DrawGrid(void){
   return;
 } //DrawGrid
 
-void ColorDisplay::Print(const char* szLineToPrint) {
+void ColorDisplayClass::Print(const char* szLineToPrint) {
   GLib.print(szLineToPrint);
   return;
 } //Print
 
-void ColorDisplay::PrintLine(const char* szLineToPrint) {
+void ColorDisplayClass::PrintLine(const char* szLineToPrint) {
   GLib.println(szLineToPrint);
   return;
 } //PrintLine

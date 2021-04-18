@@ -1,11 +1,11 @@
-//4/16/21c, BeckSystemClass.h
+//4/1/21a, BeckSystemClass.h
 #pragma once
 
-#include <BeckDisplayClass.h>
 #include <BeckBiotaLib.h>
 #include <BeckAlexaClass.h>
+//#include <BeckDisplayClass.h>
+#include <BeckThermoDisplayClass.h>
 #include <BeckThermostatClass.h>
-//#include <BeckThermoDisplayClass.h>
 
 
 enum ProjectType{
@@ -19,9 +19,11 @@ enum ProjectType{
   eLastProjectType
 };
 
+#define ALEXA_NAME      "Larry's Device"
+
 class SystemClass{
 protected:
-  char          szAlexaName[50]= "Larry's Device";
+  char          szAlexaName[50]= ALEXA_NAME;
   //char        *pAlexaName         = "Larry's Device";
 
   ProjectType   eProjectType         = eThermoDev;
@@ -38,6 +40,5 @@ public:
 };  //SystemClass
 
 extern SystemClass          BiotaSystem;       //This is so every module can use the same object
-extern AlexaClass           BiotaAlexa;       //This is so every module can use the same Alexa object
 
 //Last line.

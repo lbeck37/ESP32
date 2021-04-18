@@ -1,12 +1,9 @@
-const char szFileName[]  = "BeckBiotaLib.cpp";
-const char szFileDate[]    = "4/16/21a";
+const char szBiotaLibFileName[]  = "BeckBiotaLib.cpp";
+const char szBiotaLibFileDate[]    = "4/16/21a";
 
-// BeckBiotaLib.cpp 4/7/21, was 10/21/20a, was 2/2/20b
 #include <BeckBiotaLib.h>
 #include <BeckSwitchLib.h>
 #include <BeckSystemClass.h>
-
-//ProjectType   _eProjectType;
 
 bool          _bSystemOk        = true;
 
@@ -18,13 +15,9 @@ char          _acRouterPW       [50];
 char          _acAccessPointSSID[50];
 char          _acAccessPointPW  [50];
 
-
-//bool SetupSystem(ProjectType eProjectType){
 bool SetupSystem(void){
   Serial << LOG0 << "SetupSystem(): Begin" << endl;
   bool  bOk= true;
-  //_eProjectType= eProjectType;
-  //switch (_eProjectType){
   switch (BiotaSystem.GetProjectType()){
     case eThermoDev:
       strcpy(_acHostname        , "BeckThermoDev");
@@ -129,13 +122,4 @@ bool SetupSystem(void){
   Serial << LOG0 << "SetupSystem(): Project Type set to: " << _acProjectType << endl;
   return bOk;
 } //SetupSystem
-
-
-/*
-void SwitchProjectType(ProjectType eProjectType){
-  Serial << LOG0 << "SwitchProjectType(): Switch _eProjectType to: " << eProjectType << endl;
-  _eProjectType= eProjectType;
-  return;
-} //SwitchProjectType
-*/
 //Last line.

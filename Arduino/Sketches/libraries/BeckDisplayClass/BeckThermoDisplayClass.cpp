@@ -1,24 +1,24 @@
-const char szFileName[]  = "BeckThermoDisplayClass.cpp";
-const char szFileDate[]  = "4/17/21a";
+const char szThermoDisplayFileName[]  = "BeckThermoDisplayClass.cpp";
+const char szThermoDisplayFileDate[]  = "4/17/21c";
 
-#include <BeckThermoDisplayClass.h>
-//#include <BeckDisplayClass.h>
+//#include <BeckThermoDisplayClass.h>
+#include <BeckDisplayClass.h>
+#include <BeckSystemClass.h>
 #include <Streaming.h>
+
+//TTGO 1.4" display
+PUnit     ScreenWidth           = 240;
+PUnit     ScreenHeight          = 135;
+char      sz100CharBuffer[100];           //For building strings for display
+
 
 ThermoDisplayClass        BiotaDisplay;
 
 ThermoDisplayClass::ThermoDisplayClass() {
-  Serial << LOG0 << "ThermoDisplayClass::ThermoDisplayClass(): " << szFileName << ", " << szFileDate << endl;
+  Serial << LOG0 << "ThermoDisplayClass::ThermoDisplayClass(): " << szThermoDisplayFileName << ", " << szThermoDisplayFileDate << endl;
   return;
 } //constructor
 
-/*
-ThermoDisplayClass::ThermoDisplayClass(Thermostat &BiotaThermostatObject) {
-  Serial << LOG0 << "ThermoDisplayClass::ThermoDisplayClass(Thermostat): " << szFileName << ", " << szFileDate << endl;
-  BiotaThermostat= BiotaThermostatObject;
-  return;
-} //constructor
-*/
 
 ThermoDisplayClass::~ThermoDisplayClass() {
   Serial << LOG0 << "~ThermoDisplayClass(): Destructing" << endl;
@@ -26,18 +26,16 @@ ThermoDisplayClass::~ThermoDisplayClass() {
 
 
 void  Setup(void){
-
   return;
 } //Setup
 
 
 void  Handle(void){
-
   return;
 } //Handle
 
 
-void ThermoDisplayClass::DisplayCurrentTemperature(ThermoStruct stData){
+void ThermoDisplayClass::DisplayCurrentTemperature(){
   //Serial << LOG0 << "ThermoDisplayClass::DisplayCurrentTemperature(): Begin" << endl;
   //Clear the rectangular area where the DegF is displayed
   if (millis() > ulNextCurrentDegFDisplay){
@@ -50,7 +48,7 @@ void ThermoDisplayClass::DisplayCurrentTemperature(ThermoStruct stData){
     SetTextColor  (DegF_Color);
     SelectFont    (eDegF_Font, eDegF_PointSize);
 
-    sprintf(sz100CharBuffer, "%04.1f", stData.fCurrentDegF);
+    sprintf(sz100CharBuffer, "%04.1f", BiotaThermostat.GetCurrentDegF());
     Print(sz100CharBuffer);
 
     //Set time for Setpoint to display, it will do same for me
@@ -63,10 +61,10 @@ void ThermoDisplayClass::DisplayCurrentTemperature(ThermoStruct stData){
 } //DisplayCurrentTemperature
 
 
-void ThermoDisplayClass::DisplayCurrentSetpoint(ThermoStruct stData){
+void ThermoDisplayClass::DisplayCurrentSetpoint(){
   //Serial << LOG0 << "ThermoDisplayClass::DisplayCurrentSetpoint(): Begin" << endl;
   //Clear the rectangular area where the Setpoint is displayed
-  if(stData.bThermoOn &&(bSetPointChanged || (millis() > ulNextSetpointDisplay))){
+  if(BiotaThermostat.GetThermostatOn() &&(bSetPointChanged || (millis() > ulNextSetpointDisplay))){
     SetFillColor(_BackgroundColor);
 
     PUnit YBottom= (ThermoOnBarBottom + ThermoOnBarHeight);
@@ -76,7 +74,7 @@ void ThermoDisplayClass::DisplayCurrentSetpoint(ThermoStruct stData){
     SetTextColor  (ThermoSetpoint_Color);
     SelectFont    (eDegF_Font, eDegF_PointSize);
 
-    sprintf(sz100CharBuffer, "%04.1f", stData.fSetpointDegF);
+    sprintf(sz100CharBuffer, "%04.1f", BiotaThermostat.GetSetpoint());
     Print(sz100CharBuffer);
 
     //Set next time the CurrentDegF is displayed, it will do same for me
@@ -88,18 +86,19 @@ void ThermoDisplayClass::DisplayCurrentSetpoint(ThermoStruct stData){
   return;
 } //DisplayCurrentSetpoint
 
-void ThermoDisplayClass::DisplayMainScreen(ThermoStruct stData){
+void ThermoDisplayClass::DisplayMainScreen(){
   //Serial << LOG0 << "ThermoDisplayClass::DisplayMainScreen(): Begin" << endl;
-  DisplayCurrentSetpoint(stData);
-  DisplayCurrentTemperature(stData);
+  DisplayCurrentSetpoint();
+  DisplayCurrentTemperature();
   return;
 } //DisplayMainScreen
 
-void ThermoDisplayClass::DisplayThermoOnBar(ThermoStruct stData){
+void ThermoDisplayClass::DisplayThermoOnBar(){
   //Draw a fat bar, the ThermoOnBar, under the large current temperature display, present when thermostat is on.
-  if (bThermoOnLast != stData.bThermoOn){
+  if (bThermoOnLast != BiotaThermostat.GetThermostatOn()){
     bThermoOnChanged= true;
-    if (stData.bThermoOn){
+    //if (stData.bThermoOn){
+    if (BiotaThermostat.GetThermostatOn()){
       SetFillColor(ThermoOnBarColor);
       bThermoOnLast= true;
     } //if(stData.bThermoOn)
@@ -115,10 +114,10 @@ void ThermoDisplayClass::DisplayThermoOnBar(ThermoStruct stData){
   return;
 } //DisplayThermoOnBar
 
-void ThermoDisplayClass::DisplaySetpointLine(ThermoStruct stData){
+void ThermoDisplayClass::DisplaySetpointLine(){
   //Print a line with the string containing the Setpoint and Offpoint values, call it SetpointLine
-  if (fSetpointLast != stData.fSetpointDegF){
-    fSetpointLast= stData.fSetpointDegF;
+  if (fSetpointLast != BiotaThermostat.GetSetpoint()){
+    fSetpointLast= BiotaThermostat.GetSetpoint();
     bSetPointChanged= true;
 
     //Clear the Setpoint area
@@ -130,18 +129,18 @@ void ThermoDisplayClass::DisplaySetpointLine(ThermoStruct stData){
     SetTextColor  (Setpoint_Color);
     SelectFont    (eSetpoint_TextFace, eSetpoint_TextPointSize);
 
-    sprintf(sz100CharBuffer, "Set= %4.1f       Off= %4.1f", stData.fSetpointDegF, (stData.fSetpointDegF + stData.fMaxHeatRangeF));
+    sprintf(sz100CharBuffer, "Set= %4.1f       Off= %4.1f", BiotaThermostat.GetSetpoint(),
+        (BiotaThermostat.GetSetpoint() + BiotaThermostat.GetMaxHeatRange()));
     Print(sz100CharBuffer);
-    //bFirstTimeDrawn= false;
   } //if(fSetpointLast!=stData.fSetpointDegF)
   return;
 } //DisplaySetpointLine
 
-void ThermoDisplayClass::DisplayHeatOnBox(ThermoStruct stData){
+void ThermoDisplayClass::DisplayHeatOnBox(){
   //Draw a box, the HeatOnBox, between the Setpoint and Offpoint text, present when heat is on.
   //Draws on top of SetpointText, position it to not overwrite text
-  if (bThermoOnChanged || bSetPointChanged || (bHeatOnLast != stData.bHeatOn)){
-    if (stData.bThermoOn && stData.bHeatOn){
+  if (bThermoOnChanged || bSetPointChanged || (bHeatOnLast != BiotaThermostat.GetHeatOn())){
+    if (BiotaThermostat.GetThermostatOn() && BiotaThermostat.GetHeatOn()){
       SetFillColor(HeatOnBoxColor);
       bHeatOnLast= true;
     } //if(stData.bThermoOn)
@@ -154,12 +153,12 @@ void ThermoDisplayClass::DisplayHeatOnBox(ThermoStruct stData){
   return;
 } //DisplayHeatOnBox
 
-void ThermoDisplayClass::DrawScreen(ThermoStruct stData){
+void ThermoDisplayClass::DrawScreen(){
   //Serial << LOG0 << "ThermoDisplayClass::DrawScreen(): Begin" << endl;
-  DisplayThermoOnBar    (stData);
-  DisplaySetpointLine   (stData);
-  DisplayHeatOnBox      (stData);
-  DisplayMainScreen     (stData);
+  DisplayThermoOnBar    ();
+  DisplaySetpointLine   ();
+  DisplayHeatOnBox      ();
+  DisplayMainScreen     ();
   bSetPointChanged= false;    //All done with this, used for getting Setpoint up quickly and drawing Heat On box.
   return;
 } //DrawScreen

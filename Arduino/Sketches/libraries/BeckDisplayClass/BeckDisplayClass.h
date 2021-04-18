@@ -91,8 +91,7 @@ enum FontPointType {
 };
 
 
-
-class Display {
+class DisplayClass {
 protected:
   GraphicsLibrary         GLib                  = GraphicsLibrary();
   //ProjectType             _eProjectType         = eThermoDev;
@@ -110,14 +109,14 @@ protected:
   //char                    _szLastDegF[10]       = "99.9";
 
 public:
-  Display();
-  virtual ~Display();
+  DisplayClass();
+  virtual ~DisplayClass();
 
   PUnit Invert_Y                      (PUnit Y1);       //Implemented at the Display Class level
 
   virtual void  Setup                 (void){}
   virtual void  Handle                (void){}
-  virtual void  Update                (ThermoStruct stData){}
+  virtual void  Update                (void){}
   virtual void  SetCursor             (PUnit CursorX, PUnit CursorY){}
   virtual void  SetBackgroundColor    (Colortype NewBackgroundColor){}
   virtual void  SetTextColor          (Colortype NewTextColor){}
@@ -134,17 +133,16 @@ public:
   virtual void  DrawGrid              (void){}
   virtual void  Print                 (const char* szLineToPrint){}
   virtual void  PrintLine             (const char* szLineToPrint){}
-};  //Display class
+};  //DisplayClass
 
 
-class ColorDisplay : public Display {
+class ColorDisplayClass : public DisplayClass {
 protected:
-
 public:
-  ColorDisplay();
-  virtual ~ColorDisplay();
+  ColorDisplayClass();
+  virtual ~ColorDisplayClass();
 
-  virtual void  Update        (ThermoStruct stData){}
+  virtual void  Update        (void){}
 
   PUnit Invert_Y              (PUnit Y1);
   void  SetCursor             (PUnit CursorX, PUnit CursorY);
@@ -163,11 +161,11 @@ public:
   void  DrawGrid              (void);
   void  Print                 (const char* szLineToPrint);
   void  PrintLine             (const char* szLineToPrint);
-};  //ColorDisplay class
+};  //ColorDisplayClass
 
 
-/*
-class ThermoDisplayClass : public ColorDisplay {
+
+class ThermoDisplayClass : public ColorDisplayClass {
 protected:
   uint32_t    ulCurrentDegFOnTimeSeconds  = 4;
   uint32_t    ulSetpointOnTimeSeconds     = 2;
@@ -219,12 +217,12 @@ protected:
   //ThermostatClass      BiotaThermostat;
 
   //Protected methods
-  void  DisplayCurrentTemperature   (ThermoStruct stData);
-  void  DisplayCurrentSetpoint      (ThermoStruct stData);
-  void  DisplayMainScreen           (ThermoStruct stData);
-  void  DisplayThermoOnBar          (ThermoStruct stData);
-  void  DisplaySetpointLine         (ThermoStruct stData);
-  void  DisplayHeatOnBox            (ThermoStruct stData);
+  void  DisplayCurrentTemperature   (void);
+  void  DisplayCurrentSetpoint      (void);
+  void  DisplayMainScreen           (void);
+  void  DisplayThermoOnBar          (void);
+  void  DisplaySetpointLine         (void);
+  void  DisplayHeatOnBox            (void);
 
 public:
   ThermoDisplayClass();
@@ -233,11 +231,11 @@ public:
 
   void  Setup             (void){}
   void  Handle            (void){}
-  void  DrawScreen        (ThermoStruct stData);
+  void  DrawScreen        (void);
   //void  DrawScreen        (void);
 };  //ThermoDisplayClass
 
 extern ThermoDisplayClass              BiotaDisplay;       //This is so every module can use the same object
-*/
+
 
 //Last line.

@@ -1,13 +1,13 @@
 const char szFileName[]  = "BeckSystemClass.cpp";
-const char szFileDate[]  = "4/16/21d";
+const char szFileDate[]  = "4/17/21b";
 
 #include <BeckSystemClass.h>
 #include <BeckAlexaClass.h>
+#include <BeckBiotaDefines.h>
 #include <BeckThermoDisplayClass.h>
 #include <Streaming.h>
 
 SystemClass           BiotaSystem;       //This is so every module can use the same object
-AlexaClass            BiotaAlexa;
 
 SystemClass::SystemClass() {
   Serial << "SystemClass::SystemClass(): " << szFileName << ", " << szFileDate << endl;
@@ -25,7 +25,10 @@ void SystemClass::Setup(){
   //strcpy(szAlexaName, "Larry's Device");
 
   //SystemAlexa.Setup           ((char *)szAlexaName);
-  BiotaAlexa.Setup           ((char *)szAlexaName);
+#if DO_ALEXA
+    BiotaAlexa.Setup(ALEXA_NAME);
+#endif
+  //BiotaAlexa.Setup           ((char *)szAlexaName);
   //SystemAlexa.Setup           (pAlexaName);
   BiotaThermostat.Setup       ();
   BiotaDisplay.Setup   ();
@@ -34,9 +37,11 @@ void SystemClass::Setup(){
 
 
 void SystemClass::Handle(){
-  BiotaAlexa.Handle          ();
+#if DO_ALEXA
+  BiotaAlexa.Handle           ();
+#endif
   BiotaThermostat.Handle      ();
-  BiotaDisplay.Handle  ();
+  BiotaDisplay.Handle         ();
   return;
 } //Handle
 

@@ -1,9 +1,9 @@
 // 4/17/21b, BeckThermoDisplayClass.h
 #pragma once
-#include <BeckMiniLib.h>
 #include <BeckDisplayClass.h>
+/*
 
-class ThermoDisplayClass : public ColorDisplay {
+class ThermoDisplayClass : public ColorDisplayClass {
 protected:
   uint32_t    ulCurrentDegFOnTimeSeconds  = 4;
   uint32_t    ulSetpointOnTimeSeconds     = 2;
@@ -74,4 +74,5 @@ public:
 };  //ThermoDisplayClass
 
 extern ThermoDisplayClass              BiotaDisplay;       //This is so every module can use the same object
+*/
 //Last line.

@@ -1,5 +1,8 @@
 // 4/16/21a, BeckIncludeOptionalFiles.h
 //Optional #includes for BeckE32_Biota.ino
+#pragma once
+
+#include <BeckBiotaDefines.h>
 
   #if DO_OTA
     #include <BeckOTALib.h>

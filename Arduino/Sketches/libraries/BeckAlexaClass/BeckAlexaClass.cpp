@@ -1,18 +1,14 @@
 const char szFileName[]  = "BeckAlexaClass.cpp";
-const char szFileDate[]  = "4/15/21b";
+const char szFileDate[]  = "4/17/21a";
 
 #include <BeckAlexaClass.h>
-#include <BeckBiotaLib.h>
 #include <BeckSystemClass.h>
-#include <BeckThermoDataClass.h>
 
-//AlexaClass        BiotaAlexa;
+AlexaClass            BiotaAlexa;
 
 //Prototypes
 void    CallbackAlexaCommand    (unsigned char ucDdeviceID,const char* szDeviceName,bool bState,unsigned char ucValue);
-void    HandleThermostat  (bool bState, unsigned char ucValue);
-//void  HandleThermostatProject (bool bState, unsigned char ucValue);
-
+void    SetThermostatValues  (bool bState, unsigned char ucValue);
 
 void CallbackAlexaCommand(unsigned char ucDdeviceID,const char* szDeviceName,bool bState,unsigned char ucValue){
   char    szCharString[100];
@@ -26,7 +22,7 @@ void CallbackAlexaCommand(unsigned char ucDdeviceID,const char* szDeviceName,boo
     case eGarage:
     case eThermoDev:
     case eHeater:
-      HandleThermostat(bState, ucValue);
+      SetThermostatValues(bState, ucValue);
       break;
     case ePitchMeter:
       break;
@@ -41,28 +37,24 @@ void CallbackAlexaCommand(unsigned char ucDdeviceID,const char* szDeviceName,boo
 } //CallbackAlexaCommand
 
 
-//void AlexaClass::HandleThermostatProject(bool bState, unsigned char ucValue){
-void HandleThermostat(bool bState, unsigned char ucValue){
-  int wValuePercent= round(((float)ucValue / 255.0) * 100);
-  Serial << LOG0 << "HandleThermostat(): Received wValuePercent= " << wValuePercent << endl;
-  //LastThermostatOnState= bState;
-  //SetThermoSwitch(bState);
-  if(wValuePercent == 100){
+void SetThermostatValues(bool bThermostatState, unsigned char ucSetpointValue){
+  // ucSetpointValue is a number between 0 and 255 and represents the desired Setpoint
+  // in integer Degrees farenheit between 0 and 100. BiotaThermostat stores setpoint as a float
+  // The value 100 is the power-up value retained until Alexa is used to set the setpoint.
+  int wValuePercent= round(((float)ucSetpointValue / 255.0) * 100);
+  Serial << LOG0 << "SetThermostatValues(): Received wValuePercent= " << wValuePercent << endl;
+  if(wValuePercent != 100){
+    BiotaThermostat.SetSetpoint((float)wValuePercent);
+   } //if(wValuePercent==100)
+  else{
     //Alexa thinks the setpoint is 100% on power-up until Alexa is used to set the setpoint.
     //Don't do anything and it will continue to use the existing Setpoint.
-    //fSetThermoSetpoint(_fSetpointF);
-  } //if(wValuePercent==100)
-  else{
-    //fSetThermoSetpoint(ucValue);
-    //ThermostatObject.Set_Setpoint(ucValue);
-    //BiotaThermostat.Set_Setpoint(ucValue);
-    //_fSetpoint= round( ((float)ucValue / 255.0) * 100.0);
-    BiotaAlexa.SetLastSetpoint(round( ((float)ucValue / 255.0) * 100.0));
   } //if(wValuePercent==100)else
-  //_bThermostatOn= bState;
-  BiotaAlexa.SetLastThermostatOnState(bState);
+
+  //Tell the thermostat to turn itself on or off.
+  BiotaThermostat.SetThermostatOn(bThermostatState);
   return;
-} //HandleThermostatProject
+} //SetThermostatValues
 
 
 AlexaClass::AlexaClass() {
@@ -107,29 +99,8 @@ void AlexaClass::Setup(char szAlexaName[]){
 
 
 void AlexaClass::Handle(){
-  wAlexaHandleCount++;  //Track how many times this is called before next handle system (10 sec)
+  //wAlexaHandleCount++;  //Track how many times this is called before next handle system (10 sec)
   AlexaDevice.handle();
   return;
 } //HandleAlexa
-
-
-void AlexaClass::SetLastThermostatOnState(bool bNewThermostatOnState){
-  LastThermostatOnState= bNewThermostatOnState;
-}
-
-
-void AlexaClass::SetLastSetpoint(float fNewSetpoint){
-  LastSetpoint= fNewSetpoint;
-  return;
-}
-
-
-bool AlexaClass::GetLastThermostatOnState(){
-  return(LastThermostatOnState);
-}
-
-
-float AlexaClass::GetLastSetpoint(){
-  return(LastSetpoint);
-}
 //Last line.

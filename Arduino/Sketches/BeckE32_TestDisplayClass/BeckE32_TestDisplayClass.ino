@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_TestDisplayClass.ino";
-const char szFileDate[]    = "4/7/21a";
+const char szFileDate[]    = "4/17/21a";
 
 #include <BeckDisplayClass.h>
 #include <Streaming.h>
@@ -9,7 +9,7 @@ void setup(){
 	delay(100);
 	Serial << endl << "setup(): Sketch: " << szSketchName << ", " << szFileDate << endl;
 
-	ColorDisplay cDisplay;
+	ColorDisplayClass cDisplay;
 
   cDisplay.FillScreen(TFT_WHITE);
   //cDisplay.DrawGrid();
