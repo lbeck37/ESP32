@@ -1,20 +1,27 @@
-// 4/17/21b, BeckThermoDisplayClass.h
+// 4/18/21b, BeckThermoDisplayClass.h
 #pragma once
 #include <BeckDisplayClass.h>
-/*
+
+struct DisplayThermoStruct {
+  float   fCurrentDegF;
+  float   fSetpoint;
+  float   fMaxHeatRange;
+  bool    bThermoOn;
+  bool    bHeatOn;
+};
 
 class ThermoDisplayClass : public ColorDisplayClass {
 protected:
   uint32_t    ulCurrentDegFOnTimeSeconds  = 4;
   uint32_t    ulSetpointOnTimeSeconds     = 2;
 
-  uint32_t    ulCurrentDegFOnTimeMsec   = ulCurrentDegFOnTimeSeconds   * lMsecPerSec;
-  uint32_t    ulSetpointOnTimeMsec      = ulSetpointOnTimeSeconds      * lMsecPerSec;
+  uint32_t    ulCurrentDegFOnTimeMsec   = ulCurrentDegFOnTimeSeconds * 1000;
+  uint32_t    ulSetpointOnTimeMsec      = ulSetpointOnTimeSeconds    * 1000;
 
   uint32_t    ulNextCurrentDegFDisplay  = 0;
   uint32_t    ulNextSetpointDisplay     = 0;
 
-  uint32_t    ulVeryLargeExtraWaitMsec  = 1000 * lMsecPerSec;   //Time to do next display needs this.
+  uint32_t    ulVeryLargeExtraWaitMsec  = 1000 * 1000;   //Time to do next display needs this.
 
   bool  bFirstTimeDrawn   = true;
   bool  bThermoOnLast     = false;    //Used to check if thermo on bar should be changed.
@@ -52,27 +59,23 @@ protected:
   FontFaceType    eSetpoint_TextFace        = eTextFace;
   FontPointType   eSetpoint_TextPointSize   = eText26px;
 
-  //ThermostatClass      BiotaThermostat;
-
   //Protected methods
-  void  DisplayCurrentTemperature   (ThermoStruct stData);
-  void  DisplayCurrentSetpoint      (ThermoStruct stData);
-  void  DisplayMainScreen           (ThermoStruct stData);
-  void  DisplayThermoOnBar          (ThermoStruct stData);
-  void  DisplaySetpointLine         (ThermoStruct stData);
-  void  DisplayHeatOnBox            (ThermoStruct stData);
+  void  DisplayCurrentTemperature   (void);
+  void  DisplayCurrentSetpoint      (void);
+  void  DisplayMainScreen           (void);
+  void  DisplayThermoOnBar          (void);
+  void  DisplaySetpointLine         (void);
+  void  DisplayHeatOnBox            (void);
 
 public:
   ThermoDisplayClass();
   //ThermoDisplayClass(Thermostat &BiotaThermostatObject);
   virtual ~ThermoDisplayClass();
 
-  void  Setup             (void){}
-  void  Handle            (void){}
-  void  DrawScreen        (ThermoStruct stData);
-  //void  DrawScreen        (void);
+  void  Setup             (void);
+  void  Handle            (DisplayThermoStruct ThermoData);
+  void  DrawScreen        (void);
 };  //ThermoDisplayClass
 
-extern ThermoDisplayClass              BiotaDisplay;       //This is so every module can use the same object
-*/
+extern ThermoDisplayClass   BiotaDisplay;       //This is so every module can use the same object
 //Last line.

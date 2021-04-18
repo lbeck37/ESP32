@@ -1,7 +1,7 @@
 const char szSketchName[]  = "BeckE32_TestDisplayClass.ino";
-const char szFileDate[]    = "4/18/21a";
+const char szFileDate[]    = "4/18/21k";
 
-#include <BeckDisplayClass.h>
+//#include <BeckDisplayClass.h>
 #include <Streaming.h>
 
 void setup(){
@@ -9,6 +9,7 @@ void setup(){
 	delay(100);
 	Serial << endl << "setup(): Sketch: " << szSketchName << ", " << szFileDate << endl;
 
+/*
 	ColorDisplayClass cDisplay;
 
   cDisplay.FillScreen(TFT_WHITE);
@@ -47,7 +48,9 @@ void setup(){
 
   sprintf(sz100CharDisplayBuffer, "Set= %4.1f    Off= %4.1f", fDummySetF, fDummyOffF);
   cDisplay.Print(sz100CharDisplayBuffer);
+*/
 
+  Serial << "setup(): done" << endl;
 	return;
 } //setup
 

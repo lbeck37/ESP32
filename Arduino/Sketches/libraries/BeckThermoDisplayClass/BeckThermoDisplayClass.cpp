@@ -1,8 +1,8 @@
 const char szThermoDisplayFileName[]  = "BeckThermoDisplayClass.cpp";
 const char szThermoDisplayFileDate[]  = "4/18/21c";
 
-//#include <BeckThermoDisplayClass.h>
-#include <BeckDisplayClass.h>
+#include <BeckThermoDisplayClass.h>
+//#include <BeckDisplayClass.h>
 //#include <BeckSystemClass.h>
 #include <Streaming.h>
 
