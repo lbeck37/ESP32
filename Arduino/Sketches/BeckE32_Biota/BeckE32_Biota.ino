@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_Biota.ino";
-const char szFileDate[]    = "4/17/21b";
+const char szFileDate[]    = "4/19/21b";
 
 #include <BeckBiotaDefines.h>
 #include <BeckBiotaLib.h>
@@ -8,8 +8,8 @@ const char szFileDate[]    = "4/17/21b";
 #include <BeckSwitchLib.h>
 #include <BeckSystemClass.h>
 #include <BeckDisplayClass.h>
-#include <BeckThermoDisplayClass.h>
 #include <BeckThermostatClass.h>
+#include <BeckThermostatDataStruct.h>
 #include <BeckWiFiLib.h>
 #include <Streaming.h>
 #include <Time.h>
@@ -20,7 +20,7 @@ ProjectType      eProjectType            = eThermoDev;
 //ProjectType      eProjectType            = eFireplace;
 //ProjectType      eProjectType            = eHeater;
 //ProjectType      eProjectType            = eGarage;
-//ProjectType      eProjectType           = ePitchMeter;
+//ProjectType      eProjectType            = ePitchMeter;
 
 bool            _bOTA_Started       = false;
 unsigned long   _ulOTATimeoutMsec   = millis();
@@ -29,12 +29,10 @@ unsigned long   _ulOTATimeoutMsec   = millis();
 void SetupOptionalModules   (void);
 void HandleOptionalModules  (void);
 
-
 void setup(){
   Serial.begin(lSerialMonitorBaud);
   delay(100);
   Serial << endl << LOG0 << "setup(): Sketch: " << szSketchName << ", " << szFileDate << endl;
-
   if (SetupSystem()){   //BeckBiotaib.cpp
     SetupWiFi();
     SetupOptionalModules();
@@ -59,7 +57,7 @@ void loop(){
 
   if (!_bOTA_Started){
     BiotaSystem.Handle();
-    UpdateDisplay();
+    //UpdateDisplay();
     //wAlexaHandleCount= 0;
     CheckTaskTime("loop(): HandleSystem()");
   } //if(!_bOTA_Started)
@@ -74,18 +72,19 @@ void loop(){
   return;
 } //loop
 
-
+/*
 void UpdateDisplay(void){
-  ThermoStruct    stData;
+  DisplayThermoStruct    stData;
   stData.fCurrentDegF     = BiotaThermostat.GetCurrentDegF();
-  stData.fSetpointDegF    = BiotaThermostat.GetSetpoint();
-  stData.fMaxHeatRangeF   = BiotaThermostat.GetMaxHeatRange();
+  stData.fSetpoint        = BiotaThermostat.GetSetpoint();
+  stData.fMaxHeatRange    = BiotaThermostat.GetMaxHeatRange();
   stData.bThermoOn        = BiotaThermostat.GetThermostatOn();
   stData.bHeatOn          = BiotaThermostat.GetHeatOn();
 
   BiotaDisplay.DrawScreen();
   return;
 } //UpdateDisplay
+*/
 
 
 void SetupOptionalModules(){

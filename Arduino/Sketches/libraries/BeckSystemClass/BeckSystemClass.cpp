@@ -4,7 +4,8 @@ const char szFileDate[]  = "4/18/21a";
 #include <BeckSystemClass.h>
 #include <BeckAlexaClass.h>
 #include <BeckBiotaDefines.h>
-#include <BeckThermoDisplayClass.h>
+#include <BeckDisplayClass.h>
+//#include <BeckThermoDisplayClass.h>
 #include <BeckThermostatClass.h>
 #include <Streaming.h>
 

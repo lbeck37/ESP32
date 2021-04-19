@@ -1,7 +1,8 @@
 const char szDisplayClassFileName[]  = "BeckDisplayClass.cpp";
-const char szDisplayClassFileDate[]  = "4/18/21e";
+const char szDisplayClassFileDate[]  = "4/19/21b";
 
 #include <BeckDisplayClass.h>
+#include <BeckThermostatDataStruct.h>
 #include "Free_Fonts.h"
 #include <Streaming.h>
 
@@ -29,7 +30,9 @@ const char szDisplayClassFileDate[]  = "4/18/21e";
 #endif
 
 char                  sz100CharDisplayBuffer[100];    //For building strings for display
-DisplayThermoStruct   DisplayThermoData;
+//DisplayThermoStruct   DisplayThermoData;
+
+TTGO_DisplayClass     BiotaDisplay;                   //So every module can use the same object
 
 DisplayClass::DisplayClass() {
   Serial << "Display::Display(): " << szDisplayClassFileName << ", " << szDisplayClassFileDate << endl;
@@ -287,12 +290,14 @@ void TTGO_DisplayClass::PrintLine(const char* szLineToPrint) {
 //*********************************************************
 //***** Was in ThermoDisplayClass
 void TTGO_DisplayClass::Setup(void){
+  DrawScreen();
   return;
 } //Setup
 
 
-void TTGO_DisplayClass::Handle(DisplayThermoStruct ThermoData){
-  DisplayThermoData= ThermoData;
+//void TTGO_DisplayClass::Handle(DisplayThermoStruct ThermoData){
+void TTGO_DisplayClass::Handle(){
+  //DisplayThermoData= ThermoData;
   DrawScreen();
   return;
 } //Handle
@@ -311,7 +316,8 @@ void TTGO_DisplayClass::DisplayCurrentTemperature(){
     SetTextColor  (DegF_Color);
     SelectFont    (eDegF_Font, eDegF_PointSize);
 
-    sprintf(sz100CharDisplayBuffer, "%04.1f", DisplayThermoData.fCurrentDegF);
+    //sprintf(sz100CharDisplayBuffer, "%04.1f", DisplayThermoData.fCurrentDegF);
+    sprintf(sz100CharDisplayBuffer, "%04.1f", ThermostatData.fCurrentDegF);
     Print(sz100CharDisplayBuffer);
 
     //Set time for Setpoint to display, it will do same for me
@@ -327,7 +333,7 @@ void TTGO_DisplayClass::DisplayCurrentTemperature(){
 void TTGO_DisplayClass::DisplayCurrentSetpoint(){
   //Serial << "TTGO_DisplayClass::DisplayCurrentSetpoint(): Begin" << endl;
   //Clear the rectangular area where the Setpoint is displayed
-  if(DisplayThermoData.bThermoOn &&(bSetPointChanged || (millis() > ulNextSetpointDisplay))){
+  if (ThermostatData.bThermoOn &&(bSetPointChanged || (millis() > ulNextSetpointDisplay))){
     SetFillColor(_BackgroundColor);
 
     PUnit YBottom= (ThermoOnBarBottom + ThermoOnBarHeight);
@@ -337,7 +343,7 @@ void TTGO_DisplayClass::DisplayCurrentSetpoint(){
     SetTextColor  (ThermoSetpoint_Color);
     SelectFont    (eDegF_Font, eDegF_PointSize);
 
-    sprintf(sz100CharDisplayBuffer, "%04.1f", DisplayThermoData.fSetpoint);
+    sprintf(sz100CharDisplayBuffer, "%04.1f", ThermostatData.fSetpoint);
     Print(sz100CharDisplayBuffer);
 
     //Set next time the CurrentDegF is displayed, it will do same for me
@@ -358,10 +364,10 @@ void TTGO_DisplayClass::DisplayMainScreen(){
 
 void TTGO_DisplayClass::DisplayThermoOnBar(){
   //Draw a fat bar, the ThermoOnBar, under the large current temperature display, present when thermostat is on.
-  if (bThermoOnLast != DisplayThermoData.bThermoOn){
+  if (bThermoOnLast != ThermostatData.bThermoOn){
     bThermoOnChanged= true;
     //if (stData.bThermoOn){
-    if (DisplayThermoData.bThermoOn){
+    if (ThermostatData.bThermoOn){
       SetFillColor(ThermoOnBarColor);
       bThermoOnLast= true;
     } //if(stData.bThermoOn)
@@ -379,8 +385,8 @@ void TTGO_DisplayClass::DisplayThermoOnBar(){
 
 void TTGO_DisplayClass::DisplaySetpointLine(){
   //Print a line with the string containing the Setpoint and Offpoint values, call it SetpointLine
-  if (fSetpointLast != DisplayThermoData.fSetpoint){
-    fSetpointLast= DisplayThermoData.fSetpoint;
+  if (fSetpointLast != ThermostatData.fSetpoint){
+    fSetpointLast= ThermostatData.fSetpoint;
     bSetPointChanged= true;
 
     //Clear the Setpoint area
@@ -392,8 +398,8 @@ void TTGO_DisplayClass::DisplaySetpointLine(){
     SetTextColor  (Setpoint_Color);
     SelectFont    (eSetpoint_TextFace, eSetpoint_TextPointSize);
 
-    sprintf(sz100CharDisplayBuffer, "Set= %4.1f       Off= %4.1f", DisplayThermoData.fSetpoint,
-        (DisplayThermoData.fSetpoint + DisplayThermoData.fMaxHeatRange));
+    sprintf(sz100CharDisplayBuffer, "Set= %4.1f       Off= %4.1f", ThermostatData.fSetpoint,
+        (ThermostatData.fSetpoint + ThermostatData.fMaxHeatRange));
     Print(sz100CharDisplayBuffer);
   } //if(fSetpointLast!=stData.fSetpointDegF)
   return;
@@ -402,8 +408,8 @@ void TTGO_DisplayClass::DisplaySetpointLine(){
 void TTGO_DisplayClass::DisplayHeatOnBox(){
   //Draw a box, the HeatOnBox, between the Setpoint and Offpoint text, present when heat is on.
   //Draws on top of SetpointText, position it to not overwrite text
-  if (bThermoOnChanged || bSetPointChanged || (bHeatOnLast != DisplayThermoData.bHeatOn)){
-    if (DisplayThermoData.bThermoOn && DisplayThermoData.bHeatOn){
+  if (bThermoOnChanged || bSetPointChanged || (bHeatOnLast != ThermostatData.bHeatOn)){
+    if (ThermostatData.bThermoOn && ThermostatData.bHeatOn){
       SetFillColor(HeatOnBoxColor);
       bHeatOnLast= true;
     } //if(stData.bThermoOn)

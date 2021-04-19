@@ -1,8 +1,9 @@
 const char szFileName[]  = "BeckThermoDataClass.cpp";
-const char szFileDate[]  = "4/15/21a";
+const char szFileDate[]  = "4/19/21a";
 
 #include <BeckThermoDataClass.h>
 #include <BeckBiotaLib.h>
+
 
 ThermoDataClass::ThermoDataClass() {
   Serial << "ThermoDataClass::ThermoDataClass(): " << szFileName << ", " << szFileDate << endl;

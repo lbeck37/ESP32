@@ -1,12 +1,12 @@
-//4/1/21a, BeckSystemClass.h
+// 4/19/21b, BeckSystemClass.h
 #pragma once
 
 #include <BeckBiotaLib.h>
 #include <BeckAlexaClass.h>
-//#include <BeckDisplayClass.h>
-#include <BeckThermoDisplayClass.h>
+#include <BeckDisplayClass.h>
+//#include <BeckThermoDisplayClass.h>
 #include <BeckThermostatClass.h>
-
+#include <BeckThermostatDataStruct.h>
 
 enum ProjectType{
   eNoProject  = 0,

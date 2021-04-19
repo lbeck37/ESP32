@@ -1,23 +1,21 @@
 const char szThermostatFileName[]  = "BeckThermostatClass.cpp";
-const char szThermostatFileDate[]  = "4/17/21a";
+const char szThermostatFileDate[]  = "4/19/21a";
 
 #include <BeckThermostatClass.h>
-//#include <BeckMiniLib.h>
+#include <BeckLogLib.h>
 #include <BeckSwitchLib.h>
+#include <BeckThermostatDataStruct.h>
 #include <DallasTemperature.h>
 #include <OneWire.h>
-#include <BeckLogLib.h>
 #include <Streaming.h>
 
 //Create OneWire instance and tell Dallas Temperature Library to use oneWire Library
-/*
-OneWire             oOneWire(sOneWireGPIO);
-DallasTemperature   oDallasTempSensor(&oOneWire);
-*/
+OneWire                 BiotaOneWire(sOneWireGPIO);
+DallasTemperature       BiotaTempSensor(&BiotaOneWire);
 
-OneWire             BiotaOneWire(sOneWireGPIO);
-DallasTemperature   BiotaTempSensor(&BiotaOneWire);
-ThermostatClass     BiotaThermostat;
+ThermostatClass         BiotaThermostat;
+ThermostatDataStruct    ThermostatData;
+
 
 ThermostatClass::ThermostatClass() {
   Serial << "ThermostatClass::ThermostatClass(): " << szThermostatFileName << ", " << szThermostatFileDate << endl;

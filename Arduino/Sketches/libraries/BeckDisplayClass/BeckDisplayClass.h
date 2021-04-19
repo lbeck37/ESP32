@@ -1,6 +1,7 @@
-// 4/18/21g, BeckDisplayClass.h
+// 4/19/21c, BeckDisplayClass.h
 #pragma once
 //Initially used for TTGO ESP32 module. 135 x 240, 1.14", 240dpi display
+
 #include <TFT_eSPI.h>
 
 //Remove the "//" in front of the #define for a font you use
@@ -19,10 +20,9 @@ typedef int32_t       PUnit;        //Pixel Unit
 typedef uint8_t       FontSize;
 typedef float         DegreeType;
 
-//TTGO 1.4" display
+//TTGO 1.14" display
 const PUnit          ScreenWidth  = 240;
 const PUnit          ScreenHeight = 135;;
-//uint8_t        DegreeSymbol;
 
 extern char           sz100CharDisplayBuffer[100];    //For building strings for display
 
@@ -77,6 +77,7 @@ enum FontPointType {
   eLastFontPointType
 };
 
+/*
 struct DisplayThermoStruct {
   float   fCurrentDegF  = 68.0;
   float   fSetpoint     = 70.0;
@@ -84,6 +85,7 @@ struct DisplayThermoStruct {
   bool    bThermoOn     = false;
   bool    bHeatOn       = false;
 };
+*/
 
 //DisplayThermoStruct DisplayThermoData;
 
@@ -190,7 +192,8 @@ public:
   virtual ~TTGO_DisplayClass();
 
   void  Setup                 (void);
-  void  Handle                (DisplayThermoStruct ThermoData);
+  //void  Handle                (ThermostatDataStruct ThermostatData);
+  void  Handle                (void);
   void  DrawScreen            (void);
   PUnit Invert_Y              (PUnit Y1);
   void  SetCursor             (PUnit CursorX, PUnit CursorY);
@@ -210,4 +213,7 @@ public:
   void  Print                 (const char* szLineToPrint);
   void  PrintLine             (const char* szLineToPrint);
 };  //TTGO_DisplayClass
+
+extern TTGO_DisplayClass    BiotaDisplay;       //This is so every module can use the same object
+
 //Last line.
