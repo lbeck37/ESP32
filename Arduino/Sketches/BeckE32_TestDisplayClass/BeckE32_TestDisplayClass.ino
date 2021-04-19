@@ -1,7 +1,7 @@
 const char szSketchName[]  = "BeckE32_TestDisplayClass.ino";
-const char szFileDate[]    = "4/18/21k";
+const char szFileDate[]    = "4/18/21u";
 
-//#include <BeckDisplayClass.h>
+#include <BeckDisplayClass.h>
 #include <Streaming.h>
 
 void setup(){
@@ -9,7 +9,6 @@ void setup(){
 	delay(100);
 	Serial << endl << "setup(): Sketch: " << szSketchName << ", " << szFileDate << endl;
 
-/*
 	ColorDisplayClass cDisplay;
 
   cDisplay.FillScreen(TFT_WHITE);
@@ -21,7 +20,8 @@ void setup(){
 
   //Show the current temperature in very large font as in "89.4"
   PUnit   XLeftDegF =  5;
-  PUnit   YBaseline = 97;
+  //PUnit   YBaseline = 97;
+  PUnit   YBaseline = 38;
   cDisplay.SetCursor(XLeftDegF, YBaseline);
   //cDisplay.SetTextColor(TFT_RED);
   cDisplay.SetTextColor(TFT_BLACK);
@@ -32,7 +32,8 @@ void setup(){
 
   //Black or red fat line under DegF when on.
   PUnit   BarLeft   = 0;  // PUnit XLeft, PUnit YTop, PUnit Width, PUnit Height
-  PUnit   BarTop    = 102;
+  //PUnit   BarTop    = 102;
+  PUnit   BarTop    = 23;
   PUnit   BarWidth  = 240;
   PUnit   BarHeight = 10;
   //cDisplay.SetFillColor(TFT_BLACK);
@@ -41,14 +42,14 @@ void setup(){
 
   //Put the lower line in "Set= 87.0, Off= 87.1"
   PUnit   XLeft = 10;
-  PUnit   YTop  = 113;
+  //PUnit   YTop  = 113;
+  PUnit   YTop  = 22;
   cDisplay.SetCursor(XLeft , YTop);
   cDisplay.SetTextColor(TFT_BLACK);
   cDisplay.SelectFont(eTextFace, eText26px);
 
   sprintf(sz100CharDisplayBuffer, "Set= %4.1f    Off= %4.1f", fDummySetF, fDummyOffF);
   cDisplay.Print(sz100CharDisplayBuffer);
-*/
 
   Serial << "setup(): done" << endl;
 	return;

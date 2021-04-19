@@ -1,20 +1,10 @@
 const char szThermoDisplayFileName[]  = "BeckThermoDisplayClass.cpp";
-const char szThermoDisplayFileDate[]  = "4/18/21c";
+const char szThermoDisplayFileDate[]  = "4/18/21d";
 
 #include <BeckThermoDisplayClass.h>
 //#include <BeckDisplayClass.h>
 //#include <BeckSystemClass.h>
 #include <Streaming.h>
-
-/*
-struct ThermoDataStruct{
-  float   fCurrentTemperature;
-  float   fSetpoint;
-  float   fOffpoint;
-  bool    bThermostatOn;
-  bool    bHeatOn;
-};
-*/
 
 DisplayThermoStruct       ThermostatData;
 ThermoDisplayClass        BiotaDisplay;
