@@ -1,13 +1,15 @@
-//BeckLogLib.cpp, 2/16/19
+//BeckLogLib.cpp, 4/19/21a
 #include <BeckLogLib.h>
+#include <BeckBiotaDefines.h>
+#if 0 && DO_NTP
 #include <BeckNTPLib.h>
 #include <NTPClient.h>
 #include <Timezone.h>
 
 time_t          _lLocalTime;
-
 //Local prototypes
 String  szPrintDigits  (int digits);
+#endif
 
 //LogToSerial() has multiple versions depending on there being a 2nd variable and its type.
 void LogToSerial(String szLogString){
@@ -42,6 +44,11 @@ String szLogLineHeader(void){
   unsigned long   ulCurrentMillis   = millis();
   char            szDaysFloat[10];
 
+#if !DO_NTP
+  String          szNull= "";
+  return szNull;
+} //szAddZeros
+#else
   //Compute a float with N.NNN with a leading zero representing days uptime
   //Starts out "0.00", 0.01 of a day is 864 seconds or 14.4 minutes
   float   fDays = ((float)ulCurrentMillis / (float)lMsecPerDay);
@@ -134,4 +141,5 @@ String szAddZeros(int sValue, int sNumDigits){
   szReturn += String(sValue);
   return szReturn;
 } //szAddZeros
+#endif
 //Last line.

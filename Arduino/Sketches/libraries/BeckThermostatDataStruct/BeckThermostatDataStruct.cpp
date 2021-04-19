@@ -2,5 +2,5 @@
 
 #include <BeckThermostatDataStruct.h>
 
-extern ThermostatDataStruct ThermostatData;
+ThermostatDataStruct ThermostatData;
 //Last line.

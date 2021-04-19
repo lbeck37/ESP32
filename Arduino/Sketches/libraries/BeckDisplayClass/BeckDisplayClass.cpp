@@ -290,6 +290,7 @@ void TTGO_DisplayClass::PrintLine(const char* szLineToPrint) {
 //*********************************************************
 //***** Was in ThermoDisplayClass
 void TTGO_DisplayClass::Setup(void){
+  Serial << "TTGO_DisplayClass::Setup(): Call DrawScreen()" << endl;
   DrawScreen();
   return;
 } //Setup

@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_Biota.ino";
-const char szFileDate[]    = "4/19/21b";
+const char szFileDate[]    = "4/19/21d";
 
 #include <BeckBiotaDefines.h>
 #include <BeckBiotaLib.h>
@@ -35,6 +35,7 @@ void setup(){
   Serial << endl << LOG0 << "setup(): Sketch: " << szSketchName << ", " << szFileDate << endl;
   if (SetupSystem()){   //BeckBiotaib.cpp
     SetupWiFi();
+    BiotaSystem.Setup();
     SetupOptionalModules();
     SetupSwitches();
     ulLastTaskMsec= millis();

@@ -24,12 +24,16 @@ SystemClass::~SystemClass() {
 void SystemClass::Setup(){
   String szLogString= "SystemClass::Setup(): Begin";
   LogToSerial(szLogString);
+  Serial << LOG0 << "SystemClass::Setup(): Begin" << endl;
   //strcpy(szAlexaName, "Larry's Device");
   //SystemAlexa.Setup           ((char *)szAlexaName);
 #if DO_ALEXA
-    BiotaAlexa.Setup(ALEXA_NAME);
+  Serial << LOG0 << "SystemClass::Setup(): Call BiotaAlexa.Setup(ALEXA_NAME)" << endl;
+  BiotaAlexa.Setup(ALEXA_NAME);
 #endif
+  Serial << LOG0 << "SystemClass::Setup(): Call BiotaThermostat.Setup()" << endl;
   BiotaThermostat.Setup();
+  Serial << LOG0 << "SystemClass::Setup(): Call BiotaDisplay.Setup()" << endl;
   BiotaDisplay.Setup();
   return;
 } //Setup

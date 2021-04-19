@@ -1,5 +1,4 @@
 //#include <BeckBiotaLib.h>
-//#include <BeckThermoDisplayClass.h>
 
 void setup(){
   Serial.begin(115200);

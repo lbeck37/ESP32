@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_TestDisplayClass.ino";
-const char szFileDate[]    = "4/18/21aa";
+const char szFileDate[]    = "4/19/21a";
 
 #include <BeckDisplayClass.h>
 #include <Streaming.h>
