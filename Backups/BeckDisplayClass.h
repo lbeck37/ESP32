@@ -1,4 +1,4 @@
-// 4/18/21f, BeckDisplayClass.h
+// 4/18/21e, BeckDisplayClass.h
 #pragma once
 //Initially used for TTGO ESP32 module. 135 x 240, 1.14", 240dpi display
 #include <TFT_eSPI.h>
@@ -118,11 +118,11 @@ public:
   virtual void  PrintLine             (const char* szLineToPrint){}
 };  //DisplayClass
 
-class TTGO_DisplayClass : public DisplayClass {
+class ColorDisplayClass : public DisplayClass {
 protected:
 public:
-  TTGO_DisplayClass();
-  virtual ~TTGO_DisplayClass();
+  ColorDisplayClass();
+  virtual ~ColorDisplayClass();
 
   PUnit Invert_Y              (PUnit Y1);
   void  SetCursor             (PUnit CursorX, PUnit CursorY);
@@ -141,5 +141,5 @@ public:
   void  DrawGrid              (void);
   void  Print                 (const char* szLineToPrint);
   void  PrintLine             (const char* szLineToPrint);
-};  //TTGO_DisplayClass
+};  //ColorDisplayClass
 //Last line.
