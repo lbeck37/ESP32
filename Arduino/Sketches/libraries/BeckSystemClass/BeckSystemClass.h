@@ -5,7 +5,7 @@
 #include <BeckAlexaClass.h>
 #include <BeckDisplayClass.h>
 #include <BeckThermostatClass.h>
-#include <BeckThermostatDataStruct.h>
+#include <BeckThermostatDataClass.h>
 
 enum ProjectType{
   eNoProject  = 0,

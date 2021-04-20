@@ -1,9 +1,9 @@
 const char szFileName[]  = "BeckAlexaClass.cpp";
-const char szFileDate[]  = "4/19/21a";
+const char szFileDate[]  = "4/20/21a";
 
 #include <BeckAlexaClass.h>
 #include <BeckSystemClass.h>
-#include <BeckThermostatDataStruct.h>
+#include <BeckThermostatDataClass.h>
 
 AlexaClass            BiotaAlexa;
 
@@ -46,7 +46,7 @@ void SetThermostatValues(bool bThermostatState, unsigned char ucSetpointValue){
   Serial << LOG0 << "SetThermostatValues(): Received wValuePercent= " << wValuePercent << endl;
   if(wValuePercent != 100){
     //BiotaThermostat.SetSetpoint((float)wValuePercent);
-    ThermostatData.fProposedSetpoint= (float)wValuePercent;
+    ThermostatData.SetProposedSetpoint((float)wValuePercent);
    } //if(wValuePercent==100)
   else{
     //Alexa thinks the setpoint is 100% on power-up until Alexa is used to set the setpoint.
@@ -55,7 +55,7 @@ void SetThermostatValues(bool bThermostatState, unsigned char ucSetpointValue){
 
   //Tell the thermostat to turn itself on or off.
   //BiotaThermostat.SetThermostatOn(bThermostatState);
-  ThermostatData.bThermoOn= bThermostatState;
+  ThermostatData.SetThermostatOn(bThermostatState);
   return;
 } //SetThermostatValues
 

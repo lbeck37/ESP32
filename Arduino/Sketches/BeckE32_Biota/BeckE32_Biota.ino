@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_Biota.ino";
-const char szFileDate[]    = "4/19/21g";
+const char szFileDate[]    = "4/20/21a";
 
 #include <BeckBiotaDefines.h>
 #include <BeckBiotaLib.h>
@@ -9,7 +9,7 @@ const char szFileDate[]    = "4/19/21g";
 #include <BeckSystemClass.h>
 #include <BeckDisplayClass.h>
 #include <BeckThermostatClass.h>
-#include <BeckThermostatDataStruct.h>
+#include <BeckThermostatDataClass.h>
 #include <BeckWiFiLib.h>
 #include <Streaming.h>
 #include <Time.h>
@@ -30,24 +30,6 @@ void SetupOptionalModules   (void);
 void HandleOptionalModules  (void);
 
 void setup(){
-  /*
-  Serial.begin(lSerialMonitorBaud);
-  delay(100);
-  Serial << endl << LOG0 << "setup(): Sketch: " << szSketchName << ", " << szFileDate << endl;
-  if (SetupSystem()){   //BeckBiotaib.cpp
-    SetupWiFi();
-    BiotaSystem.Setup();
-    SetupOptionalModules();
-    SetupSwitches();
-    ulLastTaskMsec= millis();
-  } //if(SetupSystem(eProjectType))
-  else{
-    while(true){
-      Serial << LOG0 << "setup(): SetupSystem(): Returned false" << endl;
-      delay(10000); //10 sec
-     }  //while(true)
-  }
-*/
   BiotaSystem.Setup();
   Serial << endl << LOG0 << "setup() finished, Sketch: " << szSketchName << ", " << szFileDate << endl;
   return;
@@ -61,8 +43,6 @@ void loop(){
 
   if (!_bOTA_Started){
     BiotaSystem.Handle();
-    //UpdateDisplay();
-    //wAlexaHandleCount= 0;
     CheckTaskTime("loop(): HandleSystem()");
   } //if(!_bOTA_Started)
   else{
