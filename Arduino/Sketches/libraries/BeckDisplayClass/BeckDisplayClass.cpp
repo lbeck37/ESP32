@@ -1,5 +1,5 @@
 const char szDisplayClassFileName[]  = "BeckDisplayClass.cpp";
-const char szDisplayClassFileDate[]  = "4/20/21b";
+const char szDisplayClassFileDate[]  = "4/20/21c";
 
 #include <BeckDisplayClass.h>
 #include <BeckThermostatDataClass.h>
@@ -62,6 +62,25 @@ TTGO_DisplayClass::TTGO_DisplayClass() {
 TTGO_DisplayClass::~TTGO_DisplayClass() {
   Serial << "~ColorDisplay(): Destructing" << endl;
 } //destructor
+
+void TTGO_DisplayClass::Setup(void){
+  Serial << "TTGO_DisplayClass::Setup(): Call Handle()" << endl;
+  Handle();
+  return;
+} //Setup
+
+
+//void TTGO_DisplayClass::Handle(DisplayThermoStruct ThermoData){
+void TTGO_DisplayClass::Handle(){
+  Serial << "TTGO_DisplayClass::Handle(): Begin" << endl;
+  DisplayThermoOnBar        ();
+  DisplaySetpointLine       ();
+  DisplayHeatOnBox          ();
+  DisplayCurrentSetpoint    ();
+  DisplayCurrentTemperature ();
+  return;
+} //Handle
+
 
 PUnit TTGO_DisplayClass::Invert_Y(PUnit Y1){
   return(ScreenHeight - Y1);
@@ -290,53 +309,49 @@ void TTGO_DisplayClass::PrintLine(const char* szLineToPrint) {
 //**********************************************************************************************//
 //**********************************************************************************************//
 //***** Was in ThermoDisplayClass
-void TTGO_DisplayClass::Setup(void){
-  Serial << "TTGO_DisplayClass::Setup(): Call DrawScreen()" << endl;
-  DrawScreen();
-  return;
-} //Setup
-
-
-//void TTGO_DisplayClass::Handle(DisplayThermoStruct ThermoData){
-void TTGO_DisplayClass::Handle(){
-  DrawScreen();
-  return;
-} //Handle
-
-
 void TTGO_DisplayClass::DisplayCurrentTemperature(){
-  //Serial << "TTGO_DisplayClass::DisplayCurrentTemperature(): Begin" << endl;
-  //Clear the rectangular area where the DegF is displayed
+  Serial << "TTGO_DisplayClass::DisplayCurrentTemperature(): Begin" << endl;
+
   if (millis() > ulNextCurrentDegFDisplay){
-    SetFillColor(_BackgroundColor);
+    if(fCurrentDegFLast != ThermostatData.GetCurrentDegF()){
+      fCurrentDegFLast= ThermostatData.GetCurrentDegF();
+      Serial << "TTGO_DisplayClass::DisplayCurrentTemperature(): New fCurrentDegFLast= " << fCurrentDegFLast << endl;
 
-    PUnit YBottom= (ThermoOnBarBottom + ThermoOnBarHeight);
-    DrawFilledRectangle( 0, YBottom, ScreenWidth, ScreenHeight);
+      //Clear the rectangular area where the DegF is displayed
+      SetFillColor(_BackgroundColor);
+      PUnit YBottom= (ThermoOnBarBottom + ThermoOnBarHeight);
+      DrawFilledRectangle( 0, YBottom, ScreenWidth, ScreenHeight);
 
-    SetCursor     (DegF_XLeftSide, DegF_YBaseline);
-    SetTextColor  (DegF_Color);
-    SelectFont    (eDegF_Font, eDegF_PointSize);
+      SetCursor     (DegF_XLeftSide, DegF_YBaseline);
+      SetTextColor  (DegF_Color);
+      SelectFont    (eDegF_Font, eDegF_PointSize);
 
-    //sprintf(sz100CharDisplayBuffer, "%04.1f", DisplayThermoData.CurrentDegF());
-    sprintf(sz100CharDisplayBuffer, "%04.1f", ThermostatData.GetCurrentDegF());
-    Print(sz100CharDisplayBuffer);
+      sprintf(sz100CharDisplayBuffer, "%04.1f", ThermostatData.GetCurrentDegF());
+      Serial << "TTGO_DisplayClass::DisplayCurrentTemperature(): Writing " << sz100CharDisplayBuffer << " to the display" << endl;
+      Print(sz100CharDisplayBuffer);
 
-    //Set time for Setpoint to display, it will do same for me
-    ulNextSetpointDisplay= millis() + ulCurrentDegFOnTimeMsec;
+      //Set time for Setpoint to display, it will do same for me
+      ulNextSetpointDisplay= millis() + ulCurrentDegFOnTimeMsec;
 
-    //Set next DegF does't fire before Setpoint
-    ulNextCurrentDegFDisplay= millis() + ulVeryLargeExtraWaitMsec;
-  }
+      //Set next DegF does't fire before Setpoint
+      ulNextCurrentDegFDisplay= millis() + ulVeryLargeExtraWaitMsec;
+    } //if(millis()>ulNextCurrentDegFDisplay)
+    else{
+      Serial << "TTGO_DisplayClass::DisplayCurrentTemperature(): Time not up, do nothing" << endl;
+    }
+
+  } //if(millis()>ulNextCurrentDegFDisplay)
   return;
 } //DisplayCurrentTemperature
 
 
 void TTGO_DisplayClass::DisplayCurrentSetpoint(){
-  //Serial << "TTGO_DisplayClass::DisplayCurrentSetpoint(): Begin" << endl;
-  //Clear the rectangular area where the Setpoint is displayed
-  if (fSetpointLast != ThermostatData.GetSetpoint()){
-    fSetpointLast= ThermostatData.GetSetpoint();
-    if (ThermostatData.GetThermostatOn() && (millis() > ulNextSetpointDisplay)){
+  Serial << "TTGO_DisplayClass::DisplayCurrentSetpoint(): Begin" << endl;
+  if (ThermostatData.GetThermostatOn() && (millis() > ulNextSetpointDisplay)){
+    //Clear the rectangular area where the Setpoint is displayed
+    if (fSetpointLast != ThermostatData.GetSetpoint()){
+      fSetpointLast= ThermostatData.GetSetpoint();
+      Serial << "TTGO_DisplayClass::DisplayCurrentSetpoint(): New fSetpointLast= " << fSetpointLast << endl;
       SetFillColor(_BackgroundColor);
 
       PUnit YBottom= (ThermoOnBarBottom + ThermoOnBarHeight);
@@ -347,6 +362,7 @@ void TTGO_DisplayClass::DisplayCurrentSetpoint(){
       SelectFont    (eDegF_Font, eDegF_PointSize);
 
       sprintf(sz100CharDisplayBuffer, "%04.1f", ThermostatData.GetSetpoint());
+      Serial << "TTGO_DisplayClass::DisplayCurrentSetpoint(): Writing " << sz100CharDisplayBuffer << " to the display" << endl;
       Print(sz100CharDisplayBuffer);
 
       //Set next time the CurrentDegF is displayed, it will do same for me
@@ -354,17 +370,22 @@ void TTGO_DisplayClass::DisplayCurrentSetpoint(){
 
       //Set next Setpoint does't fire before next DegF
       ulNextSetpointDisplay= millis() + ulVeryLargeExtraWaitMsec;
-    }
-  } //if(fSetpointLast!=ThermostatData.GetSetpoint())
+    } //if(fSetpointLast! ThermostatData.GetSetpoint()
+  } //if(ThermostatData.GetThermostatOn()&&(millis()...
+  else{
+    Serial << "TTGO_DisplayClass::DisplayCurrentSetpoint(): Time not up, do nothing" << endl;
+  }
   return;
 } //DisplayCurrentSetpoint
 
+/*
 void TTGO_DisplayClass::DisplayMainScreen(){
   //Serial << "TTGO_DisplayClass::DisplayMainScreen(): Begin" << endl;
   DisplayCurrentSetpoint();
   DisplayCurrentTemperature();
   return;
 } //DisplayMainScreen
+*/
 
 void TTGO_DisplayClass::DisplayThermoOnBar(){
   //Draw a fat bar, the ThermoOnBar, under the large current temperature display, present when thermostat is on.
@@ -422,6 +443,7 @@ void TTGO_DisplayClass::DisplayHeatOnBox(){
   } //if(stData.GetThermostatOn()&&...
   return;
 } //DisplayHeatOnBox
+/*
 
 void TTGO_DisplayClass::DrawScreen(){
   //Serial << "TTGO_DisplayClass::DrawScreen(): Begin" << endl;
@@ -431,5 +453,5 @@ void TTGO_DisplayClass::DrawScreen(){
   DisplayMainScreen     ();
   return;
 } //DrawScreen
-
+*/
 //Last line.

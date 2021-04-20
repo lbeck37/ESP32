@@ -1,4 +1,4 @@
-// BeckDisplayClass.h, 4/19/21d
+// BeckDisplayClass.h, 4/20/21b
 #pragma once
 //Initially used for TTGO ESP32 module. 135 x 240, 1.14", 240dpi display
 
@@ -134,10 +134,11 @@ protected:
   uint32_t    ulVeryLargeExtraWaitMsec  = 1000 * 1000;   //Time to do next display needs this.
 
   //bool  bFirstTimeDrawn   = true;
-  bool  bThermoOnLast     = false;    //Used to check if thermo on bar should be changed.
-  bool  bHeatOnLast       = false;    //Used to check if HeatOn box should be changed.
+  float fCurrentDegFLast  = 0.00;     //Used to check if CurrentDegF text at bottom should be changed.
   float fSetpointLast     = 0.00;     //Used to check if Setpoint text at bottom should be changed.
   float fMaxHeatRangeLast = 0.00;     //Currently isn't being changed
+  bool  bThermoOnLast     = false;    //Used to check if thermo on bar should be changed.
+  bool  bHeatOnLast       = false;    //Used to check if HeatOn box should be changed.
 
   //bool  bSetPointChanged  = true;     //Used to force the Heat On box to redraw itself after Setpoint text is drawn
   //bool  bThermoOnChanged  = true;     //Used to force the Heat On box to redraw itself after change in ThermoOn
@@ -174,7 +175,7 @@ protected:
   //Protected methods
   void  DisplayCurrentTemperature   (void);
   void  DisplayCurrentSetpoint      (void);
-  void  DisplayMainScreen           (void);
+  //void  DisplayMainScreen           (void);
   void  DisplayThermoOnBar          (void);
   void  DisplaySetpointLine         (void);
   void  DisplayHeatOnBox            (void);
@@ -185,7 +186,7 @@ public:
   void  Setup                 (void);
   //void  Handle                (ThermostatDataStruct ThermostatData);
   void  Handle                (void);
-  void  DrawScreen            (void);
+  //void  DrawScreen            (void);
   PUnit Invert_Y              (PUnit Y1);
   void  SetCursor             (PUnit CursorX, PUnit CursorY);
   void  FillScreen            (void);

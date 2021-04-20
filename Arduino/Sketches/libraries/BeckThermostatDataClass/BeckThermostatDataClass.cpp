@@ -1,4 +1,4 @@
-// ThermostatDataClass.h, 4/20/21b
+// ThermostatDataClass.h, 4/20/21c
 const char szThermostatDataClassFileName[]  = "BeckDisplayClass.cpp";
 const char szThermostatDataClassFileDate[]  = "4/20/21b";
 
@@ -28,7 +28,7 @@ void ThermostatDataClass::Handle(){
 } //Handle
 
 void ThermostatDataClass::SetSetpoint(float fNewSetpoint){
-  Serial << "ThermostatDataClass::SetSetpoint(" << fNewSetpoint << "): Begin" << endl;
+  //Serial << "ThermostatDataClass::SetSetpoint(" << fNewSetpoint << "): Begin" << endl;
   float fOriginalSetpoint= Setpoint;
   if((fNewSetpoint >= MinSetpoint) && (fNewSetpoint <= MaxSetpoint)){
     if(fNewSetpoint != fOriginalSetpoint){
@@ -38,7 +38,7 @@ void ThermostatDataClass::SetSetpoint(float fNewSetpoint){
     } //if(fSetpoint!=_fSetpoint)
   } //if((fSetpoint>=...
   if(Setpoint == fOriginalSetpoint){
-    Serial << "ThermostatDataClass::SetSetpoint(): Setpoint remains at " << Setpoint << endl;
+    //Serial << "ThermostatDataClass::SetSetpoint(): Setpoint remains at " << Setpoint << endl;
   } //if((_fSetpoint==fLastSetpoint)
   return;
 } //SetSetpoint(float)
