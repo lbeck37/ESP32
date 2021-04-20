@@ -1,5 +1,5 @@
 const char szBiotaLibFileName[]  = "BeckBiotaLib.cpp";
-const char szBiotaLibFileDate[]    = "4/16/21a";
+const char szBiotaLibFileDate[]    = "4/19/21a";
 
 #include <BeckBiotaLib.h>
 #include <BeckSwitchLib.h>
@@ -15,8 +15,8 @@ char          _acRouterPW       [50];
 char          _acAccessPointSSID[50];
 char          _acAccessPointPW  [50];
 
-bool SetupSystem(void){
-  Serial << LOG0 << "SetupSystem(): Begin" << endl;
+bool SetupProjectData(void){
+  Serial << LOG0 << "BeckBiotaLib.cpp: SetupProjectData(): Begin" << endl;
   bool  bOk= true;
   switch (BiotaSystem.GetProjectType()){
     case eThermoDev:
@@ -121,5 +121,5 @@ bool SetupSystem(void){
   } //switch
   Serial << LOG0 << "SetupSystem(): Project Type set to: " << _acProjectType << endl;
   return bOk;
-} //SetupSystem
+} //SetupProjectData
 //Last line.

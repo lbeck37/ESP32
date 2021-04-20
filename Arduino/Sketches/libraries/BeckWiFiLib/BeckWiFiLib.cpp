@@ -1,4 +1,4 @@
-//BeckWiFiLib.cpp, 3/29/21, was 10/18/20a, was 2/4/20b
+//BeckWiFiLib.cpp, 4/19/21b
 #include <BeckWiFiLib.h>
 #include <BeckLogLib.h>
 #include <BeckMiniLib.h>
@@ -31,7 +31,7 @@ bool          _bWiFiConnected;
 #endif
 
 
-void SetupWiFi(){
+bool SetupWiFi(){
 #if USE_WIFI_MANAGER
 
   Serial << LOG0 << "SetupWiFi(): Call bRunWiFiManager()" << endl;
@@ -54,7 +54,7 @@ void SetupWiFi(){
     Serial << LOG0 << "SetupWiFi():  SSID= " << WiFi.SSID() << ", IP address: " << WiFi.localIP() << endl;
   } //if(_bWiFiConnected)
 
-  return;
+  return _bWiFiConnected;
 } //SetupWiFi
 
 

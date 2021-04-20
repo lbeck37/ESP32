@@ -1,4 +1,4 @@
-//BeckWiFiLib.h, 3/29/21a  was 4/18/19a
+//BeckWiFiLib.h, 4/19/21b
 #pragma once
 #ifdef ESP32
   #include <WiFi.h>
@@ -8,7 +8,7 @@
 
 extern        bool     _bWiFiConnected;
 
-void    SetupWiFi     ();
+bool    SetupWiFi     ();
 String  szWiFiStatus  (wl_status_t eWiFiStatus);
 
 //Last line.

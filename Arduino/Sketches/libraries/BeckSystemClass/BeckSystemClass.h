@@ -1,10 +1,9 @@
-// 4/19/21b, BeckSystemClass.h
+// 4/19/21c, BeckSystemClass.h
 #pragma once
 
 #include <BeckBiotaLib.h>
 #include <BeckAlexaClass.h>
 #include <BeckDisplayClass.h>
-//#include <BeckThermoDisplayClass.h>
 #include <BeckThermostatClass.h>
 #include <BeckThermostatDataStruct.h>
 
@@ -23,11 +22,10 @@ enum ProjectType{
 
 class SystemClass{
 protected:
-  char          szAlexaName[50]= ALEXA_NAME;
-  //char        *pAlexaName         = "Larry's Device";
-
-  ProjectType   eProjectType         = eThermoDev;
+  char          szAlexaName[50]       = ALEXA_NAME;
+  ProjectType   eProjectType          = eThermoDev;
   int           sThermoTimesCount     = 0;      //Number of times temperature out of range
+  bool          bWiFiOn               = false;
 
 public:
   SystemClass();

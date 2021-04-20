@@ -71,7 +71,6 @@ AlexaClass::~AlexaClass() {
 void AlexaClass::Setup(char szAlexaName[]){
   String szLogString= "AlexaClass::Setup(): Begin";
   LogToSerial(szLogString);
-  Serial << LOG0 << "AlexaClass::Setup(): Begin" << endl;
 
   // You have to call enable(true) once you have a WiFi connection
   // You can enable or disable the library at any moment
@@ -95,7 +94,7 @@ void AlexaClass::Setup(char szAlexaName[]){
     CallbackAlexaCommand(device_id, device_name, state, value);
     } );  //AlexaClass.onSetState
 
-  Serial << LOG0 << "SetupAlexa(): Alexa set up for " << szAlexaName << endl;
+  Serial << LOG0 << "AlexaClass::Setup(): Alexa set up for " << szAlexaName << endl;
   return;
 } //SetupAlexa
 

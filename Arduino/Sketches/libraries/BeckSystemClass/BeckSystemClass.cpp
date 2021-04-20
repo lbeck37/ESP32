@@ -1,12 +1,13 @@
 const char szFileName[]  = "BeckSystemClass.cpp";
-const char szFileDate[]  = "4/18/21a";
+const char szFileDate[]  = "4/19/21b";
 
 #include <BeckSystemClass.h>
 #include <BeckAlexaClass.h>
 #include <BeckBiotaDefines.h>
+#include <BeckBiotaLib.h>
 #include <BeckDisplayClass.h>
-//#include <BeckThermoDisplayClass.h>
 #include <BeckThermostatClass.h>
+#include <BeckWiFiLib.h>
 #include <Streaming.h>
 
 SystemClass           BiotaSystem;       //This is so every module can use the same object
@@ -22,19 +23,27 @@ SystemClass::~SystemClass() {
 
 
 void SystemClass::Setup(){
+  Serial.begin(lSerialMonitorBaud);
+  delay(100);
+
   String szLogString= "SystemClass::Setup(): Begin";
   LogToSerial(szLogString);
-  Serial << LOG0 << "SystemClass::Setup(): Begin" << endl;
-  //strcpy(szAlexaName, "Larry's Device");
-  //SystemAlexa.Setup           ((char *)szAlexaName);
-#if DO_ALEXA
-  Serial << LOG0 << "SystemClass::Setup(): Call BiotaAlexa.Setup(ALEXA_NAME)" << endl;
-  BiotaAlexa.Setup(ALEXA_NAME);
-#endif
+
+  Serial << LOG0 << "SystemClass::Setup(): Call BiotaThermostat.Setup()" << endl;
+  SetupProjectData();
+
   Serial << LOG0 << "SystemClass::Setup(): Call BiotaThermostat.Setup()" << endl;
   BiotaThermostat.Setup();
+
   Serial << LOG0 << "SystemClass::Setup(): Call BiotaDisplay.Setup()" << endl;
   BiotaDisplay.Setup();
+
+  Serial << LOG0 << "SystemClass::Setup(): Call SetupWiFi()" << endl;
+  bWiFiOn= SetupWiFi();
+
+#if DO_ALEXA
+  BiotaAlexa.Setup(ALEXA_NAME);
+#endif
   return;
 } //Setup
 

@@ -1,4 +1,4 @@
-// 4/19/21c, BeckDisplayClass.h
+// BeckDisplayClass.h, 4/19/21d
 #pragma once
 //Initially used for TTGO ESP32 module. 135 x 240, 1.14", 240dpi display
 
@@ -77,17 +77,6 @@ enum FontPointType {
   eLastFontPointType
 };
 
-/*
-struct DisplayThermoStruct {
-  float   fCurrentDegF  = 68.0;
-  float   fSetpoint     = 70.0;
-  float   fMaxHeatRange = 0.10;
-  bool    bThermoOn     = false;
-  bool    bHeatOn       = false;
-};
-*/
-
-//DisplayThermoStruct DisplayThermoData;
 
 class DisplayClass {
 protected:
@@ -144,18 +133,20 @@ protected:
 
   uint32_t    ulVeryLargeExtraWaitMsec  = 1000 * 1000;   //Time to do next display needs this.
 
-  bool  bFirstTimeDrawn   = true;
+  //bool  bFirstTimeDrawn   = true;
   bool  bThermoOnLast     = false;    //Used to check if thermo on bar should be changed.
-  bool  bHeatOnLast       = false;    //Used to check if ThermoOnBar bar should be changed.
+  bool  bHeatOnLast       = false;    //Used to check if HeatOn box should be changed.
   float fSetpointLast     = 0.00;     //Used to check if Setpoint text at bottom should be changed.
-  bool  bSetPointChanged  = true;     //Used to force the Heat On box to redraw itself after Setpoint text is drawn
-  bool  bThermoOnChanged  = true;     //Used to force the Heat On box to redraw itself after change in ThermoOn
+  float fMaxHeatRangeLast = 0.00;     //Currently isn't being changed
+
+  //bool  bSetPointChanged  = true;     //Used to force the Heat On box to redraw itself after Setpoint text is drawn
+  //bool  bThermoOnChanged  = true;     //Used to force the Heat On box to redraw itself after change in ThermoOn
 
   //Current temperature or Setpoint in very large font as in "89.4"
   PUnit           DegF_XLeftSide          =  5;
   PUnit           DegF_YBaseline          = 38;         //ScreenHeight - 97
   Colortype       DegF_Color              = TFT_BLACK;
-  Colortype       ThermoSetpoint_Color    = TFT_RED;    //Trying to call it Setpoint_Color and it blew up TFT_eSPI.h
+  Colortype       ThermoSetpoint_Color    = TFT_RED;    //Call it Setpoint_Color and it blows up TFT_eSPI.h
   FontFaceType    eDegF_Font              = eRobotoCondensedFace;
   FontPointType   eDegF_PointSize         = e130point;
 

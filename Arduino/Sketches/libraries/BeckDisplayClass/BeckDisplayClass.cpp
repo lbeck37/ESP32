@@ -287,7 +287,8 @@ void TTGO_DisplayClass::PrintLine(const char* szLineToPrint) {
 } //PrintLine
 
 
-//*********************************************************
+//**********************************************************************************************//
+//**********************************************************************************************//
 //***** Was in ThermoDisplayClass
 void TTGO_DisplayClass::Setup(void){
   Serial << "TTGO_DisplayClass::Setup(): Call DrawScreen()" << endl;
@@ -298,7 +299,6 @@ void TTGO_DisplayClass::Setup(void){
 
 //void TTGO_DisplayClass::Handle(DisplayThermoStruct ThermoData){
 void TTGO_DisplayClass::Handle(){
-  //DisplayThermoData= ThermoData;
   DrawScreen();
   return;
 } //Handle
@@ -334,25 +334,28 @@ void TTGO_DisplayClass::DisplayCurrentTemperature(){
 void TTGO_DisplayClass::DisplayCurrentSetpoint(){
   //Serial << "TTGO_DisplayClass::DisplayCurrentSetpoint(): Begin" << endl;
   //Clear the rectangular area where the Setpoint is displayed
-  if (ThermostatData.bThermoOn &&(bSetPointChanged || (millis() > ulNextSetpointDisplay))){
-    SetFillColor(_BackgroundColor);
+  if (fSetpointLast != ThermostatData.fSetpoint){
+    fSetpointLast= ThermostatData.fSetpoint;
+    if (ThermostatData.bThermoOn && (millis() > ulNextSetpointDisplay)){
+      SetFillColor(_BackgroundColor);
 
-    PUnit YBottom= (ThermoOnBarBottom + ThermoOnBarHeight);
-    DrawFilledRectangle( 0, YBottom, ScreenWidth, ScreenHeight);
+      PUnit YBottom= (ThermoOnBarBottom + ThermoOnBarHeight);
+      DrawFilledRectangle( 0, YBottom, ScreenWidth, ScreenHeight);
 
-    SetCursor     (DegF_XLeftSide, DegF_YBaseline);
-    SetTextColor  (ThermoSetpoint_Color);
-    SelectFont    (eDegF_Font, eDegF_PointSize);
+      SetCursor     (DegF_XLeftSide, DegF_YBaseline);
+      SetTextColor  (ThermoSetpoint_Color);
+      SelectFont    (eDegF_Font, eDegF_PointSize);
 
-    sprintf(sz100CharDisplayBuffer, "%04.1f", ThermostatData.fSetpoint);
-    Print(sz100CharDisplayBuffer);
+      sprintf(sz100CharDisplayBuffer, "%04.1f", ThermostatData.fSetpoint);
+      Print(sz100CharDisplayBuffer);
 
-    //Set next time the CurrentDegF is displayed, it will do same for me
-    ulNextCurrentDegFDisplay= millis() + ulSetpointOnTimeMsec;
+      //Set next time the CurrentDegF is displayed, it will do same for me
+      ulNextCurrentDegFDisplay= millis() + ulSetpointOnTimeMsec;
 
-    //Set next Setpoint does't fire before next DegF
-    ulNextSetpointDisplay= millis() + ulVeryLargeExtraWaitMsec;
-  }
+      //Set next Setpoint does't fire before next DegF
+      ulNextSetpointDisplay= millis() + ulVeryLargeExtraWaitMsec;
+    }
+  } //if(fSetpointLast!=ThermostatData.fSetpoint)
   return;
 } //DisplayCurrentSetpoint
 
@@ -366,8 +369,7 @@ void TTGO_DisplayClass::DisplayMainScreen(){
 void TTGO_DisplayClass::DisplayThermoOnBar(){
   //Draw a fat bar, the ThermoOnBar, under the large current temperature display, present when thermostat is on.
   if (bThermoOnLast != ThermostatData.bThermoOn){
-    bThermoOnChanged= true;
-    //if (stData.bThermoOn){
+    bThermoOnLast= ThermostatData.bThermoOn;
     if (ThermostatData.bThermoOn){
       SetFillColor(ThermoOnBarColor);
       bThermoOnLast= true;
@@ -378,9 +380,6 @@ void TTGO_DisplayClass::DisplayThermoOnBar(){
     } //if(stData.bThermoOn)else
     DrawFilledRectangle(ThermoOnBarLeft, ThermoOnBarBottom, ThermoOnBarWidth, ThermoOnBarHeight);
   } //if(bThermoOnLast!=stData.bThermoOn)
-  else{
-    bThermoOnChanged= true;
-  }
   return;
 } //DisplayThermoOnBar
 
@@ -388,7 +387,6 @@ void TTGO_DisplayClass::DisplaySetpointLine(){
   //Print a line with the string containing the Setpoint and Offpoint values, call it SetpointLine
   if (fSetpointLast != ThermostatData.fSetpoint){
     fSetpointLast= ThermostatData.fSetpoint;
-    bSetPointChanged= true;
 
     //Clear the Setpoint area
     SetFillColor(_BackgroundColor);
@@ -409,14 +407,16 @@ void TTGO_DisplayClass::DisplaySetpointLine(){
 void TTGO_DisplayClass::DisplayHeatOnBox(){
   //Draw a box, the HeatOnBox, between the Setpoint and Offpoint text, present when heat is on.
   //Draws on top of SetpointText, position it to not overwrite text
-  if (bThermoOnChanged || bSetPointChanged || (bHeatOnLast != ThermostatData.bHeatOn)){
+  if (bHeatOnLast != ThermostatData.bHeatOn){
+    bHeatOnLast= ThermostatData.bHeatOn;
+    //Only turn on the HeatOn box if the thermostat is also on.
     if (ThermostatData.bThermoOn && ThermostatData.bHeatOn){
       SetFillColor(HeatOnBoxColor);
-      bHeatOnLast= true;
+      //bHeatOnLast= true;
     } //if(stData.bThermoOn)
     else{
       SetFillColor(_BackgroundColor);
-      bHeatOnLast= false;
+      //bHeatOnLast= false;
     } //if(stData.bThermoOn)else
     DrawFilledRectangle( (HeatOnBoxCenter - HeatOnBoxWidth/2), HeatOnBoxBottom, HeatOnBoxWidth, HeatOnBoxHeight);
   } //if(stData.bThermoOn&&...
@@ -429,7 +429,6 @@ void TTGO_DisplayClass::DrawScreen(){
   DisplaySetpointLine   ();
   DisplayHeatOnBox      ();
   DisplayMainScreen     ();
-  bSetPointChanged= false;    //All done with this, used for getting Setpoint up quickly and drawing Heat On box.
   return;
 } //DrawScreen
 
