@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_Biota.ino";
-const char szFileDate[]    = "4/19/21e";
+const char szFileDate[]    = "4/19/21g";
 
 #include <BeckBiotaDefines.h>
 #include <BeckBiotaLib.h>
@@ -49,7 +49,7 @@ void setup(){
   }
 */
   BiotaSystem.Setup();
-  Serial << endl << LOG0 << "setup(): Sketch: " << szSketchName << ", " << szFileDate << endl;
+  Serial << endl << LOG0 << "setup() finished, Sketch: " << szSketchName << ", " << szFileDate << endl;
   return;
 } //setup
 
@@ -57,7 +57,7 @@ void setup(){
 void loop(){
   ulLastTaskMsec= millis();
 
-  HandleOptionalModules();
+  HandleOptionalModules();    //Nothing turned on as of 4/19/21
 
   if (!_bOTA_Started){
     BiotaSystem.Handle();
@@ -75,20 +75,6 @@ void loop(){
 
   return;
 } //loop
-
-/*
-void UpdateDisplay(void){
-  DisplayThermoStruct    stData;
-  stData.fCurrentDegF     = BiotaThermostat.GetCurrentDegF();
-  stData.fSetpoint        = BiotaThermostat.GetSetpoint();
-  stData.fMaxHeatRange    = BiotaThermostat.GetMaxHeatRange();
-  stData.bThermoOn        = BiotaThermostat.GetThermostatOn();
-  stData.bHeatOn          = BiotaThermostat.GetHeatOn();
-
-  BiotaDisplay.DrawScreen();
-  return;
-} //UpdateDisplay
-*/
 
 
 void SetupOptionalModules(){

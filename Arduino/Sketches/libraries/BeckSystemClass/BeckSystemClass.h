@@ -1,4 +1,4 @@
-// 4/19/21c, BeckSystemClass.h
+// 4/19/21d, BeckSystemClass.h
 #pragma once
 
 #include <BeckBiotaLib.h>
@@ -22,10 +22,12 @@ enum ProjectType{
 
 class SystemClass{
 protected:
-  char          szAlexaName[50]       = ALEXA_NAME;
-  ProjectType   eProjectType          = eThermoDev;
-  int           sThermoTimesCount     = 0;      //Number of times temperature out of range
-  bool          bWiFiOn               = false;
+  char              szAlexaName[50]       = ALEXA_NAME;
+  ProjectType       eProjectType          = eThermoDev;
+  int               sThermoTimesCount     = 0;      //Number of times temperature out of range
+  bool              bWiFiOn               = false;
+  unsigned long     ulHandlePeriodMsec    = 5 * 1000;
+  unsigned long     ulNextHandleMsec      = millis() + ulHandlePeriodMsec;
 
 public:
   SystemClass();

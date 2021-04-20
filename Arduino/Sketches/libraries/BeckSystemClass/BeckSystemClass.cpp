@@ -52,8 +52,14 @@ void SystemClass::Handle(){
 #if DO_ALEXA
   BiotaAlexa.Handle();
 #endif
-  BiotaThermostat.Handle();
-  BiotaDisplay.Handle();
+  if (millis() >= ulNextHandleMsec){
+    ulNextHandleMsec= millis() + ulHandlePeriodMsec;
+    Serial << LOG0 << "SystemClass::Handle(): Call BiotaThermostat.Handle()" << endl;
+    BiotaThermostat.Handle();
+
+    Serial << LOG0 << "SystemClass::Handle(): Call BiotaDisplay.Handle()" << endl;
+    BiotaDisplay.Handle();
+  }
   return;
 } //Handle
 

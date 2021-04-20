@@ -45,7 +45,8 @@ void SetThermostatValues(bool bThermostatState, unsigned char ucSetpointValue){
   int wValuePercent= round(((float)ucSetpointValue / 255.0) * 100);
   Serial << LOG0 << "SetThermostatValues(): Received wValuePercent= " << wValuePercent << endl;
   if(wValuePercent != 100){
-    BiotaThermostat.SetSetpoint((float)wValuePercent);
+    //BiotaThermostat.SetSetpoint((float)wValuePercent);
+    ThermostatData.fProposedSetpoint= (float)wValuePercent;
    } //if(wValuePercent==100)
   else{
     //Alexa thinks the setpoint is 100% on power-up until Alexa is used to set the setpoint.
@@ -53,7 +54,8 @@ void SetThermostatValues(bool bThermostatState, unsigned char ucSetpointValue){
   } //if(wValuePercent==100)else
 
   //Tell the thermostat to turn itself on or off.
-  BiotaThermostat.SetThermostatOn(bThermostatState);
+  //BiotaThermostat.SetThermostatOn(bThermostatState);
+  ThermostatData.bThermoOn= bThermostatState;
   return;
 } //SetThermostatValues
 
