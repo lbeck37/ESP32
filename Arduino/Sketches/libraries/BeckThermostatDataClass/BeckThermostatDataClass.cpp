@@ -59,6 +59,8 @@ void ThermostatDataClass::SetProposedSetpoint (float NewProposedSetpoint){
   ProposedSetpoint= NewProposedSetpoint;
   return;
 }
+
+
 float ThermostatDataClass::GetProposedSetpoint (void){
   return ProposedSetpoint;
 }

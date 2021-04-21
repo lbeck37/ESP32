@@ -27,7 +27,8 @@ protected:
   int               sThermoTimesCount     = 0;      //Number of times temperature out of range
   bool              bWiFiOn               = false;
   unsigned long     ulHandlePeriodMsec    = 5 * 1000;
-  unsigned long     ulNextHandleMsec      = millis() + ulHandlePeriodMsec;
+  //unsigned long     ulNextHandleMsec      = millis() + ulHandlePeriodMsec;
+  unsigned long     ulNextHandleMsec      = 0;
 
 public:
   SystemClass();

@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_Biota.ino";
-const char szFileDate[]    = "4/20/21d";
+const char szFileDate[]    = "4/20/21f";
 
 #include <BeckBiotaDefines.h>
 #include <BeckBiotaLib.h>
@@ -52,7 +52,6 @@ void loop(){
       Serial << LOG0 << "loop(): Set bUpdating to " << _bOTA_Started << endl;
     } //if(millis()>_ulOTATimeoutMsec)
   } //if(!_bOTA_Started)else
-
   return;
 } //loop
 

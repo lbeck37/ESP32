@@ -122,11 +122,11 @@ public:
 
 class TTGO_DisplayClass : public DisplayClass {
 protected:
-  uint32_t    ulCurrentDegFOnTimeSeconds  = 4;
-  uint32_t    ulSetpointOnTimeSeconds     = 2;
+  //uint32_t    ulCurrentDegFOnTimeSeconds  = 4;
+  //uint32_t    ulSetpointOnTimeSeconds     = 2;
 
-  uint32_t    ulCurrentDegFOnTimeMsec   = ulCurrentDegFOnTimeSeconds * 1000;
-  uint32_t    ulSetpointOnTimeMsec      = ulSetpointOnTimeSeconds    * 1000;
+  uint32_t    ulCurrentDegFOnTimeMsec   = 4 * 1000;
+  uint32_t    ulSetpointOnTimeMsec      = 2    * 1000;
 
   uint32_t    ulNextCurrentDegFDisplay  = 0;
   uint32_t    ulNextSetpointDisplay     = 0;

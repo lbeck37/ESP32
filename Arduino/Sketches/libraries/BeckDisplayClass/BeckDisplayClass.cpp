@@ -1,6 +1,5 @@
 const char szDisplayClassFileName[]  = "BeckDisplayClass.cpp";
-const char szDisplayClassFileDate[]  = "4/20/21c";
-
+const char szDisplayClassFileDate[]  = "4/20/21e";
 #include <BeckDisplayClass.h>
 #include <BeckThermostatDataClass.h>
 #include "Free_Fonts.h"
@@ -30,7 +29,6 @@ const char szDisplayClassFileDate[]  = "4/20/21c";
 #endif
 
 char                  sz100CharDisplayBuffer[100];    //For building strings for display
-//DisplayThermoStruct   DisplayThermoData;
 
 TTGO_DisplayClass     BiotaDisplay;                   //So every module can use the same object
 
@@ -41,7 +39,6 @@ DisplayClass::DisplayClass() {
 DisplayClass::~DisplayClass() {
   Serial << "~Display(): Destructing" << endl;
 } //destructor
-
 
 TTGO_DisplayClass::TTGO_DisplayClass() {
   Serial << "ColorDisplay::ColorDisplay(): " << szDisplayClassFileName << ", " << szDisplayClassFileDate << endl;
@@ -69,7 +66,6 @@ void TTGO_DisplayClass::Setup(void){
   return;
 } //Setup
 
-
 //void TTGO_DisplayClass::Handle(DisplayThermoStruct ThermoData){
 void TTGO_DisplayClass::Handle(){
   Serial << "TTGO_DisplayClass::Handle(): Begin" << endl;
@@ -80,7 +76,6 @@ void TTGO_DisplayClass::Handle(){
   DisplayCurrentTemperature ();
   return;
 } //Handle
-
 
 PUnit TTGO_DisplayClass::Invert_Y(PUnit Y1){
   return(ScreenHeight - Y1);
@@ -305,8 +300,6 @@ void TTGO_DisplayClass::PrintLine(const char* szLineToPrint) {
   return;
 } //PrintLine
 
-
-//**********************************************************************************************//
 //**********************************************************************************************//
 //***** Was in ThermoDisplayClass
 void TTGO_DisplayClass::DisplayCurrentTemperature(){
@@ -339,11 +332,9 @@ void TTGO_DisplayClass::DisplayCurrentTemperature(){
     else{
       Serial << "TTGO_DisplayClass::DisplayCurrentTemperature(): Time not up, do nothing" << endl;
     }
-
   } //if(millis()>ulNextCurrentDegFDisplay)
   return;
 } //DisplayCurrentTemperature
-
 
 void TTGO_DisplayClass::DisplayCurrentSetpoint(){
   Serial << "TTGO_DisplayClass::DisplayCurrentSetpoint(): Begin" << endl;
@@ -377,15 +368,6 @@ void TTGO_DisplayClass::DisplayCurrentSetpoint(){
   }
   return;
 } //DisplayCurrentSetpoint
-
-/*
-void TTGO_DisplayClass::DisplayMainScreen(){
-  //Serial << "TTGO_DisplayClass::DisplayMainScreen(): Begin" << endl;
-  DisplayCurrentSetpoint();
-  DisplayCurrentTemperature();
-  return;
-} //DisplayMainScreen
-*/
 
 void TTGO_DisplayClass::DisplayThermoOnBar(){
   //Draw a fat bar, the ThermoOnBar, under the large current temperature display, present when thermostat is on.
@@ -443,15 +425,4 @@ void TTGO_DisplayClass::DisplayHeatOnBox(){
   } //if(stData.GetThermostatOn()&&...
   return;
 } //DisplayHeatOnBox
-/*
-
-void TTGO_DisplayClass::DrawScreen(){
-  //Serial << "TTGO_DisplayClass::DrawScreen(): Begin" << endl;
-  DisplayThermoOnBar    ();
-  DisplaySetpointLine   ();
-  DisplayHeatOnBox      ();
-  DisplayMainScreen     ();
-  return;
-} //DrawScreen
-*/
 //Last line.

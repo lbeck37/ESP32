@@ -1,5 +1,5 @@
 const char szFileName[]  = "BeckSystemClass.cpp";
-const char szFileDate[]  = "4/19/21c";
+const char szFileDate[]  = "4/20/21b";
 
 #include <BeckSystemClass.h>
 #include <BeckAlexaClass.h>
@@ -26,7 +26,7 @@ void SystemClass::Setup(){
   Serial.begin(lSerialMonitorBaud);
   delay(100);
 
-  String szLogString= "SystemClass::Setup(): Begin";
+  String szLogString= "\n\nSystemClass::Setup(): Begin";
   LogToSerial(szLogString);
 
   Serial << LOG0 << "SystemClass::Setup(): Call BiotaThermostat.Setup()" << endl;
@@ -52,16 +52,11 @@ void SystemClass::Handle(){
 #if DO_ALEXA
   BiotaAlexa.Handle();
 #endif
-  if (millis() >= ulNextHandleMsec){
-    ulNextHandleMsec= millis() + ulHandlePeriodMsec;
-    Serial << LOG0 << "SystemClass::Handle(): Call BiotaThermostat.Handle()" << endl;
     BiotaThermostat.Handle();
-
-    Serial << LOG0 << "SystemClass::Handle(): Call BiotaDisplay.Handle()" << endl;
     BiotaDisplay.Handle();
-  }
   return;
 } //Handle
+
 
 ProjectType SystemClass::GetProjectType(void){
   return eProjectType;
