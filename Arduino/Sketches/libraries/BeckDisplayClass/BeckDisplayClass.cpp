@@ -1,5 +1,5 @@
 const char szDisplayClassFileName[]  = "BeckDisplayClass.cpp";
-const char szDisplayClassFileDate[]  = "4/21/21b";
+const char szDisplayClassFileDate[]  = "4/21/21d";
 #include <BeckDisplayClass.h>
 #include <BeckThermostatDataClass.h>
 #include "Free_Fonts.h"
@@ -284,7 +284,8 @@ void TTGO_DisplayClass::PrintLine(const char* szLineToPrint) {
 } //PrintLine
 
 //**********************************************************************************************//
-//***** Was in ThermoDisplayClass
+//***** Was in ThermoDisplayClass **************************************************************//
+//**********************************************************************************************//
 void TTGO_DisplayClass::Setup(void){
   Serial << "TTGO_DisplayClass::Setup(): Call Handle()" << endl;
   Handle();
@@ -409,19 +410,49 @@ void TTGO_DisplayClass::DisplaySetpointLine(){
 void TTGO_DisplayClass::DisplayHeatOnBox(){
   //Draw a box, the HeatOnBox, between the Setpoint and Offpoint text, present when heat is on.
   //Draws on top of SetpointText, position it to not overwrite text
-  if (bHeatOnLast != ThermostatData.GetHeatOn()){
-    bHeatOnLast= ThermostatData.GetHeatOn();
+  bool  bHeatIsOn         = ThermostatData.GetHeatOn();
+  bool  bThermostatIsOn   = ThermostatData.GetThermostatOn();
+  bool  bDrawHeatBox      = false;
+
+  if (bHeatIsOn && bThermostatIsOn){
+    bDrawHeatBox= true;
+  }
+
+  if (bDrawHeatBox != bLastDrawHeatBox){
+    bLastDrawHeatBox= bDrawHeatBox;
+    Serial << "TTGO_DisplayClass::DisplayHeatOnBox(): Changing bDrawHeatBox to " << bDrawHeatBox << endl;
     //Only turn on the HeatOn box if the thermostat is also on.
-    if (ThermostatData.GetThermostatOn() && ThermostatData.GetHeatOn()){
+    if (bDrawHeatBox){
       SetFillColor(HeatOnBoxColor);
-      //bHeatOnLast= true;
-    } //if(stData.GetThermostatOn())
+    }
     else{
       SetFillColor(_BackgroundColor);
-      //bHeatOnLast= false;
-    } //if(stData.GetThermostatOn())else
+    }
     DrawFilledRectangle( (HeatOnBoxCenter - HeatOnBoxWidth/2), HeatOnBoxBottom, HeatOnBoxWidth, HeatOnBoxHeight);
-  } //if(stData.GetThermostatOn()&&...
+  } //if (bDrawHeatBox!=bLastDrawHeatBox)
   return;
 } //DisplayHeatOnBox
+
+/*
+void TTGO_DisplayClass::DisplayHeatOnBox(){
+  //Draw a box, the HeatOnBox, between the Setpoint and Offpoint text, present when heat is on.
+  //Draws on top of SetpointText, position it to not overwrite text
+  bool  bHeatIsOn         = ThermostatData.GetHeatOn();
+  bool  bThermostatIsOn   = ThermostatData.GetThermostatOn();
+
+  if (bHeatIsOnLast != bHeatIsOn){
+    bHeatIsOnLast= bHeatIsOn;
+    Serial << "TTGO_DisplayClass::DisplayHeatOnBox(): Changing HeatOn Box to " << bHeatIsOn << endl;
+    //Only turn on the HeatOn box if the thermostat is also on.
+    if (bThermostatIsOn && bHeatIsOn){
+      SetFillColor(HeatOnBoxColor);
+    }
+    else{
+      SetFillColor(_BackgroundColor);
+    }
+    DrawFilledRectangle( (HeatOnBoxCenter - HeatOnBoxWidth/2), HeatOnBoxBottom, HeatOnBoxWidth, HeatOnBoxHeight);
+  } //if(bHeatIsOnLast!=bHeatIsOn
+  return;
+} //DisplayHeatOnBox
+*/
 //Last line.

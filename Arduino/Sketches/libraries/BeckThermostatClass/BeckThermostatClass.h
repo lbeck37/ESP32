@@ -1,4 +1,4 @@
-// BeckThermostatClass.h 4/20/21c
+// BeckThermostatClass.h 4/22/21b
 #pragma once
 #include <BeckSwitchLib.h>
 #include <BeckThermostatDataClass.h>
@@ -7,11 +7,13 @@
 
 class ThermostatClass{
 protected:
-  int               sThermoTimesInRow       = 3;      //Max times temperature is outside range before switch
-  float             fThermoOffDeg           = ThermostatData.GetSetpoint() + ThermostatData.GetMaxHeatRange();
-  int               sThermoTimesCount       = 0;        //Number of times temperature out of range
+  bool              bLastHeatOn             = false;    //Used in HandleHeatSwitch()
+  bool              bLastSetHeatSwitch      = false;
   unsigned long     ulNextSensorReadMsec    = 0;
-  unsigned long     ulSensorReadPeriodMsec  = 10 * lMsecPerSec; //mSec between running system handler
+  unsigned long     ulSensorReadPeriodMsec  = 500; //mSec between reading sensor
+
+  unsigned long     ulNextPrintMsec         = 0;
+  unsigned long     ulPrintPeriodMsec       = 5000; //mSec between reading sensor
 
   OneWire           OneWireInstance            = OneWire(sOneWireGPIO);
   DallasTemperature DallasTemperatureInstance  = DallasTemperature(&OneWireInstance);

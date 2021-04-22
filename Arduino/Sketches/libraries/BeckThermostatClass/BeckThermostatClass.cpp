@@ -1,5 +1,5 @@
 const char szThermostatFileName[]  = "BeckThermostatClass.cpp";
-const char szThermostatFileDate[]  = "4/20/21b";
+const char szThermostatFileDate[]  = "4/22/21b";
 
 #include <BeckThermostatClass.h>
 #include <BeckLogLib.h>
@@ -32,97 +32,83 @@ void ThermostatClass::Setup(){
 }
 
 
-  void ThermostatClass::Handle(){
-  static bool     bStateChanged= false;
-  //unsigned long   ulStartTime;
-
+void ThermostatClass::Handle(){
   //Update Setpoint after qualifying
   float fProposedSetpoint= ThermostatData.GetProposedSetpoint();
   ThermostatData.SetSetpoint(fProposedSetpoint);
 
-  if (!ThermostatData.GetThermostatOn()){
-    //String szLogString= "Handle(): ThermostatData.GetThermostatOn() is false, Thermostat is off";
-    //LogToSerial(szLogString);
-  } //if(!ThermostatData.GetThermostatOn())
-  else{
-    if (ThermostatData.GetHeatOn()){
-      if (ThermostatData.GetCurrentDegF() >= fThermoOffDeg){
-        //bStateChanged= true;
-        if (++sThermoTimesCount >= sThermoTimesInRow){
-          TurnHeatOn(false);
-          //DidHeatOnChange= true;
-          sThermoTimesCount= 0;
-        } //if(sThermoTimesCount>=sThermoTimesInRow)
-      } //if(GetCurrentDegF()>=_fThermoOffDegF)
-      else{
-        sThermoTimesCount= 0;
-      } //if(GetCurrentDegF()>=_fThermoOffDegF)else
-    } //if(_ThermostatData.GetHeatOn())
-    else{
-      if (ThermostatData.GetCurrentDegF() <= ThermostatData.GetSetpoint()){
-        bStateChanged= true;
-        if (++sThermoTimesCount >= sThermoTimesInRow){
-          TurnHeatOn(true);
-          //DidHeatOnChange= true;
-          sThermoTimesCount= 0;
-        } //if(sThermoTimesCount>=sThermoTimesInRow)
-      } //if(GetCurrentDegF()<_fSetpoint)
-      else{
-        sThermoTimesCount= 0;
-      } //if(GetCurrentDegF()<_fSetpoint)else
-    } //if(_ThermostatData.GetHeatOn())else
-  } // //if(!ThermostatData.GetThermostatOn())else
+  float fCurrentDegF      = ReadCurrentDegF();
+  float fSetpoint         = ThermostatData.GetSetpoint();
+  float fThermoOffDeg     = ThermostatData.GetSetpoint() + ThermostatData.GetMaxHeatRange();
+  bool  bThermostatIsOn   = ThermostatData.GetThermostatOn();
+  bool  bHeatIsOn         = ThermostatData.GetHeatOn();
 
-  //Read the temperature and print stat every 5 seconds (as of 4/20/21)
-  if(millis() >= ulNextSensorReadMsec){
-    ulNextSensorReadMsec= millis() + ulSensorReadPeriodMsec;
-    //Read the Dallas One-wire temperature sensor
-    Serial << "ThermostatClass::Handle(): Call GetCurrentDegF()" << endl;
-    float   fCurrentDegF= ReadCurrentDegF();
-    ThermostatData.SetCurrentDegF(fCurrentDegF);
+  //If the Thermostat is OFF, make sure the heat  switch is off, too.
+  if (!bThermostatIsOn){
+    if (bHeatIsOn){
+      TurnHeatOn(false);
+    }
+    return;
+  } //if(!bThermostatIsOn)
 
-    if(ThermostatData.GetThermostatOn()) {
-      LogThermostatData(ThermostatData.GetCurrentDegF());
-    } //if(ThermostatData.GetThermostatOn())
-  } //if(millis() >= ulNextSensorReadMsec)
+  //If the heat is OFF and the temperature is below the set-point, turn the heat ON
+  if (!bHeatIsOn && (fCurrentDegF < fSetpoint)){
+    TurnHeatOn(true);
+  }
 
-  //Serial << "ThermostatClass::Handle(): Call HandleHeatSwitch()" << endl;
+  //If the heat is ON and the temperature is above the off-point, then turn the heat OFF
+  if (bHeatIsOn && (fCurrentDegF >= fThermoOffDeg)){
+      TurnHeatOn(false);
+  }
+
+  //If the heat is OFF and the temperature is below the set-point, turn the heat ON
+  if (!bHeatIsOn && (fCurrentDegF < fSetpoint)){
+    TurnHeatOn(true);
+  }
+
+  if(millis() >= ulNextPrintMsec){
+    ulNextPrintMsec= millis() + ulPrintPeriodMsec;
+    LogThermostatData(ThermostatData.GetCurrentDegF());
+  } //if(millis()>=ulNextPrintMsec)
+
   HandleHeatSwitch();
   return;
 } //Handle
 
 
-  float ThermostatClass::ReadCurrentDegF(){
-    //This routine reads the sensor and returns the temperature.
-    BiotaTempSensor.requestTemperatures(); // Send the command to get temperatures
-    float fCurrentDegF= BiotaTempSensor.getTempFByIndex(0);
+float ThermostatClass::ReadCurrentDegF(){
+  //This routine reads the Dallas One-wire temperature sensor
+  //It sets this value into the ThermostatData object.
+  //It returns the newly read value.
+  float fCurrentDegF;
 
+  if(millis() >= ulNextSensorReadMsec){
+    ulNextSensorReadMsec= millis() + ulSensorReadPeriodMsec;
+    //Read the Dallas One-wire temperature sensor
+    BiotaTempSensor.requestTemperatures(); // Send the command to get temperatures
+    fCurrentDegF= BiotaTempSensor.getTempFByIndex(0);
     ThermostatData.SetCurrentDegF(fCurrentDegF);
-    Serial << "ThermostatClass::ReadCurrentDegF(): ThermostatData.GetCurrentDegF()= " <<
-        ThermostatData.GetCurrentDegF() << endl;
-    return ThermostatData.GetCurrentDegF();
-  } //ReadCurrentDegF
+  } //if(millis() >= ulNextSensorReadMsec)
+  return fCurrentDegF;
+} //ReadCurrentDegF
 
 
 void ThermostatClass::HandleHeatSwitch(){
-  static bool   bLastHeatOn= false;
-  //Serial << "ThermostatClass::HandleHeatSwitch(): Begin, bLastHeatOn= " << bLastHeatOn << endl;
-  if (ThermostatData.GetHeatOn() != bLastHeatOn){
-    bLastHeatOn= ThermostatData.GetHeatOn();
-    if (ThermostatData.GetHeatOn()){
-      asSwitchState[sHeatSwitchNum]= sOn;
-      Serial << "ThermostatClass::HandleHeatSwitch(): ThermostatData.GetHeatOn() is now TRUE, Call SetSwitch(" <<
-          sHeatSwitchNum << ", " << sOff << ")" << endl;
-      SetSwitch(sHeatSwitchNum, sOn);
-    } //if(ThermostatData.GetHeatOn())
-    else{
-      asSwitchState[sHeatSwitchNum]= sOff;
-      Serial << "ThermostatClass::HandleHeatSwitch(): ThermostatData.GetHeatOn() is now FALSE, Call SetSwitch(" <<
-          sHeatSwitchNum << ", " << sOff << ")" << endl;
-      SetSwitch(sHeatSwitchNum, sOff);
-    } //if(_bHeatOn)else
-  } //if (ThermostatData.GetHeatOn() != bLastHeatOn)
-  //Serial << "ThermostatClass::HandleHeatSwitch(): End, bLastHeatOn= " << bLastHeatOn << endl;
+  bool  bThermostatIsOn   = ThermostatData.GetThermostatOn();
+  bool  bHeatIsOn         = ThermostatData.GetHeatOn();
+  int   wHeatSwitchValue  = 0;
+
+  //Turn the switch on if the Thermostat is ON and Heat ON is set in ThermoDataClass
+  if (bThermostatIsOn && bHeatIsOn){
+    wHeatSwitchValue= 1;
+  }
+
+  //Only change the switch if it's different.
+  if (wHeatSwitchValue != asSwitchState[sHeatSwitchNum]){
+    asSwitchState[sHeatSwitchNum]= wHeatSwitchValue;
+    SetSwitch(sHeatSwitchNum, wHeatSwitchValue);
+    Serial << ": Set heat switch to " << wHeatSwitchValue << endl;
+  }
   return;
 } //HandleHeatSwitch
 
@@ -130,12 +116,13 @@ void ThermostatClass::HandleHeatSwitch(){
 void ThermostatClass::LogThermostatData(float fCurrentDegF){
   static char    sz100CharBuffer[100];
   float fThermostatOffDeg= ThermostatData.GetSetpoint() + ThermostatData.GetMaxHeatRange();
-  sprintf(sz100CharBuffer, " %d %d %4.2f %4.2f %4.2f",
-    ThermostatData.GetHeatOn(), sThermoTimesCount, ThermostatData.GetCurrentDegF(),
+  sprintf(sz100CharBuffer, "HeatOn= %d, DegF= %4.2f, Setpoint= %4.2f, ThermoOffDegF= %4.2f",
+    ThermostatData.GetHeatOn(), ThermostatData.GetCurrentDegF(),
     ThermostatData.GetSetpoint(), fThermostatOffDeg);
   LogToSerial(sz100CharBuffer);
   return;
 } //LogThermostatData
+
 
 void ThermostatClass::TurnHeatOn(bool bTurnOn){
   if (bTurnOn){
@@ -143,14 +130,12 @@ void ThermostatClass::TurnHeatOn(bool bTurnOn){
     LogToSerial(szLogString);
     ThermostatData.SetHeatOn(true);
     SetHeatSwitch(sSwitchClosed);
-    sThermoTimesCount= 0;
   } //if(bTurnOn)
   else{
     String szLogString= "ThermostatClass::TurnHeatOn(): OFF";
     LogToSerial(szLogString);
     ThermostatData.SetHeatOn(false);
     SetHeatSwitch(sSwitchOpen);
-    sThermoTimesCount= 0;
   } //if(bTurnOn)else
   return;
 } //TurnHeatOn

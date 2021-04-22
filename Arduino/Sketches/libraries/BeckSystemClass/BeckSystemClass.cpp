@@ -52,8 +52,8 @@ void SystemClass::Handle(){
 #if DO_ALEXA
   BiotaAlexa.Handle();
 #endif
-    BiotaThermostat.Handle();
-    BiotaDisplay.Handle();
+  BiotaThermostat.Handle();
+  BiotaDisplay.Handle();
   return;
 } //Handle
 
