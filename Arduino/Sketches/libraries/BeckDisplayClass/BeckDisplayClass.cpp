@@ -1,5 +1,5 @@
 const char szDisplayClassFileName[]  = "BeckDisplayClass.cpp";
-const char szDisplayClassFileDate[]  = "4/21/21a";
+const char szDisplayClassFileDate[]  = "4/21/21b";
 #include <BeckDisplayClass.h>
 #include <BeckThermostatDataClass.h>
 #include "Free_Fonts.h"
@@ -59,23 +59,6 @@ TTGO_DisplayClass::TTGO_DisplayClass() {
 TTGO_DisplayClass::~TTGO_DisplayClass() {
   Serial << "~ColorDisplay(): Destructing" << endl;
 } //destructor
-
-void TTGO_DisplayClass::Setup(void){
-  Serial << "TTGO_DisplayClass::Setup(): Call Handle()" << endl;
-  Handle();
-  return;
-} //Setup
-
-//void TTGO_DisplayClass::Handle(DisplayThermoStruct ThermoData){
-void TTGO_DisplayClass::Handle(){
-  //Serial << "TTGO_DisplayClass::Handle(): Begin" << endl;
-  DisplayThermoOnBar        ();
-  DisplaySetpointLine       ();
-  DisplayHeatOnBox          ();
-  DisplayCurrentSetpoint    ();
-  DisplayCurrentTemperature ();
-  return;
-} //Handle
 
 PUnit TTGO_DisplayClass::Invert_Y(PUnit Y1){
   return(ScreenHeight - Y1);
@@ -302,51 +285,73 @@ void TTGO_DisplayClass::PrintLine(const char* szLineToPrint) {
 
 //**********************************************************************************************//
 //***** Was in ThermoDisplayClass
+void TTGO_DisplayClass::Setup(void){
+  Serial << "TTGO_DisplayClass::Setup(): Call Handle()" << endl;
+  Handle();
+  return;
+} //Setup
+
+//void TTGO_DisplayClass::Handle(DisplayThermoStruct ThermoData){
+void TTGO_DisplayClass::Handle(){
+  //Serial << "TTGO_DisplayClass::Handle(): Begin" << endl;
+  DisplayThermoOnBar        ();
+  DisplaySetpointLine       ();
+  DisplayHeatOnBox          ();
+  DisplayCurrentSetpoint    ();
+  DisplayCurrentTemperature ();
+  return;
+} //Handle
+
 void TTGO_DisplayClass::DisplayCurrentTemperature(){
-  //Serial << "TTGO_DisplayClass::DisplayCurrentTemperature(): Begin" << endl;
+  bool  bUpdateDisplay= false;
+  //Update screen if the thermostat is ON and my time has come.
+  if (ThermostatData.GetThermostatOn() && (millis() > ulNextCurrentDegFDisplay)){
+    bUpdateDisplay= true;
+    //Set Setpoints timer so it overwrites me and my timer so it does't fire before Setpoint's
+    ulNextSetpointDisplay     = millis() + ulCurrentDegFOnTimeMsec;
+    ulNextCurrentDegFDisplay  = millis() + ulVeryLargeExtraWaitMsec;
+  } //if(ThermostatData.GetThermostatOn()&&(millis()...)
 
-  if (millis() > ulNextCurrentDegFDisplay){
-    if(fCurrentDegFLast != ThermostatData.GetCurrentDegF()){
-      fCurrentDegFLast= ThermostatData.GetCurrentDegF();
-      Serial << "TTGO_DisplayClass::DisplayCurrentTemperature(): New fCurrentDegFLast= " << fCurrentDegFLast << endl;
+  //Update screen if the thermostat is OFF and value has changed
+  if (!ThermostatData.GetThermostatOn() && (fCurrentDegFLast != ThermostatData.GetCurrentDegF())){
+    bUpdateDisplay= true;
+    Serial << "TTGO_DisplayClass::DisplayCurrentTemperature(): New fCurrentDegFLast= " << fCurrentDegFLast << endl;
+    fCurrentDegFLast= ThermostatData.GetCurrentDegF();
+    //Set both my and Setpoint's timers to zero so each one of us will decide if we draw immediately.
+    ulNextSetpointDisplay     = 0;
+    ulNextCurrentDegFDisplay  = 0;
+  } //if(!ThermostatData.GetThermostatOn()&&(fCurrentDegFLast...)
 
-      //Clear the rectangular area where the DegF is displayed
-      SetFillColor(_BackgroundColor);
-      PUnit YBottom= (ThermoOnBarBottom + ThermoOnBarHeight);
-      DrawFilledRectangle( 0, YBottom, ScreenWidth, ScreenHeight);
+  if (bUpdateDisplay){
+    //Clear the rectangular area where the DegF is displayed
+    SetFillColor(_BackgroundColor);
+    PUnit YBottom= (ThermoOnBarBottom + ThermoOnBarHeight);
+    DrawFilledRectangle( 0, YBottom, ScreenWidth, ScreenHeight);
 
-      SetCursor     (DegF_XLeftSide, DegF_YBaseline);
-      SetTextColor  (DegF_Color);
-      SelectFont    (eDegF_Font, eDegF_PointSize);
+    SetCursor     (DegF_XLeftSide, DegF_YBaseline);
+    SetTextColor  (DegF_Color);
+    SelectFont    (eDegF_Font, eDegF_PointSize);
 
-      sprintf(sz100CharDisplayBuffer, "%04.1f", ThermostatData.GetCurrentDegF());
-      Serial << "TTGO_DisplayClass::DisplayCurrentTemperature(): Writing " << sz100CharDisplayBuffer << " to the display" << endl;
-      Print(sz100CharDisplayBuffer);
-
-      //Set time for Setpoint to display, it will do same for me
-      ulNextSetpointDisplay= millis() + ulCurrentDegFOnTimeMsec;
-
-      //Set next DegF does't fire before Setpoint
-      ulNextCurrentDegFDisplay= millis() + ulVeryLargeExtraWaitMsec;
-    } //if(millis()>ulNextCurrentDegFDisplay)
-    else{
-      Serial << "TTGO_DisplayClass::DisplayCurrentTemperature(): Time not up, do nothing" << endl;
-    }
-  } //if(millis()>ulNextCurrentDegFDisplay)
+    sprintf(sz100CharDisplayBuffer, "%04.1f", ThermostatData.GetCurrentDegF());
+    Serial << "TTGO_DisplayClass::DisplayCurrentTemperature(): Writing " << sz100CharDisplayBuffer << " to the display" << endl;
+    Print(sz100CharDisplayBuffer);
+  } //if(bUpdateDisplay)
   return;
 } //DisplayCurrentTemperature
 
-void TTGO_DisplayClass::DisplayCurrentSetpoint(){
-  //Serial << "TTGO_DisplayClass::DisplayCurrentSetpoint(): Begin" << endl;
-  //If the thermostat is off then do nothing, and let current temperature stay on the display
-  if (!ThermostatData.GetThermostatOn()){
-    return;
-  } //if(!ThermostatData.GetThermostatOn())
 
-  //if (ThermostatData.GetThermostatOn() && (millis() > ulNextSetpointDisplay)){
-  if (fSetpointLast != ThermostatData.GetSetpoint()){
-    fSetpointLast= ThermostatData.GetSetpoint();
-    Serial << "TTGO_DisplayClass::DisplayCurrentSetpoint(): New fSetpointLast= " << fSetpointLast << endl;
+void TTGO_DisplayClass::DisplayCurrentSetpoint(){
+  bool  bUpdateDisplay= false;
+  //Update screen if the thermostat is ON and my time has come.
+  //If thermostat is OFF, we do nothing, no drawing and no setting of timers.
+  if (ThermostatData.GetThermostatOn() && (millis() > ulNextSetpointDisplay)){
+    bUpdateDisplay= true;
+    //Set DegF timer so it overwrites me, and set my timer so it does't fire before DegF's
+    ulNextCurrentDegFDisplay  = millis() + ulCurrentDegFOnTimeMsec;
+    ulNextSetpointDisplay     = millis() + ulVeryLargeExtraWaitMsec;
+  } //if(ThermostatData.GetThermostatOn()&&(millis()...)
+
+  if (bUpdateDisplay){
     //Clear the rectangular area where the Setpoint is displayed
     SetFillColor(_BackgroundColor);
     PUnit YBottom= (ThermoOnBarBottom + ThermoOnBarHeight);
@@ -359,13 +364,7 @@ void TTGO_DisplayClass::DisplayCurrentSetpoint(){
     sprintf(sz100CharDisplayBuffer, "%04.1f", ThermostatData.GetSetpoint());
     Serial << "TTGO_DisplayClass::DisplayCurrentSetpoint(): Writing " << sz100CharDisplayBuffer << " to the display" << endl;
     Print(sz100CharDisplayBuffer);
-
-    //Set next time the CurrentDegF is displayed, it will do same for me
-    ulNextCurrentDegFDisplay= millis() + ulSetpointOnTimeMsec;
-
-    //Set so my next timeout does't fire before next DegF is able write over me
-    ulNextSetpointDisplay= millis() + ulVeryLargeExtraWaitMsec;
-  } //if(fSetpointLast! ThermostatData.GetSetpoint()
+  } //if(bUpdateDisplay)
   return;
 } //DisplayCurrentSetpoint
 
