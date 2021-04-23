@@ -1,6 +1,6 @@
 // BeckSwitchLib.h 4/8/21a
 #pragma once
-#include <BeckMiniLib.h>
+//#include <BeckMiniLib.h>
 
 #if ESP32
 static const int    sSDA_GPIO             = 21;   //I2C, TTGO pin 21

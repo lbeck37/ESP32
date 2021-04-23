@@ -8,8 +8,6 @@ const char szThermostatDataClassFileDate[]  = "4/20/21b";
 ThermostatDataClass ThermostatData;
 
 ThermostatDataClass::ThermostatDataClass() {
-  Serial << "ThermostatDataClass::ThermostatDataClass(): " <<
-      szThermostatDataClassFileName << ", " << szThermostatDataClassFileDate << endl;
 } //constructor
 
 
@@ -19,6 +17,8 @@ ThermostatDataClass::~ThermostatDataClass() {
 
 
 void ThermostatDataClass::Setup(){
+  Serial << "ThermostatDataClass::Setup(): " <<
+      szThermostatDataClassFileName << ", " << szThermostatDataClassFileDate << endl;
   return;
 } //Setup
 

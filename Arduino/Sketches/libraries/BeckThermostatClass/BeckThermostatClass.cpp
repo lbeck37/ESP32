@@ -71,7 +71,7 @@ void ThermostatClass::Handle(){
     LogThermostatData(ThermostatData.GetCurrentDegF());
   } //if(millis()>=ulNextPrintMsec)
 
-  HandleHeatSwitch();
+  //HandleHeatSwitch();
   return;
 } //Handle
 
@@ -129,13 +129,13 @@ void ThermostatClass::TurnHeatOn(bool bTurnOn){
     String szLogString= "ThermostatClass::TurnHeatOn(): ON";
     LogToSerial(szLogString);
     ThermostatData.SetHeatOn(true);
-    SetHeatSwitch(sSwitchClosed);
+    //SetHeatSwitch(sSwitchClosed);
   } //if(bTurnOn)
   else{
     String szLogString= "ThermostatClass::TurnHeatOn(): OFF";
     LogToSerial(szLogString);
     ThermostatData.SetHeatOn(false);
-    SetHeatSwitch(sSwitchOpen);
+    //SetHeatSwitch(sSwitchOpen);
   } //if(bTurnOn)else
   return;
 } //TurnHeatOn

@@ -15,9 +15,6 @@ protected:
   unsigned long     ulNextPrintMsec         = 0;
   unsigned long     ulPrintPeriodMsec       = 5000; //mSec between reading sensor
 
-  OneWire           OneWireInstance            = OneWire(sOneWireGPIO);
-  DallasTemperature DallasTemperatureInstance  = DallasTemperature(&OneWireInstance);
-
   //Protected methods
   void    LogThermostatData         (float fDegF);
   void    HandleHeatSwitch          (void);
