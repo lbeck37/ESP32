@@ -105,11 +105,6 @@ bool SetupProjectData(void){
     case eFireplace:
     case eHeater:
     case eGarage:
-    	//SetupSwitches();
-      //SetThermoSwitch(ThermostatData.GetThermostatOn());
-      //SetThermoSwitch(_bThermoOn);
-      //ThermostatData.SetThermoOn(70.0);
-
     	break;
     case ePitchMeter:
     case eFrontLights:

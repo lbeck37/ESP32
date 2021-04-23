@@ -1,5 +1,5 @@
 const char szSwitchFileName[]  = "BeckSystemClass.cpp";
-const char szSwitchFileDate[]  = "4/20/21b";
+const char szSwitchFileDate[]  = "4/20/21c";
 
 #include <BeckThermostatDataClass.h>
 #include <BeckSwitchClass.h>
@@ -61,17 +61,6 @@ void ThermostatSwitchClass::Setup(){
   return;
 } //Setup
 
-/*
-void ThermostatSwitchClass::Handle(){
-  bMyState= ThermostatData.GetThermostatOn();
-  if (bMyLastState != bMyState){
-    bMyLastState= bMyState;
-    SetMyPin();
-  }
-  return;
-}   //Handle
-*/
-
 
 HeatSwitchClass::HeatSwitchClass() {
   bMyState          = false;
@@ -90,16 +79,6 @@ void HeatSwitchClass::Setup(){
   return;
 } //Setup
 
-/*
-void HeatSwitchClass::Handle(){
-  bMyState= ThermostatData.GetHeatOn();
-  if (bMyLastState != bMyState){
-    bMyLastState= bMyState;
-    SetMyPin();
-  }
-  return;
-}   //Handle
-*/
 
 SwitchesClass::SwitchesClass() {
 return;

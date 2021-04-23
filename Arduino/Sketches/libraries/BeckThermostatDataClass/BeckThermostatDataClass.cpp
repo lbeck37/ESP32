@@ -1,6 +1,6 @@
-// ThermostatDataClass.h, 4/20/21c
+// ThermostatDataClass.h, 4/23/21a
 const char szThermostatDataClassFileName[]  = "BeckDisplayClass.cpp";
-const char szThermostatDataClassFileDate[]  = "4/20/21b";
+const char szThermostatDataClassFileDate[]  = "4/23/21b";
 
 #include <BeckThermostatDataClass.h>
 #include <Streaming.h>
@@ -28,18 +28,17 @@ void ThermostatDataClass::Handle(){
 } //Handle
 
 void ThermostatDataClass::SetSetpoint(float fNewSetpoint){
+  //Change the setpoint as long as the new setpoint is between MinSetpoint and MaxSetpoint.
   //Serial << "ThermostatDataClass::SetSetpoint(" << fNewSetpoint << "): Begin" << endl;
-  float fOriginalSetpoint= Setpoint;
-  if((fNewSetpoint >= MinSetpoint) && (fNewSetpoint <= MaxSetpoint)){
+  float fOriginalSetpoint= GetSetpoint();
+
+  if((fNewSetpoint >= GetMinSetpoint()) && (fNewSetpoint <= GetMaxHeatRange())){
     if(fNewSetpoint != fOriginalSetpoint){
       Setpoint= fNewSetpoint;
-      ThermoOffDeg = Setpoint + MaxHeatRange;
+      SetThermostatOffDeg();
       Serial << "ThermostatDataClass::SetSetpoint(): Set Setpoint to " << Setpoint << endl;
     } //if(fSetpoint!=_fSetpoint)
   } //if((fSetpoint>=...
-  if(Setpoint == fOriginalSetpoint){
-    //Serial << "ThermostatDataClass::SetSetpoint(): Setpoint remains at " << Setpoint << endl;
-  } //if((_fSetpoint==fLastSetpoint)
   return;
 } //SetSetpoint(float)
 
@@ -49,36 +48,46 @@ float ThermostatDataClass::GetSetpoint(){
 }
 
 
-void ThermostatDataClass::SetCurrentDegF(float NewCurrentDegF){
-  CurrentDegF= NewCurrentDegF;
-  return;
-}
-
-
-void ThermostatDataClass::SetProposedSetpoint (float NewProposedSetpoint){
+void ThermostatDataClass::SetProposedSetpoint(float NewProposedSetpoint){
   ProposedSetpoint= NewProposedSetpoint;
   return;
 }
 
 
-float ThermostatDataClass::GetProposedSetpoint (void){
+float ThermostatDataClass::GetProposedSetpoint(void){
   return ProposedSetpoint;
 }
 
 
-float ThermostatDataClass::GetCurrentDegF(){
-  return CurrentDegF;
+void ThermostatDataClass::SetCurrentTemperature(float NewCurrentTemperature){
+  CurrentTemperature= NewCurrentTemperature;
+  return;
+}
+
+
+float ThermostatDataClass::GetCurrentTemperature(){
+  return CurrentTemperature;
 }
 
 
 void ThermostatDataClass::SetMaxHeatRange(float NewMaxHeatRange){
   MaxHeatRange= NewMaxHeatRange;
+  SetThermostatOffDeg();
   return;
 }
 
 
 float ThermostatDataClass::GetMaxHeatRange(){
   return MaxHeatRange;
+}
+
+void ThermostatDataClass::SetThermostatOffDeg(void){
+  ThermostatOffDeg= Setpoint + MaxHeatRange;
+  return;
+}
+
+float ThermostatDataClass::GetThermostatOffDeg(void){
+  return ThermostatOffDeg;
 }
 
 
@@ -102,14 +111,14 @@ float ThermostatDataClass::GetMaxSetpoint(void){
 }
 
 
-void ThermostatDataClass::SetThermostatOn(bool NewThermoOn){
-  ThermoOn= NewThermoOn;
+void ThermostatDataClass::SetThermostatOn(bool NewThermostatOn){
+  ThermostatOn= NewThermostatOn;
   return;
 }
 
 
 bool ThermostatDataClass::GetThermostatOn(){
-  return ThermoOn;
+  return ThermostatOn;
 }  //GetThermostatOn
 
 

@@ -1,48 +1,52 @@
-// ThermostatDataClass.h, 4/20/21e
+// ThermostatDataClass.h, 4/23/21b
 #pragma once
 
 class ThermostatDataClass{
 protected:
-  float   CurrentDegF        = 68.0;
+  float   CurrentTemperature        = 68.0;
   float   Setpoint           = 70.0;
   float   ProposedSetpoint   = 70.0;
   float   MinSetpoint        = 40.0;
   float   MaxSetpoint        = 90.0;
   float   MaxHeatRange       = 0.10;
-  bool    ThermoOn           = true;
+  float   ThermostatOffDeg   = Setpoint + MaxHeatRange;
+  bool    ThermostatOn       = true;
   bool    HeatOn             = true;
-  float   ThermoOffDeg      = Setpoint + MaxHeatRange;
+
+  void    SetThermostatOffDeg       (void);
 
 public:
   ThermostatDataClass();
   virtual ~ThermostatDataClass();
 
-  void    Setup               (void);
-  void    Handle              (void);
+  void    Setup                     (void);
+  void    Handle                    (void);
 
-  void    SetSetpoint         (float NewSetpoint);
-  float   GetSetpoint         (void);
+  void    SetSetpoint               (float NewSetpoint);
+  float   GetSetpoint               (void);
 
-  void    SetProposedSetpoint (float NewSetpoint);
-  float   GetProposedSetpoint (void);
+  void    SetProposedSetpoint       (float NewSetpoint);
+  float   GetProposedSetpoint       (void);
 
-  void    SetCurrentDegF      (float NewCurrentDegF);
-  float   GetCurrentDegF      (void);
+  void    SetCurrentTemperature     (float NewCurrentTemperature);
+  float   GetCurrentTemperature     (void);
 
-  void    SetMaxHeatRange     (float NewMaxHeatRange);
-  float   GetMaxHeatRange     (void);
+  void    SetMaxHeatRange           (float NewMaxHeatRange);
+  float   GetMaxHeatRange           (void);
 
-  void    SetMinSetpoint      (float NewMinSetpoint);
-  float   GetMinSetpoint      (void);
+  float   GetThermostatOffDeg       (void);
 
-  void    SetMaxSetpoint      (float NewMaxSetpoint);
-  float   GetMaxSetpoint      (void);
+  void    SetMinSetpoint            (float NewMinSetpoint);
+  float   GetMinSetpoint            (void);
 
-  void    SetThermostatOn     (bool NewThermoOn);
-  bool    GetThermostatOn     (void);
+  void    SetMaxSetpoint            (float NewMaxSetpoint);
+  float   GetMaxSetpoint            (void);
 
-  void    SetHeatOn           (bool NewHeatOn);
-  bool    GetHeatOn           (void);
+  void    SetThermostatOn           (bool NewThermostatOn);
+  bool    GetThermostatOn           (void);
+
+  void    SetHeatOn                 (bool NewHeatOn);
+  bool    GetHeatOn                 (void);
 };  //ThermostatDataClass
 
 extern ThermostatDataClass ThermostatData;

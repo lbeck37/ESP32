@@ -1,4 +1,4 @@
-// 4/19/21d, BeckSystemClass.h
+// BeckSystemClass.h, 4/22/21a
 #pragma once
 
 #include <BeckBiotaLib.h>
@@ -27,7 +27,6 @@ protected:
   int               sThermoTimesCount     = 0;      //Number of times temperature out of range
   bool              bWiFiOn               = false;
   unsigned long     ulHandlePeriodMsec    = 5 * 1000;
-  //unsigned long     ulNextHandleMsec      = millis() + ulHandlePeriodMsec;
   unsigned long     ulNextHandleMsec      = 0;
 
 public:

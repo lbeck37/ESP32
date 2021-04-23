@@ -1,5 +1,5 @@
 const char szDisplayClassFileName[]  = "BeckDisplayClass.cpp";
-const char szDisplayClassFileDate[]  = "4/21/21d";
+const char szDisplayClassFileDate[]  = "4/23/21a";
 #include <BeckDisplayClass.h>
 #include <BeckThermostatDataClass.h>
 #include "Free_Fonts.h"
@@ -314,10 +314,10 @@ void TTGO_DisplayClass::DisplayCurrentTemperature(){
   } //if(ThermostatData.GetThermostatOn()&&(millis()...)
 
   //Update screen if the thermostat is OFF and value has changed
-  if (!ThermostatData.GetThermostatOn() && (fCurrentDegFLast != ThermostatData.GetCurrentDegF())){
+  if (!ThermostatData.GetThermostatOn() && (fCurrentDegFLast != ThermostatData.GetCurrentTemperature())){
     bUpdateDisplay= true;
     Serial << "TTGO_DisplayClass::DisplayCurrentTemperature(): New fCurrentDegFLast= " << fCurrentDegFLast << endl;
-    fCurrentDegFLast= ThermostatData.GetCurrentDegF();
+    fCurrentDegFLast= ThermostatData.GetCurrentTemperature();
     //Set both my and Setpoint's timers to zero so each one of us will decide if we draw immediately.
     ulNextSetpointDisplay     = 0;
     ulNextCurrentDegFDisplay  = 0;
@@ -333,7 +333,7 @@ void TTGO_DisplayClass::DisplayCurrentTemperature(){
     SetTextColor  (DegF_Color);
     SelectFont    (eDegF_Font, eDegF_PointSize);
 
-    sprintf(sz100CharDisplayBuffer, "%04.1f", ThermostatData.GetCurrentDegF());
+    sprintf(sz100CharDisplayBuffer, "%04.1f", ThermostatData.GetCurrentTemperature());
     Serial << "TTGO_DisplayClass::DisplayCurrentTemperature(): Writing " << sz100CharDisplayBuffer << " to the display" << endl;
     Print(sz100CharDisplayBuffer);
   } //if(bUpdateDisplay)
