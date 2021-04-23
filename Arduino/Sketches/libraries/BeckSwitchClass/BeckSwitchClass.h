@@ -1,4 +1,4 @@
-// BeckSwitchClass.h, 4/22/21a
+// BeckSwitchClass.h, 4/22/21b
 
 class SwitchClass{
 protected:

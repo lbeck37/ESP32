@@ -17,21 +17,10 @@ SwitchClass::~SwitchClass() {
 } //destructor
 
 
-void SwitchClass::SetMyPin() {
-  Serial << "SwitchClass(): SetMyPin" << endl;
-  bool  bPinState= bMyState;
-
-  if (bMyPinIsInverted){
-    bPinState= !bMyState;
-  }
-
-  if (bMyLastState != bMyState){
-    bMyLastState= bMyState;
-    digitalWrite(wMyPinNumber, bPinState);
-  }
+void SwitchClass::Setup(){
+  Serial << "SwitchClass::Setup(): " << szSwitchFileName << ", " << szSwitchFileDate << endl;
   return;
-} //SetMyPin
-
+} //Setup
 
 void SwitchClass::Handle(){
   if (bMyLastState != bMyState){
@@ -40,6 +29,21 @@ void SwitchClass::Handle(){
   }
   return;
 }   //Handle
+
+
+void SwitchClass::SetMyPin() {
+  Serial << "SwitchClass(): SetMyPin" << endl;
+  bool  bPinState= bMyState;
+
+  if (bMyPinIsInverted){
+    bPinState= !bMyState;
+  }
+  if (bMyLastState != bMyState){
+    bMyLastState= bMyState;
+    digitalWrite(wMyPinNumber, bPinState);
+  }
+  return;
+} //SetMyPin
 
 
 ThermostatSwitchClass::ThermostatSwitchClass() {
@@ -115,3 +119,4 @@ void SwitchesClass::Handle(){
   HeatSwitch.Handle();
   return;
 }   //Handle
+//Last line.
