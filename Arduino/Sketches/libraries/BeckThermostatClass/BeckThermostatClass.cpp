@@ -3,7 +3,7 @@ const char szThermostatFileDate[]  = "4/22/21b";
 
 #include <BeckThermostatClass.h>
 #include <BeckLogLib.h>
-#include <BeckSwitchLib.h>
+#include <BeckPinNumbers.h>
 #include <BeckThermostatDataClass.h>
 #include <DallasTemperature.h>
 #include <OneWire.h>
@@ -70,8 +70,6 @@ void ThermostatClass::Handle(){
     ulNextPrintMsec= millis() + ulPrintPeriodMsec;
     LogThermostatData(ThermostatData.GetCurrentDegF());
   } //if(millis()>=ulNextPrintMsec)
-
-  //HandleHeatSwitch();
   return;
 } //Handle
 
@@ -93,6 +91,7 @@ float ThermostatClass::ReadCurrentDegF(){
 } //ReadCurrentDegF
 
 
+/*
 void ThermostatClass::HandleHeatSwitch(){
   bool  bThermostatIsOn   = ThermostatData.GetThermostatOn();
   bool  bHeatIsOn         = ThermostatData.GetHeatOn();
@@ -111,6 +110,7 @@ void ThermostatClass::HandleHeatSwitch(){
   }
   return;
 } //HandleHeatSwitch
+*/
 
 
 void ThermostatClass::LogThermostatData(float fCurrentDegF){

@@ -1,8 +1,8 @@
 const char szBiotaLibFileName[]  = "BeckBiotaLib.cpp";
-const char szBiotaLibFileDate[]    = "4/20/21a";
+const char szBiotaLibFileDate[]    = "4/22/21a";
 
 #include <BeckBiotaLib.h>
-#include <BeckSwitchLib.h>
+#include <BeckPinNumbers.h>
 #include <BeckSystemClass.h>
 #include <BeckThermostatDataClass.h>
 
@@ -105,8 +105,8 @@ bool SetupProjectData(void){
     case eFireplace:
     case eHeater:
     case eGarage:
-    	SetupSwitches();
-      SetThermoSwitch(ThermostatData.GetThermostatOn());
+    	//SetupSwitches();
+      //SetThermoSwitch(ThermostatData.GetThermostatOn());
       //SetThermoSwitch(_bThermoOn);
       //ThermostatData.SetThermoOn(70.0);
 

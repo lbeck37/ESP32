@@ -2,7 +2,7 @@
 #include <BeckI2cLib.h>
 #include <BeckLogLib.h>
 #include <BeckMiniLib.h>
-#include <BeckSwitchLib.h>
+#include <BeckPinNumbers.h>
 #include <Wire.h>
 
 void SetupI2C(){

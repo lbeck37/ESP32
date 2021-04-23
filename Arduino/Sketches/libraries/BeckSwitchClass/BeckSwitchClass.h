@@ -1,4 +1,4 @@
-// BeckSwitchClass.h, 4/22/21b
+// BeckSwitchClass.h, 4/22/21c
 
 class SwitchClass{
 protected:
@@ -56,7 +56,7 @@ public:
   virtual ~ThermostatSwitchClass();
 
   virtual void Setup      (void);
-  virtual void Handle     (void);
+  //virtual void Handle     (void);
 };  //ThermostatSwitchClass
 
 
@@ -68,7 +68,7 @@ public:
   virtual ~HeatSwitchClass();
 
   virtual void Setup      (void);
-  virtual void Handle     (void);
+  //virtual void Handle     (void);
 };  //HeatSwitchClass
 
 
