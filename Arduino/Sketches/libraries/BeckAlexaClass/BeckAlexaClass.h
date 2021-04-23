@@ -1,4 +1,4 @@
-//4/17/21a, BeckAlexaClass.h
+//BeckAlexaClass.h, 4/23/21a
 #pragma once
 
 #include <fauxmoESP.h>        //Alexa Phillips Hue light emulation

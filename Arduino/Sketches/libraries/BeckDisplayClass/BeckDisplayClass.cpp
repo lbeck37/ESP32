@@ -1,5 +1,5 @@
 const char szDisplayClassFileName[]  = "BeckDisplayClass.cpp";
-const char szDisplayClassFileDate[]  = "4/23/21a";
+const char szDisplayClassFileDate[]  = "4/23/21b";
 #include <BeckDisplayClass.h>
 #include <BeckThermostatDataClass.h>
 #include "Free_Fonts.h"
@@ -316,7 +316,7 @@ void TTGO_DisplayClass::DisplayCurrentTemperature(){
   //Update screen if the thermostat is OFF and value has changed
   if (!ThermostatData.GetThermostatOn() && (fCurrentDegFLast != ThermostatData.GetCurrentTemperature())){
     bUpdateDisplay= true;
-    Serial << "TTGO_DisplayClass::DisplayCurrentTemperature(): New fCurrentDegFLast= " << fCurrentDegFLast << endl;
+    //Serial << "TTGO_DisplayClass::DisplayCurrentTemperature(): New fCurrentDegFLast= " << fCurrentDegFLast << endl;
     fCurrentDegFLast= ThermostatData.GetCurrentTemperature();
     //Set both my and Setpoint's timers to zero so each one of us will decide if we draw immediately.
     ulNextSetpointDisplay     = 0;
@@ -334,7 +334,7 @@ void TTGO_DisplayClass::DisplayCurrentTemperature(){
     SelectFont    (eDegF_Font, eDegF_PointSize);
 
     sprintf(sz100CharDisplayBuffer, "%04.1f", ThermostatData.GetCurrentTemperature());
-    Serial << "TTGO_DisplayClass::DisplayCurrentTemperature(): Writing " << sz100CharDisplayBuffer << " to the display" << endl;
+    //Serial << "TTGO_DisplayClass::DisplayCurrentTemperature(): Writing " << sz100CharDisplayBuffer << " to the display" << endl;
     Print(sz100CharDisplayBuffer);
   } //if(bUpdateDisplay)
   return;
@@ -363,7 +363,7 @@ void TTGO_DisplayClass::DisplayCurrentSetpoint(){
     SetTextColor  (ThermoSetpoint_Color);
     SelectFont    (eDegF_Font, eDegF_PointSize);
     sprintf(sz100CharDisplayBuffer, "%04.1f", ThermostatData.GetSetpoint());
-    Serial << "TTGO_DisplayClass::DisplayCurrentSetpoint(): Writing " << sz100CharDisplayBuffer << " to the display" << endl;
+    //Serial << "TTGO_DisplayClass::DisplayCurrentSetpoint(): Writing " << sz100CharDisplayBuffer << " to the display" << endl;
     Print(sz100CharDisplayBuffer);
   } //if(bUpdateDisplay)
   return;

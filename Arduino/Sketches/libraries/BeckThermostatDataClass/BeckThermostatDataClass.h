@@ -5,7 +5,6 @@ class ThermostatDataClass{
 protected:
   float   CurrentTemperature        = 68.0;
   float   Setpoint           = 70.0;
-  float   ProposedSetpoint   = 70.0;
   float   MinSetpoint        = 40.0;
   float   MaxSetpoint        = 90.0;
   float   MaxHeatRange       = 0.10;
@@ -24,9 +23,6 @@ public:
 
   void    SetSetpoint               (float NewSetpoint);
   float   GetSetpoint               (void);
-
-  void    SetProposedSetpoint       (float NewSetpoint);
-  float   GetProposedSetpoint       (void);
 
   void    SetCurrentTemperature     (float NewCurrentTemperature);
   float   GetCurrentTemperature     (void);

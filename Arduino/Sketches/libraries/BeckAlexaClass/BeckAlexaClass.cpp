@@ -1,5 +1,5 @@
 const char szFileName[]  = "BeckAlexaClass.cpp";
-const char szFileDate[]  = "4/20/21a";
+const char szFileDate[]  = "4/23/21b";
 
 #include <BeckAlexaClass.h>
 #include <BeckSystemClass.h>
@@ -9,7 +9,7 @@ AlexaClass            BiotaAlexa;
 
 //Prototypes
 void    CallbackAlexaCommand    (unsigned char ucDdeviceID,const char* szDeviceName,bool bState,unsigned char ucValue);
-void    SetThermostatValues  (bool bState, unsigned char ucValue);
+void    AlexaSetSetpoint        (unsigned char ucSetpointValue);
 
 void CallbackAlexaCommand(unsigned char ucDdeviceID,const char* szDeviceName,bool bState,unsigned char ucValue){
   char    szCharString[100];
@@ -23,7 +23,8 @@ void CallbackAlexaCommand(unsigned char ucDdeviceID,const char* szDeviceName,boo
     case eGarage:
     case eThermoDev:
     case eHeater:
-      SetThermostatValues(bState, ucValue);
+      ThermostatData.SetThermostatOn(bState);
+      AlexaSetSetpoint(ucValue);
       break;
     case ePitchMeter:
       break;
@@ -38,26 +39,22 @@ void CallbackAlexaCommand(unsigned char ucDdeviceID,const char* szDeviceName,boo
 } //CallbackAlexaCommand
 
 
-void SetThermostatValues(bool bThermostatState, unsigned char ucSetpointValue){
+void AlexaSetSetpoint(unsigned char ucSetpointValue){
   // ucSetpointValue is a number between 0 and 255 and represents the desired Setpoint
   // in integer Degrees farenheit between 0 and 100. BiotaThermostat stores setpoint as a float
   // The value 100 is the power-up value retained until Alexa is used to set the setpoint.
-  int wValuePercent= round(((float)ucSetpointValue / 255.0) * 100);
-  Serial << LOG0 << "SetThermostatValues(): Received wValuePercent= " << wValuePercent << endl;
+  int wValuePercent= round(((float)ucSetpointValue / 255.0) * 100.0);
+  Serial << LOG0 << "AlexaSetSetpoint(): Received wValuePercent= " << wValuePercent << endl;
   if(wValuePercent != 100){
-    //BiotaThermostat.SetSetpoint((float)wValuePercent);
-    ThermostatData.SetProposedSetpoint((float)wValuePercent);
+    Serial << LOG0 << "AlexaSetSetpoint(): Call ThermostatData.SetSetpoint(" << wValuePercent << ")" << endl;
+    ThermostatData.SetSetpoint((float)wValuePercent);
    } //if(wValuePercent==100)
   else{
     //Alexa thinks the setpoint is 100% on power-up until Alexa is used to set the setpoint.
     //Don't do anything and it will continue to use the existing Setpoint.
   } //if(wValuePercent==100)else
-
-  //Tell the thermostat to turn itself on or off.
-  //BiotaThermostat.SetThermostatOn(bThermostatState);
-  ThermostatData.SetThermostatOn(bThermostatState);
   return;
-} //SetThermostatValues
+} //AlexaSetSetpoint
 
 
 AlexaClass::AlexaClass() {

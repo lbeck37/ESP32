@@ -29,33 +29,25 @@ void ThermostatDataClass::Handle(){
 
 void ThermostatDataClass::SetSetpoint(float fNewSetpoint){
   //Change the setpoint as long as the new setpoint is between MinSetpoint and MaxSetpoint.
-  //Serial << "ThermostatDataClass::SetSetpoint(" << fNewSetpoint << "): Begin" << endl;
+  Serial << "ThermostatDataClass::SetSetpoint(" << fNewSetpoint << "): Begin" << endl;
   float fOriginalSetpoint= GetSetpoint();
 
-  if((fNewSetpoint >= GetMinSetpoint()) && (fNewSetpoint <= GetMaxHeatRange())){
+  if((fNewSetpoint >= GetMinSetpoint()) && (fNewSetpoint <= GetMaxSetpoint())){
     if(fNewSetpoint != fOriginalSetpoint){
       Setpoint= fNewSetpoint;
       SetThermostatOffDeg();
       Serial << "ThermostatDataClass::SetSetpoint(): Set Setpoint to " << Setpoint << endl;
     } //if(fSetpoint!=_fSetpoint)
   } //if((fSetpoint>=...
+  else{
+    Serial << "ThermostatDataClass::SetSetpoint(): Outside of range." << endl;
+     }
   return;
 } //SetSetpoint(float)
 
 
 float ThermostatDataClass::GetSetpoint(){
   return Setpoint;
-}
-
-
-void ThermostatDataClass::SetProposedSetpoint(float NewProposedSetpoint){
-  ProposedSetpoint= NewProposedSetpoint;
-  return;
-}
-
-
-float ThermostatDataClass::GetProposedSetpoint(void){
-  return ProposedSetpoint;
 }
 
 

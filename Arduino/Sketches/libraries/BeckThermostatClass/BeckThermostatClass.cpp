@@ -12,7 +12,6 @@ const char szThermostatFileDate[]  = "4/23/21b";
 //Create OneWire instance and tell Dallas Temperature Library to use oneWire Library
 OneWire                 BiotaOneWire(sOneWireGPIO);
 DallasTemperature       BiotaTempSensor(&BiotaOneWire);
-
 ThermostatClass         BiotaThermostat;
 
 
@@ -30,10 +29,6 @@ void ThermostatClass::Setup(){
 }
 
 void ThermostatClass::Handle(){
-  //Update Setpoint after qualifying
-  //float fProposedSetpoint= ThermostatData.GetProposedSetpoint();
-  ThermostatData.SetSetpoint(ThermostatData.GetProposedSetpoint());
-
   ReadCurrentDegF();
   float fCurrentDegF      = ThermostatData.GetCurrentTemperature();
   float fSetpoint         = ThermostatData.GetSetpoint();
@@ -43,18 +38,18 @@ void ThermostatClass::Handle(){
 
   //If Thermostat is OFF, make sure the heat switch is OFF, and then return.
   if (!bThermostatIsOn){
-    TurnHeatOn(false);
+    ThermostatData.SetHeatOn(false);
     return;
   } //if(!bThermostatIsOn)
 
   //If the heat is OFF and the temperature is BELOW the set-point, turn the heat ON
   if (!bHeatIsOn && (fCurrentDegF < fSetpoint)){
-    TurnHeatOn(true);
+    ThermostatData.SetHeatOn(true);
   }
 
   //If the heat is ON and the temperature is ABOVE the off-point, then turn the heat OFF
   if (bHeatIsOn && (fCurrentDegF > fThermoOffDeg)){
-      TurnHeatOn(false);
+      ThermostatData.SetHeatOn(false);
   }
 
   if(millis() >= ulNextPrintMsec){
@@ -63,21 +58,6 @@ void ThermostatClass::Handle(){
   } //if(millis()>=ulNextPrintMsec)
   return;
 } //Handle
-
-
-void ThermostatClass::TurnHeatOn(bool bTurnOn){
-  if (bTurnOn){
-    String szLogString= "ThermostatClass::TurnHeatOn(): ON";
-    LogToSerial(szLogString);
-    ThermostatData.SetHeatOn(true);
-  } //if(bTurnOn)
-  else{
-    String szLogString= "ThermostatClass::TurnHeatOn(): OFF";
-    LogToSerial(szLogString);
-    ThermostatData.SetHeatOn(false);
-  } //if(bTurnOn)else
-  return;
-} //TurnHeatOn
 
 
 float ThermostatClass::ReadCurrentDegF(){
