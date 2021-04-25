@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckSystemClass.cpp";
-const char szSystemFileDate[]  = "4/20/21b";
+const char szSystemFileDate[]  = "4/24/21b";
 
 #include <BeckSystemClass.h>
 #include <BeckAlexaClass.h>
@@ -27,8 +27,7 @@ void SystemClass::Setup(){
   Serial.begin(lSerialMonitorBaud);
   delay(100);
 
-  String szLogString= "\n\nSystemClass::Setup(): Begin";
-  LogToSerial(szLogString);
+  Serial << LOG0 << "\n\nSystemClass::Setup(): Begin" << endl;
 
   Serial << LOG0 << "SystemClass::Setup(): Call SetupProjectData()" << endl;
   SetupProjectData();

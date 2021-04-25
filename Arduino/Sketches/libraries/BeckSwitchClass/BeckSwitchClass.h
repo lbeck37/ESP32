@@ -1,9 +1,10 @@
 // BeckSwitchClass.h, 4/24/21b
-//#include<BeckPinNumbers.h>
+#include<BeckPinNumbers.h>
 
 class SwitchClass{
 protected:
-#if 1
+
+/*
 #if ESP32
   const int    sSDA_GPIO             = 21;   //I2C, TTGO pin 21
   const int    sSCL_GPIO             = 22;   //I2C, TTGO pin 22
@@ -17,7 +18,7 @@ protected:
   const int    sOneWireGPIO          = 12;   //GPIO 12 is D6 on NodeMCU
   const int    sHeatSwitchGPIO       = 14;   //GPIO 14 is D5 on NodeMCU
 #endif
-#endif
+*/
 
   bool  bMyState;
   bool  bMyLastState;

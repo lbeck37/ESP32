@@ -1,19 +1,12 @@
 const char szSketchName[]  = "BeckE32_Biota.ino";
-const char szFileDate[]    = "4/24/21b";
+const char szFileDate[]    = "4/24/21d";
 
 #include <BeckBiotaDefines.h>
 #include <BeckBiotaLib.h>
 #include <BeckIncludeOptionalFiles.h>
-#include <BeckMiniLib.h>
-//#include <BeckSwitchLib.h>
 #include <BeckSystemClass.h>
-#include <BeckDisplayClass.h>
-#include <BeckThermostatClass.h>
-#include <BeckThermostatDataClass.h>
 #include <BeckWiFiLib.h>
 #include <Streaming.h>
-#include <Time.h>
-#include <WiFiClient.h>
 
 //Select type of project to build for.
 ProjectType      eProjectType            = eThermoDev;
@@ -37,7 +30,7 @@ void setup(){
 
 
 void loop(){
-  ulLastTaskMsec= millis();
+  //ulLastTaskMsec= millis();
 
   HandleOptionalModules();    //Nothing turned on as of 4/19/21
 

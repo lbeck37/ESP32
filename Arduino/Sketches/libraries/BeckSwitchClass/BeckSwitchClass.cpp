@@ -1,5 +1,5 @@
 const char szSwitchFileName[]  = "BeckSwitchClass.cpp";
-const char szSwitchFileDate[]  = "4/24/21a";
+const char szSwitchFileDate[]  = "4/24/21c";
 
 #include <BeckSwitchClass.h>
 #include <BeckThermostatDataClass.h>
@@ -38,6 +38,7 @@ void SwitchClass::SetMyPin() {
   if (bMyPinIsInverted){
     bPinState= !bMyState;
   }
+  Serial << "SwitchClass::SetMyPin(): Call digitalWrite(" << wMyPinNumber << ", " << bPinState << ")" << endl;
   digitalWrite(wMyPinNumber, bPinState);
   return;
 } //SetMyPin
@@ -56,7 +57,8 @@ ThermostatSwitchClass::~ThermostatSwitchClass() {
 } //destructor
 
 void ThermostatSwitchClass::Setup(){
-  Serial << "ThermostatSwitchClass::Setup(): " << szSwitchFileName << ", " << szSwitchFileDate << endl;
+  //Serial << "ThermostatSwitchClass::Setup(): " << szSwitchFileName << ", " << szSwitchFileDate << endl;
+  Serial << "ThermostatSwitchClass::Setup(): Call pinMode(" << wMyPinNumber << ", OUTPUT)" << endl;
   pinMode(wMyPinNumber, OUTPUT);
   return;
 } //Setup
@@ -74,7 +76,8 @@ HeatSwitchClass::~HeatSwitchClass() {
 } //destructor
 
 void HeatSwitchClass::Setup(){
-  Serial << "HeatSwitchClass::Setup(): " << szSwitchFileName << ", " << szSwitchFileDate << endl;
+  //Serial << "HeatSwitchClass::Setup(): " << szSwitchFileName << ", " << szSwitchFileDate << endl;
+  Serial << "HeatSwitchClass::Setup(): Call pinMode(" << wMyPinNumber << ", OUTPUT)" << endl;
   pinMode(wMyPinNumber, OUTPUT);
   return;
 } //Setup
