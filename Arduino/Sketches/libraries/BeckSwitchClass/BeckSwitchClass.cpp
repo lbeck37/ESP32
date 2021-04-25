@@ -1,8 +1,8 @@
-const char szSwitchFileName[]  = "BeckSystemClass.cpp";
-const char szSwitchFileDate[]  = "4/20/21c";
+const char szSwitchFileName[]  = "BeckSwitchClass.cpp";
+const char szSwitchFileDate[]  = "4/24/21a";
 
-#include <BeckThermostatDataClass.h>
 #include <BeckSwitchClass.h>
+#include <BeckThermostatDataClass.h>
 #include <Streaming.h>
 
 SwitchesClass       BiotaSwitches;
