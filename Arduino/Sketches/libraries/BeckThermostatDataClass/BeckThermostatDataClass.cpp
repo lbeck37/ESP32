@@ -123,4 +123,26 @@ void ThermostatDataClass::SetHeatOn(bool NewHeatOn){
 bool ThermostatDataClass::GetHeatOn(){
   return HeatOn;
 }
+
+
+void ThermostatDataClass::SetLastThermostatOn(bool NewLastThermostatOn){
+  LastThermostatOn= NewLastThermostatOn;
+  return;
+}
+
+
+bool ThermostatDataClass::GetLastThermostatOn(){
+  return LastThermostatOn;
+}  //GetThermostatOn
+
+
+void ThermostatDataClass::SetLastHeatOn(bool NewLastHeatOn){
+  LastHeatOn= NewLastHeatOn;
+  return;
+}
+
+
+bool ThermostatDataClass::GetLastHeatOn(){
+  return LastHeatOn;
+}
 //Last line.

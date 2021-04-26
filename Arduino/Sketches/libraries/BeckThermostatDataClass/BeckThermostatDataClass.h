@@ -11,9 +11,10 @@ protected:
   float   ThermostatOffDeg   = Setpoint + MaxHeatRange;
   bool    ThermostatOn       = true;
   bool    HeatOn             = true;
+  bool    LastThermostatOn   = ThermostatOn;
+  bool    LastHeatOn         = HeatOn;
 
   void    SetThermostatOffDeg       (void);
-
 public:
   ThermostatDataClass();
   virtual ~ThermostatDataClass();
@@ -43,6 +44,12 @@ public:
 
   void    SetHeatOn                 (bool NewHeatOn);
   bool    GetHeatOn                 (void);
+
+  void    SetLastThermostatOn       (bool NewThermostatOn);
+  bool    GetLastThermostatOn       (void);
+
+  void    SetLastHeatOn             (bool NewHeatOn);
+  bool    GetLastHeatOn             (void);
 };  //ThermostatDataClass
 
 extern ThermostatDataClass ThermostatData;
