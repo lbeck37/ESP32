@@ -1,5 +1,5 @@
 const char szThermostatFileName[]  = "BeckThermostatClass.cpp";
-const char szThermostatFileDate[]  = "4/23/21b";
+const char szThermostatFileDate[]  = "4/25/21b";
 
 #include <BeckThermostatClass.h>
 #include <BeckLogLib.h>
@@ -43,12 +43,16 @@ void ThermostatClass::Handle(){
   } //if(!bThermostatIsOn)
 
   //If the heat is OFF and the temperature is BELOW the set-point, turn the heat ON
-  if (!bHeatIsOn && (fCurrentDegF < fSetpoint)){
+  //if (!bHeatIsOn && (fCurrentDegF < fSetpoint)){
+  //If the temperature is BELOW the setpoint, turn the heat ON.
+  if (fCurrentDegF < fSetpoint){
     ThermostatData.SetHeatOn(true);
   }
 
   //If the heat is ON and the temperature is ABOVE the off-point, then turn the heat OFF
-  if (bHeatIsOn && (fCurrentDegF > fThermoOffDeg)){
+  //if (bHeatIsOn && (fCurrentDegF > fThermoOffDeg)){
+  //If the temperature is ABOVE the off-point, then turn the heat OFF
+  if (fCurrentDegF > fThermoOffDeg){
       ThermostatData.SetHeatOn(false);
   }
 

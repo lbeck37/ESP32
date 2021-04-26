@@ -1,5 +1,5 @@
 const char szSwitchFileName[]  = "BeckSwitchClass.cpp";
-const char szSwitchFileDate[]  = "4/24/21c";
+const char szSwitchFileDate[]  = "4/25/21a";
 
 #include <BeckSwitchClass.h>
 #include <BeckThermostatDataClass.h>
@@ -22,17 +22,21 @@ void SwitchClass::Setup(){
   return;
 } //Setup
 
+/*
 void SwitchClass::Handle(){
+  //Serial << "SwitchClass::Handle(): " << szSwitchFileName << ", " << szSwitchFileDate << endl;
   if (bMyLastState != bMyState){
     bMyLastState= bMyState;
+    Serial << "SwitchClass::Handle(): Call SetMyPin()" << endl;
     SetMyPin();
   }
   return;
 }   //Handle
+*/
 
 
 void SwitchClass::SetMyPin() {
-  Serial << "SwitchClass(): SetMyPin" << endl;
+  //Serial << "SwitchClass(): SetMyPin" << endl;
   bool  bPinState= bMyState;
 
   if (bMyPinIsInverted){
@@ -57,11 +61,22 @@ ThermostatSwitchClass::~ThermostatSwitchClass() {
 } //destructor
 
 void ThermostatSwitchClass::Setup(){
-  //Serial << "ThermostatSwitchClass::Setup(): " << szSwitchFileName << ", " << szSwitchFileDate << endl;
+  Serial << "ThermostatSwitchClass::Setup(): " << szSwitchFileName << ", " << szSwitchFileDate << endl;
   Serial << "ThermostatSwitchClass::Setup(): Call pinMode(" << wMyPinNumber << ", OUTPUT)" << endl;
   pinMode(wMyPinNumber, OUTPUT);
   return;
 } //Setup
+
+
+void ThermostatSwitchClass::Handle(){
+  //Serial << "ThermostatSwitchClass::Handle(): " << szSwitchFileName << ", " << szSwitchFileDate << endl;
+  if (bMyLastState != bMyState){
+    bMyLastState= bMyState;
+    Serial << "ThermostatSwitchClass::Handle(): Call SetMyPin()" << endl;
+    SetMyPin();
+  }
+  return;
+}   //Handle
 
 
 HeatSwitchClass::HeatSwitchClass() {
@@ -81,6 +96,17 @@ void HeatSwitchClass::Setup(){
   pinMode(wMyPinNumber, OUTPUT);
   return;
 } //Setup
+
+
+void HeatSwitchClass::Handle(){
+  //Serial << "HeatSwitchClass::Handle(): " << szSwitchFileName << ", " << szSwitchFileDate << endl;
+  if (bMyLastState != bMyState){
+    bMyLastState= bMyState;
+    Serial << "HeatSwitchClass::Handle(): Call SetMyPin()" << endl;
+    SetMyPin();
+  }
+  return;
+}   //Handle
 
 
 SwitchesClass::SwitchesClass() {

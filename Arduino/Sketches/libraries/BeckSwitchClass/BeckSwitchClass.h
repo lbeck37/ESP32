@@ -1,4 +1,4 @@
-// BeckSwitchClass.h, 4/24/21b
+// BeckSwitchClass.h, 4/25/21b
 #include<BeckPinNumbers.h>
 
 class SwitchClass{
@@ -43,7 +43,8 @@ public:
   ThermostatSwitchClass();
   virtual ~ThermostatSwitchClass();
 
-  virtual void Setup      (void);
+  virtual void Setup    (void);
+  virtual void Handle   (void);
 };  //ThermostatSwitchClass
 
 
@@ -54,7 +55,8 @@ public:
   HeatSwitchClass();
   virtual ~HeatSwitchClass();
 
-  virtual void Setup      (void);
+  virtual void Setup    (void);
+  virtual void Handle   (void);
 };  //HeatSwitchClass
 
 
