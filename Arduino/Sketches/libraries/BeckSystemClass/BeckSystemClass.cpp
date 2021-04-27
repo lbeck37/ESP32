@@ -32,14 +32,14 @@ void SystemClass::Setup(){
   Serial << LOG0 << "SystemClass::Setup(): Call SetupProjectData()" << endl;
   SetupProjectData();
 
-  Serial << LOG0 << "SystemClass::Setup(): Call BiotaSwitches.Setup()" << endl;
-  BiotaSwitches.Setup();
-
   Serial << LOG0 << "SystemClass::Setup(): Call BiotaThermostat.Setup()" << endl;
   BiotaThermostat.Setup();
 
   Serial << LOG0 << "SystemClass::Setup(): Call BiotaDisplay.Setup()" << endl;
   BiotaDisplay.Setup();
+
+  Serial << LOG0 << "SystemClass::Setup(): Call BiotaSwitches.Setup()" << endl;
+  BiotaSwitches.Setup();
 
   Serial << LOG0 << "SystemClass::Setup(): Call SetupWiFi()" << endl;
   bWiFiOn= SetupWiFi();

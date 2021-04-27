@@ -8,8 +8,8 @@
   static const int    wHeatPin              = 37;   //Relay 1, TTGO pin 37
   static const int    wThermostatPin        = 38;   //Relay 2, TTGO pin 38
 */
-  static const int    wHeatPin              = 12;   //Relay 1
-  static const int    wThermostatPin        = 13;   //Relay 2
+  static const int    wHeatPin              = 15;   //Relay 1, was 12
+  static const int    wThermostatPin        = 13;   //Relay 2, was 13
 #else //ESP8266
   static const int    sAlexaPin             =  2;     //GPIO 2 is D4 and Blue LED on NodeMCU
   static const int    sSDA_GPIO             =  4;   //I2C, GPIO 4 is D2 on NodeMCU
