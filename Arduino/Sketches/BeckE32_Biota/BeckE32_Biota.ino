@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_Biota.ino";
-const char szFileDate[]    = "4/25/21b";
+const char szFileDate[]    = "4/26/21e";
 
 #include <BeckBiotaDefines.h>
 #include <BeckBiotaLib.h>

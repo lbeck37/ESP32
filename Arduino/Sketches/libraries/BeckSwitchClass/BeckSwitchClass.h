@@ -1,4 +1,4 @@
-// BeckSwitchClass.h, 4/26/21b
+// BeckSwitchClass.h, 4/26/21c
 #include<BeckPinNumbers.h>
 
 class SwitchClass{

@@ -1,5 +1,5 @@
 const char szSwitchFileName[]  = "BeckSwitchClass.cpp";
-const char szSwitchFileDate[]  = "4/26/21b";
+const char szSwitchFileDate[]  = "4/26/21d";
 
 #include <BeckSwitchClass.h>
 #include <BeckThermostatDataClass.h>
@@ -32,8 +32,8 @@ ThermostatSwitchClass::~ThermostatSwitchClass() {
 
 void ThermostatSwitchClass::Setup(){
   Serial << "ThermostatSwitchClass::Setup(): " << szSwitchFileName << ", " << szSwitchFileDate << endl;
-  Serial << "ThermostatSwitchClass::Setup(): Call pinMode(" << wMyPinNumber << ", OUTPUT)" << endl;
-  pinMode(wMyPinNumber, OUTPUT);
+  Serial << "ThermostatSwitchClass::Setup(): Call pinMode(" << wThermostatPin << ", OUTPUT)" << endl;
+  pinMode(wThermostatPin, OUTPUT);
   return;
 } //Setup
 
@@ -43,7 +43,7 @@ void ThermostatSwitchClass::Handle(){
 
   if (CurrentThermostatOn != CurrentLastThermostatOn){
     ThermostatData.SetLastThermostatOn(CurrentThermostatOn);
-    Serial << "ThermostatSwitchClass::Handle(): Call SetMyPin()" << endl;
+    Serial << "ThermostatSwitchClass::Handle(): Call SetPin()" << endl;
     SetPin();
   }
   return;
@@ -63,10 +63,7 @@ void ThermostatSwitchClass::SetPin() {
 
 
 HeatSwitchClass::HeatSwitchClass() {
-  bMyState          = false;
-  bMyLastState      = false;
   bMyPinIsInverted  = true;
-  wMyPinNumber      = wHeatPin;
 } //constructor
 
 HeatSwitchClass::~HeatSwitchClass() {
@@ -75,8 +72,8 @@ HeatSwitchClass::~HeatSwitchClass() {
 
 void HeatSwitchClass::Setup(){
   Serial << "HeatSwitchClass::Setup(): " << szSwitchFileName << ", " << szSwitchFileDate << endl;
-  Serial << "HeatSwitchClass::Setup(): Call pinMode(" << wMyPinNumber << ", OUTPUT)" << endl;
-  pinMode(wMyPinNumber, OUTPUT);
+  Serial << "HeatSwitchClass::Setup(): Call pinMode(" << wHeatPin << ", OUTPUT)" << endl;
+  pinMode(wHeatPin, OUTPUT);
   return;
 } //Setup
 
@@ -86,7 +83,7 @@ void HeatSwitchClass::Handle(){
 
   if (CurrentHeatOn != CurrentLastHeatOn){
     ThermostatData.SetLastHeatOn(CurrentHeatOn);
-    Serial << "HeatSwitchClass::Handle(): Call SetMyPin()" << endl;
+    Serial << "HeatSwitchClass::Handle(): Call SetPin()" << endl;
     SetPin();
   }
   return;
