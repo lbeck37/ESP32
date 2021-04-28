@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_Biota.ino";
-const char szFileDate[]    = "4/26/21f";
+const char szFileDate[]    = "4/27/21b";
 
 #include <BeckBiotaDefines.h>
 #include <BeckBiotaLib.h>
@@ -9,11 +9,11 @@ const char szFileDate[]    = "4/26/21f";
 #include <Streaming.h>
 
 //Select type of project to build for.
-ProjectType      eProjectType            = eThermoDev;
-//ProjectType      eProjectType            = eFireplace;
-//ProjectType      eProjectType            = eHeater;
-//ProjectType      eProjectType            = eGarage;
-//ProjectType      eProjectType            = ePitchMeter;
+//ProjectType      eBiotaProjectType            = eThermoDev;
+ProjectType      eBiotaProjectType            = eFireplace;
+//ProjectType      eBiotaProjectType            = eHeater;
+//ProjectType      eBiotaProjectType            = eGarage;
+//ProjectType      eBiotaProjectType            = ePitchMeter;
 
 bool            _bOTA_Started       = false;
 unsigned long   _ulOTATimeoutMsec   = millis();
@@ -23,7 +23,7 @@ void SetupOptionalModules   (void);
 void HandleOptionalModules  (void);
 
 void setup(){
-  BiotaSystem.Setup();
+  BiotaSystem.Setup(eBiotaProjectType);
   Serial << endl << LOG0 << "setup() finished, Sketch: " << szSketchName << ", " << szFileDate << endl;
   return;
 } //setup

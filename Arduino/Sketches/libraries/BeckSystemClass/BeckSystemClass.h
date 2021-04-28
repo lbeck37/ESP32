@@ -1,4 +1,4 @@
-// BeckSystemClass.h, 4/22/21a
+// BeckSystemClass.h, 4/27/21a
 #pragma once
 
 #include <BeckBiotaLib.h>
@@ -33,7 +33,7 @@ public:
   SystemClass();
   virtual ~SystemClass();
 
-  void          Setup             (void);
+  void          Setup             (ProjectType eBiotaProjectType);
   void          Handle            (void);
   ProjectType   GetProjectType    (void);
   void          SetProjectType    (ProjectType NewProjectType);

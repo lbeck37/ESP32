@@ -1,9 +1,8 @@
 const char szBiotaLibFileName[]  = "BeckBiotaLib.cpp";
-const char szBiotaLibFileDate[]    = "4/22/21a";
+const char szBiotaLibFileDate[]    = "4/27/21a";
 
 #include <BeckBiotaLib.h>
 #include <BeckPinNumbers.h>
-#include <BeckSystemClass.h>
 #include <BeckThermostatDataClass.h>
 
 bool          _bSystemOk        = true;
@@ -16,10 +15,12 @@ char          _acRouterPW       [50];
 char          _acAccessPointSSID[50];
 char          _acAccessPointPW  [50];
 
+//bool SetupProjectData(ProjectType eBiotaProjectType){
 bool SetupProjectData(void){
   Serial << LOG0 << "BeckBiotaLib.cpp: SetupProjectData(): Begin" << endl;
   bool  bOk= true;
   switch (BiotaSystem.GetProjectType()){
+  //switch (eBiotaProjectType){
     case eThermoDev:
       strcpy(_acHostname        , "BeckThermoDev");
       strcpy(_acProjectType     , "THERMO_DEV");
@@ -33,11 +34,12 @@ bool SetupProjectData(void){
       ThermostatData.SetMaxHeatRange ( 0.1);
       ThermostatData.SetMinSetpoint  (60.0);
       ThermostatData.SetMaxSetpoint  (95.0);
+      //BiotaSystem.SetProjectType(eThermoDev);
       break;
     case eFireplace:
       strcpy(_acHostname        , "BeckFireplace");
       strcpy(_acProjectType     , "FIREPLACE");
-      //strcpy(_acAlexaName       , "Fireplace");
+      strcpy(_acAlexaName       , "Fireplace");
       strcpy(_acRouterName      , "Aspot24");
       strcpy(_acRouterPW        , "Qazqaz11");
       strcpy(_acAccessPointSSID , "FireplaceSpot");
@@ -47,6 +49,7 @@ bool SetupProjectData(void){
       ThermostatData.SetMaxHeatRange ( 0.1);
       ThermostatData.SetMinSetpoint  (60.0);
       ThermostatData.SetMaxSetpoint  (95.0);
+      //BiotaSystem.SetProjectType(eFireplace);
     case eHeater:
       strcpy(_acHostname        , "BeckHeater");
       strcpy(_acProjectType     , "HEATER");
@@ -60,6 +63,7 @@ bool SetupProjectData(void){
       ThermostatData.SetMaxHeatRange ( 0.1);
       ThermostatData.SetMinSetpoint  (60.0);
       ThermostatData.SetMaxSetpoint  (80.0);
+      //BiotaSystem.SetProjectType(eHeater);
       break;
     case eGarage:
       strcpy(_acHostname        , "BeckGarage");
@@ -74,6 +78,7 @@ bool SetupProjectData(void){
       ThermostatData.SetMaxHeatRange ( 0.1);
       ThermostatData.SetMinSetpoint  (33.0);
       ThermostatData.SetMaxSetpoint  (70.0);
+      //BiotaSystem.SetProjectType(eGarage);
       break;
     case ePitchMeter:
       strcpy(_acHostname        , "BeckPitch");
@@ -84,6 +89,7 @@ bool SetupProjectData(void){
       strcpy(_acRouterPW        , "Qazqaz11");
       strcpy(_acAccessPointSSID , "PitchSpot");
       strcpy(_acAccessPointPW   , "Qazqaz11");
+      //BiotaSystem.SetProjectType(ePitchMeter);
       break;
     case eFrontLights:
       strcpy(_acHostname        , "BeckFrontLights");
@@ -93,10 +99,11 @@ bool SetupProjectData(void){
       strcpy(_acRouterPW        , "Qazqaz11");
       strcpy(_acAccessPointSSID , "FrontLightsSpot");
       strcpy(_acAccessPointPW   , "Qazqaz11");
+      //BiotaSystem.SetProjectType(eFrontLights);
       break;
     case eNoProject:
     default:
-      Serial << LOG0 << "SetupSystem(): Bad switch, _ProjectType= " << BiotaSystem.GetProjectType() << endl;
+      Serial << LOG0 << "BeckBiotaLib.cpp: SetupProjectData(): Bad switch, _ProjectType= " << BiotaSystem.GetProjectType() << endl;
       bOk= false;
       break;
   } //switch
@@ -111,11 +118,11 @@ bool SetupProjectData(void){
       break;
     case eNoProject:
     default:
-      Serial << LOG0 << "SetupSystem(): Bad switch, ProjectType= " << BiotaSystem.GetProjectType() << endl;
+      Serial << LOG0 << "BeckBiotaLib.cpp: SetupProjectData(): Bad switch, ProjectType= " << BiotaSystem.GetProjectType() << endl;
       bOk= false;
       break;
   } //switch
-  Serial << LOG0 << "SetupSystem(): Project Type set to: " << _acProjectType << endl;
+  Serial << LOG0 << "BeckBiotaLib.cpp: SetupProjectData(): Project Type set to: " << _acProjectType << endl;
   return bOk;
 } //SetupProjectData
 //Last line.
