@@ -1,4 +1,4 @@
-// BeckDisplayClass.h, 4/28/21a
+// BeckDisplayClass.h, 4/29/21a
 #pragma once
 //Initially used for TTGO ESP32 module. 135 x 240, 1.14", 240dpi display
 
@@ -25,6 +25,14 @@ const PUnit          ScreenWidth  = 240;
 const PUnit          ScreenHeight = 135;;
 
 extern char           sz100CharDisplayBuffer[100];    //For building strings for display
+
+enum ScreenType{
+  eNoScreenType= -1,
+  eDegFScreen,
+  eSetpointScreen,
+  eLastScreenType
+};
+const int   NumberOfScreens= eLastScreenType;
 
 enum ScreenOrientationType {
   eNoScreenOrientation= -1,
@@ -122,23 +130,29 @@ public:
 
 class TTGO_DisplayClass : public DisplayClass {
 protected:
-  //uint32_t    ulCurrentDegFOnTimeSeconds  = 4;
-  //uint32_t    ulSetpointOnTimeSeconds     = 2;
+  uint32_t      DegFOnTimeSeconds     = 4;
+  uint32_t      SetpointOnTimeSeconds = 2;
+  //uint32_t      OnTimeMsec[NumberOfScreens];
+  uint32_t      OnTimeMsec[NumberOfScreens]= {DegFOnTimeSeconds, SetpointOnTimeSeconds};
 
-  uint32_t    ulCurrentDegFOnTimeMsec   = 4 * 1000;
-  uint32_t    ulSetpointOnTimeMsec      = 1 * 1000;
+  //uint32_t    ulCurrentDegFOnTimeMsec   = 4 * 1000;
+  //uint32_t    ulSetpointOnTimeMsec      = 1 * 1000;
 
-  uint32_t    ulNextCurrentDegFDisplay  = 0;
-  uint32_t    ulNextSetpointDisplay     = 0;
+  //uint32_t    ulNextCurrentDegFDisplay  = 0;
+  //uint32_t    ulNextSetpointDisplay     = 0;
+
+  uint32_t    ulNextDisplayChange       = 0;
 
   uint32_t    ulVeryLargeExtraWaitMsec  = 1000 * 1000;   //Time to do next display needs this.
 
   //bool  bFirstTimeDrawn   = true;
-  float fCurrentDegFLast  = 0.00;     //Used to check if CurrentDegF text at bottom should be changed.
-  float fSetpointLast     = 0.00;     //Used to check if Setpoint text at bottom should be changed.
-  float fMaxHeatRangeLast = 0.00;     //Currently isn't being changed
-  bool  bThermoOnLast     = false;    //Used to check if thermo on bar should be changed.
-  bool  bLastDrawHeatBox  = false;
+  float       fCurrentDegFLast  = 0.00;     //Used to check if value has changed.
+  float       fSetpointLast     = 0.00;     //Used to check if value has changed.
+  float       fMaxHeatRangeLast = 0.00;     //Currently isn't being checked.
+  bool        bThermoOnLast     = false;    //Used to check if thermo on bar should be changed.
+  bool        bLastDrawHeatBox  = false;
+  bool        ForceScreenUpdate = true;
+  ScreenType  CurrentScreen     = eDegFScreen;
 
   //bool  bSetPointChanged  = true;     //Used to force the Heat On box to redraw itself after Setpoint text is drawn
   //bool  bThermoOnChanged  = true;     //Used to force the Heat On box to redraw itself after change in ThermoOn
@@ -173,9 +187,13 @@ protected:
   FontPointType   eSetpoint_TextPointSize   = eText26px;
 
   //Protected methods
+/*
   void  DisplayCurrentTemperature   (void);
   void  DisplayCurrentSetpoint      (void);
-  //void  DisplayMainScreen           (void);
+*/
+  void  DisplayMainScreen           (void);
+  void  DisplayCurrentTemperature   (bool ForceUpdate);
+  void  DisplayCurrentSetpoint      (bool ForceUpdate);
   void  DisplayThermoOnBar          (void);
   void  DisplaySetpointLine         (void);
   void  DisplayHeatOnBox            (void);
