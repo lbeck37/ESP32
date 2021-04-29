@@ -1,5 +1,5 @@
 const char szDisplayClassFileName[]  = "BeckDisplayClass.cpp";
-const char szDisplayClassFileDate[]  = "4/23/21b";
+const char szDisplayClassFileDate[]  = "4/28/21b";
 #include <BeckDisplayClass.h>
 #include <BeckThermostatDataClass.h>
 #include "Free_Fonts.h"
@@ -432,27 +432,4 @@ void TTGO_DisplayClass::DisplayHeatOnBox(){
   } //if (bDrawHeatBox!=bLastDrawHeatBox)
   return;
 } //DisplayHeatOnBox
-
-/*
-void TTGO_DisplayClass::DisplayHeatOnBox(){
-  //Draw a box, the HeatOnBox, between the Setpoint and Offpoint text, present when heat is on.
-  //Draws on top of SetpointText, position it to not overwrite text
-  bool  bHeatIsOn         = ThermostatData.GetHeatOn();
-  bool  bThermostatIsOn   = ThermostatData.GetThermostatOn();
-
-  if (bHeatIsOnLast != bHeatIsOn){
-    bHeatIsOnLast= bHeatIsOn;
-    Serial << "TTGO_DisplayClass::DisplayHeatOnBox(): Changing HeatOn Box to " << bHeatIsOn << endl;
-    //Only turn on the HeatOn box if the thermostat is also on.
-    if (bThermostatIsOn && bHeatIsOn){
-      SetFillColor(HeatOnBoxColor);
-    }
-    else{
-      SetFillColor(_BackgroundColor);
-    }
-    DrawFilledRectangle( (HeatOnBoxCenter - HeatOnBoxWidth/2), HeatOnBoxBottom, HeatOnBoxWidth, HeatOnBoxHeight);
-  } //if(bHeatIsOnLast!=bHeatIsOn
-  return;
-} //DisplayHeatOnBox
-*/
 //Last line.

@@ -1,7 +1,6 @@
-// BeckSystemClass.h, 4/27/21a
+// BeckSystemClass.h, 4/28/21c
 #pragma once
 
-#include <BeckBiotaLib.h>
 #include <BeckAlexaClass.h>
 #include <BeckDisplayClass.h>
 #include <BeckThermostatClass.h>
@@ -22,6 +21,14 @@ enum ProjectType{
 
 class SystemClass{
 protected:
+  char          _acHostname       [50];
+  char          _acAlexaName      [50];
+  char          _acProjectType    [50];
+  char          _acRouterName     [50];
+  char          _acRouterPW       [50];
+  char          _acAccessPointSSID[50];
+  char          _acAccessPointPW  [50];
+
   char              szAlexaName[50]       = ALEXA_NAME;
   ProjectType       eProjectType          = eThermoDev;
   int               sThermoTimesCount     = 0;      //Number of times temperature out of range
@@ -29,6 +36,7 @@ protected:
   unsigned long     ulHandlePeriodMsec    = 5 * 1000;
   unsigned long     ulNextHandleMsec      = 0;
 
+  void          SetupProjectData  (void);
 public:
   SystemClass();
   virtual ~SystemClass();

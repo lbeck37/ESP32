@@ -1,7 +1,8 @@
 const char szFileName[]  = "BeckAlexaClass.cpp";
-const char szFileDate[]  = "4/23/21b";
+const char szFileDate[]  = "4/28/21a";
 
 #include <BeckAlexaClass.h>
+#include <BeckLogLib.h>
 #include <BeckSystemClass.h>
 #include <BeckThermostatDataClass.h>
 
