@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_Biota.ino";
-const char szFileDate[]    = "4/29/21b";
+const char szFileDate[]    = "4/29/21j";
 
 #include <BeckBiotaDefines.h>
 #include <BeckIncludeOptionalFiles.h>
@@ -30,8 +30,6 @@ void setup(){
 
 
 void loop(){
-  //ulLastTaskMsec= millis();
-
   HandleOptionalModules();    //Nothing turned on as of 4/19/21
 
   if (!_bOTA_Started){
