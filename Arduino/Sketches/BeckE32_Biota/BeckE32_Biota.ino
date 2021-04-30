@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_Biota.ino";
-const char szFileDate[]    = "4/29/21j";
+const char szFileDate[]    = "4/30/21d";
 
 #include <BeckBiotaDefines.h>
 #include <BeckIncludeOptionalFiles.h>
@@ -9,8 +9,8 @@ const char szFileDate[]    = "4/29/21j";
 #include <Streaming.h>
 
 //Select type of project to build for.
-//ProjectType      eBiotaProjectType            = eThermoDev;
-ProjectType      eBiotaProjectType            = eFireplace;
+ProjectType      eBiotaProjectType            = eThermoDev;
+//ProjectType      eBiotaProjectType            = eFireplace;
 //ProjectType      eBiotaProjectType            = eHeater;
 //ProjectType      eBiotaProjectType            = eGarage;
 //ProjectType      eBiotaProjectType            = ePitchMeter;

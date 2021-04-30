@@ -1,4 +1,4 @@
-//BeckMiniLib.cpp, Beck 2/17/19a
+//BeckMiniLib.cpp, Beck 2/30/19a
 #include <BeckMiniLib.h>
 #include <BeckLogLib.h>
 
@@ -8,6 +8,7 @@ const long    lMsecPerHour        = 60 * lMsecPerMin;
 const long    lMsecPerDay         = 24 * lMsecPerHour;
 const long    lSerialMonitorBaud  = 115200;
 
+/*
 //Digital Pins
 #ifdef ESP32
   //BlynkBeck uses pins 4, 5, 15, 16
@@ -24,6 +25,7 @@ const long    lSerialMonitorBaud  = 115200;
   const byte      cSPI_Select_Pin    = 15;
   const int       sServoPin          = 16;
 #endif  //ESP32
+*/
 
 unsigned long   ulLastTaskMsec        = 0;      //For checking time handling tasks
 

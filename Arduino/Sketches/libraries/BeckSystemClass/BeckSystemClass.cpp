@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckSystemClass.cpp";
-const char szSystemFileDate[]  = "4/28/21";
+const char szSystemFileDate[]  = "4/30/21a";
 
 #include <BeckSystemClass.h>
 #include <BeckAlexaClass.h>
@@ -47,10 +47,33 @@ void SystemClass::Setup(ProjectType eBiotaProjectType){
   bWiFiOn= SetupWiFi();
 
 #if DO_ALEXA
-  BiotaAlexa.Setup(ALEXA_NAME);
+  //BiotaAlexa.Setup(ALEXA_NAME);
+  BiotaAlexa.Setup(_acAlexaName);
 #endif
   return;
 } //Setup
+
+
+void SystemClass::Handle(){
+#if DO_ALEXA
+  BiotaAlexa.Handle();
+#endif
+  BiotaThermostat.Handle();
+  BiotaSwitches.Handle();
+  BiotaDisplay.Handle();
+  return;
+} //Handle
+
+
+void SystemClass::SetProjectType(ProjectType eNewProjectType){
+  eProjectType= eNewProjectType;
+ return;
+}
+
+
+ProjectType SystemClass::GetProjectType(void){
+  return eProjectType;
+}
 
 
 void SystemClass::SetupProjectData(void){
@@ -148,25 +171,4 @@ void SystemClass::SetupProjectData(void){
 
   return;
 } //SetupProjectData
-
-
-void SystemClass::Handle(){
-#if DO_ALEXA
-  BiotaAlexa.Handle();
-#endif
-  BiotaThermostat.Handle();
-  BiotaSwitches.Handle();
-  BiotaDisplay.Handle();
-  return;
-} //Handle
-
-
-ProjectType SystemClass::GetProjectType(void){
-  return eProjectType;
-}
-
-void SystemClass::SetProjectType(ProjectType eNewProjectType){
-  eProjectType= eNewProjectType;
- return;
-}
 //Last line.

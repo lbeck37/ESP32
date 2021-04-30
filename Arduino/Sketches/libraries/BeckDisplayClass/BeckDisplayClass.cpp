@@ -308,7 +308,7 @@ void TTGO_DisplayClass::DisplayMainScreen(void){
     //Change to next display
     if (!ThermostatData.GetThermostatOn()){
       CurrentScreen= eDegFScreen;
-      ForceScreenUpdate= false;
+      ForceScreenUpdate= true;
     } //if(!ThermostatData.GetThermostatOn())
     else{
       if (CurrentScreen == eDegFScreen){
