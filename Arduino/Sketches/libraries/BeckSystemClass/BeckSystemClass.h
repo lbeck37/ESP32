@@ -1,7 +1,7 @@
-// BeckSystemClass.h, 4/30/21a
+// BeckSystemClass.h, 4/30/21b
 #pragma once
 
-#include <BeckAlexaClass.h>
+//#include <BeckAlexaClass.h>
 #include <BeckDisplayClass.h>
 #include <BeckThermostatClass.h>
 #include <BeckThermostatDataClass.h>
@@ -17,7 +17,7 @@ enum ProjectType{
   eLastProjectType
 };
 
-#define ALEXA_NAME      "Larry's Device"
+//#define ALEXA_NAME      "Larry's Device"
 
 class SystemClass{
 protected:
@@ -29,7 +29,7 @@ protected:
   char          _acAccessPointSSID[50];
   char          _acAccessPointPW  [50];
 
-  char              szAlexaName[50]       = ALEXA_NAME;
+  //char              szAlexaName[50]       = ALEXA_NAME;
   ProjectType       eProjectType          = eThermoDev;
   int               sThermoTimesCount     = 0;      //Number of times temperature out of range
   bool              bWiFiOn               = false;

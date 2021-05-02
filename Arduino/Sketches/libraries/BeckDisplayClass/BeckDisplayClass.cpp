@@ -1,5 +1,5 @@
 const char szDisplayClassFileName[]  = "BeckDisplayClass.cpp";
-const char szDisplayClassFileDate[]  = "4/29/21a";
+const char szDisplayClassFileDate[]  = "4/30/21a";
 #include <BeckDisplayClass.h>
 #include <BeckThermostatDataClass.h>
 #include "Free_Fonts.h"
@@ -48,9 +48,11 @@ TTGO_DisplayClass::TTGO_DisplayClass() {
   GLib.setTextFont      (4);   //26 pixels
   GLib.fillScreen       (_FillColor);
   GLib.setCursor        (0, 10);             //Upper left corner, no inverting, good with text
+/*
   GLib.println("Setting up WiFi.");
   GLib.println("Why so long?");
   GLib.println("\nShould be- BOOM!");
+*/
 
   GLib.setCursor(_CursorX, _CursorY);
   return;

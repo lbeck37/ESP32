@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckSystemClass.cpp";
-const char szSystemFileDate[]  = "4/30/21a";
+const char szSystemFileDate[]  = "4/30/21b";
 
 #include <BeckSystemClass.h>
 #include <BeckAlexaClass.h>
@@ -47,7 +47,6 @@ void SystemClass::Setup(ProjectType eBiotaProjectType){
   bWiFiOn= SetupWiFi();
 
 #if DO_ALEXA
-  //BiotaAlexa.Setup(ALEXA_NAME);
   BiotaAlexa.Setup(_acAlexaName);
 #endif
   return;
@@ -77,9 +76,7 @@ ProjectType SystemClass::GetProjectType(void){
 
 
 void SystemClass::SetupProjectData(void){
-  //bool  bOk= true;
   switch (BiotaSystem.GetProjectType()){
-  //switch (eBiotaProjectType){
     case eThermoDev:
       strcpy(_acHostname        , "BeckThermoDev");
       strcpy(_acProjectType     , "THERMO_DEV");
@@ -91,9 +88,9 @@ void SystemClass::SetupProjectData(void){
 
       ThermostatData.SetSetpoint     (71.0);
       ThermostatData.SetMaxHeatRange ( 0.1);
-      ThermostatData.SetMinSetpoint  (60.0);
-      ThermostatData.SetMaxSetpoint  (95.0);
-      //BiotaSystem.SetProjectType(eThermoDev);
+      ThermostatData.SetMinSetpoint  (40.0);
+      ThermostatData.SetMaxSetpoint  (75.0);
+      ThermostatData.SetThermostatOn (false);
       break;
     case eFireplace:
       strcpy(_acHostname        , "BeckFireplace");
@@ -106,9 +103,9 @@ void SystemClass::SetupProjectData(void){
 
       ThermostatData.SetSetpoint     (71.0);
       ThermostatData.SetMaxHeatRange ( 0.1);
-      ThermostatData.SetMinSetpoint  (60.0);
-      ThermostatData.SetMaxSetpoint  (95.0);
-      //BiotaSystem.SetProjectType(eFireplace);
+      ThermostatData.SetMinSetpoint  (40.0);
+      ThermostatData.SetMaxSetpoint  (75.0);
+      ThermostatData.SetThermostatOn (false);
       break;
     case eHeater:
       strcpy(_acHostname        , "BeckHeater");
@@ -122,8 +119,8 @@ void SystemClass::SetupProjectData(void){
       ThermostatData.SetSetpoint     (75.0);
       ThermostatData.SetMaxHeatRange ( 0.1);
       ThermostatData.SetMinSetpoint  (60.0);
-      ThermostatData.SetMaxSetpoint  (80.0);
-      //BiotaSystem.SetProjectType(eHeater);
+      ThermostatData.SetMaxSetpoint  (75.0);
+      ThermostatData.SetThermostatOn(false);
       break;
     case eGarage:
       strcpy(_acHostname        , "BeckGarage");
@@ -138,7 +135,7 @@ void SystemClass::SetupProjectData(void){
       ThermostatData.SetMaxHeatRange ( 0.1);
       ThermostatData.SetMinSetpoint  (33.0);
       ThermostatData.SetMaxSetpoint  (70.0);
-      //BiotaSystem.SetProjectType(eGarage);
+      ThermostatData.SetThermostatOn (true);
       break;
     case ePitchMeter:
       strcpy(_acHostname        , "BeckPitch");
@@ -149,7 +146,6 @@ void SystemClass::SetupProjectData(void){
       strcpy(_acRouterPW        , "Qazqaz11");
       strcpy(_acAccessPointSSID , "PitchSpot");
       strcpy(_acAccessPointPW   , "Qazqaz11");
-      //BiotaSystem.SetProjectType(ePitchMeter);
       break;
     case eFrontLights:
       strcpy(_acHostname        , "BeckFrontLights");
@@ -159,12 +155,10 @@ void SystemClass::SetupProjectData(void){
       strcpy(_acRouterPW        , "Qazqaz11");
       strcpy(_acAccessPointSSID , "FrontLightsSpot");
       strcpy(_acAccessPointPW   , "Qazqaz11");
-      //BiotaSystem.SetProjectType(eFrontLights);
       break;
     case eNoProject:
     default:
       Serial << LOG0 << "SetupProjectData: SetupProjectData(): Bad switch, _ProjectType= " << BiotaSystem.GetProjectType() << endl;
-      //bOk= false;
       break;
   } //switch
   Serial << LOG0 << "SetupProjectData: SetupProjectData(): Project Type set to: " << _acProjectType << endl;
