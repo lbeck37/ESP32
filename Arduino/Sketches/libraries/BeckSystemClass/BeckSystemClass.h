@@ -10,7 +10,6 @@ public:
   void          Setup                 (void);
   void          Handle                (void);
   ProjectType   GetProjectType        (void);
-  void          SetProjectType        (ProjectType NewProjectType);
 
 protected:
   char          _acHostname       [50];
@@ -30,6 +29,7 @@ protected:
   void              SetupProjectData      (void);
   void              SetupOptionalModules  (void);
   void              HandleOptionalModules (void);
+  void              SetProjectType        (ProjectType NewProjectType);
 };  //SystemClass
 
 extern SystemClass          BiotaSystem;       //This is so every module can use the same object
