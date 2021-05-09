@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckSystemClass.cpp";
-const char szSystemFileDate[]  = "4/30/21b";
+const char szSystemFileDate[]  = "5/9/21a";
 
 #include <BeckSystemClass.h>
 #include <BeckAlexaClass.h>
@@ -31,7 +31,6 @@ void SystemClass::Setup(ProjectType eBiotaProjectType){
   SetProjectType(eBiotaProjectType);
 
   Serial << LOG0 << "SystemClass::Setup(): Call SetupProjectData()" << endl;
-  //SetupProjectData(eBiotaProjectType);
   SetupProjectData();
 
   Serial << LOG0 << "SystemClass::Setup(): Call BiotaThermostat.Setup()" << endl;
