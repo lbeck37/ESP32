@@ -33,7 +33,7 @@ void loop(){
 } //loop
 
 
-#if false
+/*
 void TestFirefox(){
   unsigned long         ulTestFirefoxPeriodMsec = 5 * 1000;
   static unsigned long  ulNextTestFirefoxMsec   = millis() + ulTestFirefoxPeriodMsec;
@@ -61,5 +61,5 @@ void TestFirefox(){
   } //if (millis()>=ulNextTestFirefoxMsec)
   return;
 } //TestFirefox
-#endif  //DO_FIREBASE
+*/
 //Last line.

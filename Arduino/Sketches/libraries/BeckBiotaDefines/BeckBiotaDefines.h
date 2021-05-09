@@ -1,4 +1,4 @@
-// BeckBiotaDefines.h, 5/9/21a
+// BeckBiotaDefines.h, 5/9/21b
 #pragma once
 enum ProjectType{
   eNoProject  = 0,
@@ -10,15 +10,6 @@ enum ProjectType{
   ePitchMeter,
   eLastProjectType
 };
-
-/*
-//Select type of project to build for.
-ProjectType      eBiotaProjectType            = eThermoDev;
-//ProjectType      eBiotaProjectType            = eFireplace;
-//ProjectType      eBiotaProjectType            = eHeater;
-//ProjectType      eBiotaProjectType            = eGarage;
-//ProjectType      eBiotaProjectType            = ePitchMeter;
-*/
 
 #define DO_ACCESS_POINT         false
 #define DO_ALEXA                true
