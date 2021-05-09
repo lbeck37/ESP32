@@ -1,5 +1,7 @@
 // BeckBiotaDefines.h, 5/9/21b
 #pragma once
+#include <cstdint>
+
 enum ProjectType{
   eNoProject  = 0,
   eThermoDev,
