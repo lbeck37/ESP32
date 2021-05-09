@@ -1,24 +1,17 @@
 const char szSketchName[]  = "BeckE32_Biota.ino";
 const char szFileDate[]    = "5/9/21b";
 
-#include <BeckBiotaDefines.h>
+//#include <BeckBiotaDefines.h>
 #include <BeckLogLib.h>
 #include <BeckSystemClass.h>
-//#include <BeckWiFiLib.h>
 #include <Streaming.h>
-
-//Select type of project to build for.
-ProjectType      eBiotaProjectType            = eThermoDev;
-//ProjectType      eBiotaProjectType            = eFireplace;
-//ProjectType      eBiotaProjectType            = eHeater;
-//ProjectType      eBiotaProjectType            = eGarage;
-//ProjectType      eBiotaProjectType            = ePitchMeter;
 
 bool            _bOTA_Started       = false;
 unsigned long   _ulOTATimeoutMsec   = millis();
 
 void setup(){
-  BiotaSystem.Setup(eBiotaProjectType);
+  //BiotaSystem.Setup(eBiotaProjectType);
+  BiotaSystem.Setup();
   Serial << endl << LOG0 << "setup() finished, Sketch: " << szSketchName << ", " << szFileDate << endl;
   return;
 } //setup
@@ -40,7 +33,7 @@ void loop(){
 } //loop
 
 
-#if DO_FIREBASE
+#if false
 void TestFirefox(){
   unsigned long         ulTestFirefoxPeriodMsec = 5 * 1000;
   static unsigned long  ulNextTestFirefoxMsec   = millis() + ulTestFirefoxPeriodMsec;

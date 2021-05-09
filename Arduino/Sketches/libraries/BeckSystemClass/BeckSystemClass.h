@@ -1,29 +1,16 @@
 // BeckSystemClass.h, 5/9/21b
 #pragma once
-
-enum ProjectType{
-  eNoProject  = 0,
-  eThermoDev,
-  eFireplace,
-  eGarage,
-  eHeater,
-  eFrontLights,
-  ePitchMeter,
-  eLastProjectType
-};
-
+#include <BeckBiotaDefines.h>
 
 class SystemClass{
 public:
   SystemClass();
   virtual ~SystemClass();
 
-  void          Setup             		(ProjectType eBiotaProjectType);
+  void          Setup             		(void);
   void          Handle            		(void);
   ProjectType   GetProjectType    		(void);
   void          SetProjectType    		(ProjectType NewProjectType);
-  void			SetupOptionalModules	(void);
-  void			HandleOptionalModules	(void);
 
 protected:
   char          _acHostname       [50];
@@ -40,7 +27,9 @@ protected:
   unsigned long     ulHandlePeriodMsec    = 5 * 1000;
   unsigned long     ulNextHandleMsec      = 0;
 
-  void          SetupProjectData  (void);
+  void          SetupProjectData  		(void);
+  void			SetupOptionalModules	(void);
+  void			HandleOptionalModules	(void);
 };  //SystemClass
 
 extern SystemClass          BiotaSystem;       //This is so every module can use the same object

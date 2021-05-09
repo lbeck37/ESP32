@@ -13,6 +13,13 @@ const char szSystemFileDate[]  = "5/9/21b";
 #include <BeckWiFiLib.h>
 #include <Streaming.h>
 
+//Select type of project to build for.
+ProjectType      eBiotaProjectType            = eThermoDev;
+//ProjectType      eBiotaProjectType            = eFireplace;
+//ProjectType      eBiotaProjectType            = eHeater;
+//ProjectType      eBiotaProjectType            = eGarage;
+//ProjectType      eBiotaProjectType            = ePitchMeter;
+
 SystemClass           BiotaSystem;       //This is so every module can use the same object
 
 SystemClass::SystemClass() {
@@ -25,12 +32,12 @@ SystemClass::~SystemClass() {
 } //destructor
 
 
-void SystemClass::Setup(ProjectType eBiotaProjectType){
+void SystemClass::Setup(void){
   Serial.begin(lSerialMonitorBaud);
   delay(100);
 
   Serial << LOG0 << "\n\nSystemClass::Setup(): Begin" << endl;
-  SetProjectType(eBiotaProjectType);
+  //SetProjectType(eCurrentBiotaProjectType);
 
   Serial << LOG0 << "SystemClass::Setup(): Call SetupProjectData()" << endl;
   SetupProjectData();
