@@ -1,4 +1,4 @@
-// BeckDisplayClass.h, 4/29/21a
+// BeckDisplayClass.h, 5/9/21b
 #pragma once
 //Initially used for TTGO ESP32 module. 135 x 240, 1.14", 240dpi display
 
@@ -87,26 +87,11 @@ enum FontPointType {
 
 
 class DisplayClass {
-protected:
-  GraphicsLibrary         GLib                  = GraphicsLibrary();
-  ScreenOrientationType   _eScreenOrientation   = eUSBLeft;
-  Colortype               _BackgroundColor      = TFT_WHITE;
-  Colortype               _TextColor            = TFT_BLACK;
-  Colortype               _TextBGColor          = TFT_WHITE;
-  Colortype               _FillColor            = TFT_WHITE;
-  Colortype               _LineColor            = TFT_BLACK;
-  PUnit                   _CursorX              = 0;
-  PUnit                   _CursorY              = 0;
-  FontLibraryType         _eFontLibrary         = eGFXFont;
-  FontFaceType            _eFontFace            = eMonoFace;
-  FontPointType           _eFontPoint           = e12point;
-
 public:
   DisplayClass();
   virtual ~DisplayClass();
 
-  PUnit Invert_Y                      (PUnit Y1);       //Implemented at the Display Class level
-
+          PUnit Invert_Y              (PUnit Y1);       //Implemented at the Display Class level
   virtual void  Setup                 (void){}
   virtual void  Handle                (void){}
   virtual void  SetCursor             (PUnit CursorX, PUnit CursorY){}
@@ -125,10 +110,48 @@ public:
   virtual void  DrawGrid              (void){}
   virtual void  Print                 (const char* szLineToPrint){}
   virtual void  PrintLine             (const char* szLineToPrint){}
+
+protected:
+  GraphicsLibrary         GLib                  = GraphicsLibrary();
+  ScreenOrientationType   _eScreenOrientation   = eUSBLeft;
+  Colortype               _BackgroundColor      = TFT_WHITE;
+  Colortype               _TextColor            = TFT_BLACK;
+  Colortype               _TextBGColor          = TFT_WHITE;
+  Colortype               _FillColor            = TFT_WHITE;
+  Colortype               _LineColor            = TFT_BLACK;
+  PUnit                   _CursorX              = 0;
+  PUnit                   _CursorY              = 0;
+  FontLibraryType         _eFontLibrary         = eGFXFont;
+  FontFaceType            _eFontFace            = eMonoFace;
+  FontPointType           _eFontPoint           = e12point;
 };  //DisplayClass
 
 
 class TTGO_DisplayClass : public DisplayClass {
+public:
+  TTGO_DisplayClass();
+  virtual ~TTGO_DisplayClass();
+
+  void  Setup                 (void);
+  void  Handle                (void);
+  PUnit Invert_Y              (PUnit Y1);
+  void  SetCursor             (PUnit CursorX, PUnit CursorY);
+  void  FillScreen            (void);
+  void  FillScreen            (Colortype FillColor);
+  void  SetBackgroundColor    (Colortype NewBackgroundColor);
+  void  SetTextColor          (Colortype NewTextColor);
+  void  SetTextBGColor        (Colortype NewTextBGColor);
+  void  SetFillColor          (Colortype NewFillColor);
+  void  SetLineColor          (Colortype NewLineColor);
+  void  SelectFont            (FontFaceType eFontFace, FontPointType eFontPoint);
+  void  DrawLine              (PUnit X1, PUnit Y1, PUnit X2, PUnit Y2);
+  void  DrawRectangle         (PUnit XLeft, PUnit YTop, PUnit Width, PUnit Height);
+  void  DrawFilledRectangle   (PUnit XLeft, PUnit YTop, PUnit Width, PUnit Height);
+  void  DrawFilledCircle      (PUnit XCenter, PUnit YCenter, PUnit Radius);
+  void  DrawGrid              (void);
+  void  Print                 (const char* szLineToPrint);
+  void  PrintLine             (const char* szLineToPrint);
+
 protected:
   uint32_t      DegFOnTimeSeconds     = 4;
   uint32_t      SetpointOnTimeSeconds = 2;
@@ -205,29 +228,6 @@ protected:
   void  DisplaySetpointText         (void);
   void  DisplayOffpointText         (void);
   void  DisplayHeatOnBox            (void);
-public:
-  TTGO_DisplayClass();
-  virtual ~TTGO_DisplayClass();
-
-  void  Setup                 (void);
-  void  Handle                (void);
-  PUnit Invert_Y              (PUnit Y1);
-  void  SetCursor             (PUnit CursorX, PUnit CursorY);
-  void  FillScreen            (void);
-  void  FillScreen            (Colortype FillColor);
-  void  SetBackgroundColor    (Colortype NewBackgroundColor);
-  void  SetTextColor          (Colortype NewTextColor);
-  void  SetTextBGColor        (Colortype NewTextBGColor);
-  void  SetFillColor          (Colortype NewFillColor);
-  void  SetLineColor          (Colortype NewLineColor);
-  void  SelectFont            (FontFaceType eFontFace, FontPointType eFontPoint);
-  void  DrawLine              (PUnit X1, PUnit Y1, PUnit X2, PUnit Y2);
-  void  DrawRectangle         (PUnit XLeft, PUnit YTop, PUnit Width, PUnit Height);
-  void  DrawFilledRectangle   (PUnit XLeft, PUnit YTop, PUnit Width, PUnit Height);
-  void  DrawFilledCircle      (PUnit XCenter, PUnit YCenter, PUnit Radius);
-  void  DrawGrid              (void);
-  void  Print                 (const char* szLineToPrint);
-  void  PrintLine             (const char* szLineToPrint);
 };  //TTGO_DisplayClass
 
 extern TTGO_DisplayClass    BiotaDisplay;       //This is so every module can use the same object

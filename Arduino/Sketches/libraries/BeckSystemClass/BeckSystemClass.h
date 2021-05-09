@@ -1,9 +1,5 @@
-// BeckSystemClass.h, 5/9/21a
+// BeckSystemClass.h, 5/9/21b
 #pragma once
-
-#include <BeckDisplayClass.h>
-#include <BeckThermostatClass.h>
-#include <BeckThermostatDataClass.h>
 
 enum ProjectType{
   eNoProject  = 0,
@@ -18,6 +14,15 @@ enum ProjectType{
 
 
 class SystemClass{
+public:
+  SystemClass();
+  virtual ~SystemClass();
+
+  void          Setup             (ProjectType eBiotaProjectType);
+  void          Handle            (void);
+  ProjectType   GetProjectType    (void);
+  void          SetProjectType    (ProjectType NewProjectType);
+
 protected:
   char          _acHostname       [50];
   char          _acAlexaName      [50];
@@ -34,14 +39,6 @@ protected:
   unsigned long     ulNextHandleMsec      = 0;
 
   void          SetupProjectData  (void);
-public:
-  SystemClass();
-  virtual ~SystemClass();
-
-  void          Setup             (ProjectType eBiotaProjectType);
-  void          Handle            (void);
-  ProjectType   GetProjectType    (void);
-  void          SetProjectType    (ProjectType NewProjectType);
 };  //SystemClass
 
 extern SystemClass          BiotaSystem;       //This is so every module can use the same object

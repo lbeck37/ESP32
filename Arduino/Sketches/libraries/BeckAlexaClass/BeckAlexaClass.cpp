@@ -1,5 +1,5 @@
 const char szFileName[]  = "BeckAlexaClass.cpp";
-const char szFileDate[]  = "4/28/21a";
+const char szFileDate[]  = "5/9/21a";
 
 #include <BeckAlexaClass.h>
 #include <BeckLogLib.h>
@@ -18,7 +18,6 @@ void CallbackAlexaCommand(unsigned char ucDdeviceID,const char* szDeviceName,boo
       ucDdeviceID, szDeviceName, (bState ? "ON " : "OFF"), ucValue);
   String szLogString= szCharString;
   LogToSerial(szLogString);
-  //switch (_eProjectType){
   switch (BiotaSystem.GetProjectType()){
     case eFireplace:
     case eGarage:
@@ -35,7 +34,6 @@ void CallbackAlexaCommand(unsigned char ucDdeviceID,const char* szDeviceName,boo
       Serial << LOG0 << "DoAlexaCommand(): Bad switch, _eProjectType= " << BiotaSystem.GetProjectType() << endl;
       break;
   } //switch
-  //bAlexaChanged= true;
   return;
 } //CallbackAlexaCommand
 

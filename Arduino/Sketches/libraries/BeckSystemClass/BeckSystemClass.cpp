@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckSystemClass.cpp";
-const char szSystemFileDate[]  = "5/9/21a";
+const char szSystemFileDate[]  = "5/9/21b";
 
 #include <BeckSystemClass.h>
 #include <BeckAlexaClass.h>
@@ -8,6 +8,7 @@ const char szSystemFileDate[]  = "5/9/21a";
 #include <BeckLogLib.h>
 #include <BeckSwitchClass.h>
 #include <BeckThermostatClass.h>
+#include <BeckThermostatDataClass.h>
 #include <BeckWiFiLib.h>
 #include <Streaming.h>
 
