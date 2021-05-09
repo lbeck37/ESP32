@@ -5,6 +5,7 @@ const char szSystemFileDate[]  = "5/9/21b";
 #include <BeckAlexaClass.h>
 #include <BeckBiotaDefines.h>
 #include <BeckDisplayClass.h>
+#include <BeckIncludeOptionalFiles.h>
 #include <BeckLogLib.h>
 #include <BeckSwitchClass.h>
 #include <BeckThermostatClass.h>
@@ -49,6 +50,7 @@ void SystemClass::Setup(ProjectType eBiotaProjectType){
 #if DO_ALEXA
   BiotaAlexa.Setup(_acAlexaName);
 #endif
+  SetupOptionalModules();
   return;
 } //Setup
 
@@ -59,6 +61,7 @@ void SystemClass::Handle(){
 #endif
   BiotaThermostat.Handle();
   BiotaSwitches.Handle();
+  HandleOptionalModules();
   BiotaDisplay.Handle();
   return;
 } //Handle
@@ -73,6 +76,67 @@ void SystemClass::SetProjectType(ProjectType eNewProjectType){
 ProjectType SystemClass::GetProjectType(void){
   return eProjectType;
 }
+
+
+void SystemClass::SetupOptionalModules(){
+  if (_bWiFiConnected){
+#if DO_OTA
+    SetupOTAWebPages();
+#endif
+#if DO_WEB_SERVER
+    //SetupTermoWebPage();
+    StartWebServer(_acHostname);
+#endif
+#if DO_ACCESS_POINT
+    SetupAccessPt(_acAccessPointSSID, _acAccessPointPW);
+#endif
+  } //if(_bWiFiConnected)
+  else{
+    Serial << "SetupOptionalModules(): WiFi is not connected" << endl;
+  }
+#if DO_FIREBASE
+  Serial << LOG0 << "SetupOptionalModules(): Call Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH)" << endl;
+  Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);
+#endif
+#if USE_IMU
+  if(eProjectType == ePitchMeter){
+    bMPU9150_On= SetupMPU9150(szSketchName, szFileDate, ulMPU9150HandlerPeriodMsec);
+  } //if(eProjectType==ePitchMeter)
+#endif
+#if DO_NTP
+  if (_bWiFiConnected){
+    SetupNTP();
+  } //if(_bWiFiConnected)
+#endif  //DO_NTP
+  return;
+} //SetupOptionalModules
+
+
+void SystemClass::HandleOptionalModules(){
+#if DO_WEB_SERVER
+  if (_bWiFiConnected){
+    HandleWebServer();
+    CheckTaskTime("HandleOptionalModules(): HandleWebServer()");
+  } //if(_bWiFiConnected)
+#endif
+#if DO_FIREBASE
+  //TestFirefox();
+  //CheckTaskTime("loop(): TestFirefox()");
+#endif
+#if DO_NTP
+  if (_bWiFiConnected){
+    HandleNTPUpdate();
+    CheckTaskTime("HandleOptionalModules(): HandleNTPUpdate()");
+  } //if(_bWiFiConnected)
+#endif
+#if DO_ACCESS_POINT
+  if (_bWiFiConnected){
+    HandleSoftAPClient();       //Listen for HTTP requests from clients
+    CheckTaskTime("HandleOptionalModules(): HandleSoftAPClient()");
+  } //if(_bWiFiConnected)
+#endif  //DO_ACCESS_POINT
+  return;
+} //HandleOptionalModules
 
 
 void SystemClass::SetupProjectData(void){

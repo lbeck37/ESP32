@@ -18,10 +18,12 @@ public:
   SystemClass();
   virtual ~SystemClass();
 
-  void          Setup             (ProjectType eBiotaProjectType);
-  void          Handle            (void);
-  ProjectType   GetProjectType    (void);
-  void          SetProjectType    (ProjectType NewProjectType);
+  void          Setup             		(ProjectType eBiotaProjectType);
+  void          Handle            		(void);
+  ProjectType   GetProjectType    		(void);
+  void          SetProjectType    		(ProjectType NewProjectType);
+  void			SetupOptionalModules	(void);
+  void			HandleOptionalModules	(void);
 
 protected:
   char          _acHostname       [50];
