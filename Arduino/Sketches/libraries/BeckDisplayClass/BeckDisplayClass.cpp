@@ -1,5 +1,5 @@
 const char szDisplayClassFileName[]  = "BeckDisplayClass.cpp";
-const char szDisplayClassFileDate[]  = "5/9/21e";
+const char szDisplayClassFileDate[]  = "5/10/21a";
 
 #include <BeckDisplayClass.h>
 #include <BeckThermostatDataClass.h>
@@ -15,6 +15,15 @@ const char szDisplayClassFileDate[]  = "5/9/21e";
 #endif
 #ifdef ROBOTO_MEDIUM_40
   #include <Roboto_Medium_40.h>
+#endif
+#ifdef LATO_BLACK_60
+  #include <Lato_Black_60.h>
+#endif
+#ifdef MONOSPACED_BOLD_30
+  #include <Monospaced_Bold_30.h>
+#endif
+#ifdef MONOSPACED_BOLD_60
+  #include <Monospaced_Bold_60.h>
 #endif
 #ifdef ROBOTO_MEDIUM_100
   #include <Roboto_Medium_100.h>
@@ -122,18 +131,36 @@ void TTGO_DisplayClass::SelectFont(FontFaceType eFontFace, FontPointType eFontPo
           break;
         } //switch(eFontPoint)
       break;
-      case   eRedressedRegularFace:
+      case   eMonospacedBold:
         switch (eFontPoint){
-          #ifdef REDRESSED__REGULAR_20
-            case e20point:
-               GLib.setFreeFont(&Redressed_Regular_20);
-              break;
-          #endif
+			#ifdef MONOSPACED_BOLD_30
+			  case e30point:
+				 GLib.setFreeFont(&Monospaced_bold_30);
+				break;
+			#endif
+			#ifdef MONOSPACED_BOLD_60
+			  case e60point:
+				 GLib.setFreeFont(&Monospaced_bold_60);
+				break;
+			#endif
           default:
             Serial << "ColorDisplay::SelectFont() Font point not yet supported= " << eFontPoint << endl;
             break;
           } //switch(eFontPoint)
         break;  //eRedressedRegularFace
+
+        case   eRedressedRegularFace:
+          switch (eFontPoint){
+            #ifdef REDRESSED__REGULAR_20
+              case e20point:
+                 GLib.setFreeFont(&Redressed_Regular_20);
+                break;
+            #endif
+            default:
+              Serial << "ColorDisplay::SelectFont() Font point not yet supported= " << eFontPoint << endl;
+              break;
+            } //switch(eFontPoint)
+          break;  //eRedressedRegularFace
 
       case eRobotoMediumFace:
         switch (eFontPoint){

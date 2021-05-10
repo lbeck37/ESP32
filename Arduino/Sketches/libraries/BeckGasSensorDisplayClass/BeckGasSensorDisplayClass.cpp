@@ -1,5 +1,5 @@
 const char szGasSensorDisplayClassFileName[]  = "BeckGasSensorDisplayClass.cpp";
-const char szGasSensorDisplayClassFileDate[]  = "5/9/21e";
+const char szGasSensorDisplayClassFileDate[]  = "5/10/21a";
 
 //#include <BeckDisplayClass.h>
 #include <BeckGasSensorDisplayClass.h>
@@ -7,6 +7,7 @@ const char szGasSensorDisplayClassFileDate[]  = "5/9/21e";
 #include "Free_Fonts.h"
 #include <Streaming.h>
 
+/*
 //Scalable fonts created by Font Creator, http://oleddisplay.squix.ch/#/home
 #ifdef REDRESSED__REGULAR_20
   #include <Redressed_Regular_20.h>
@@ -29,6 +30,7 @@ const char szGasSensorDisplayClassFileDate[]  = "5/9/21e";
 #ifdef ROBOTO_MEDIUM_150
   #include <Roboto_Medium_150.h>
 #endif
+*/
 
 //char  	sz100CharDisplayBuffer[100];    //For building strings for display
 
@@ -63,15 +65,18 @@ void GasSensorDisplayClass::Handle(){
 void GasSensorDisplayClass::DisplayCO2andTVOC(void){
   //float   SingleDigitDegF= (int)(10 * ThermostatData.GetCurrentTemperature())/10.0;
 
-    SetCursor     (CO2_LeftSide, CO2_YBaseline);
-    SetTextColor  (CO2_Color);
-    SelectFont    (eCO2_Font, eCO2_PointSize);
+    SetTextColor  (Gas_FontColor);
+    SelectFont    (eGas_Font, eGas_PointSize);
 
-    FillScreen();
-    sprintf(sz100CharDisplayBuffer, "CO2= %5d\n", GasSensorData.GetCO2_Value());
+    FillScreen(Gas_BackgroundColor);
+    Gas_YBaseline= (ScreenHeight *80)/100;
+    SetCursor(Gas_LeftSide, Gas_YBaseline);
+    sprintf(sz100CharDisplayBuffer, "CO2 %4dppm", GasSensorData.GetCO2_Value());
     Print(sz100CharDisplayBuffer);
 
-    sprintf(sz100CharDisplayBuffer, "TVOC= %5d", GasSensorData.GetTVOC_Value());
+    Gas_YBaseline= (ScreenHeight * 30)/100;
+    SetCursor(Gas_LeftSide, Gas_YBaseline);
+    sprintf(sz100CharDisplayBuffer, "TVOC%4dppb", GasSensorData.GetTVOC_Value());
     Print(sz100CharDisplayBuffer);
 
   return;

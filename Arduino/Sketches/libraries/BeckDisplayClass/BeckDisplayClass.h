@@ -1,4 +1,4 @@
-// BeckDisplayClass.h, 5/9/21f
+// BeckDisplayClass.h, 5/10/21a
 #pragma once
 //Initially used for TTGO ESP32 module. 135 x 240, 1.14", 240dpi display
 
@@ -7,8 +7,11 @@
 //Remove the "//" in front of the #define for a font you use
 //   Mono and Text files are included in TFT_eSPI library already.
 //#define REDRESSED__REGULAR_20
+#define MONOSPACED_BOLD_30
 #define ROBOTO_CONDENSED_30
 //#define ROBOTO_MEDIUM_40
+#define LATO_BLACK_60
+#define MONOSPACED_BOLD_60
 //#define ROBOTO_MEDIUM_100
 #define ROBOTO_CONDENSED_130
 //#define ROBOTO_CONDENSED_BOLD_130
@@ -55,6 +58,8 @@ enum FontFaceType {
   eNoFontFace= 0,
   eMonoFace,
   eTextFace,                  //Adafruit 1=9px, 2= 16px, 4= 26px, 6=48pt, 7=48px 7seg, 8=75px narrow
+  eLatoBlack,      			  //60pt
+  eMonospacedBold,      	  //30, 60pt
   eRedressedRegularFace,      //20pt
   eRobotoMediumFace,          //40, 100, 150pt
   eRobotoCondensedFace,       //30, 130pt

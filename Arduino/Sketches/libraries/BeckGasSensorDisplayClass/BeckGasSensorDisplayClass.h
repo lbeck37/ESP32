@@ -1,4 +1,4 @@
-// BeckGasSensorDisplayClass.h, 5/9/21d
+// BeckGasSensorDisplayClass.h, 5/10/21a
 #pragma once
 //Initially used for TTGO ESP32 module. 135 x 240, 1.14", 240dpi display
 
@@ -15,12 +15,24 @@ public:
 
 protected:
   unsigned long     ulNextGasSensorDisplayMsec    	= 0;
-  unsigned long     ulGasSensorDisplayPeriodMsec  	= 1000; //mSec between reading sensor
-  PUnit           	CO2_LeftSide          			=  5;
-  PUnit           	CO2_YBaseline         			= 10 + 40;         //ScreenHeight - 97
-  Colortype       	CO2_Color             			= TFT_BLACK;
-  FontFaceType    	eCO2_Font             			= eRobotoCondensedFace;
-  FontPointType   	eCO2_PointSize        			= e30point;
+  unsigned long     ulGasSensorDisplayPeriodMsec  	= 1000; //mSec between updating display
+  PUnit           	Gas_LeftSide          			= 0;
+  //PUnit           	Gas_YBaseline         			= (ScreenHeight * 70)/100;
+  PUnit           	Gas_YBaseline         			= 0;
+/*
+  Colortype       	Gas_BackgroundColor             = TFT_BLACK;
+  Colortype       	Gas_FontColor             		= TFT_WHITE;
+  FontFaceType    	eGas_Font             			= eRobotoCondensedFace;
+  FontFaceType    	eGas_Font             			= eRobotoMediumFace;
+  FontPointType   	eGas_PointSize        			= e40point;
+  FontFaceType    	eGas_Font             			= eLatoBlack;
+  FontFaceType    	eGas_Font             			= eMonospacedBold;
+  FontPointType   	eGas_PointSize        			= e60point;
+*/
+  Colortype       	Gas_BackgroundColor             = TFT_WHITE;
+  Colortype       	Gas_FontColor             		= TFT_BLACK;
+  FontFaceType    	eGas_Font             			= eMonospacedBold;
+  FontPointType   	eGas_PointSize        			= e30point;
 
   void  DisplayCO2andTVOC	(void);
 };  //GasSensorDisplayClass
