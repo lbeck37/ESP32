@@ -14,7 +14,7 @@ protected:
   uint16_t  		CO2_Value				= 0;
   uint16_t  		TVOC_Value				= 0;
   unsigned long     ulNextPrintMsec         = 0;
-  unsigned long     ulPrintPeriodMsec       = 5000; //mSec between printing current CO2 and TVOC vales
+  unsigned long     ulPrintPeriodMsec       = 1000; //mSec between printing current CO2 and TVOC vales
 };  //GasSensorClass
 
 extern GasSensorClass          GasSensor;       //This is so every module can use the same object

@@ -51,11 +51,11 @@ void SystemClass::Setup(void){
     BiotaThermostat.Setup();
 #endif
 
-  Serial << LOG0 << "SystemClass::Setup(): Call BiotaDisplay.Setup()" << endl;
+  Serial << LOG0 << "SystemClass::Setup(): Call GasSensor.Setup()" << endl;
   GasSensor.Setup();
 
   Serial << LOG0 << "SystemClass::Setup(): Call BiotaDisplay.Setup()" << endl;
-  BiotaDisplay.Setup();
+  ThermostatDisplay.Setup();
 
   Serial << LOG0 << "SystemClass::Setup(): Call BiotaSwitches.Setup()" << endl;
   BiotaSwitches.Setup();
@@ -77,11 +77,11 @@ void SystemClass::Handle(){
 #endif
 #if DO_THERMOSTAT
   BiotaThermostat.Handle();
-#endif
   BiotaSwitches.Handle();
+#endif
   HandleOptionalModules();
   GasSensor.Handle();
-  BiotaDisplay.Handle();
+  ThermostatDisplay.Handle();
   return;
 } //Handle
 

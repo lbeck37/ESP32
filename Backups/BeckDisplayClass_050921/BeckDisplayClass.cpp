@@ -1,5 +1,5 @@
 const char szDisplayClassFileName[]  = "BeckDisplayClass.cpp";
-const char szDisplayClassFileDate[]  = "5/9/21c";
+const char szDisplayClassFileDate[]  = "4/30/21a";
 #include <BeckDisplayClass.h>
 #include <BeckThermostatDataClass.h>
 #include "Free_Fonts.h"
@@ -28,9 +28,9 @@ const char szDisplayClassFileDate[]  = "5/9/21c";
   #include <Roboto_Medium_150.h>
 #endif
 
-char  	sz100CharDisplayBuffer[100];    //For building strings for display
+char                  sz100CharDisplayBuffer[100];    //For building strings for display
 
-ThermostatDisplayClass	ThermostatDisplay;                   //So every module can use the same object
+TTGO_DisplayClass     BiotaDisplay;                   //So every module can use the same object
 
 DisplayClass::DisplayClass() {
   Serial << "Display::Display(): " << szDisplayClassFileName << ", " << szDisplayClassFileDate << endl;
@@ -39,7 +39,6 @@ DisplayClass::DisplayClass() {
 DisplayClass::~DisplayClass() {
   Serial << "~Display(): Destructing" << endl;
 } //destructor
-
 
 TTGO_DisplayClass::TTGO_DisplayClass() {
   Serial << "ColorDisplay::ColorDisplay(): " << szDisplayClassFileName << ", " << szDisplayClassFileDate << endl;
@@ -289,25 +288,15 @@ void TTGO_DisplayClass::PrintLine(const char* szLineToPrint) {
 //**********************************************************************************************//
 //***** Was in ThermoDisplayClass **************************************************************//
 //**********************************************************************************************//
-ThermostatDisplayClass::ThermostatDisplayClass() {
-  Serial << "ThermostatDisplayClass::ThermostatDisplayClass(): Do nothing."  << endl;
-} //constructor
-
-
-ThermostatDisplayClass::~ThermostatDisplayClass() {
-  Serial << "~ThermostatDisplayClass(): Destructing" << endl;
-} //destructor
-
-
-void ThermostatDisplayClass::Setup(void){
-  Serial << "ThermostatDisplayClass::Setup(): Call Handle()" << endl;
+void TTGO_DisplayClass::Setup(void){
+  Serial << "TTGO_DisplayClass::Setup(): Call Handle()" << endl;
   Handle();
   return;
 } //Setup
 
 //void TTGO_DisplayClass::Handle(DisplayThermoStruct ThermoData){
-void ThermostatDisplayClass::Handle(){
-  //Serial << "ThermostatDisplayClass::Handle(): Begin" << endl;
+void TTGO_DisplayClass::Handle(){
+  //Serial << "TTGO_DisplayClass::Handle(): Begin" << endl;
   DisplayThermoOnBar        ();
   DisplaySetpointText       ();
   DisplayOffpointText       ();
@@ -316,7 +305,7 @@ void ThermostatDisplayClass::Handle(){
   return;
 } //Handle
 
-void ThermostatDisplayClass::DisplayMainScreen(void){
+void TTGO_DisplayClass::DisplayMainScreen(void){
   if (millis() > ulNextDisplayChange){
     //Change to next display
     if (!ThermostatData.GetThermostatOn()){
@@ -349,7 +338,7 @@ void ThermostatDisplayClass::DisplayMainScreen(void){
   return;
 } //DisplayMainScreen
 
-void ThermostatDisplayClass::DisplayCurrentTemperature(bool ForceUpdate){
+void TTGO_DisplayClass::DisplayCurrentTemperature(bool ForceUpdate){
   float   SingleDigitDegF= (int)(10 * ThermostatData.GetCurrentTemperature())/10.0;
 
   if (ForceUpdate || (fCurrentDegFLast != SingleDigitDegF)){
@@ -364,14 +353,14 @@ void ThermostatDisplayClass::DisplayCurrentTemperature(bool ForceUpdate){
     SelectFont    (eDegF_Font, eDegF_PointSize);
 
     sprintf(sz100CharDisplayBuffer, "%04.1f", fCurrentDegFLast);
-    //Serial << "ThermostatDisplayClass::DisplayCurrentTemperature(): Writing " << sz100CharDisplayBuffer << " to the display" << endl;
+    //Serial << "TTGO_DisplayClass::DisplayCurrentTemperature(): Writing " << sz100CharDisplayBuffer << " to the display" << endl;
     Print(sz100CharDisplayBuffer);
   }
   return;
 } //DisplayCurrentTemperature
 
 
-void ThermostatDisplayClass::DisplayCurrentSetpoint(bool ForceUpdate){
+void TTGO_DisplayClass::DisplayCurrentSetpoint(bool ForceUpdate){
   float   SingleDigitSetpoint= (int)(10 * ThermostatData.GetSetpoint())/10.0;
 
   if (ForceUpdate || (fSetpointLast != SingleDigitSetpoint)){
@@ -387,13 +376,13 @@ void ThermostatDisplayClass::DisplayCurrentSetpoint(bool ForceUpdate){
     SelectFont    (eDegF_Font, eDegF_PointSize);
 
     sprintf(sz100CharDisplayBuffer, "%04.1f", fSetpointLast);
-    //Serial << "ThermostatDisplayClass::DisplayCurrentSetpoint(): Writing " << sz100CharDisplayBuffer << " to the display" << endl;
+    //Serial << "TTGO_DisplayClass::DisplayCurrentSetpoint(): Writing " << sz100CharDisplayBuffer << " to the display" << endl;
     Print(sz100CharDisplayBuffer);
   }
   return;
 } //DisplayCurrentSetpoint
 
-void ThermostatDisplayClass::DisplayThermoOnBar(){
+void TTGO_DisplayClass::DisplayThermoOnBar(){
   //Draw a fat bar, the ThermoOnBar, under the large current temperature display, present when thermostat is on.
   if (bThermoOnLast != ThermostatData.GetThermostatOn()){
     bThermoOnLast= ThermostatData.GetThermostatOn();
@@ -410,7 +399,7 @@ void ThermostatDisplayClass::DisplayThermoOnBar(){
   return;
 } //DisplayThermoOnBar
 
-void ThermostatDisplayClass::DisplaySetpointText(){
+void TTGO_DisplayClass::DisplaySetpointText(){
   if (fSetpointLast != ThermostatData.GetSetpoint()){
     fSetpointLast= ThermostatData.GetSetpoint();
 
@@ -431,7 +420,7 @@ void ThermostatDisplayClass::DisplaySetpointText(){
   return;
 } //DisplaySetpointText
 
-void ThermostatDisplayClass::DisplayOffpointText(){
+void TTGO_DisplayClass::DisplayOffpointText(){
   //float OffPoint= ThermostatData.GetSetpoint() + ThermostatData.GetMaxHeatRange();
   float OffPoint= ThermostatData.GetThermostatOffDeg();
   if (fOffpointLast != OffPoint){
@@ -452,7 +441,7 @@ void ThermostatDisplayClass::DisplayOffpointText(){
   return;
 } //DisplayOffpointText
 
-void ThermostatDisplayClass::DisplayHeatOnBox(){
+void TTGO_DisplayClass::DisplayHeatOnBox(){
   //Draw a box, the HeatOnBox, between the Setpoint and Offpoint text, present when heat is on.
   //Draws on top of SetpointText, position it to not overwrite text
   bool  bHeatIsOn         = ThermostatData.GetHeatOn();
@@ -465,7 +454,7 @@ void ThermostatDisplayClass::DisplayHeatOnBox(){
 
   if (bDrawHeatBox != bLastDrawHeatBox){
     bLastDrawHeatBox= bDrawHeatBox;
-    Serial << "ThermostatDisplayClass::DisplayHeatOnBox(): Changing bDrawHeatBox to " << bDrawHeatBox << endl;
+    Serial << "TTGO_DisplayClass::DisplayHeatOnBox(): Changing bDrawHeatBox to " << bDrawHeatBox << endl;
     //Only turn on the HeatOn box if the thermostat is also on.
     if (bDrawHeatBox){
       SetFillColor(HeatOnBoxColor);

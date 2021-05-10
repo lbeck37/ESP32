@@ -39,14 +39,15 @@ void GasSensorClass::Handle(){
 
       GasSensorData.SetCO2_Value(CO2_Value);
       GasSensorData.SetCO2_Value(CO2_Value);
-      if(millis() >= ulNextPrintMsec){
+
+      if(true || (millis() >= ulNextPrintMsec)){
         ulNextPrintMsec= millis() + ulPrintPeriodMsec;
         Serial << "GasSensorClass::Handle(): CO2= " << CO2_Value << "ppm, TVOC= " << TVOC_Value << endl;
       }	//if(millis()>=ulNextPrintMsec)
     } //if(!CS811_GasSensor.readData())
     else{
       Serial.println("ERROR!");
-      Serial << "loop: readData() returned error" << endl;
+      Serial << "GasSensorClass::Handle(): CS811_GasSensor.readData() returned error" << endl;
       while(1);
     } //if(!CS811_GasSensor.readData())else
   } //if(CS811_GasSensor.available())

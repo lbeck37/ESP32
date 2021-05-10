@@ -1,4 +1,4 @@
-// BeckDisplayClass.h, 5/9/21d
+// BeckDisplayClass.h, 5/9/21b
 #pragma once
 //Initially used for TTGO ESP32 module. 135 x 240, 1.14", 240dpi display
 
@@ -132,9 +132,8 @@ public:
   TTGO_DisplayClass();
   virtual ~TTGO_DisplayClass();
 
-  virtual void  Setup         (void){}
-  virtual void  Handle        (void){}
-
+  void  Setup                 (void);
+  void  Handle                (void);
   PUnit Invert_Y              (PUnit Y1);
   void  SetCursor             (PUnit CursorX, PUnit CursorY);
   void  FillScreen            (void);
@@ -152,18 +151,6 @@ public:
   void  DrawGrid              (void);
   void  Print                 (const char* szLineToPrint);
   void  PrintLine             (const char* szLineToPrint);
-
-protected:
-};  //TTGO_DisplayClass
-
-
-class ThermostatDisplayClass : public TTGO_DisplayClass {
-public:
-  ThermostatDisplayClass();
-  virtual ~ThermostatDisplayClass();
-
-  void  Setup         (void);
-  void  Handle        (void);
 
 protected:
   uint32_t      DegFOnTimeSeconds     = 4;
@@ -241,8 +228,8 @@ protected:
   void  DisplaySetpointText         (void);
   void  DisplayOffpointText         (void);
   void  DisplayHeatOnBox            (void);
-};  //ThermostatDisplayClass
+};  //TTGO_DisplayClass
 
-extern ThermostatDisplayClass    ThermostatDisplay;       //This is so every module can use the same object
+extern TTGO_DisplayClass    BiotaDisplay;       //This is so every module can use the same object
 
 //Last line.
