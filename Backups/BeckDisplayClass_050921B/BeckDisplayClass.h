@@ -1,4 +1,4 @@
-// BeckDisplayClass.h, 5/9/21e
+// BeckDisplayClass.h, 5/9/21d
 #pragma once
 //Initially used for TTGO ESP32 module. 135 x 240, 1.14", 240dpi display
 
@@ -157,7 +157,6 @@ protected:
 };  //TTGO_DisplayClass
 
 
-/*
 class ThermostatDisplayClass : public TTGO_DisplayClass {
 public:
   ThermostatDisplayClass();
@@ -245,6 +244,5 @@ protected:
 };  //ThermostatDisplayClass
 
 extern ThermostatDisplayClass    ThermostatDisplay;       //This is so every module can use the same object
-*/
 
 //Last line.

@@ -1,6 +1,5 @@
 const char szDisplayClassFileName[]  = "BeckDisplayClass.cpp";
-const char szDisplayClassFileDate[]  = "5/9/21d";
-
+const char szDisplayClassFileDate[]  = "5/9/21c";
 #include <BeckDisplayClass.h>
 #include <BeckThermostatDataClass.h>
 #include "Free_Fonts.h"
@@ -29,9 +28,9 @@ const char szDisplayClassFileDate[]  = "5/9/21d";
   #include <Roboto_Medium_150.h>
 #endif
 
-//char  	sz100CharDisplayBuffer[100];    //For building strings for display
+char  	sz100CharDisplayBuffer[100];    //For building strings for display
 
-//ThermostatDisplayClass	ThermostatDisplay;                   //So every module can use the same object
+ThermostatDisplayClass	ThermostatDisplay;                   //So every module can use the same object
 
 DisplayClass::DisplayClass() {
   Serial << "Display::Display(): " << szDisplayClassFileName << ", " << szDisplayClassFileDate << endl;
@@ -290,7 +289,6 @@ void TTGO_DisplayClass::PrintLine(const char* szLineToPrint) {
 //**********************************************************************************************//
 //***** Was in ThermoDisplayClass **************************************************************//
 //**********************************************************************************************//
-/*
 ThermostatDisplayClass::ThermostatDisplayClass() {
   Serial << "ThermostatDisplayClass::ThermostatDisplayClass(): Do nothing."  << endl;
 } //constructor
@@ -479,5 +477,4 @@ void ThermostatDisplayClass::DisplayHeatOnBox(){
   } //if (bDrawHeatBox!=bLastDrawHeatBox)
   return;
 } //DisplayHeatOnBox
-*/
 //Last line.

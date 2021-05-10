@@ -4,7 +4,7 @@ const char szSystemFileDate[]  = "5/9/21c";
 #include <BeckSystemClass.h>
 #include <BeckAlexaClass.h>
 #include <BeckBiotaDefines.h>
-#include <BeckDisplayClass.h>
+//#include <BeckDisplayClass.h>
 #include <BeckGasSensorClass.h>
 #include <BeckGasSensorDataClass.h>
 #include <BeckIncludeOptionalFiles.h>
@@ -13,6 +13,7 @@ const char szSystemFileDate[]  = "5/9/21c";
 #if DO_THERMOSTAT
 	#include <BeckThermostatClass.h>
 #endif
+#include <BeckThermostatDisplayClass.h>
 #include <BeckThermostatDataClass.h>
 #include <BeckWiFiLib.h>
 #include <Streaming.h>
