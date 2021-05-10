@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckSystemClass.cpp";
-const char szSystemFileDate[]  = "5/9/21c";
+const char szSystemFileDate[]  = "5/9/21d";
 
 #include <BeckSystemClass.h>
 #include <BeckAlexaClass.h>
@@ -7,13 +7,14 @@ const char szSystemFileDate[]  = "5/9/21c";
 //#include <BeckDisplayClass.h>
 #include <BeckGasSensorClass.h>
 #include <BeckGasSensorDataClass.h>
+#include <BeckGasSensorDisplayClass.h>
 #include <BeckIncludeOptionalFiles.h>
 #include <BeckLogLib.h>
 #include <BeckSwitchClass.h>
 #if DO_THERMOSTAT
 	#include <BeckThermostatClass.h>
+	#include <BeckThermostatDisplayClass.h>
 #endif
-#include <BeckThermostatDisplayClass.h>
 #include <BeckThermostatDataClass.h>
 #include <BeckWiFiLib.h>
 #include <Streaming.h>
@@ -56,7 +57,7 @@ void SystemClass::Setup(void){
   GasSensor.Setup();
 
   Serial << LOG0 << "SystemClass::Setup(): Call BiotaDisplay.Setup()" << endl;
-  ThermostatDisplay.Setup();
+  GasSensorDisplay.Setup();
 
   Serial << LOG0 << "SystemClass::Setup(): Call BiotaSwitches.Setup()" << endl;
   BiotaSwitches.Setup();
@@ -82,7 +83,8 @@ void SystemClass::Handle(){
 #endif
   HandleOptionalModules();
   GasSensor.Handle();
-  ThermostatDisplay.Handle();
+  //ThermostatDisplay.Handle();
+  GasSensorDisplay.Handle();
   return;
 } //Handle
 

@@ -1,4 +1,4 @@
-// BeckThermostatDisplayClass.h, 5/9/21a
+// BeckThermostatDisplayClass.h, 5/9/21b
 #pragma once
 //Initially used for TTGO ESP32 module. 135 x 240, 1.14", 240dpi display
 
@@ -22,7 +22,6 @@ protected:
 
   uint32_t    ulVeryLargeExtraWaitMsec  = 1000 * 1000;   //Time to do next display needs this.
 
-  //bool  bFirstTimeDrawn   = true;
   float       fCurrentDegFLast  = 0.00;
   float       fSetpointLast     = 0.00;
   float       fOffpointLast     = 0.00;

@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckGasSensorClass.cpp";
-const char szSystemFileDate[]  = "5/9/21b";
+const char szSystemFileDate[]  = "5/9/21c";
 
 #include <BeckGasSensorClass.h>
 #include <BeckGasSensorDataClass.h>
@@ -7,7 +7,7 @@ const char szSystemFileDate[]  = "5/9/21b";
 #include <Streaming.h>
 
 Adafruit_CCS811     CS811_GasSensor;
-GasSensorClass          GasSensor;       //This is so every module can use the same object
+GasSensorClass      GasSensor;       //This is so every module can use the same object
 
 GasSensorClass::GasSensorClass() {
   Serial << "GasSensorClass::GasSensorClass(): " << szSystemFileName << ", " << szSystemFileDate << endl;
@@ -38,7 +38,7 @@ void GasSensorClass::Handle(){
       TVOC_Value= CS811_GasSensor.getTVOC();
 
       GasSensorData.SetCO2_Value(CO2_Value);
-      GasSensorData.SetCO2_Value(CO2_Value);
+      GasSensorData.SetTVOC_Value(TVOC_Value);
 
       if(true || (millis() >= ulNextPrintMsec)){
         ulNextPrintMsec= millis() + ulPrintPeriodMsec;

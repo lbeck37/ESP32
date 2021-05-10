@@ -16,7 +16,7 @@ GasSensorDataClass::~GasSensorDataClass() {
 
 
 void GasSensorDataClass::SetCO2_Value(uint16_t NewCO2Value){
-	CO2_Value= NewCO2Value;
+  CO2_Value= NewCO2Value;
   return;
 }
 
