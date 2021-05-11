@@ -86,7 +86,7 @@ void GasSensorDisplayClass::DrawBar(GasType eGasType, int32_t wValue){
   switch(eGasType) {
     case eCO2Gas :
       YBottomDots = CO2_BarBottomDots;
-      YHeightDots  = CO2_BarHeightDots;
+      YHeightDots = CO2_BarHeightDots;
       if (wValue < CO2_YellowStartValue){
         //Draw partial Green segment
         XLeftDots= CO2_GreenStartDots;
@@ -95,27 +95,20 @@ void GasSensorDisplayClass::DrawBar(GasType eGasType, int32_t wValue){
         XWidthDots= fValueRatio * (CO2_YellowStartDots - CO2_GreenStartDots);
         Serial << "GasSensorDisplayClass::DrawBar():  wValue= " << wValue << ", fValueRatio= " << fValueRatio << endl;
         SetFillColor(TFT_GREEN);
-        Serial << "GasSensorDisplayClass::DrawBar(): TFT_GREEN: XLeftDots= " << XLeftDots << ", YBottomDots= " << YBottomDots <<
-            ", XWidthDots= " << XWidthDots << ", YHeightDots= " << YHeightDots << endl;
         DrawFilledRectangle(XLeftDots, YBottomDots, XWidthDots, YHeightDots);
       } //if(wValue<CO2_YellowStartValue)
       else{
         //Draw full Green segment
-        XLeftDots= CO2_GreenStartDots;
+        XLeftDots = CO2_GreenStartDots;
         XWidthDots= CO2_YellowStartDots - CO2_GreenStartDots;
         SetFillColor(TFT_GREEN);
-        Serial << "GasSensorDisplayClass::DrawBar(): TFT_GREEN: XLeftDots= " << XLeftDots << ", YBottomDots= " << YBottomDots <<
-            ", XWidthDots= " << XWidthDots << ", YHeightDots= " << YHeightDots << endl;
         DrawFilledRectangle(XLeftDots, YBottomDots, XWidthDots, YHeightDots);
         if (wValue <= CO2_RedStartValue){
           //Draw partial Yellow segment
           XLeftDots= CO2_YellowStartDots;
-          //fValueRatio= (wValue - CO2_YellowStartValue) / (CO2_RedStartValue - CO2_YellowStartValue);
           fValueRatio= ((float)(wValue - CO2_YellowStartValue)) / ((float)(CO2_RedStartValue - CO2_YellowStartValue));
           XWidthDots= fValueRatio * (CO2_RedStartDots - CO2_YellowStartDots);
           SetFillColor(TFT_YELLOW);
-          Serial << "GasSensorDisplayClass::DrawBar(): TFT_YELLOW: XLeftDots= " << XLeftDots << ", YBottomDots= " << YBottomDots <<
-              ", XWidthDots= " << XWidthDots << ", YHeightDots= " << YHeightDots << endl;
           DrawFilledRectangle(XLeftDots, YBottomDots, XWidthDots, YHeightDots);
         } //if(CO2_Value<=CO2_RedStart)
         else{
@@ -123,21 +116,55 @@ void GasSensorDisplayClass::DrawBar(GasType eGasType, int32_t wValue){
           XLeftDots= CO2_YellowStartDots;
           XWidthDots= CO2_RedStartDots - CO2_YellowStartDots;
           SetFillColor(TFT_YELLOW);
-          Serial << "GasSensorDisplayClass::DrawBar(): TFT_YELLOW: XLeftDots= " << XLeftDots << ", YBottomDots= " << YBottomDots <<
-              ", XWidthDots= " << XWidthDots << ", YHeightDots= " << YHeightDots << endl;
           DrawFilledRectangle(XLeftDots, YBottomDots, XWidthDots, YHeightDots);
           XLeftDots= CO2_RedStartDots;
           fValueRatio= ((float)(wValue - CO2_RedStartValue)) / ((float)(CO2_RedEndValue - CO2_RedStartValue));
           XWidthDots= fValueRatio * (CO2_RedEndValue - CO2_RedStartValue);
           SetFillColor(TFT_RED);
-          Serial << "GasSensorDisplayClass::DrawBar(): TFT_RED: XLeftDots= " << XLeftDots << ", YBottomDots= " << YBottomDots <<
-              ", XWidthDots= " << XWidthDots << ", YHeightDots= " << YHeightDots << endl;
           DrawFilledRectangle(XLeftDots, YBottomDots, XWidthDots, YHeightDots);
         } // //if(CO2_Value<=CO2_RedStart)
       } //if(wValue<CO2_YellowStartValue)else
       break;
+
     case eVOCGas:
-      YBottomDots= CO2_BarBottomDots;
+      YBottomDots = VOC_BarBottomDots;
+      YHeightDots = VOC_BarHeightDots;
+      if (wValue < VOC_YellowStartValue){
+        //Draw partial Green segment
+        XLeftDots= VOC_GreenStartDots;
+        fValueRatio= ((float)(wValue - VOC_GreenStartValue)) / ((float)(VOC_YellowStartValue - VOC_GreenStartValue));
+        XWidthDots= fValueRatio * (VOC_YellowStartDots - VOC_GreenStartDots);
+        Serial << "GasSensorDisplayClass::DrawBar():  wValue= " << wValue << ", fValueRatio= " << fValueRatio << endl;
+        SetFillColor(TFT_GREEN);
+        DrawFilledRectangle(XLeftDots, YBottomDots, XWidthDots, YHeightDots);
+      } //if(wValue<VOC_YellowStartValue)
+      else{
+        //Draw full Green segment
+        XLeftDots = VOC_GreenStartDots;
+        XWidthDots= VOC_YellowStartDots - VOC_GreenStartDots;
+        SetFillColor(TFT_GREEN);
+        DrawFilledRectangle(XLeftDots, YBottomDots, XWidthDots, YHeightDots);
+        if (wValue <= VOC_RedStartValue){
+          //Draw partial Yellow segment
+          XLeftDots= VOC_YellowStartDots;
+          fValueRatio= ((float)(wValue - VOC_YellowStartValue)) / ((float)(VOC_RedStartValue - VOC_YellowStartValue));
+          XWidthDots= fValueRatio * (VOC_RedStartDots - VOC_YellowStartDots);
+          SetFillColor(TFT_YELLOW);
+          DrawFilledRectangle(XLeftDots, YBottomDots, XWidthDots, YHeightDots);
+        } //if(VOC_Value<=VOC_RedStart)
+        else{
+          //Draw full Yellow segment
+          XLeftDots= VOC_YellowStartDots;
+          XWidthDots= VOC_RedStartDots - VOC_YellowStartDots;
+          SetFillColor(TFT_YELLOW);
+          DrawFilledRectangle(XLeftDots, YBottomDots, XWidthDots, YHeightDots);
+          XLeftDots= VOC_RedStartDots;
+          fValueRatio= ((float)(wValue - VOC_RedStartValue)) / ((float)(VOC_RedEndValue - VOC_RedStartValue));
+          XWidthDots= fValueRatio * (VOC_RedEndValue - VOC_RedStartValue);
+          SetFillColor(TFT_RED);
+          DrawFilledRectangle(XLeftDots, YBottomDots, XWidthDots, YHeightDots);
+        } // //if(VOC_Value<=VOC_RedStart)
+      } //if(wValue<VOC_YellowStartValue)else
       break;
     default :
       Serial << "GasSensorDisplayClass::DrawBar: Bad Switch, eGasType= " << eGasType << endl;
