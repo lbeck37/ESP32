@@ -5,11 +5,11 @@
 #include <BeckDisplayClass.h>
 #include <TFT_eSPI.h>
 
-enum BarType{
-  eNoBarType= -1,
-  eCO2Bar,
-  eSVOCBar,
-  eLastBarType
+enum GasType{
+  eNoGasType= -1,
+  eCO2Gas,
+  eVOCGas,
+  eLastGasType
 };
 
 enum BarSegmentType{
@@ -87,10 +87,10 @@ protected:
 
   void  DrawCO2andTVOC       (void);
   void  DrawCO2andTVOC_text  (void);
-  void  DrawCO2andTVOC_bars  (void);
-  void  DrawCO2_bar          (void);
-  void  DrawVOC_bar          (void);
-  void  DrawBar              (BarType eBarType, int32_t wValue);
+  //void  DrawCO2andTVOC_bars  (void);
+  //void  DrawCO2_bar          (void);
+  //void  DrawVOC_bar          (void);
+  void  DrawBar              (GasType eGasType, int32_t wValue);
 };  //GasSensorDisplayClass
 
 extern GasSensorDisplayClass    GasSensorDisplay;       //This is so every module can use the same object
