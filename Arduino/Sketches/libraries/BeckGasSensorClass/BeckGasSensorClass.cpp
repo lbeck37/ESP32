@@ -38,7 +38,7 @@ void GasSensorClass::Handle(){
       TVOC_Value= CS811_GasSensor.getTVOC();
 
       GasSensorData.SetCO2_Value(CO2_Value);
-      GasSensorData.SetTVOC_Value(TVOC_Value);
+      GasSensorData.SetVOC_Value(TVOC_Value);
 
       if(true || (millis() >= ulNextPrintMsec)){
         ulNextPrintMsec= millis() + ulPrintPeriodMsec;

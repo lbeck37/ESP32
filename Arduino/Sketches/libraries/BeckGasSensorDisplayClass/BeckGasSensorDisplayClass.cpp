@@ -55,7 +55,7 @@ void GasSensorDisplayClass::Setup(void){
 void GasSensorDisplayClass::Handle(){
   //Serial << "GasSensorDisplayClass::Handle(): Begin" << endl;
   if(millis() >= ulNextGasSensorDisplayMsec){
-	ulNextGasSensorDisplayMsec= millis() + ulGasSensorDisplayPeriodMsec;
+    ulNextGasSensorDisplayMsec= millis() + ulGasSensorDisplayPeriodMsec;
     DisplayCO2andTVOC();
   }
   return;
@@ -65,20 +65,69 @@ void GasSensorDisplayClass::Handle(){
 void GasSensorDisplayClass::DisplayCO2andTVOC(void){
   //float   SingleDigitDegF= (int)(10 * ThermostatData.GetCurrentTemperature())/10.0;
 
-    SetTextColor  (Gas_FontColor);
-    SelectFont    (eGas_Font, eGas_PointSize);
+/*
+  SetTextColor  (Gas_FontColor);
+  SelectFont    (eGas_Font, eGas_PointSize);
 
-    FillScreen(Gas_BackgroundColor);
-    Gas_YBaseline= (ScreenHeight *80)/100;
-    SetCursor(Gas_LeftSide, Gas_YBaseline);
-    sprintf(sz100CharDisplayBuffer, "CO2 %4dppm", GasSensorData.GetCO2_Value());
-    Print(sz100CharDisplayBuffer);
+  FillScreen(Gas_BackgroundColor);
+  SetCursor(CO2_TextLeft, CO2_TextBottom);
+  sprintf(sz100CharDisplayBuffer, "CO2:%4dppm", GasSensorData.GetCO2_Value());
+  Print(sz100CharDisplayBuffer);
 
-    Gas_YBaseline= (ScreenHeight * 30)/100;
-    SetCursor(Gas_LeftSide, Gas_YBaseline);
-    sprintf(sz100CharDisplayBuffer, "TVOC%4dppb", GasSensorData.GetTVOC_Value());
-    Print(sz100CharDisplayBuffer);
-
+  SetCursor(VOC_TextLeft, VOC_TextBottom);
+  sprintf(sz100CharDisplayBuffer, "VOC:%4dppb", GasSensorData.GetTVOC_Value());
+  Print(sz100CharDisplayBuffer);
+*/
+  DisplayCO2andTVOC_text();
+  //DisplayCO2andTVOC_bars();
   return;
 } //DisplayCO2andTVOC
+
+
+void GasSensorDisplayClass::DisplayCO2andTVOC_text(void){
+  SetTextColor  (Gas_FontColor);
+  SelectFont    (eGas_Font, eGas_PointSize);
+
+  FillScreen(Gas_BackgroundColor);    //Minimize this, later.
+
+  SetCursor(CO2_TextLeft, CO2_TextBottomDots);
+  sprintf(sz100CharDisplayBuffer, "CO2:%4dppm", GasSensorData.GetCO2_Value());
+  Print(sz100CharDisplayBuffer);
+
+  SetCursor(VOC_TextLeft, VOC_TextBottomDots);
+  sprintf(sz100CharDisplayBuffer, "VOC:%4dppb", GasSensorData.GetVOC_Value());
+  Print(sz100CharDisplayBuffer);
+  return;
+}   //DisplayCO2andTVOC_text
+
+
+void GasSensorDisplayClass::DisplayCO2andTVOC_bars(void){
+  int CO2_Value= GasSensorData.GetCO2_Value();
+  int VOC_Value= GasSensorData.GetVOC_Value();
+
+
+  //DrawFilledRectangle(CO2_BarLeftDots, VOC_BarBottomDots, ThermoOnBarWidth, ThermoOnBarHeight);
+
+  return;
+}   //DisplayCO2andTVOC_bars
+
+void GasSensorDisplayClass::DisplayCO2_bar(void){
+    int CO2_Value= GasSensorData.GetCO2_Value();
+
+    if (CO2_Value <= CO2_YellowStart){
+      SetFillColor(TFT_GREEN);
+    } //if(CO2_Value<=CO2_YellowStart)
+    else{
+      if (CO2_Value <= CO2_RedStart){
+        SetFillColor(TFT_YELLOW);
+      } //if(CO2_Value<=CO2_RedStart)
+      else{
+        SetFillColor(TFT_RED);
+      } // //if(CO2_Value<=CO2_RedStart)
+    } //if(CO2_Value<=CO2_YellowStart)else
+
+    //DrawFilledRectangle(CO2_BarLeftDots, VOC_BarBottomDots, ThermoOnBarWidth, ThermoOnBarHeight);
+
+    return;
+  }   //DisplayCO2andTVOC_bars
 //Last line.

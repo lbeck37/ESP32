@@ -1,5 +1,5 @@
 const char szGasSensorDataClassFileName[]  = "BeckGasSensorDataClass.cpp";
-const char szGasSensorDataClassFileDate[]  = "5/9/21a";
+const char szGasSensorDataClassFileDate[]  = "5/10/21a";
 
 #include <BeckGasSensorDataClass.h>
 #include <Streaming.h>
@@ -25,12 +25,12 @@ uint16_t GasSensorDataClass::GetCO2_Value(){
 }
 
 
-void GasSensorDataClass::SetTVOC_Value(uint16_t NewTVOCValue){
-	TVOC_Value= NewTVOCValue;
+void GasSensorDataClass::SetVOC_Value(uint16_t NewVOCValue){
+	VOC_Value= NewVOCValue;
   return;
 }
 
-uint16_t GasSensorDataClass::GetTVOC_Value(){
-  return TVOC_Value;
+uint16_t GasSensorDataClass::GetVOC_Value(){
+  return VOC_Value;
 }
 //Last line.

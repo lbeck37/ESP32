@@ -109,8 +109,8 @@ public:
   virtual void  FillScreen            (void){}
   virtual void  FillScreen            (Colortype FillColor){}
   virtual void  DrawLine              (PUnit X1, PUnit Y1, PUnit X2, PUnit Y2){}
-  virtual void  DrawRectangle         (PUnit XLeft, PUnit YTop, PUnit Width, PUnit Height){}
-  virtual void  DrawFilledRectangle   (PUnit XLeft, PUnit YTop, PUnit Width, PUnit Height){}
+  virtual void  DrawRectangle         (PUnit XLeft, PUnit YBottom, PUnit Width, PUnit Height){}
+  virtual void  DrawFilledRectangle   (PUnit XLeft, PUnit YBottom, PUnit Width, PUnit Height){}
   virtual void  DrawFilledCircle      (PUnit XCenter, PUnit YCenter, PUnit Radius){}
   virtual void  DrawGrid              (void){}
   virtual void  Print                 (const char* szLineToPrint){}
