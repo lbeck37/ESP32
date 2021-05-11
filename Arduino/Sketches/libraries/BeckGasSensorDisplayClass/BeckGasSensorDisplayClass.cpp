@@ -1,5 +1,5 @@
 const char szGasSensorDisplayClassFileName[]  = "BeckGasSensorDisplayClass.cpp";
-const char szGasSensorDisplayClassFileDate[]  = "5/10/21a";
+const char szGasSensorDisplayClassFileDate[]  = "5/11/21a";
 
 //#include <BeckDisplayClass.h>
 #include <BeckGasSensorDisplayClass.h>
@@ -56,13 +56,13 @@ void GasSensorDisplayClass::Handle(){
   //Serial << "GasSensorDisplayClass::Handle(): Begin" << endl;
   if(millis() >= ulNextGasSensorDisplayMsec){
     ulNextGasSensorDisplayMsec= millis() + ulGasSensorDisplayPeriodMsec;
-    DisplayCO2andTVOC();
+    DrawCO2andTVOC();
   }
   return;
 } //Handle
 
 
-void GasSensorDisplayClass::DisplayCO2andTVOC(void){
+void GasSensorDisplayClass::DrawCO2andTVOC(void){
   //float   SingleDigitDegF= (int)(10 * ThermostatData.GetCurrentTemperature())/10.0;
 
 /*
@@ -78,30 +78,30 @@ void GasSensorDisplayClass::DisplayCO2andTVOC(void){
   sprintf(sz100CharDisplayBuffer, "VOC:%4dppb", GasSensorData.GetTVOC_Value());
   Print(sz100CharDisplayBuffer);
 */
-  DisplayCO2andTVOC_text();
-  //DisplayCO2andTVOC_bars();
+  DrawCO2andTVOC_text();
+  //DrawCO2andTVOC_bars();
   return;
-} //DisplayCO2andTVOC
+} //DrawCO2andTVOC
 
 
-void GasSensorDisplayClass::DisplayCO2andTVOC_text(void){
+void GasSensorDisplayClass::DrawCO2andTVOC_text(void){
   SetTextColor  (Gas_FontColor);
   SelectFont    (eGas_Font, eGas_PointSize);
 
   FillScreen(Gas_BackgroundColor);    //Minimize this, later.
 
-  SetCursor(CO2_TextLeft, CO2_TextBottomDots);
+  SetCursor(CO2_TextLeftDots, CO2_TextBottomDots);
   sprintf(sz100CharDisplayBuffer, "CO2:%4dppm", GasSensorData.GetCO2_Value());
   Print(sz100CharDisplayBuffer);
 
-  SetCursor(VOC_TextLeft, VOC_TextBottomDots);
+  SetCursor(VOC_TextLeftDots, VOC_TextBottomDots);
   sprintf(sz100CharDisplayBuffer, "VOC:%4dppb", GasSensorData.GetVOC_Value());
   Print(sz100CharDisplayBuffer);
   return;
-}   //DisplayCO2andTVOC_text
+}   //DrawCO2andTVOC_text
 
 
-void GasSensorDisplayClass::DisplayCO2andTVOC_bars(void){
+void GasSensorDisplayClass::DrawCO2andTVOC_bars(void){
   int CO2_Value= GasSensorData.GetCO2_Value();
   int VOC_Value= GasSensorData.GetVOC_Value();
 
@@ -109,16 +109,17 @@ void GasSensorDisplayClass::DisplayCO2andTVOC_bars(void){
   //DrawFilledRectangle(CO2_BarLeftDots, VOC_BarBottomDots, ThermoOnBarWidth, ThermoOnBarHeight);
 
   return;
-}   //DisplayCO2andTVOC_bars
+}   //DrawCO2andTVOC_bars
 
-void GasSensorDisplayClass::DisplayCO2_bar(void){
+/*
+void GasSensorDisplayClass::DrawCO2_bar(void){
     int CO2_Value= GasSensorData.GetCO2_Value();
 
-    if (CO2_Value <= CO2_YellowStart){
+    if (CO2_Value <= CO2_YellowStartValue){
       SetFillColor(TFT_GREEN);
-    } //if(CO2_Value<=CO2_YellowStart)
+    } //if(CO2_Value<=CO2_YellowStartValue)
     else{
-      if (CO2_Value <= CO2_RedStart){
+      if (CO2_Value <= CO2_RedStartValue){
         SetFillColor(TFT_YELLOW);
       } //if(CO2_Value<=CO2_RedStart)
       else{
@@ -129,5 +130,61 @@ void GasSensorDisplayClass::DisplayCO2_bar(void){
     //DrawFilledRectangle(CO2_BarLeftDots, VOC_BarBottomDots, ThermoOnBarWidth, ThermoOnBarHeight);
 
     return;
-  }   //DisplayCO2andTVOC_bars
+  }   //DrawCO2andTVOC_bars
+*/
+
+
+void GasSensorDisplayClass::DrawBar(BarType eBarType, int32_t wValue){
+  int32_t   XLeftDots;
+  //int32_t   XRightDots;
+  int32_t   YBottomDots;
+  int32_t   XWidthDots;
+  int32_t   YHeightDots;
+  int32_t   ValueRatio;
+
+  switch(eBarType) {
+    case eCO2Bar :
+      YBottomDots = CO2_BarBottomDots;
+      YHeightDots  = CO2_BarHeightDots;
+      if (wValue < CO2_YellowStartValue){
+        //Draw partial Green segment
+        XLeftDots= CO2_GreenStartDots;
+        ValueRatio= (wValue - CO2_GreenStartValue) / (CO2_YellowStartValue - CO2_GreenStartValue);
+        XWidthDots= ValueRatio * (CO2_YellowStartDots - CO2_GreenStartDots);
+        SetFillColor(TFT_GREEN);
+        DrawFilledRectangle(XLeftDots, YBottomDots, XWidthDots, YHeightDots);
+      } //if(wValue<CO2_YellowStartValue)
+      else{
+        //Draw full Green segment
+        XLeftDots= CO2_GreenStartDots;
+        XWidthDots= CO2_YellowStartDots - CO2_GreenStartDots;
+        SetFillColor(TFT_GREEN);
+        DrawFilledRectangle(XLeftDots, YBottomDots, XWidthDots, YHeightDots);
+        if (wValue <= CO2_RedStartValue){
+          //Draw partial Yellow segment
+          XLeftDots= CO2_YellowStartDots;
+          ValueRatio= (wValue - CO2_YellowStartValue) / (CO2_RedStartValue - CO2_YellowStartValue);
+          XWidthDots= ValueRatio * (CO2_RedStartDots - CO2_YellowStartDots);
+          SetFillColor(TFT_YELLOW);
+          DrawFilledRectangle(XLeftDots, YBottomDots, XWidthDots, YHeightDots);
+        } //if(CO2_Value<=CO2_RedStart)
+        else{
+          XLeftDots= CO2_RedStartDots;
+          ValueRatio= (wValue - CO2_RedStartValue) / (CO2_RedEndValue - CO2_RedStartValue);
+          XWidthDots= ValueRatio * (CO2_RedEndValue - CO2_RedStartValue);
+          SetFillColor(TFT_RED);
+          DrawFilledRectangle(XLeftDots, YBottomDots, XWidthDots, YHeightDots);
+        } // //if(CO2_Value<=CO2_RedStart)
+      } //if(wValue<CO2_YellowStartValue)else
+      break;
+    case eSVOCBar:
+      YBottomDots= CO2_BarBottomDots;
+      break;
+    default :
+      Serial << "GasSensorDisplayClass::DrawBar: Bad Switch, eBarType= " << eBarType << endl;
+      break;
+  } //switch
+  return;
+}
+
 //Last line.

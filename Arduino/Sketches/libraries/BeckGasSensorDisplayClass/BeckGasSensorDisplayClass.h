@@ -1,9 +1,24 @@
-// BeckGasSensorDisplayClass.h, 5/10/21d
+// BeckGasSensorDisplayClass.h, 5/11/2e
 #pragma once
 //Initially used for TTGO ESP32 module. 135 x 240, 1.14", 240dpi display
 
 #include <BeckDisplayClass.h>
 #include <TFT_eSPI.h>
+
+enum BarType{
+  eNoBarType= -1,
+  eCO2Bar,
+  eSVOCBar,
+  eLastBarType
+};
+
+enum BarSegmentType{
+  eNoBarSegmentType= -1,
+  eGreenBarSegment,
+  eYellowBarSegment,
+  eRedBarSegment,
+  eLastBarSegmentType
+};
 
 class GasSensorDisplayClass : public TTGO_DisplayClass {
 public:
@@ -14,10 +29,37 @@ public:
   void  Handle            (void);
 
 protected:
+  Colortype         Gas_BackgroundColor             = TFT_WHITE;
+  Colortype         Gas_FontColor                   = TFT_BLACK;
+
+  FontFaceType      eGas_Font                       = eMonospacedBold;
+  FontPointType     eGas_PointSize                  = e30point;
+
   uint32_t          ulNextGasSensorDisplayMsec      = 0;
   uint32_t          ulGasSensorDisplayPeriodMsec    = 1000; //mSec between updating display
 
-  int               CO2_TextBottomPercent           = 80;
+  int32_t           CO2_GreenStartValue             =    0;   // parts/million
+  int32_t           CO2_YellowStartValue            =  600;
+  int32_t           CO2_RedStartValue               = 1000;
+  int32_t           CO2_RedEndValue                 = 2000;
+
+  int32_t           VOC_GreenStartValue             =    0;   // parts/billion
+  int32_t           VOC_YellowStartValue            =  200;
+  int32_t           VOC_RedStartValue               =  600;
+  int32_t           VOC_RedEndValue                 = 1000;
+
+  int32_t           CO2_GreenStartPercent           =   0;    // Percent of screen width
+  int32_t           CO2_YellowStartPercent          =  33;
+  int32_t           CO2_RedStartPercent             =  66;
+
+  int32_t           VOC_GreenStartPercent           =   0;
+  int32_t           VOC_YellowStartPercent          =  33;
+  int32_t           VOC_RedStartPercent             =  66;
+
+  PUnit             CO2_TextLeftDots                = 0;
+  PUnit             VOC_TextLeftDots                = 0;
+
+  int               CO2_TextBottomPercent           = 80;    // Percent of screen height
   int               VOC_TextBottomPercent           = 30;
 
   int               CO2_BarHeightPercent            = 20;
@@ -25,12 +67,6 @@ protected:
 
   int               CO2_BarBottomPercent            = 55;
   int               VOC_BarBottomPercent            =  5;
-
-  int               CO2_BarLeftPercent              =  0;
-  int               VOC_BarLeftPercent              =  0;
-
-  PUnit             CO2_TextLeft                    = 0;
-  PUnit             VOC_TextLeft                    = 0;
 
   PUnit             CO2_TextBottomDots              = (ScreenHeight * CO2_TextBottomPercent)/100;
   PUnit             VOC_TextBottomDots              = (ScreenHeight * VOC_TextBottomPercent)/100;
@@ -41,32 +77,20 @@ protected:
   PUnit             CO2_BarBottomDots               = (ScreenHeight * CO2_BarBottomPercent) /100;
   PUnit             VOC_BarBottomDots               = (ScreenHeight * VOC_BarBottomPercent) /100;
 
-  PUnit             CO2_BarLeftDots                 = (ScreenWidth * CO2_BarLeftPercent) /100;
-  PUnit             VOC_BarLeftDots                 = (ScreenWidth * VOC_BarLeftPercent) /100;
+  PUnit             CO2_GreenStartDots              = (ScreenWidth * CO2_GreenStartPercent)  /100;
+  PUnit             CO2_YellowStartDots             = (ScreenWidth * CO2_YellowStartPercent) /100;
+  PUnit             CO2_RedStartDots                = (ScreenWidth * CO2_RedStartPercent)    /100;
 
-  int32_t           CO2_YellowStart                 =  600;   // parts/million
-  int32_t           CO2_RedStart                    = 1000;   // parts/million
+  PUnit             VOC_GreenStartDots              = (ScreenWidth * VOC_GreenStartPercent)  /100;
+  PUnit             VOC_YellowStartDots             = (ScreenWidth * VOC_YellowStartPercent) /100;
+  PUnit             VOC_RedStartDots                = (ScreenWidth * VOC_RedStartPercent)    /100;
 
-  int32_t           CO2_YellowStartPercent          =  33;
-  int32_t           CO2_RedStartPercent             =  66;
-
-  int               VOC_YellowStart                 =  200;   // parts/billion
-  int               VOC_RedStart                    =  600;   // parts/billion
-
-  int32_t           VOC_YellowStartPercent          =  33;
-  int32_t           VOC_RedStartPercent             =  66;
-
-  Colortype         Gas_BackgroundColor             = TFT_WHITE;
-  Colortype         Gas_FontColor                   = TFT_BLACK;
-
-  FontFaceType      eGas_Font                       = eMonospacedBold;
-  FontPointType     eGas_PointSize                  = e30point;
-
-  void  DisplayCO2andTVOC       (void);
-  void  DisplayCO2andTVOC_text  (void);
-  void  DisplayCO2andTVOC_bars  (void);
-  void  DisplayCO2_bar          (void);
-  void  DisplayVOC_bar          (void);
+  void  DrawCO2andTVOC       (void);
+  void  DrawCO2andTVOC_text  (void);
+  void  DrawCO2andTVOC_bars  (void);
+  void  DrawCO2_bar          (void);
+  void  DrawVOC_bar          (void);
+  void  DrawBar              (BarType eBarType, int32_t wValue);
 };  //GasSensorDisplayClass
 
 extern GasSensorDisplayClass    GasSensorDisplay;       //This is so every module can use the same object
