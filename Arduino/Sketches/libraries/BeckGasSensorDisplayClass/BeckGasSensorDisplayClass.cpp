@@ -93,7 +93,6 @@ void GasSensorDisplayClass::DrawBar(GasType eGasType, int32_t wValue){
         //fValueRatio= (wValue - CO2_GreenStartValue) / (CO2_YellowStartValue - CO2_GreenStartValue);
         fValueRatio= ((float)(wValue - CO2_GreenStartValue)) / ((float)(CO2_YellowStartValue - CO2_GreenStartValue));
         XWidthDots= fValueRatio * (CO2_YellowStartDots - CO2_GreenStartDots);
-        Serial << "GasSensorDisplayClass::DrawBar():  wValue= " << wValue << ", fValueRatio= " << fValueRatio << endl;
         SetFillColor(TFT_GREEN);
         DrawFilledRectangle(XLeftDots, YBottomDots, XWidthDots, YHeightDots);
       } //if(wValue<CO2_YellowStartValue)
@@ -134,7 +133,6 @@ void GasSensorDisplayClass::DrawBar(GasType eGasType, int32_t wValue){
         XLeftDots= VOC_GreenStartDots;
         fValueRatio= ((float)(wValue - VOC_GreenStartValue)) / ((float)(VOC_YellowStartValue - VOC_GreenStartValue));
         XWidthDots= fValueRatio * (VOC_YellowStartDots - VOC_GreenStartDots);
-        Serial << "GasSensorDisplayClass::DrawBar():  wValue= " << wValue << ", fValueRatio= " << fValueRatio << endl;
         SetFillColor(TFT_GREEN);
         DrawFilledRectangle(XLeftDots, YBottomDots, XWidthDots, YHeightDots);
       } //if(wValue<VOC_YellowStartValue)
