@@ -82,7 +82,7 @@ void GasSensorDisplayClass::DrawBar(GasType eGasType, int32_t wValue){
     case eCO2Gas :
       //Only clear the bar if the new value is less than the old value,
       //Serial << "GasSensorDisplayClass::DrawBar(): CO2_LastValue= " << CO2_LastValue << ", wValue= " << wValue << endl;
-      if (false || wValue < CO2_LastValue){
+      if (wValue < CO2_LastValue){
         Serial << "GasSensorDisplayClass::DrawBar(): Clearing CO2 bar, CO2_LastValue= " << CO2_LastValue << ", wValue= " << wValue << endl;
         SetFillColor(Gas_BackgroundColor);
         if (wValue < CO2_YellowStartValue){
@@ -143,13 +143,34 @@ void GasSensorDisplayClass::DrawBar(GasType eGasType, int32_t wValue){
 
     case eVOCGas:
       //Serial << "GasSensorDisplayClass::DrawBar(): VOC_LastValue= " << VOC_LastValue << ", wValue= " << wValue << endl;
-      if (false || wValue < VOC_LastValue){
+/*
+      if (wValue < VOC_LastValue){
         Serial << "GasSensorDisplayClass::DrawBar(): Clearing VOC bar, VOC_LastValue= " << VOC_LastValue <<
             ", wValue= " << wValue << endl;
         SetFillColor(Gas_BackgroundColor);
         int BarWidth= ScreenWidth - VOC_GreenStartDots;
         DrawFilledRectangle(VOC_GreenStartDots, VOC_BarBottomDots, BarWidth, CO2_BarHeightDots);
       }
+*/
+      if (wValue < VOC_LastValue){
+        Serial << "GasSensorDisplayClass::DrawBar(): Clearing VOC bar, VOC_LastValue= " << VOC_LastValue << ", wValue= " << wValue << endl;
+        SetFillColor(Gas_BackgroundColor);
+        if (wValue < VOC_YellowStartValue){
+          XStartDot= VOC_GreenStartDots;
+        } //if(wValue<VOC_YellowStartValue)
+        else{
+          if (wValue < VOC_RedStartValue){
+            XStartDot= VOC_YellowStartDots;
+          } //if(wValue<VOC_RedStartValue)
+          else{
+            if (wValue < VOC_RedEndValue){
+              XStartDot= VOC_RedStartDots;
+            }
+          } //if(wValue<VOC_RedStartValue)else
+        } //if(wValue<VOC_YellowStartValue)else
+        BarWidth= ScreenWidth - XStartDot;
+        DrawFilledRectangle(XStartDot, VOC_BarBottomDots, BarWidth, VOC_BarHeightDots);
+      } //if(wValue < VOC_LastValue)
       VOC_LastValue= wValue;
       YBottomDots = VOC_BarBottomDots;
       YHeightDots = VOC_BarHeightDots;
