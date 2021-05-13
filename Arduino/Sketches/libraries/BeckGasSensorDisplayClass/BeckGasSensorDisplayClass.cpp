@@ -1,13 +1,12 @@
 const char szGasSensorDisplayClassFileName[]  = "BeckGasSensorDisplayClass.cpp";
-const char szGasSensorDisplayClassFileDate[]  = "5/11/21a";
+const char szGasSensorDisplayClassFileDate[]  = "5/13/21d";
 
-//#include <BeckDisplayClass.h>
 #include <BeckGasSensorDisplayClass.h>
 #include <BeckGasSensorDataClass.h>
 #include "Free_Fonts.h"
 #include <Streaming.h>
 
-GasSensorDisplayClass	GasSensorDisplay;                   //So every module can use the same object
+GasSensorDisplayClass GasSensorDisplay;                   //So every module can use the same object
 
 GasSensorDisplayClass::GasSensorDisplayClass() {
   Serial << "GasSensorDisplayClass::GasSensorDisplayClass(): Do nothing."  << endl;
@@ -20,57 +19,51 @@ GasSensorDisplayClass::~GasSensorDisplayClass() {
 
 
 void GasSensorDisplayClass::Setup(void){
+  FillScreen(Gas_BackgroundColor);    //Minimize this, later.
   Serial << "GasSensorDisplayClass::Setup(): Call Handle()" << endl;
   Handle();
   return;
 } //Setup
 
 void GasSensorDisplayClass::Handle(){
-  //Serial << "GasSensorDisplayClass::Handle(): Begin" << endl;
-  if(millis() >= ulNextGasSensorDisplayMsec){
+   if(millis() >= ulNextGasSensorDisplayMsec){
     ulNextGasSensorDisplayMsec= millis() + ulGasSensorDisplayPeriodMsec;
-    DrawCO2andTVOC();
+    //DrawCO2andTVOC();
+    int32_t   CO2_Value= GasSensorData.GetCO2_Value();
+    int32_t   VOC_Value= GasSensorData.GetVOC_Value();
+
+    DrawCO2andTVOC_text(CO2_Value, VOC_Value);
+    DrawBar(eCO2Gas, CO2_Value);
+    DrawBar(eVOCGas, VOC_Value);
+    VOC_LastValue= CO2_Value;
   }
   return;
 } //Handle
 
 
-void GasSensorDisplayClass::DrawCO2andTVOC(void){
-  //float   SingleDigitDegF= (int)(10 * ThermostatData.GetCurrentTemperature())/10.0;
-
-/*
+void GasSensorDisplayClass::DrawCO2andTVOC_text(int32_t CO2_Value, int32_t VOC_Value){
   SetTextColor  (Gas_FontColor);
   SelectFont    (eGas_Font, eGas_PointSize);
 
-  FillScreen(Gas_BackgroundColor);
-  SetCursor(CO2_TextLeft, CO2_TextBottom);
-  sprintf(sz100CharDisplayBuffer, "CO2:%4dppm", GasSensorData.GetCO2_Value());
-  Print(sz100CharDisplayBuffer);
+  //If the new value is different than last value, clear the changed area and display the new value.
+  if (CO2_Value != CO2_LastValue){
+    SetFillColor(Gas_BackgroundColor);
+    DrawFilledRectangle(BlankTextLeftDots, BlankTextCO2BottomDots, BlankTextWidthDots, BlankTextHeightDots);
 
-  SetCursor(VOC_TextLeft, VOC_TextBottom);
-  sprintf(sz100CharDisplayBuffer, "VOC:%4dppb", GasSensorData.GetTVOC_Value());
-  Print(sz100CharDisplayBuffer);
-*/
-  DrawCO2andTVOC_text();
-  DrawBar(eCO2Gas, GasSensorData.GetCO2_Value());
-  DrawBar(eVOCGas, GasSensorData.GetVOC_Value());
-  return;
-} //DrawCO2andTVOC
+    SetCursor(CO2_TextLeftDots, CO2_TextBottomDots);
+    sprintf(sz100CharDisplayBuffer, "CO2:%4dppm", CO2_Value);
+    Print(sz100CharDisplayBuffer);
+  } //if(CO2Value!=CO2_LastValue)
 
+  if (VOC_Value != VOC_LastValue){
+    SetFillColor(Gas_BackgroundColor);
+    DrawFilledRectangle(BlankTextLeftDots, BlankTextVOCBottomDots, BlankTextWidthDots, BlankTextHeightDots);
 
-void GasSensorDisplayClass::DrawCO2andTVOC_text(void){
-  SetTextColor  (Gas_FontColor);
-  SelectFont    (eGas_Font, eGas_PointSize);
+    SetCursor(VOC_TextLeftDots, VOC_TextBottomDots);
+    sprintf(sz100CharDisplayBuffer, "VOC:%4dppb", VOC_Value);
+    Print(sz100CharDisplayBuffer);
+  } //if(CO2Value!=CO2_LastValue)
 
-  FillScreen(Gas_BackgroundColor);    //Minimize this, later.
-
-  SetCursor(CO2_TextLeftDots, CO2_TextBottomDots);
-  sprintf(sz100CharDisplayBuffer, "CO2:%4dppm", GasSensorData.GetCO2_Value());
-  Print(sz100CharDisplayBuffer);
-
-  SetCursor(VOC_TextLeftDots, VOC_TextBottomDots);
-  sprintf(sz100CharDisplayBuffer, "VOC:%4dppb", GasSensorData.GetVOC_Value());
-  Print(sz100CharDisplayBuffer);
   return;
 }   //DrawCO2andTVOC_text
 
@@ -82,15 +75,38 @@ void GasSensorDisplayClass::DrawBar(GasType eGasType, int32_t wValue){
   int32_t   XWidthDots;
   int32_t   YHeightDots;
   float     fValueRatio;
+  int       XStartDot;
+  int       BarWidth;
 
   switch(eGasType) {
     case eCO2Gas :
+      //Only clear the bar if the new value is less than the old value,
+      //Serial << "GasSensorDisplayClass::DrawBar(): CO2_LastValue= " << CO2_LastValue << ", wValue= " << wValue << endl;
+      if (false || wValue < CO2_LastValue){
+        Serial << "GasSensorDisplayClass::DrawBar(): Clearing CO2 bar, CO2_LastValue= " << CO2_LastValue << ", wValue= " << wValue << endl;
+        SetFillColor(Gas_BackgroundColor);
+        if (wValue < CO2_YellowStartValue){
+          XStartDot= CO2_GreenStartDots;
+        } //if(wValue<CO2_YellowStartValue)
+        else{
+          if (wValue < CO2_RedStartValue){
+            XStartDot= CO2_YellowStartDots;
+          } //if(wValue<CO2_RedStartValue)
+          else{
+            if (wValue < CO2_RedEndValue){
+              XStartDot= CO2_RedStartDots;
+            }
+          } //if(wValue<CO2_RedStartValue)else
+        } //if(wValue<CO2_YellowStartValue)else
+        BarWidth= ScreenWidth - XStartDot;
+        DrawFilledRectangle(XStartDot, CO2_BarBottomDots, BarWidth, CO2_BarHeightDots);
+      } //if(wValue < CO2_LastValue)
+      CO2_LastValue= wValue;
       YBottomDots = CO2_BarBottomDots;
       YHeightDots = CO2_BarHeightDots;
       if (wValue < CO2_YellowStartValue){
         //Draw partial Green segment
         XLeftDots= CO2_GreenStartDots;
-        //fValueRatio= (wValue - CO2_GreenStartValue) / (CO2_YellowStartValue - CO2_GreenStartValue);
         fValueRatio= ((float)(wValue - CO2_GreenStartValue)) / ((float)(CO2_YellowStartValue - CO2_GreenStartValue));
         XWidthDots= fValueRatio * (CO2_YellowStartDots - CO2_GreenStartDots);
         SetFillColor(TFT_GREEN);
@@ -126,6 +142,15 @@ void GasSensorDisplayClass::DrawBar(GasType eGasType, int32_t wValue){
       break;
 
     case eVOCGas:
+      //Serial << "GasSensorDisplayClass::DrawBar(): VOC_LastValue= " << VOC_LastValue << ", wValue= " << wValue << endl;
+      if (false || wValue < VOC_LastValue){
+        Serial << "GasSensorDisplayClass::DrawBar(): Clearing VOC bar, VOC_LastValue= " << VOC_LastValue <<
+            ", wValue= " << wValue << endl;
+        SetFillColor(Gas_BackgroundColor);
+        int BarWidth= ScreenWidth - VOC_GreenStartDots;
+        DrawFilledRectangle(VOC_GreenStartDots, VOC_BarBottomDots, BarWidth, CO2_BarHeightDots);
+      }
+      VOC_LastValue= wValue;
       YBottomDots = VOC_BarBottomDots;
       YHeightDots = VOC_BarHeightDots;
       if (wValue < VOC_YellowStartValue){

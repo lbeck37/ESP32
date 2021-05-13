@@ -1,4 +1,4 @@
-// BeckGasSensorDisplayClass.h, 5/11/2e
+// BeckGasSensorDisplayClass.h, 5/13/21c
 #pragma once
 //Initially used for TTGO ESP32 module. 135 x 240, 1.14", 240dpi display
 
@@ -29,14 +29,23 @@ public:
   void  Handle            (void);
 
 protected:
-  Colortype         Gas_BackgroundColor             = TFT_WHITE;
-  Colortype         Gas_FontColor                   = TFT_BLACK;
+  Colortype         Gas_BackgroundColor             = TFT_BLACK;
+  Colortype         Gas_FontColor                   = TFT_CYAN;
 
   FontFaceType      eGas_Font                       = eMonospacedBold;
   FontPointType     eGas_PointSize                  = e30point;
 
+  PUnit             BlankTextLeftDots               =  72;     //Area of screen to clear before writing text values
+  PUnit             BlankTextWidthDots              =  84;
+  PUnit             BlankTextHeightDots             =  30;
+  PUnit             BlankTextCO2BottomDots          = 108;
+  PUnit             BlankTextVOCBottomDots          =  40;
+
   uint32_t          ulNextGasSensorDisplayMsec      = 0;
   uint32_t          ulGasSensorDisplayPeriodMsec    = 1000; //mSec between updating display
+
+  int32_t           CO2_LastValue                   = -1;
+  int32_t           VOC_LastValue                   = -1;
 
   int32_t           CO2_GreenStartValue             =    0;   // parts/million
   int32_t           CO2_YellowStartValue            =  600;
@@ -85,11 +94,7 @@ protected:
   PUnit             VOC_YellowStartDots             = (ScreenWidth * VOC_YellowStartPercent) /100;
   PUnit             VOC_RedStartDots                = (ScreenWidth * VOC_RedStartPercent)    /100;
 
-  void  DrawCO2andTVOC       (void);
-  void  DrawCO2andTVOC_text  (void);
-  //void  DrawCO2andTVOC_bars  (void);
-  //void  DrawCO2_bar          (void);
-  //void  DrawVOC_bar          (void);
+  void  DrawCO2andTVOC_text  (int32_t CO2_Value, int32_t VOC_Value);
   void  DrawBar              (GasType eGasType, int32_t wValue);
 };  //GasSensorDisplayClass
 
