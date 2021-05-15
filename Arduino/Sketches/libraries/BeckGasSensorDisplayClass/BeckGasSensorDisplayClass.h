@@ -1,4 +1,4 @@
-// BeckGasSensorDisplayClass.h, 5/13/21c
+// BeckGasSensorDisplayClass.h, 5/13/21d
 #pragma once
 //Initially used for TTGO ESP32 module. 135 x 240, 1.14", 240dpi display
 

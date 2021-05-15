@@ -81,9 +81,7 @@ void GasSensorDisplayClass::DrawBar(GasType eGasType, int32_t wValue){
   switch(eGasType) {
     case eCO2Gas :
       //Only clear the bar if the new value is less than the old value,
-      //Serial << "GasSensorDisplayClass::DrawBar(): CO2_LastValue= " << CO2_LastValue << ", wValue= " << wValue << endl;
       if (wValue < CO2_LastValue){
-        Serial << "GasSensorDisplayClass::DrawBar(): Clearing CO2 bar, CO2_LastValue= " << CO2_LastValue << ", wValue= " << wValue << endl;
         SetFillColor(Gas_BackgroundColor);
         if (wValue < CO2_YellowStartValue){
           XStartDot= CO2_GreenStartDots;
@@ -142,16 +140,6 @@ void GasSensorDisplayClass::DrawBar(GasType eGasType, int32_t wValue){
       break;
 
     case eVOCGas:
-      //Serial << "GasSensorDisplayClass::DrawBar(): VOC_LastValue= " << VOC_LastValue << ", wValue= " << wValue << endl;
-/*
-      if (wValue < VOC_LastValue){
-        Serial << "GasSensorDisplayClass::DrawBar(): Clearing VOC bar, VOC_LastValue= " << VOC_LastValue <<
-            ", wValue= " << wValue << endl;
-        SetFillColor(Gas_BackgroundColor);
-        int BarWidth= ScreenWidth - VOC_GreenStartDots;
-        DrawFilledRectangle(VOC_GreenStartDots, VOC_BarBottomDots, BarWidth, CO2_BarHeightDots);
-      }
-*/
       if (wValue < VOC_LastValue){
         Serial << "GasSensorDisplayClass::DrawBar(): Clearing VOC bar, VOC_LastValue= " << VOC_LastValue << ", wValue= " << wValue << endl;
         SetFillColor(Gas_BackgroundColor);
