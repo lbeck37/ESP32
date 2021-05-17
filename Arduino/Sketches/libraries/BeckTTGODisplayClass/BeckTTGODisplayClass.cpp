@@ -1,8 +1,6 @@
-const char szDisplayClassFileName[]  = "BeckDisplayClass.cpp";
-const char szDisplayClassFileDate[]  = "5/17/21a";
+// BeckTTGODisplayClass.cpp, 5/17/21a
 
-#include <BeckDisplayClass.h>
-#include <BeckThermostatDataClass.h>
+#include <BeckTTGODisplayClass.h>
 #include "Free_Fonts.h"
 #include <Streaming.h>
 
@@ -38,25 +36,15 @@ const char szDisplayClassFileDate[]  = "5/17/21a";
   #include <Roboto_Medium_150.h>
 #endif
 
-DisplayClass::DisplayClass() {
-  Serial << "Display::Display(): " << szDisplayClassFileName << ", " << szDisplayClassFileDate << endl;
-} //constructor
 
-DisplayClass::~DisplayClass() {
-  Serial << "~Display(): Destructing" << endl;
-} //destructor
-
-
-/*
 TTGO_DisplayClass::TTGO_DisplayClass() {
-  Serial << "ColorDisplay::ColorDisplay(): " << szDisplayClassFileName << ", " << szDisplayClassFileDate << endl;
   GLib.init             ();
   GLib.setRotation      (_eScreenOrientation);
   GLib.setTextColor     (_TextColor, _BackgroundColor);
   GLib.setTextFont      (4);   //26 pixels
   GLib.fillScreen       (_FillColor);
   //GLib.setCursor        (0, 10);             //Upper left corner, no inverting, good with text
-  GLib.setCursor		(_CursorX, _CursorY);
+  GLib.setCursor    (_CursorX, _CursorY);
   return;
 } //constructor
 
@@ -134,16 +122,16 @@ void TTGO_DisplayClass::SelectFont(FontFaceType eFontFace, FontPointType eFontPo
       break;
       case   eMonospacedBold:
         switch (eFontPoint){
-			#ifdef MONOSPACED_BOLD_30
-			  case e30point:
-				 GLib.setFreeFont(&Monospaced_bold_30);
-				break;
-			#endif
-			#ifdef MONOSPACED_BOLD_60
-			  case e60point:
-				 GLib.setFreeFont(&Monospaced_bold_60);
-				break;
-			#endif
+      #ifdef MONOSPACED_BOLD_30
+        case e30point:
+         GLib.setFreeFont(&Monospaced_bold_30);
+        break;
+      #endif
+      #ifdef MONOSPACED_BOLD_60
+        case e60point:
+         GLib.setFreeFont(&Monospaced_bold_60);
+        break;
+      #endif
           default:
             Serial << "ColorDisplay::SelectFont() Font point not yet supported= " << eFontPoint << endl;
             break;
@@ -304,6 +292,3 @@ void TTGO_DisplayClass::PrintLine(const char* szLineToPrint) {
   GLib.println(szLineToPrint);
   return;
 } //PrintLine
-*/
-
-//Last line.

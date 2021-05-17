@@ -1,8 +1,9 @@
-// BeckThermostatDisplayClass.h, 5/9/21b
+// BeckThermostatDisplayClass.h, 5/17/21b
 #pragma once
 //Initially used for TTGO ESP32 module. 135 x 240, 1.14", 240dpi display
 
-#include <BeckDisplayClass.h>
+//#include <BeckDisplayClass.h>
+#include <BeckTTGODisplayClass.h>
 #include <TFT_eSPI.h>
 
 class ThermostatDisplayClass : public TTGO_DisplayClass {

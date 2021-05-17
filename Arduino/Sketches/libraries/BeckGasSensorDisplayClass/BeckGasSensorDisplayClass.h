@@ -1,8 +1,9 @@
-// BeckGasSensorDisplayClass.h, 5/13/21d
+// BeckGasSensorDisplayClass.h, 5/17/21a
 #pragma once
 //Initially used for TTGO ESP32 module. 135 x 240, 1.14", 240dpi display
 
-#include <BeckDisplayClass.h>
+//#include <BeckDisplayClass.h>
+#include <BeckTTGODisplayClass.h>
 #include <TFT_eSPI.h>
 
 enum GasType{
