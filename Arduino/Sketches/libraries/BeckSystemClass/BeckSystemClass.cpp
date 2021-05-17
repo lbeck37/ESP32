@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckSystemClass.cpp";
-const char szSystemFileDate[]  = "5/9/21d";
+const char szSystemFileDate[]  = "5/17/21b";
 
 #include <BeckSystemClass.h>
 #include <BeckAlexaClass.h>
@@ -7,7 +7,12 @@ const char szSystemFileDate[]  = "5/9/21d";
 //#include <BeckDisplayClass.h>
 #include <BeckGasSensorClass.h>
 #include <BeckGasSensorDataClass.h>
-#include <BeckGasSensorDisplayClass.h>
+#if DO_TTGO
+  #include <BeckGasSensorDisplayClass.h>
+#endif
+#if DO_ROVER
+  #include <BeckEnviroDisplayClass.h>
+#endif
 #include <BeckIncludeOptionalFiles.h>
 #include <BeckLogLib.h>
 #include <BeckSwitchClass.h>
@@ -20,7 +25,8 @@ const char szSystemFileDate[]  = "5/9/21d";
 #include <Streaming.h>
 
 //Select type of project to build for.
-ProjectType      eBiotaProjectType            = eThermoDev;
+//ProjectType      eBiotaProjectType            = eThermoDev;
+ProjectType      eBiotaProjectType              = eEnviro;
 //ProjectType      eBiotaProjectType            = eFireplace;
 //ProjectType      eBiotaProjectType            = eHeater;
 //ProjectType      eBiotaProjectType            = eGarage;
@@ -39,7 +45,7 @@ SystemClass::~SystemClass() {
 
 
 void SystemClass::Setup(void){
-  Serial.begin(lSerialMonitorBaud);
+  Serial.begin(115200);
   delay(100);
 
   Serial << LOG0 << "\n\nSystemClass::Setup(): Begin" << endl;
@@ -56,8 +62,15 @@ void SystemClass::Setup(void){
   Serial << LOG0 << "SystemClass::Setup(): Call GasSensor.Setup()" << endl;
   GasSensor.Setup();
 
+#if DO_TTGO
   Serial << LOG0 << "SystemClass::Setup(): Call BiotaDisplay.Setup()" << endl;
   GasSensorDisplay.Setup();
+#endif
+
+#if DO_ROVER
+  Serial << LOG0 << "SystemClass::Setup(): Call EnviroDisplay.Setup()" << endl;
+  EnviroDisplay.Setup();
+#endif
 
   Serial << LOG0 << "SystemClass::Setup(): Call BiotaSwitches.Setup()" << endl;
   BiotaSwitches.Setup();
@@ -74,17 +87,22 @@ void SystemClass::Setup(void){
 
 
 void SystemClass::Handle(){
-#if DO_ALEXA
-  BiotaAlexa.Handle();
-#endif
-#if DO_THERMOSTAT
-  BiotaThermostat.Handle();
-  BiotaSwitches.Handle();
-#endif
+  #if DO_ALEXA
+    BiotaAlexa.Handle();
+  #endif
+  #if DO_THERMOSTAT
+    BiotaThermostat.Handle();
+    BiotaSwitches.Handle();
+  #endif
   HandleOptionalModules();
   GasSensor.Handle();
   //ThermostatDisplay.Handle();
-  GasSensorDisplay.Handle();
+  #if DO_TTGO
+    GasSensorDisplay.Handle();
+  #endif
+  #if DO_ROVER
+    EnviroDisplay.Handle();
+  #endif
   return;
 } //Handle
 

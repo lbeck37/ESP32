@@ -1,10 +1,11 @@
-// BeckBiotaDefines.h, 5/9/21b
+// BeckBiotaDefines.h, 5/17/21a
 #pragma once
 #include <cstdint>
 
 enum ProjectType{
   eNoProject  = 0,
   eThermoDev,
+  eEnviro,
   eFireplace,
   eGarage,
   eHeater,
@@ -20,6 +21,8 @@ enum ProjectType{
 #define USE_IMU                 false
 #define DO_NTP                  false
 #define DO_OTA                  false
+#define DO_ROVER                true
 #define DO_THERMOSTAT           false
+#define DO_TTGO                 false
 #define DO_WEB_SERVER           false
 //Last line.
