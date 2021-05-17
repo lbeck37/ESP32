@@ -1,4 +1,4 @@
-// BeckThermostatDisplayClass.h, 5/17/21b
+// BeckThermostatDisplayClass.h, 5/17/21c
 #pragma once
 //Initially used for TTGO ESP32 module. 135 x 240, 1.14", 240dpi display
 

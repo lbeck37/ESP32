@@ -1,5 +1,5 @@
 const char szDisplayClassFileName[]  = "BeckDisplayClass.cpp";
-const char szDisplayClassFileDate[]  = "5/17/21a";
+const char szDisplayClassFileDate[]  = "5/17/21c";
 
 #include <BeckDisplayClass.h>
 #include <BeckThermostatDataClass.h>
