@@ -1,4 +1,4 @@
-// BeckDisplayClass.h, 5/17/21e
+// BeckDisplayClass.h, 5/18/21a
 #pragma once
 //Initially used for TTGO ESP32 module. 135 x 240, 1.14", 240dpi display
 
@@ -45,15 +45,26 @@ const PUnit          ScreenHeight = 135;;
 
 extern char           sz100CharDisplayBuffer[100];    //For building strings for display
 
-// Color definitions
-uint32_t AFXBlack     = 0x0000;
-uint32_t AFXBlue      = 0x001F;
-uint32_t AFXRed       = 0xF800;
-uint32_t AFXGreen     = 0x07E0;
-uint32_t AFXCyan      = 0x07FF;
-uint32_t AFXMagenta   = 0xF81F;
-uint32_t AFXYellow    = 0xFFE0;
-uint32_t AFXWhite     = 0xFFFF;
+// Color definitions, ripped off from WROVER_KIT_LCD.h
+#define BECK_BLACK       0x0000 /*   0,   0,   0 */
+#define BECK_NAVY        0x000F /*   0,   0, 128 */
+#define BECK_DARKGREEN   0x03E0 /*   0, 128,   0 */
+#define BECK_DARKCYAN    0x03EF /*   0, 128, 128 */
+#define BECK_MAROON      0x7800 /* 128,   0,   0 */
+#define BECK_PURPLE      0x780F /* 128,   0, 128 */
+#define BECK_OLIVE       0x7BE0 /* 128, 128,   0 */
+#define BECK_LIGHTGREY   0xC618 /* 192, 192, 192 */
+#define BECK_DARKGREY    0x7BEF /* 128, 128, 128 */
+#define BECK_BLUE        0x001F /*   0,   0, 255 */
+#define BECK_GREEN       0x07E0 /*   0, 255,   0 */
+#define BECK_CYAN        0x07FF /*   0, 255, 255 */
+#define BECK_RED         0xF800 /* 255,   0,   0 */
+#define BECK_MAGENTA     0xF81F /* 255,   0, 255 */
+#define BECK_YELLOW      0xFFE0 /* 255, 255,   0 */
+#define BECK_WHITE       0xFFFF /* 255, 255, 255 */
+#define BECK_ORANGE      0xFD20 /* 255, 165,   0 */
+#define BECK_GREENYELLOW 0xAFE5 /* 173, 255,  47 */
+#define BECK_PINK        0xF81F
 
 enum ScreenType{
   eNoScreenType= -1,
@@ -152,11 +163,11 @@ protected:
   GraphicsLibrary         GLib                  = GraphicsLibrary();
 #endif
   ScreenOrientationType   _eScreenOrientation   = eUSBLeft;
-  Colortype               _BackgroundColor      = AFXWhite;
-  Colortype               _TextColor            = AFXBlack;
-  Colortype               _TextBGColor          = AFXWhite;
-  Colortype               _FillColor            = AFXWhite;
-  Colortype               _LineColor            = AFXBlack;
+  Colortype               _BackgroundColor      = BECK_WHITE;
+  Colortype               _TextColor            = BECK_BLACK;
+  Colortype               _TextBGColor          = BECK_WHITE;
+  Colortype               _FillColor            = BECK_WHITE;
+  Colortype               _LineColor            = BECK_BLACK;
   PUnit                   _CursorX              = 0;
   PUnit                   _CursorY              = 0;
   FontLibraryType         _eFontLibrary         = eGFXFont;

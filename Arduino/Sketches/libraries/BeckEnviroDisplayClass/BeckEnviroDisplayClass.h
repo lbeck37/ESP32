@@ -1,7 +1,6 @@
-// BeckEnviroDisplayClass.h, 5/17/21a
+// BeckEnviroDisplayClass.h, 5/18/21a
 #pragma once
 
-/*
 #include <BeckBiotaDefines.h>
 #if DO_TTGO
   #include <BeckTTGODisplayClass.h>
@@ -9,8 +8,8 @@
 #if DO_ROVER
   #include <BeckRoverDisplayClass.h>
 #endif
-*/
-#include <BeckRoverDisplayClass.h>
+
+//#include <BeckRoverDisplayClass.h>
 
 #include <TFT_eSPI.h>
 
