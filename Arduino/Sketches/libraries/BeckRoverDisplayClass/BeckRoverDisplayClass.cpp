@@ -40,14 +40,24 @@
 
 
 RoverDisplayClass::RoverDisplayClass() {
+/*
   GLib.init             ();
-  //RoverLCD.begin        ();
   GLib.setRotation      (_eScreenOrientation);
   GLib.setTextColor     (_TextColor, _BackgroundColor);
   GLib.setTextFont      (4);   //26 pixels
   GLib.fillScreen       (_FillColor);
   //GLib.setCursor        (0, 10);             //Upper left corner, no inverting, good with text
   GLib.setCursor    (_CursorX, _CursorY);
+*/
+  GLib.begin             ();
+  GLib.setRotation      (_eScreenOrientation);
+  GLib.setTextColor     (_TextColor, _BackgroundColor);
+  GLib.setFont          (4);   //26 pixels
+  GLib.fillScreen       (_FillColor);
+  //GLib.setCursor        (0, 10);             //Upper left corner, no inverting, good with text
+  GLib.setCursor    (_CursorX, _CursorY);
+
+  //RoverLCD.begin        ();
   return;
 } //constructor
 

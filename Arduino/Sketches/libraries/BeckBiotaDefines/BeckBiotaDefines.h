@@ -1,4 +1,4 @@
-// BeckBiotaDefines.h, 5/17/21b
+// BeckBiotaDefines.h, 5/17/21d
 #pragma once
 #include <cstdint>
 
@@ -14,6 +14,7 @@ enum ProjectType{
   eLastProjectType
 };
 
+//Define the code that is built
 #define DO_ACCESS_POINT         false
 #define DO_ALEXA                  true
 //#define DO_ASYNC_WEB_SERVER   false
@@ -21,8 +22,8 @@ enum ProjectType{
 #define USE_IMU                 false
 #define DO_NTP                  false
 #define DO_OTA                  false
-#define DO_ROVER                false
+#define DO_ROVER                  true
 #define DO_THERMOSTAT           false
-#define DO_TTGO                   true
+#define DO_TTGO                 false
 #define DO_WEB_SERVER           false
 //Last line.

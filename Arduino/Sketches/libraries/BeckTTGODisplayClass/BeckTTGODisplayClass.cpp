@@ -248,7 +248,7 @@ void TTGO_DisplayClass::DrawFilledCircle(PUnit XCenter, PUnit YCenter, PUnit Rad
 //For reference, draw a grid of lines with labels under every 25 horizontal lines.
 void TTGO_DisplayClass::DrawGrid(void){
   Serial << "ColorDisplay::DrawGrid()" << endl;
-  SetLineColor(TFT_BLACK);
+  SetLineColor(AFXBlack);
 
   //Draw vertical lines
   PUnit StepSize    = 5;
@@ -273,7 +273,7 @@ void TTGO_DisplayClass::DrawGrid(void){
 
   //Put label under lines every 25 pixels (5 lines)
   SelectFont(eTextFace, eText9px);
-  SetTextColor(TFT_RED);
+  SetTextColor(AFXRed);
   for(PUnit Ypixel= 0; Ypixel < ScreenHeight; Ypixel= (Ypixel + 25)){
     PUnit X1= 0;
     SetCursor(X1, Ypixel);

@@ -1,4 +1,4 @@
-// BeckDisplayClass.h, 5/17/21d
+// BeckDisplayClass.h, 5/17/21e
 #pragma once
 //Initially used for TTGO ESP32 module. 135 x 240, 1.14", 240dpi display
 
@@ -44,6 +44,16 @@ const PUnit          ScreenWidth  = 240;
 const PUnit          ScreenHeight = 135;;
 
 extern char           sz100CharDisplayBuffer[100];    //For building strings for display
+
+// Color definitions
+uint32_t AFXBlack     = 0x0000;
+uint32_t AFXBlue      = 0x001F;
+uint32_t AFXRed       = 0xF800;
+uint32_t AFXGreen     = 0x07E0;
+uint32_t AFXCyan      = 0x07FF;
+uint32_t AFXMagenta   = 0xF81F;
+uint32_t AFXYellow    = 0xFFE0;
+uint32_t AFXWhite     = 0xFFFF;
 
 enum ScreenType{
   eNoScreenType= -1,
@@ -142,11 +152,11 @@ protected:
   GraphicsLibrary         GLib                  = GraphicsLibrary();
 #endif
   ScreenOrientationType   _eScreenOrientation   = eUSBLeft;
-  Colortype               _BackgroundColor      = TFT_WHITE;
-  Colortype               _TextColor            = TFT_BLACK;
-  Colortype               _TextBGColor          = TFT_WHITE;
-  Colortype               _FillColor            = TFT_WHITE;
-  Colortype               _LineColor            = TFT_BLACK;
+  Colortype               _BackgroundColor      = AFXWhite;
+  Colortype               _TextColor            = AFXBlack;
+  Colortype               _TextBGColor          = AFXWhite;
+  Colortype               _FillColor            = AFXWhite;
+  Colortype               _LineColor            = AFXBlack;
   PUnit                   _CursorX              = 0;
   PUnit                   _CursorY              = 0;
   FontLibraryType         _eFontLibrary         = eGFXFont;
