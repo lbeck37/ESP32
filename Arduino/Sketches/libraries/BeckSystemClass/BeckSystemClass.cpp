@@ -1,24 +1,23 @@
 const char szSystemFileName[]  = "BeckSystemClass.cpp";
-const char szSystemFileDate[]  = "5/17/21b";
+const char szSystemFileDate[]  = "5/17/21d";
 
 #include <BeckSystemClass.h>
 #include <BeckAlexaClass.h>
 #include <BeckBiotaDefines.h>
-//#include <BeckDisplayClass.h>
+#if DO_ROVER
+  #include <BeckEnviroDisplayClass.h>
+#endif
 #include <BeckGasSensorClass.h>
 #include <BeckGasSensorDataClass.h>
 #if DO_TTGO
   #include <BeckGasSensorDisplayClass.h>
 #endif
-#if DO_ROVER
-  #include <BeckEnviroDisplayClass.h>
-#endif
 #include <BeckIncludeOptionalFiles.h>
 #include <BeckLogLib.h>
 #include <BeckSwitchClass.h>
 #if DO_THERMOSTAT
-	#include <BeckThermostatClass.h>
-	#include <BeckThermostatDisplayClass.h>
+  #include <BeckThermostatClass.h>
+  #include <BeckThermostatDisplayClass.h>
 #endif
 #include <BeckThermostatDataClass.h>
 #include <BeckWiFiLib.h>

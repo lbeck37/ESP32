@@ -1,8 +1,15 @@
-// BeckDisplayClass.h, 5/17/21c
+// BeckDisplayClass.h, 5/17/21d
 #pragma once
 //Initially used for TTGO ESP32 module. 135 x 240, 1.14", 240dpi display
 
-#include <TFT_eSPI.h>
+#include <BeckBiotaDefines.h>
+#if DO_ROVER
+  #include <WROVER_KIT_LCD.h>
+#endif
+
+#if DO_TTGO
+  #include <TFT_eSPI.h>
+#endif
 
 //Remove the "//" in front of the #define for a font you use
 //   Mono and Text files are included in TFT_eSPI library already.
@@ -17,7 +24,16 @@
 //#define ROBOTO_CONDENSED_BOLD_130
 //#define ROBOTO_MEDIUM_150
 
-typedef TFT_eSPI      GraphicsLibrary;
+/*
+#if DO_ROVER
+  typedef WROVER_KIT_LCD      GraphicsLibrary;
+#endif
+*/
+
+#if DO_TTGO
+  typedef TFT_eSPI            GraphicsLibrary;
+#endif
+
 typedef int32_t       Colortype;
 typedef int32_t       PUnit;        //Pixel Unit
 typedef uint8_t       FontSize;
@@ -58,8 +74,8 @@ enum FontFaceType {
   eNoFontFace= 0,
   eMonoFace,
   eTextFace,                  //Adafruit 1=9px, 2= 16px, 4= 26px, 6=48pt, 7=48px 7seg, 8=75px narrow
-  eLatoBlack,      			  //60pt
-  eMonospacedBold,      	  //30, 60pt
+  eLatoBlack,                 //60pt
+  eMonospacedBold,            //30, 60pt
   eRedressedRegularFace,      //20pt
   eRobotoMediumFace,          //40, 100, 150pt
   eRobotoCondensedFace,       //30, 130pt
@@ -117,7 +133,14 @@ public:
   virtual void  PrintLine             (const char* szLineToPrint){}
 
 protected:
+#if DO_ROVER
+  WROVER_KIT_LCD          GLib    = WROVER_KIT_LCD();
+  //typedef WROVER_KIT_LCD      GraphicsLibrary;
+#endif
+
+#if DO_TTGO
   GraphicsLibrary         GLib                  = GraphicsLibrary();
+#endif
   ScreenOrientationType   _eScreenOrientation   = eUSBLeft;
   Colortype               _BackgroundColor      = TFT_WHITE;
   Colortype               _TextColor            = TFT_BLACK;
@@ -129,6 +152,6 @@ protected:
   FontLibraryType         _eFontLibrary         = eGFXFont;
   FontFaceType            _eFontFace            = eMonoFace;
   FontPointType           _eFontPoint           = e12point;
-  char  				  sz100CharDisplayBuffer[100];    //For building strings for display
+  char            sz100CharDisplayBuffer[100];    //For building strings for display
 };  //DisplayClass
 //Last line.

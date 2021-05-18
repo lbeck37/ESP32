@@ -1,6 +1,8 @@
-// BeckRoverDisplayClass.cpp, 5/17/21a
+// BeckRoverDisplayClass.cpp, 5/17/21b
 
 #include <BeckRoverDisplayClass.h>
+#include <Adafruit_GFX.h>
+#include <WROVER_KIT_LCD.h>
 #include "Free_Fonts.h"
 #include <Streaming.h>
 
@@ -39,6 +41,7 @@
 
 RoverDisplayClass::RoverDisplayClass() {
   GLib.init             ();
+  //RoverLCD.begin        ();
   GLib.setRotation      (_eScreenOrientation);
   GLib.setTextColor     (_TextColor, _BackgroundColor);
   GLib.setTextFont      (4);   //26 pixels

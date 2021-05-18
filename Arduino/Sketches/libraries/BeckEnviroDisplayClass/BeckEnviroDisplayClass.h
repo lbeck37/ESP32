@@ -1,8 +1,17 @@
 // BeckEnviroDisplayClass.h, 5/17/21a
 #pragma once
 
-//#include <BeckDisplayClass.h>
-#include <BeckTTGODisplayClass.h>
+/*
+#include <BeckBiotaDefines.h>
+#if DO_TTGO
+  #include <BeckTTGODisplayClass.h>
+#endif
+#if DO_ROVER
+  #include <BeckRoverDisplayClass.h>
+#endif
+*/
+#include <BeckRoverDisplayClass.h>
+
 #include <TFT_eSPI.h>
 
 enum GasType{
@@ -20,7 +29,7 @@ enum BarSegmentType{
   eLastBarSegmentType
 };
 
-class EnviroDisplayClass : public TTGO_DisplayClass {
+class EnviroDisplayClass : public RoverDisplayClass {
 public:
   EnviroDisplayClass();
   virtual ~EnviroDisplayClass();

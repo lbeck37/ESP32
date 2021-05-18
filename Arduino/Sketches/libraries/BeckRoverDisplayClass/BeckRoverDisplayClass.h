@@ -1,5 +1,5 @@
 // BeckRoverDisplayClass.h, 5/17/21a
-
+#pragma once
 #include <BeckDisplayClass.h>
 
 class RoverDisplayClass : public DisplayClass {
