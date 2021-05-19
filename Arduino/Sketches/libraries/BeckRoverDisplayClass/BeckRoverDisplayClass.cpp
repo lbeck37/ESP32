@@ -1,4 +1,4 @@
-// BeckRoverDisplayClass.cpp, 5/17/21b
+// BeckRoverDisplayClass.cpp, 5/19/21a
 
 #include <BeckRoverDisplayClass.h>
 #include <Adafruit_GFX.h>
@@ -52,7 +52,7 @@ RoverDisplayClass::RoverDisplayClass() {
   GLib.begin             ();
   GLib.setRotation      (_eScreenOrientation);
   GLib.setTextColor     (_TextColor, _BackgroundColor);
-  GLib.setFont          (4);   //26 pixels
+  //GLib.setFont          (4);   //26 pixels
   GLib.fillScreen       (_FillColor);
   //GLib.setCursor        (0, 10);             //Upper left corner, no inverting, good with text
   GLib.setCursor    (_CursorX, _CursorY);
@@ -111,55 +111,47 @@ void RoverDisplayClass::SelectFont(FontFaceType eFontFace, FontPointType eFontPo
   switch (eFontFace){
     case eMonoFace:
       switch (eFontPoint){
+/*
         case e12point:
-          GLib.setFreeFont(&FreeMonoBold12pt7b);
+          GLib.setFont(&FreeMonoBold12pt7b);
           break;
+*/
         default:
-          Serial << "ColorDisplay::SelectFont() Font point not yet supported= " << eFontPoint << endl;
+          Serial << "RoverDisplayClass::SelectFont() Font point not yet supported= " << eFontPoint << endl;
           break;
         } //switch(eFontPoint)
       break;  //eRondoCondencedFace
 
     case eTextFace:
-      switch (eFontPoint){
-      case eText9px:
-        GLib.setTextFont(1);
-        break;
-      case eText26px:
-        GLib.setTextFont(4);
-        break;
-        default:
-          Serial << "ColorDisplay::SelectFont() Font point not yet supported= " << eFontPoint << endl;
-          break;
-        } //switch(eFontPoint)
+      Serial << "RoverDisplayClass::SelectFont() Font point not yet supported= " << eFontPoint << endl;
       break;
       case   eMonospacedBold:
         switch (eFontPoint){
-      #ifdef MONOSPACED_BOLD_30
-        case e30point:
-         GLib.setFreeFont(&Monospaced_bold_30);
-        break;
+          #ifdef MONOSPACED_BOLD_30
+          case e30point:
+            GLib.setFont(&Monospaced_bold_30);
+          break;  //e30point
       #endif
       #ifdef MONOSPACED_BOLD_60
         case e60point:
-         GLib.setFreeFont(&Monospaced_bold_60);
-        break;
+         GLib.setFont(&Monospaced_bold_60);
+        break;  //e60point
       #endif
-          default:
-            Serial << "ColorDisplay::SelectFont() Font point not yet supported= " << eFontPoint << endl;
-            break;
-          } //switch(eFontPoint)
+        default:
+          Serial << "RoverDisplayClass::SelectFont() Font point not yet supported= " << eFontPoint << endl;
+          break;
+        } //switch(eFontPoint)
         break;  //eRedressedRegularFace
 
         case   eRedressedRegularFace:
           switch (eFontPoint){
             #ifdef REDRESSED__REGULAR_20
               case e20point:
-                 GLib.setFreeFont(&Redressed_Regular_20);
-                break;
+                 GLib.setFont(&Redressed_Regular_20);
+                break;  //e20point
             #endif
             default:
-              Serial << "ColorDisplay::SelectFont() Font point not yet supported= " << eFontPoint << endl;
+              Serial << "RoverDisplayClass::SelectFont() Font point not yet supported= " << eFontPoint << endl;
               break;
             } //switch(eFontPoint)
           break;  //eRedressedRegularFace
@@ -168,22 +160,22 @@ void RoverDisplayClass::SelectFont(FontFaceType eFontFace, FontPointType eFontPo
         switch (eFontPoint){
           #ifdef ROBOTO_MEDIUM_40
             case e40point:
-              GLib.setFreeFont(&Roboto_Medium_40);
+              GLib.setFont(&Roboto_Medium_40);
               break;
           #endif
           #ifdef ROBOTO_MEDIUM_100
             case e40point:
-               GLib.setFreeFont(&Roboto_Medium_100);
+               GLib.setFont(&Roboto_Medium_100);
               break;
           #endif
           #ifdef ROBOTO_MEDIUM_150
             case e150point:
-              //Serial << "ColorDisplay::SelectFont(): Font set to Roboto_Medium_150" << endl;
-              GLib.setFreeFont(&Roboto_Medium_150);
-              break;
+              //Serial << "RoverDisplayClass::SelectFont(): Font set to Roboto_Medium_150" << endl;
+              GLib.setFont(&Roboto_Medium_150);
+              break;  //ROBOTO_MEDIUM_150
           #endif
           default:
-            Serial << "ColorDisplay::SelectFont() Font point not yet supported= " << eFontPoint << endl;
+            Serial << "RoverDisplayClass::SelectFont() Font point not yet supported= " << eFontPoint << endl;
             break;
           } //switch(eFontPoint)
         break;  //eRobotoMediumFace
@@ -192,16 +184,16 @@ void RoverDisplayClass::SelectFont(FontFaceType eFontFace, FontPointType eFontPo
           switch (eFontPoint){
             #ifdef ROBOTO_CONDENSED_30
               case e30point:
-                   GLib.setFreeFont(&Roboto_Condensed_30);
+                   GLib.setFont(&Roboto_Condensed_30);
                 break;
             #endif
             #ifdef ROBOTO_CONDENSED_130
               case e130point:
-                  GLib.setFreeFont(&Roboto_Condensed_130);
+                  GLib.setFont(&Roboto_Condensed_130);
                 break;
             #endif
             default:
-              Serial << "ColorDisplay::SelectFont() Font point not supported= " << eFontPoint << endl;
+              Serial << "RoverDisplayClass::SelectFont() Font point not supported= " << eFontPoint << endl;
               break;
           } //switch(eFontPoint)
           break;
@@ -209,16 +201,16 @@ void RoverDisplayClass::SelectFont(FontFaceType eFontFace, FontPointType eFontPo
           switch (eFontPoint){
             #ifdef ROBOTO_CONDENSED_BOLD_130
               case e130point:
-                  GLib.setFreeFont(&Roboto_Condensed_Bold_130);
+                  GLib.setFont(&Roboto_Condensed_Bold_130);
                 break;
             #endif
             default:
-              Serial << "ColorDisplay::SelectFont() Font point not supported= " << eFontPoint << endl;
+              Serial << "RoverDisplayClass::SelectFont() Font point not supported= " << eFontPoint << endl;
               break;
           } //switch(eFontPoint)
           break;
         default:
-          Serial << "ColorDisplay::SelectFont() Font face not yet supported= " << eFontFace << endl;
+          Serial << "RoverDisplayClass::SelectFont() Font face not yet supported= " << eFontFace << endl;
           break;
   } //switch (eFontFace)
   return;
@@ -260,8 +252,8 @@ void RoverDisplayClass::DrawFilledCircle(PUnit XCenter, PUnit YCenter, PUnit Rad
 
 //For reference, draw a grid of lines with labels under every 25 horizontal lines.
 void RoverDisplayClass::DrawGrid(void){
-  Serial << "ColorDisplay::DrawGrid()" << endl;
-  SetLineColor(TFT_BLACK);
+  Serial << "RoverDisplayClass::DrawGrid()" << endl;
+  SetLineColor(BECK_BLACK);
 
   //Draw vertical lines
   PUnit StepSize    = 5;
@@ -286,7 +278,7 @@ void RoverDisplayClass::DrawGrid(void){
 
   //Put label under lines every 25 pixels (5 lines)
   SelectFont(eTextFace, eText9px);
-  SetTextColor(TFT_RED);
+  SetTextColor(BECK_RED);
   for(PUnit Ypixel= 0; Ypixel < ScreenHeight; Ypixel= (Ypixel + 25)){
     PUnit X1= 0;
     SetCursor(X1, Ypixel);
