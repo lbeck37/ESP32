@@ -21,7 +21,7 @@ enum BarSegmentType{
   eLastBarSegmentType
 };
 
-class GasSensorDisplayClass : public TTGO_DisplayClass {
+class GasSensorDisplayClass : public TTGODisplayClass {
 public:
   GasSensorDisplayClass();
   virtual ~GasSensorDisplayClass();

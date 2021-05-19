@@ -1,11 +1,11 @@
-// BeckTTGODisplayClass.h, 5/17/21a
+// BeckTTGODisplayClass.h, 5/19/21a
 
 #include <BeckDisplayClass.h>
 
-class TTGO_DisplayClass : public DisplayClass {
+class TTGODisplayClass : public DisplayClass {
 public:
-  TTGO_DisplayClass();
-  virtual ~TTGO_DisplayClass();
+  TTGODisplayClass();
+  virtual ~TTGODisplayClass();
 
   virtual void  Setup         (void){}
   virtual void  Handle        (void){}
@@ -29,5 +29,5 @@ public:
   void  PrintLine             (const char* szLineToPrint);
 
 protected:
-};  //TTGO_DisplayClass
+};  //TTGODisplayClass
 //Last line.
