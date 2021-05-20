@@ -40,7 +40,7 @@ void GasSensorClass::Handle(){
       GasSensorData.SetCO2_Value(CO2_Value);
       GasSensorData.SetVOC_Value(TVOC_Value);
 
-      if(true || (millis() >= ulNextPrintMsec)){
+      if(false || (millis() >= ulNextPrintMsec)){
         ulNextPrintMsec= millis() + ulPrintPeriodMsec;
         Serial << "GasSensorClass::Handle(): CO2= " << CO2_Value << "ppm, TVOC= " << TVOC_Value << endl;
       }	//if(millis()>=ulNextPrintMsec)
