@@ -10,6 +10,8 @@ public:
   virtual void  Setup         (void){}
   virtual void  Handle        (void){}
 
+  void  Begin                 (void);
+  void  SetRotation           (uint8_t r);
   PUnit Invert_Y              (PUnit Y1);
   void  SetCursor             (PUnit CursorX, PUnit CursorY);
   void  FillScreen            (void);

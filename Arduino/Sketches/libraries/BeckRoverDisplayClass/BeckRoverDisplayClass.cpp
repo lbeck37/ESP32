@@ -65,6 +65,16 @@ RoverDisplayClass::~RoverDisplayClass() {
   Serial << "~ColorDisplay(): Destructing" << endl;
 } //destructor
 
+void RoverDisplayClass::Begin(void){
+  GLib.begin();
+  return;
+}
+
+void RoverDisplayClass::SetRotation(uint8_t r){
+  GLib.setRotation(r);
+  return;
+}
+
 PUnit RoverDisplayClass::Invert_Y(PUnit Y1){
   return(ScreenHeight - Y1);
 }

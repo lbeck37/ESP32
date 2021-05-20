@@ -1,5 +1,5 @@
 const char szBeckEnviroDisplayClassFileName[]  = "BeckEnviroDisplayClass.cpp";
-const char szEnviroDisplayClassFileDate[]  = "5/19/21a";
+const char szEnviroDisplayClassFileDate[]  = "5/13/21d";
 
 #include <BeckEnviroDisplayClass.h>
 #include <BeckGasSensorDataClass.h>
@@ -8,12 +8,12 @@ const char szEnviroDisplayClassFileDate[]  = "5/19/21a";
 
 EnviroDisplayClass EnviroDisplay;                   //So every module can use the same object
 
-EnviroDisplayClass::EnviroDisplayClass(void) {
+EnviroDisplayClass::EnviroDisplayClass() {
   Serial << "EnviroDisplayClass::EnviroDisplayClass(): Do nothing."  << endl;
 } //constructor
 
 
-EnviroDisplayClass::~EnviroDisplayClass(void) {
+EnviroDisplayClass::~EnviroDisplayClass() {
   Serial << "~EnviroDisplayClass(): Destructing" << endl;
 } //destructor
 
@@ -25,7 +25,7 @@ void EnviroDisplayClass::Setup(void){
   return;
 } //Setup
 
-void EnviroDisplayClass::Handle(void){
+void EnviroDisplayClass::Handle(){
    if(millis() >= ulNextGasSensorDisplayMsec){
     ulNextGasSensorDisplayMsec= millis() + ulGasSensorDisplayPeriodMsec;
     //DrawCO2andTVOC();
@@ -39,29 +39,6 @@ void EnviroDisplayClass::Handle(void){
   }
   return;
 } //Handle
-
-
-void EnviroDisplayClass::DisplayBegin(void) {
-Serial << "DisplayBegin(): Call RoverLCD.begin()" << endl;
-Begin();
-RoverLCD.setRotation(1);
-DisplayClear();
-return;
-}  //DisplayBegin
-
-void EnviroDisplayClass::ShowStartScreen(void) {}
-void EnviroDisplayClass::ShowSplash(void) {}
-void EnviroDisplayClass::DisplayUpdate(void) {}
-void EnviroDisplayClass::DisplayClear(void) {}
-void EnviroDisplayClass::FillScreen(uint16_t usColor) {}
-bool EnviroDisplayClass::bScreenChanged(void) {return true;}
-void EnviroDisplayClass::DisplayText(uint16_t usCursorX, uint16_t usCursorY, char *pcText,
-                 const GFXfont *pFont, uint8_t ucSize, uint16_t usColor) {}
-void EnviroDisplayClass::ClearTextBackground(int16_t sUpperLeftX, int16_t sUpperLeftY, uint16_t usWidth, uint16_t usHeight){}
-void EnviroDisplayClass::DisplayLine(const GFXfont stFont, uint16_t usColor, uint16_t usCursorX, uint16_t usCursorY, uint16_t usClearWidth, uint16_t usClearHeight,
-                 char szText[], bool bClearText= true, uint8_t ucSize= 1) {}
-void EnviroDisplayClass::DisplayCO2(void) {}
-void EnviroDisplayClass::DisplayVOC(void) {}
 
 
 void EnviroDisplayClass::DrawCO2andTVOC_text(int32_t CO2_Value, int32_t VOC_Value){
