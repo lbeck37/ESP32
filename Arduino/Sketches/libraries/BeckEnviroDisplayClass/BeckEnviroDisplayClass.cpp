@@ -1,5 +1,5 @@
 const char szBeckEnviroDisplayClassFileName[]  = "BeckEnviroDisplayClass.cpp";
-const char szEnviroDisplayClassFileDate[]  = "5/19/21a";
+const char szEnviroDisplayClassFileDate[]  = "5/20/21a";
 
 #include <BeckEnviroDisplayClass.h>
 #include <BeckGasSensorDataClass.h>
@@ -19,49 +19,27 @@ EnviroDisplayClass::~EnviroDisplayClass(void) {
 
 
 void EnviroDisplayClass::Setup(void){
-  FillScreen(Gas_BackgroundColor);    //Minimize this, later.
+  //FillScreen(Gas_BackgroundColor);    //Minimize this, later.
   Serial << "EnviroDisplayClass::Setup(): Call Handle()" << endl;
   Handle();
   return;
 } //Setup
 
+
 void EnviroDisplayClass::Handle(void){
-   if(millis() >= ulNextGasSensorDisplayMsec){
-    ulNextGasSensorDisplayMsec= millis() + ulGasSensorDisplayPeriodMsec;
-    //DrawCO2andTVOC();
-    int32_t   CO2_Value= GasSensorData.GetCO2_Value();
-    int32_t   VOC_Value= GasSensorData.GetVOC_Value();
+ if(millis() >= ulNextGasSensorDisplayMsec){
+  ulNextGasSensorDisplayMsec= millis() + ulGasSensorDisplayPeriodMsec;
+  //DrawCO2andTVOC();
+  int32_t   CO2_Value= GasSensorData.GetCO2_Value();
+  int32_t   VOC_Value= GasSensorData.GetVOC_Value();
 
-    DrawCO2andTVOC_text(CO2_Value, VOC_Value);
-    DrawBar(eCO2Gas, CO2_Value);
-    DrawBar(eVOCGas, VOC_Value);
-    VOC_LastValue= CO2_Value;
+  DrawCO2andTVOC_text(CO2_Value, VOC_Value);
+  DrawBar(eCO2Gas, CO2_Value);
+  DrawBar(eVOCGas, VOC_Value);
+  VOC_LastValue= CO2_Value;
   }
-  return;
+ return;
 } //Handle
-
-
-void EnviroDisplayClass::DisplayBegin(void) {
-Serial << "DisplayBegin(): Call RoverLCD.begin()" << endl;
-Begin();
-RoverLCD.setRotation(1);
-DisplayClear();
-return;
-}  //DisplayBegin
-
-void EnviroDisplayClass::ShowStartScreen(void) {}
-void EnviroDisplayClass::ShowSplash(void) {}
-void EnviroDisplayClass::DisplayUpdate(void) {}
-void EnviroDisplayClass::DisplayClear(void) {}
-void EnviroDisplayClass::FillScreen(uint16_t usColor) {}
-bool EnviroDisplayClass::bScreenChanged(void) {return true;}
-void EnviroDisplayClass::DisplayText(uint16_t usCursorX, uint16_t usCursorY, char *pcText,
-                 const GFXfont *pFont, uint8_t ucSize, uint16_t usColor) {}
-void EnviroDisplayClass::ClearTextBackground(int16_t sUpperLeftX, int16_t sUpperLeftY, uint16_t usWidth, uint16_t usHeight){}
-void EnviroDisplayClass::DisplayLine(const GFXfont stFont, uint16_t usColor, uint16_t usCursorX, uint16_t usCursorY, uint16_t usClearWidth, uint16_t usClearHeight,
-                 char szText[], bool bClearText= true, uint8_t ucSize= 1) {}
-void EnviroDisplayClass::DisplayCO2(void) {}
-void EnviroDisplayClass::DisplayVOC(void) {}
 
 
 void EnviroDisplayClass::DrawCO2andTVOC_text(int32_t CO2_Value, int32_t VOC_Value){

@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckGasSensorClass.cpp";
-const char szSystemFileDate[]  = "5/9/21c";
+const char szSystemFileDate[]  = "5/20/21b";
 
 #include <BeckGasSensorClass.h>
 #include <BeckGasSensorDataClass.h>
@@ -19,6 +19,27 @@ GasSensorClass::~GasSensorClass() {
 } //destructor
 
 
+//These versions of Setup() and Handle are for debugging w/o a CO2 sensor
+void GasSensorClass::Setup(void){
+  CO2_Value= 400;
+  TVOC_Value= 0;
+return;
+} //Setup
+
+
+void GasSensorClass::Handle(){
+  if(true || (millis() >= ulNextPrintMsec)){
+    ulNextPrintMsec= millis() + ulPrintPeriodMsec;
+    CO2_Value++;
+    TVOC_Value++;
+    GasSensorData.SetCO2_Value(CO2_Value);
+    GasSensorData.SetVOC_Value(TVOC_Value);
+    Serial << "GasSensorClass::Handle(): CO2= " << CO2_Value << "ppm, TVOC= " << TVOC_Value << endl;
+  } //if(millis()>=ulNextPrintMsec)
+  return;
+} //Handle
+
+/*
 void GasSensorClass::Setup(void){
   if (!CS811_GasSensor.begin()){
 	  Serial << "GasSensorClass::setup(): Failed to start sensor, please check the wiring." << endl;
@@ -37,6 +58,7 @@ void GasSensorClass::Handle(){
       CO2_Value= CS811_GasSensor.geteCO2();
       TVOC_Value= CS811_GasSensor.getTVOC();
 
+      //Are these calls needed?
       GasSensorData.SetCO2_Value(CO2_Value);
       GasSensorData.SetVOC_Value(TVOC_Value);
 
@@ -53,4 +75,5 @@ void GasSensorClass::Handle(){
   } //if(CS811_GasSensor.available())
   return;
 } //Handle
+*/
 //Last line.

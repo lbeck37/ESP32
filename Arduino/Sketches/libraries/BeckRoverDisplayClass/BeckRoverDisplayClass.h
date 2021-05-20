@@ -1,4 +1,4 @@
-// BeckRoverDisplayClass.h, 5/17/21a
+// BeckRoverDisplayClass.h, 5/20/21a
 #pragma once
 #include <BeckDisplayClass.h>
 
@@ -29,6 +29,27 @@ public:
   void  DrawGrid              (void);
   void  Print                 (const char* szLineToPrint);
   void  PrintLine             (const char* szLineToPrint);
+  //From BeckE32_RoverGraphics.ino
+  void  DisplayBegin          (void);
+  void  DisplayText           (uint16_t usCursorX, uint16_t usCursorY, char *pcText,
+                               const GFXfont *pFont, uint8_t ucSize, Colortype Color);
+  //For Adafruit_GFX support
+  void  DisplayClear          (void);
+ /*
+  void EnviroDisplayClass::ShowStartScreen(void) {}
+  void EnviroDisplayClass::ShowSplash(void) {}
+  void EnviroDisplayClass::DisplayUpdate(void) {}
+  XXvoid EnviroDisplayClass::DisplayClear(void) {}
+  void EnviroDisplayClass::FillScreen(uint16_t usColor) {}
+  bool EnviroDisplayClass::bScreenChanged(void) {return true;}
+  void EnviroDisplayClass::DisplayText(uint16_t usCursorX, uint16_t usCursorY, char *pcText,
+                   const GFXfont *pFont, uint8_t ucSize, uint16_t usColor) {}
+  void EnviroDisplayClass::ClearTextBackground(int16_t sUpperLeftX, int16_t sUpperLeftY, uint16_t usWidth, uint16_t usHeight){}
+  void EnviroDisplayClass::DisplayLine(const GFXfont stFont, uint16_t usColor, uint16_t usCursorX, uint16_t usCursorY, uint16_t usClearWidth, uint16_t usClearHeight,
+                   char szText[], bool bClearText= true, uint8_t ucSize= 1) {}
+  void EnviroDisplayClass::DisplayCO2(void) {}
+  void EnviroDisplayClass::DisplayVOC(void) {}
+  */
 
 protected:
 };  //RoverDisplayClass

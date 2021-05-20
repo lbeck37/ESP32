@@ -40,24 +40,12 @@
 
 
 RoverDisplayClass::RoverDisplayClass() {
-/*
-  GLib.init             ();
-  GLib.setRotation      (_eScreenOrientation);
-  GLib.setTextColor     (_TextColor, _BackgroundColor);
-  GLib.setTextFont      (4);   //26 pixels
-  GLib.fillScreen       (_FillColor);
-  //GLib.setCursor        (0, 10);             //Upper left corner, no inverting, good with text
-  GLib.setCursor    (_CursorX, _CursorY);
-*/
   GLib.begin             ();
   GLib.setRotation      (_eScreenOrientation);
   GLib.setTextColor     (_TextColor, _BackgroundColor);
-  //GLib.setFont          (4);   //26 pixels
   GLib.fillScreen       (_FillColor);
-  //GLib.setCursor        (0, 10);             //Upper left corner, no inverting, good with text
-  GLib.setCursor    (_CursorX, _CursorY);
-
-  //RoverLCD.begin        ();
+  GLib.setCursor        (_CursorX, _CursorY);
+  //GLib.setFont          (4);   //26 pixels
   return;
 } //constructor
 
@@ -65,7 +53,44 @@ RoverDisplayClass::~RoverDisplayClass() {
   Serial << "~ColorDisplay(): Destructing" << endl;
 } //destructor
 
+//From BeckE32_RoverGraphics.ino
+void RoverDisplayClass::DisplayBegin(void) {
+  Serial << "RoverDisplayClass(): Call GLib.begin()" << endl;
+  Begin();
+  GLib.setRotation(1);
+  DisplayClear();
+  return;
+}  //DisplayBegin
+
+void RoverDisplayClass::FillScreen(void){
+  GLib.fillScreen(_BackgroundColor);
+  return;
+} //FillScreen(void)
+
+void RoverDisplayClass::FillScreen(Colortype Color) {
+  GLib.fillScreen(Color);
+  return;
+}  //FillScreen
+
+void RoverDisplayClass::DisplayText(uint16_t usCursorX, uint16_t usCursorY, char *pcText,
+                                    const GFXfont *pFont, uint8_t ucSize, Colortype Color) {
+  //240x320 3.2", 10 lines => 24 pixels/line
+  GLib.setFont(pFont);
+  GLib.setTextColor(Color);
+  GLib.setTextSize(ucSize);
+  GLib.setTextWrap(false);
+  GLib.setCursor(usCursorX, usCursorY);
+  GLib.print(pcText);
+  return;
+}  //DisplayText
+
+//For Adafruit_GFX support
 void RoverDisplayClass::Begin(void){
+  GLib.begin();
+  return;
+}
+
+void RoverDisplayClass::DisplayClear(void){
   GLib.begin();
   return;
 }
@@ -225,16 +250,6 @@ void RoverDisplayClass::SelectFont(FontFaceType eFontFace, FontPointType eFontPo
   } //switch (eFontFace)
   return;
 } //SelectFont
-
-void RoverDisplayClass::FillScreen(void){
-  GLib.fillScreen(_BackgroundColor);
-  return;
-} //FillScreen(void)
-
-void RoverDisplayClass::FillScreen(Colortype FillColor){
-  GLib.fillScreen(FillColor);
-  return;
-} //FillScreen(ColorType)
 
 void RoverDisplayClass::DrawLine(PUnit X1, PUnit Y1, PUnit X2, PUnit Y2){
   GLib.drawLine(X1, Invert_Y(Y1), X2, Invert_Y(Y2), _LineColor);

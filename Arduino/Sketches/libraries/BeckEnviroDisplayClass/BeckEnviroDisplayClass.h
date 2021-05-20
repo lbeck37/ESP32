@@ -1,4 +1,4 @@
-// BeckEnviroDisplayClass.h, 5/19/21a
+// BeckEnviroDisplayClass.h, 5/20/21a
 #pragma once
 
 #include <BeckBiotaDefines.h>
@@ -120,8 +120,6 @@ protected:
                                 bool bClearText= true, uint8_t ucSize= 1);
   void DisplayCO2             (void);
   void DisplayVOC             (void);
-
-
 };  //EnviroDisplayClass
 
 extern EnviroDisplayClass    EnviroDisplay;       //This is so every module can use the same object
