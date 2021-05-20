@@ -6,7 +6,7 @@ const char szSystemFileDate[]  = "5/20/21b";
 #include <Adafruit_CCS811.h>
 #include <Streaming.h>
 
-Adafruit_CCS811     CS811_GasSensor;
+Adafruit_CCS811     CCS811_GasSensor;
 GasSensorClass      GasSensor;       //This is so every module can use the same object
 
 GasSensorClass::GasSensorClass() {
@@ -19,6 +19,41 @@ GasSensorClass::~GasSensorClass() {
 } //destructor
 
 
+
+#if true
+void GasSensorClass::Setup(void){
+  if (!CCS811_GasSensor.begin()){
+	  Serial << "GasSensorClass::setup(): Failed to start sensor, please check the wiring." << endl;
+	  while(1);
+  } //if(!GasSensor.begin())
+
+  // Wait for the sensor to be ready
+  while(!CCS811_GasSensor.available());
+return;
+} //Setup
+
+void GasSensorClass::Handle(){
+  if (CCS811_GasSensor.available()){
+    if (!CCS811_GasSensor.readData()){
+      CO2_Value= CCS811_GasSensor.geteCO2();
+      TVOC_Value= CCS811_GasSensor.getTVOC();
+      GasSensorData.SetCO2_Value(CO2_Value);
+      GasSensorData.SetVOC_Value(TVOC_Value);
+
+      if(true || (millis() >= ulNextPrintMsec)){
+        ulNextPrintMsec= millis() + ulPrintPeriodMsec;
+        Serial << "GasSensorClass::Handle(): CO2= " << CO2_Value << "ppm, TVOC= " << TVOC_Value << endl;
+      }	//if(millis()>=ulNextPrintMsec)
+    } //if(!CCS811_GasSensor.readData())
+    else{
+      Serial.println("ERROR!");
+      Serial << "GasSensorClass::Handle(): CCS811_GasSensor.readData() returned error" << endl;
+      while(1);
+    } //if(!CCS811_GasSensor.readData())else
+  } //if(CCS811_GasSensor.available())
+  return;
+} //Handle
+#else
 //These versions of Setup() and Handle are for debugging w/o a CO2 sensor
 void GasSensorClass::Setup(void){
   CO2_Value= 400;
@@ -26,9 +61,8 @@ void GasSensorClass::Setup(void){
 return;
 } //Setup
 
-
 void GasSensorClass::Handle(){
-  if(true || (millis() >= ulNextPrintMsec)){
+  if(false || (millis() >= ulNextPrintMsec)){
     ulNextPrintMsec= millis() + ulPrintPeriodMsec;
     CO2_Value++;
     TVOC_Value++;
@@ -38,42 +72,5 @@ void GasSensorClass::Handle(){
   } //if(millis()>=ulNextPrintMsec)
   return;
 } //Handle
-
-/*
-void GasSensorClass::Setup(void){
-  if (!CS811_GasSensor.begin()){
-	  Serial << "GasSensorClass::setup(): Failed to start sensor, please check the wiring." << endl;
-	  while(1);
-  } //if(!GasSensor.begin())
-
-  // Wait for the sensor to be ready
-  while(!CS811_GasSensor.available());
-return;
-} //Setup
-
-
-void GasSensorClass::Handle(){
-  if (CS811_GasSensor.available()){
-    if (!CS811_GasSensor.readData()){
-      CO2_Value= CS811_GasSensor.geteCO2();
-      TVOC_Value= CS811_GasSensor.getTVOC();
-
-      //Are these calls needed?
-      GasSensorData.SetCO2_Value(CO2_Value);
-      GasSensorData.SetVOC_Value(TVOC_Value);
-
-      if(true || (millis() >= ulNextPrintMsec)){
-        ulNextPrintMsec= millis() + ulPrintPeriodMsec;
-        Serial << "GasSensorClass::Handle(): CO2= " << CO2_Value << "ppm, TVOC= " << TVOC_Value << endl;
-      }	//if(millis()>=ulNextPrintMsec)
-    } //if(!CS811_GasSensor.readData())
-    else{
-      Serial.println("ERROR!");
-      Serial << "GasSensorClass::Handle(): CS811_GasSensor.readData() returned error" << endl;
-      while(1);
-    } //if(!CS811_GasSensor.readData())else
-  } //if(CS811_GasSensor.available())
-  return;
-} //Handle
-*/
+#endif
 //Last line.

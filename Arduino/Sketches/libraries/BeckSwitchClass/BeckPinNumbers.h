@@ -1,5 +1,7 @@
-// BeckPinNumbers.h 4/28/21a
+// BeckPinNumbers.h 5/20/21a
 #pragma once
+#include <BeckBiotaDefines.h>
+
 #if ESP32
   static const int    sSDA_GPIO             = 21;   //I2C, TTGO pin 21
   static const int    sSCL_GPIO             = 22;   //I2C, TTGO pin 22
