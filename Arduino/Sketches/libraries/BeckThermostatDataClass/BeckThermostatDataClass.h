@@ -1,4 +1,4 @@
-// ThermostatDataClass.h, 4/23/21b
+// ThermostatDataClass.h, 5/21/21a
 #pragma once
 
 class ThermostatDataClass{

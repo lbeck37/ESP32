@@ -7,7 +7,8 @@ public:
   SystemClass();
   virtual ~SystemClass();
 
-  void          Setup                 (void);
+  //void          Setup                 (void);
+  void          Setup                 (ProjectType eBiotaProjectType);
   void          Handle                (void);
   ProjectType   GetProjectType        (void);
 
@@ -20,7 +21,8 @@ protected:
   char          _acAccessPointSSID[50];
   char          _acAccessPointPW  [50];
 
-  ProjectType       eProjectType          = eThermoDev;
+  //ProjectType       eProjectType          = eThermoDev;
+  ProjectType       eProjectType;
   int               sThermoTimesCount     = 0;      //Number of times temperature out of range
   bool              bWiFiOn               = false;
   unsigned long     ulHandlePeriodMsec    = 5 * 1000;

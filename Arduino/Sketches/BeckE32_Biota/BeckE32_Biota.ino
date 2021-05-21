@@ -1,16 +1,18 @@
 const char szSketchName[]  = "BeckE32_Biota.ino";
-const char szFileDate[]    = "5/20/21e";
+const char szFileDate[]    = "5/21/21c";
 
 #include <BeckLogLib.h>
 #include <BeckSystemClass.h>
 #include <Streaming.h>
 
+//Project types: eThermoDev, eEnviro, eFireplace, eHeater, eGarage, ePitchMeter
+ProjectType eBiotaProjectType= eEnviro;
 bool            _bOTA_Started       = false;
 unsigned long   _ulOTATimeoutMsec   = millis();
 
 void setup(){
-  //BiotaSystem.Setup(eBiotaProjectType);
-  BiotaSystem.Setup();
+  BiotaSystem.Setup(eBiotaProjectType);
+  //BiotaSystem.Setup();
   Serial << endl << LOG0 << "setup() finished, Sketch: " << szSketchName << ", " << szFileDate << endl;
   return;
 } //setup

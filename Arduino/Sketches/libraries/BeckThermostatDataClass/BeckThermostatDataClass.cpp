@@ -1,6 +1,5 @@
-// ThermostatDataClass.h, 4/23/21a
 const char szThermostatDataClassFileName[]  = "ThermostatDataClass.cpp";
-const char szThermostatDataClassFileDate[]  = "5/9/21a";
+const char szThermostatDataClassFileDate[]  = "5/21/21a";
 
 #include <BeckThermostatDataClass.h>
 #include <Streaming.h>

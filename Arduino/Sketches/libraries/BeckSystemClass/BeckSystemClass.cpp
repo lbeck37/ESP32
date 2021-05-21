@@ -1,35 +1,28 @@
 const char szSystemFileName[]  = "BeckSystemClass.cpp";
-const char szSystemFileDate[]  = "5/17/21d";
+const char szSystemFileDate[]  = "5/21/21d";
 
 #include <BeckSystemClass.h>
 #include <BeckAlexaClass.h>
 #include <BeckBiotaDefines.h>
 #if DO_ROVER
   #include <BeckEnviroDisplayClass.h>
+#else
+  #if DO_TTGO
+    #include <BeckGasSensorDisplayClass.h>
+  #endif
+#endif
+#if DO_THERMOSTAT
+  #include <BeckSwitchClass.h>
+  #include <BeckThermostatClass.h>
+  #include <BeckThermostatDisplayClass.h>
+  #include <BeckThermostatDataClass.h>
 #endif
 #include <BeckGasSensorClass.h>
 #include <BeckGasSensorDataClass.h>
-#if DO_TTGO
-  #include <BeckGasSensorDisplayClass.h>
-#endif
 #include <BeckIncludeOptionalFiles.h>
 #include <BeckLogLib.h>
-#include <BeckSwitchClass.h>
-#if DO_THERMOSTAT
-  #include <BeckThermostatClass.h>
-  #include <BeckThermostatDisplayClass.h>
-#endif
-#include <BeckThermostatDataClass.h>
 #include <BeckWiFiLib.h>
 #include <Streaming.h>
-
-//Select type of project to build for.
-//ProjectType      eBiotaProjectType            = eThermoDev;
-ProjectType      eBiotaProjectType              = eEnviro;
-//ProjectType      eBiotaProjectType            = eFireplace;
-//ProjectType      eBiotaProjectType            = eHeater;
-//ProjectType      eBiotaProjectType            = eGarage;
-//ProjectType      eBiotaProjectType            = ePitchMeter;
 
 SystemClass           BiotaSystem;       //This is so every module can use the same object
 
@@ -43,12 +36,12 @@ SystemClass::~SystemClass() {
 } //destructor
 
 
-void SystemClass::Setup(void){
+void SystemClass::Setup(ProjectType eBiotaProjectType){
   Serial.begin(115200);
   delay(100);
 
   Serial << LOG0 << "\n\nSystemClass::Setup(): Begin" << endl;
-  //SetProjectType(eCurrentBiotaProjectType);
+  SetProjectType(eBiotaProjectType);
 
   Serial << LOG0 << "SystemClass::Setup(): Call SetupProjectData()" << endl;
   SetupProjectData();
@@ -56,6 +49,9 @@ void SystemClass::Setup(void){
 #if DO_THERMOSTAT
     Serial << LOG0 << "SystemClass::Setup(): Call BiotaThermostat.Setup()" << endl;
     BiotaThermostat.Setup();
+    Serial << LOG0 << "SystemClass::Setup(): Call BiotaSwitches.Setup()" << endl;
+    BiotaSwitches.Setup();
+
 #endif
 
   Serial << LOG0 << "SystemClass::Setup(): Call GasSensor.Setup()" << endl;
@@ -70,9 +66,6 @@ void SystemClass::Setup(void){
   Serial << LOG0 << "SystemClass::Setup(): Call EnviroDisplay.Setup()" << endl;
   EnviroDisplay.Setup();
 #endif
-
-  Serial << LOG0 << "SystemClass::Setup(): Call BiotaSwitches.Setup()" << endl;
-  BiotaSwitches.Setup();
 
   Serial << LOG0 << "SystemClass::Setup(): Call SetupWiFi()" << endl;
   bWiFiOn= SetupWiFi();
@@ -107,15 +100,14 @@ void SystemClass::Handle(){
 
 
 void SystemClass::SetProjectType(ProjectType eNewProjectType){
+  Serial << "SystemClass::SetProjectType(): Set eProjectType to: " << eNewProjectType << endl;
   eProjectType= eNewProjectType;
  return;
 }
 
-
 ProjectType SystemClass::GetProjectType(void){
   return eProjectType;
 }
-
 
 void SystemClass::SetupOptionalModules(){
   if (_bWiFiConnected){
@@ -179,22 +171,36 @@ void SystemClass::HandleOptionalModules(){
 
 
 void SystemClass::SetupProjectData(void){
+  Serial << "SystemClass::SetupProjectData(): Begin" << endl;
   switch (BiotaSystem.GetProjectType()){
-    case eThermoDev:
-      strcpy(_acHostname        , "BeckThermoDev");
-      strcpy(_acProjectType     , "THERMO_DEV");
-      strcpy(_acAlexaName       , "Larry's Device");
-      strcpy(_acRouterName      , "Aspot24");
-      strcpy(_acRouterPW        , "Qazqaz11");
-      strcpy(_acAccessPointSSID , "BiotaSpot");
-      strcpy(_acAccessPointPW   , "Qazqaz11");
+  case eEnviro:
+    Serial << "SystemClass::SetupProjectData(): Setup eEnviro project" << endl;
+    strcpy(_acHostname        , "BeckEnviro");
+    strcpy(_acProjectType     , "ENVIRO");
+    strcpy(_acAlexaName       , "Larry's Device");
+    strcpy(_acRouterName      , "Aspot24");
+    strcpy(_acRouterPW        , "Qazqaz11");
+    strcpy(_acAccessPointSSID , "BiotaSpot");
+    strcpy(_acAccessPointPW   , "Qazqaz11");
+    break;
+  case eThermoDev:
+    Serial << "SystemClass::SetupProjectData(): Setup eThermoDev project" << endl;
+    strcpy(_acHostname        , "BeckThermoDev");
+    strcpy(_acProjectType     , "THERMO_DEV");
+    strcpy(_acAlexaName       , "Larry's Device");
+    strcpy(_acRouterName      , "Aspot24");
+    strcpy(_acRouterPW        , "Qazqaz11");
+    strcpy(_acAccessPointSSID , "BiotaSpot");
+    strcpy(_acAccessPointPW   , "Qazqaz11");
 
-      ThermostatData.SetSetpoint     (71.0);
-      ThermostatData.SetMaxHeatRange ( 0.1);
-      ThermostatData.SetMinSetpoint  (40.0);
-      ThermostatData.SetMaxSetpoint  (75.0);
-      ThermostatData.SetThermostatOn (false);
-      break;
+#if DO_THERMOSTAT
+    ThermostatData.SetSetpoint     (71.0);
+    ThermostatData.SetMaxHeatRange ( 0.1);
+    ThermostatData.SetMinSetpoint  (40.0);
+    ThermostatData.SetMaxSetpoint  (75.0);
+    ThermostatData.SetThermostatOn (false);
+#endif
+    break;
     case eFireplace:
       strcpy(_acHostname        , "BeckFireplace");
       strcpy(_acProjectType     , "FIREPLACE");
@@ -204,11 +210,13 @@ void SystemClass::SetupProjectData(void){
       strcpy(_acAccessPointSSID , "FireplaceSpot");
       strcpy(_acAccessPointPW   , "Qazqaz11");
 
+#if DO_THERMOSTAT
       ThermostatData.SetSetpoint     (71.0);
       ThermostatData.SetMaxHeatRange ( 0.1);
       ThermostatData.SetMinSetpoint  (40.0);
       ThermostatData.SetMaxSetpoint  (75.0);
       ThermostatData.SetThermostatOn (false);
+#endif
       break;
     case eHeater:
       strcpy(_acHostname        , "BeckHeater");
@@ -219,11 +227,13 @@ void SystemClass::SetupProjectData(void){
       strcpy(_acAccessPointSSID , "HeaterSpot");
       strcpy(_acAccessPointPW   , "Qazqaz11");
 
+#if DO_THERMOSTAT
       ThermostatData.SetSetpoint     (75.0);
       ThermostatData.SetMaxHeatRange ( 0.1);
       ThermostatData.SetMinSetpoint  (60.0);
       ThermostatData.SetMaxSetpoint  (75.0);
       ThermostatData.SetThermostatOn(false);
+#endif
       break;
     case eGarage:
       strcpy(_acHostname        , "BeckGarage");
@@ -234,11 +244,13 @@ void SystemClass::SetupProjectData(void){
       strcpy(_acAccessPointSSID , "GarageSpot");
       strcpy(_acAccessPointPW   , "Qazqaz11");
 
+#if DO_THERMOSTAT
       ThermostatData.SetSetpoint     (35.0);
       ThermostatData.SetMaxHeatRange ( 0.1);
       ThermostatData.SetMinSetpoint  (33.0);
       ThermostatData.SetMaxSetpoint  (70.0);
       ThermostatData.SetThermostatOn (true);
+#endif
       break;
     case ePitchMeter:
       strcpy(_acHostname        , "BeckPitch");

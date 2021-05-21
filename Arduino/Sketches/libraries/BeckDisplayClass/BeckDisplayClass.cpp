@@ -1,8 +1,10 @@
 const char szDisplayClassFileName[]  = "BeckDisplayClass.cpp";
-const char szDisplayClassFileDate[]  = "5/17/21c";
+const char szDisplayClassFileDate[]  = "5/21/21a";
 
 #include <BeckDisplayClass.h>
-#include <BeckThermostatDataClass.h>
+#if DO_THERMOSTAT
+  #include <BeckThermostatDataClass.h>
+#endif
 #include "Free_Fonts.h"
 #include <Streaming.h>
 

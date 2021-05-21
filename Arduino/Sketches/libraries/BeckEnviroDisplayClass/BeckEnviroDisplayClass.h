@@ -1,4 +1,4 @@
-// BeckEnviroDisplayClass.h, 5/20/21a
+// BeckEnviroDisplayClass.h, 5/21/21a
 #pragma once
 
 #include <BeckBiotaDefines.h>
@@ -102,18 +102,18 @@ protected:
   PUnit             VOC_YellowStartDots             = (ScreenWidth * VOC_YellowStartPercent) /100;
   PUnit             VOC_RedStartDots                = (ScreenWidth * VOC_RedStartPercent)    /100;
 
-  void  DrawCO2andTVOC_text  (int32_t CO2_Value, int32_t VOC_Value);
-  void  DrawBar              (GasType eGasType, int32_t wValue);
+  //void  DrawCO2andTVOC_text  (int32_t CO2_Value, int32_t VOC_Value);
+  //void  DrawBar              (GasType eGasType, int32_t wValue);
 
-  void  DisplayBegin          (void);
-  void  ShowStartScreen       (void);
-  void  ShowSplash            (void);
-  void  DisplayUpdate         (void);
+  //void  DisplayBegin          (void);
+  //void  ShowStartScreen       (void);
+  //void  ShowSplash            (void);
+  //void  DisplayUpdate         (void);
+  //void  FillScreen            (uint16_t usColor);
+  //void  DisplayText           (uint16_t usCursorX, uint16_t usCursorY, char *pcText,
+  //                               const GFXfont *pFont, uint8_t ucSize, uint16_t usColor);
   void  DisplayClear          (void);
-  void  FillScreen            (uint16_t usColor);
   bool  bScreenChanged        (void);
-  void  DisplayText           (uint16_t usCursorX, uint16_t usCursorY, char *pcText,
-                                 const GFXfont *pFont, uint8_t ucSize, uint16_t usColor);
   void ClearTextBackground    (int16_t sUpperLeftX, int16_t sUpperLeftY, uint16_t usWidth, uint16_t usHeight);
   void DisplayLine            (const GFXfont stFont, uint16_t usColor, uint16_t usCursorX, uint16_t usCursorY,
                                 uint16_t usClearWidth, uint16_t usClearHeight, char szText[],
