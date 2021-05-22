@@ -1,4 +1,4 @@
-// BeckDisplayClass.h, 5/18/21a
+// BeckDisplayClass.h, 5/21/21b
 #pragma once
 //Initially used for TTGO ESP32 module. 135 x 240, 1.14", 240dpi display
 
@@ -164,16 +164,16 @@ protected:
   GraphicsLibrary         GLib                  = GraphicsLibrary();
 #endif
   ScreenOrientationType   _eScreenOrientation   = eUSBLeft;
-  Colortype               _BackgroundColor      = BECK_WHITE;
-  Colortype               _TextColor            = BECK_BLACK;
-  Colortype               _TextBGColor          = BECK_WHITE;
+  Colortype               _BackgroundColor      = BECK_BLACK;
+  Colortype               _TextColor            = BECK_WHITE;
+  Colortype               _TextBGColor          = BECK_BLACK;
   Colortype               _FillColor            = BECK_WHITE;
-  Colortype               _LineColor            = BECK_BLACK;
+  Colortype               _LineColor            = BECK_WHITE;
   PUnit                   _CursorX              = 0;
   PUnit                   _CursorY              = 0;
   FontLibraryType         _eFontLibrary         = eGFXFont;
   FontFaceType            _eFontFace            = eMonoFace;
   FontPointType           _eFontPoint           = e12point;
-  char            sz100CharDisplayBuffer[100];    //For building strings for display
+  char                    sz100CharDisplayBuffer[100];    //For building strings for display
 };  //DisplayClass
 //Last line.

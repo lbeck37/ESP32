@@ -1,10 +1,11 @@
 const char szSystemFileName[]  = "BeckGasSensorClass.cpp";
-const char szSystemFileDate[]  = "5/20/21b";
+const char szSystemFileDate[]  = "5/21/21b";
 
 #include <BeckGasSensorClass.h>
 #include <BeckGasSensorDataClass.h>
 #include <Adafruit_CCS811.h>
 #include <Streaming.h>
+#include <Wire.h>
 
 Adafruit_CCS811     CCS811_GasSensor;
 GasSensorClass      GasSensor;       //This is so every module can use the same object
@@ -19,8 +20,7 @@ GasSensorClass::~GasSensorClass() {
 } //destructor
 
 
-
-#if true
+#if false
 void GasSensorClass::Setup(void){
   if (!CCS811_GasSensor.begin()){
 	  Serial << "GasSensorClass::setup(): Failed to start sensor, please check the wiring." << endl;

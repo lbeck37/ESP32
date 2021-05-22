@@ -1,4 +1,4 @@
-// BeckRoverDisplayClass.cpp, 5/19/21a
+// BeckRoverDisplayClass.cpp, 5/21/21a
 
 #include <BeckRoverDisplayClass.h>
 #include <Adafruit_GFX.h>
@@ -56,9 +56,10 @@ RoverDisplayClass::~RoverDisplayClass() {
 //From BeckE32_RoverGraphics.ino
 void RoverDisplayClass::DisplayBegin(void) {
   Serial << "RoverDisplayClass(): Call GLib.begin()" << endl;
-  Begin();
+  //Begin();
+  GLib.begin();
   GLib.setRotation(1);
-  DisplayClear();
+  //DisplayClear();
   return;
 }  //DisplayBegin
 
@@ -84,7 +85,30 @@ void RoverDisplayClass::DisplayText(uint16_t usCursorX, uint16_t usCursorY, char
   return;
 }  //DisplayText
 
+void RoverDisplayClass::ClearTextBackground(int16_t sUpperLeftX, int16_t sUpperLeftY, uint16_t usWidth, uint16_t usHeight){
+  GLib.fillRect(sUpperLeftX, sUpperLeftY, usWidth, usHeight, _BackgroundColor);
+  return;
+} //ClearTextBackground
+
+void RoverDisplayClass::DisplayLine(const GFXfont stFont, uint16_t usColor, uint16_t usCursorX, uint16_t usCursorY,
+                                    uint16_t usClearWidth, uint16_t usClearHeight, char szText[],
+                                    bool bClearText, uint8_t ucSize) {
+/*
+  int16_t           sClearXstart    = (int16_t)usCursorX - 10;
+  int16_t           sClearYstart    = (int16_t)usCursorY - 18;
+*/
+  int16_t           sClearXstart    = max(0, ((int16_t)usCursorX - 10));
+  int16_t           sClearYstart    = max(0, ((int16_t)usCursorY - 18));
+
+  if(bClearText){
+    ClearTextBackground(sClearXstart, sClearYstart, usClearWidth, usClearHeight);
+  }
+  DisplayText( usCursorX, usCursorY, szText, &stFont, ucSize, usColor);
+  return;
+} //DisplayLine
+
 //For Adafruit_GFX support
+/*
 void RoverDisplayClass::Begin(void){
   GLib.begin();
   return;
@@ -94,6 +118,7 @@ void RoverDisplayClass::DisplayClear(void){
   GLib.begin();
   return;
 }
+*/
 
 void RoverDisplayClass::SetRotation(uint8_t r){
   GLib.setRotation(r);

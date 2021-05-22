@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckSystemClass.cpp";
-const char szSystemFileDate[]  = "5/21/21d";
+const char szSystemFileDate[]  = "5/21/21e";
 
 #include <BeckSystemClass.h>
 #include <BeckAlexaClass.h>
@@ -19,6 +19,7 @@ const char szSystemFileDate[]  = "5/21/21d";
 #endif
 #include <BeckGasSensorClass.h>
 #include <BeckGasSensorDataClass.h>
+#include <BeckI2cClass.h>
 #include <BeckIncludeOptionalFiles.h>
 #include <BeckLogLib.h>
 #include <BeckWiFiLib.h>
@@ -53,6 +54,9 @@ void SystemClass::Setup(ProjectType eBiotaProjectType){
     BiotaSwitches.Setup();
 
 #endif
+
+  Serial << LOG0 << "SystemClass::Setup(): Call I2C_Object.Setup()" << endl;
+  I2C_Object.Setup();
 
   Serial << LOG0 << "SystemClass::Setup(): Call GasSensor.Setup()" << endl;
   GasSensor.Setup();
