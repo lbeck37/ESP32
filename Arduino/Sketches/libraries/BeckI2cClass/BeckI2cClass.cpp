@@ -1,5 +1,5 @@
 const char szI2cClassFileName[]  = "BeckI2cClass.cpp";
-const char szI2cClassFileDate[]  = "5/21/21b";
+const char szI2cClassFileDate[]  = "5/24/21a";
 
 #include <BeckI2cClass.h>
 #include <BeckLogLib.h>
@@ -33,7 +33,7 @@ void I2cClass::ScanForDevices(){
   byte ucError, ucAddress;
   int nDevices;
   nDevices = 0;
-  Serial << LOG0 << "I2cClass::ScanForDevices(): Perform scan";
+  Serial << LOG0 << "I2cClass::ScanForDevices(): Perform scan" << endl;
   for(ucAddress = 1; ucAddress < 127; ucAddress++ ){
     //The i2c_scanner uses the return value of the Write.endTransmisstion to see if
     //a device did acknowledge to the address.

@@ -1,4 +1,4 @@
-// BeckEnviroDisplayClass.h, 5/25/21a
+// BeckEnviroDisplayClass.h, 5/24/21a
 #pragma once
 
 #include <BeckBiotaDefines.h>
@@ -9,7 +9,6 @@
   #include <BeckRoverDisplayClass.h>
 #endif
 #include <TFT_eSPI.h>
-#include <BeckMiniLib.h>
 
 enum GasType{
   eNoGasType= -1,

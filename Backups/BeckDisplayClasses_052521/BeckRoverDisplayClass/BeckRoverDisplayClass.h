@@ -11,7 +11,6 @@ public:
   virtual void  Handle        (void){}
 
   //void  Begin                 (void);
-  void  DisplayBegin          (void);
   void  SetRotation           (uint8_t r);
   PUnit Invert_Y              (PUnit Y1);
   void  SetCursor             (PUnit CursorX, PUnit CursorY);
@@ -36,6 +35,10 @@ public:
   void  DrawGrid              (void);
   void  Print                 (const char* szLineToPrint);
   void  PrintLine             (const char* szLineToPrint);
+  //From BeckE32_RoverGraphics.ino
+  void  DisplayBegin          (void);
+  //For Adafruit_GFX support
+  //void  DisplayClear          (void);
 
 protected:
 };  //RoverDisplayClass

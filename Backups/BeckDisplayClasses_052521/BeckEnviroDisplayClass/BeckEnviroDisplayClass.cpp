@@ -1,5 +1,5 @@
 const char szBeckEnviroDisplayClassFileName[]  = "BeckEnviroDisplayClass.cpp";
-const char szEnviroDisplayClassFileDate[]  = "5/25/21a";
+const char szEnviroDisplayClassFileDate[]  = "5/24/21a";
 
 #include <BeckEnviroDisplayClass.h>
 #include <BeckGasSensorDataClass.h>
@@ -24,29 +24,12 @@ EnviroDisplayClass::~EnviroDisplayClass(void) {
 
 void EnviroDisplayClass::Setup(void){
   //FillScreen(Gas_BackgroundColor);    //Minimize this, later.
-/*
   Serial << "EnviroDisplayClass::Setup(): Call DisplayBegin()" << endl;
   DisplayBegin();
-*/
-
-  //Debug white screen bug
-  Serial << "EnviroDisplayClass::Setup(): Call GLib.begin()" << endl;
-  GLib.begin();
-  //GLib.setRotation(1);
-
   uint16_t FillDelay= 2000;
   Serial << "EnviroDisplayClass::Setup(): Fill screen with red" << endl;
   FillScreen(BECK_RED);
   delay(FillDelay);
-
-  Serial << "EnviroDisplayClass::Setup(): Fill screen with green" << endl;
-  FillScreen(BECK_GREEN);
-  delay(FillDelay);
-
-  Serial << "EnviroDisplayClass::Setup(): Fill screen with blue" << endl;
-  FillScreen(BECK_BLUE);
-  delay(FillDelay);
-
   return;
 } //Setup
 
@@ -104,7 +87,6 @@ void EnviroDisplayClass::DisplayVOC(void){
 }
 
 void EnviroDisplayClass::DisplayLowerBanner(){
-/*
   const GFXfont   *pFont          = &FreeSansOblique18pt7b;
   uint16_t          usCursorX       = 7;
   uint16_t          usCursorY       = 232;    //Was 72
@@ -114,7 +96,6 @@ void EnviroDisplayClass::DisplayLowerBanner(){
 
   //DisplayText( usCursorX, usCursorY, "PowerShift Coach", pFont, ucSize, usColor);
   DisplayLine( usCursorX, usCursorY, "PowerShift Coach", pFont, ucSize, usColor);
-*/
   return;
 } //DisplayLowerBanner
 //Last line.
