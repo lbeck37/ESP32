@@ -1,12 +1,14 @@
 const char szSketchName[]  = "BeckE32_Biota.ino";
-const char szFileDate[]    = "5/22/21g";
+const char szFileDate[]    = "5/25/21c";
 
 #include <BeckLogLib.h>
 #include <BeckSystemClass.h>
 #include <Streaming.h>
 
 //Project types: eThermoDev, eEnviro, eFireplace, eHeater, eGarage, ePitchMeter
-ProjectType     eBiotaProjectType   = eEnviro;
+//ProjectType     eBiotaProjectType   = eEnviro;
+ProjectType     eBiotaProjectType   = eThermoDev;
+
 bool            _bOTA_Started       = false;
 unsigned long   _ulOTATimeoutMsec   = millis();
 

@@ -1,4 +1,4 @@
-// BeckDisplayClass.h, 5/22/21b
+// BeckDisplayClass.h, 5/25/21a
 #pragma once
 //Initially used for TTGO ESP32 module. 135 x 240, 1.14", 240dpi display
 
@@ -31,7 +31,9 @@
 */
 
 #if DO_TTGO
-  typedef TFT_eSPI            GraphicsLibrary;
+  typedef TFT_eSPI                  GraphicsLibrary;
+#else
+  typedef WROVER_KIT_LCD            GraphicsLibrary;
 #endif
 
 //typedef int32_t       Colortype;
@@ -155,15 +157,15 @@ public:
   virtual void  PrintLine             (const char* szLineToPrint){}
 
 protected:
+/*
 #if DO_ROVER
   //WROVER_KIT_LCD          GLib    = WROVER_KIT_LCD();
   WROVER_KIT_LCD          GLib;
   //typedef WROVER_KIT_LCD      GraphicsLibrary;
 #endif
-
-#if DO_TTGO
+*/
   GraphicsLibrary         GLib                  = GraphicsLibrary();
-#endif
+
   ScreenOrientationType   _eScreenOrientation   = eUSBLeft;
   Colortype               _BackgroundColor      = BECK_BLACK;
   Colortype               _TextColor            = BECK_WHITE;
