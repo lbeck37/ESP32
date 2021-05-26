@@ -1,6 +1,9 @@
 const char szSketchName[]  = "BeckE32_RoverDisplayTest.ino";
-const char szFileDate[]    = "5/26/21a";
-// 5/26/21, Copied fromBeckE32_RoverGraphics.ino to isolate white screen problem
+const char szFileDate[]    = "5/26/21p";
+// 5/26/21, Copied from BeckE32_RoverGraphics.ino to isolate white screen problem
+#include <BeckI2cClass.h>
+#include <BeckGasSensorClass.h>
+#include <BeckGasSensorDataClass.h>
 #include <BeckLogLib.h>
 #include <BeckMiniLib.h>
 #include <Adafruit_GFX.h>
@@ -78,13 +81,17 @@ void setup()   {
   Serial << endl << "setup(): Begin " << szSketchName << ", " << szFileDate << endl;
 
   Serial << "setup(): Call Wire.begin(sI2C_SDA, sI2C_SCL) " << sI2C_SDA << ", " << sI2C_SCL << endl;
-  Wire.begin(sI2C_SDA, sI2C_SCL);
+  //Wire.begin(sI2C_SDA, sI2C_SCL);
+  I2C_Object.Setup();
+  GasSensor.Setup();
   DisplayBegin();
   bButtonsChanged= true;  //Make the display show up during debugging.
   return;
 }  //setup
 
 void loop() {
+  GasSensor.Handle();
+  bPitchChanged= bBoostChanged= true;
   DisplayUpdate();
   return;
 }  //loop()
@@ -194,7 +201,9 @@ void DisplayPitch() {
 
   //Serial << "DisplayPitch(): Begin" << endl;
   if(bPitchChanged) {
-    sprintf(szTempBuffer, "%+4.1f%%", dPitchPercent);
+    //sprintf(szTempBuffer, "%+4.1f%%", dPitchPercent);
+    UINT16 CO2Value= GasSensorData.GetCO2_Value();
+    sprintf(szTempBuffer, "%5d", CO2Value);
     //sprintf(szTempBuffer, "%+4.1f %+03.0f", dPitchPercent, dPitchDeg);
     //Calculate width to clear based on number of characters + 2, use that unless last width was bigger
     usClearWidth= (strlen(szTempBuffer) + 2) * usCharWidth;
@@ -205,7 +214,7 @@ void DisplayPitch() {
 
     usCursorX= 50;
     usCursorY += 20;
-    sprintf(szTempBuffer, "Pitch");
+    sprintf(szTempBuffer, "CO2 ppm");
     DisplayLine(FreeSans9pt7b, usColor, usCursorX, usCursorY, usClearWidth, usClearHeight, szTempBuffer, false);
   } //if(bPitchChanged)
   return;
@@ -226,7 +235,9 @@ void DisplayBoost() {
 
   //Serial << "DisplayBoost(): Begin" << endl;
   if(bBoostChanged) {
-    sprintf(szTempBuffer, "%3.0f W", dBoostWatts);
+    //sprintf(szTempBuffer, "%3.0f W", dBoostWatts);
+    UINT16 VOCValue= GasSensorData.GetVOC_Value();
+    sprintf(szTempBuffer, "%5d", VOCValue);
     //Calculate width to clear based on number of characters + 2, use that unless last width was bigger
     usClearWidth= (strlen(szTempBuffer) + 2) * usCharWidth;
     usClearWidth= std::max(usClearWidth, usLastClearWidth);
@@ -236,7 +247,7 @@ void DisplayBoost() {
 
     usCursorX= 50;
     usCursorY += 20;
-    sprintf(szTempBuffer, "Boost");
+    sprintf(szTempBuffer, "VOC ppb");
     DisplayLine(FreeSans9pt7b, usColor, usCursorX, usCursorY, usClearWidth, usClearHeight, szTempBuffer, false);
   } //if(bBoostChanged)
   return;

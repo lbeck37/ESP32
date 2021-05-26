@@ -1,10 +1,15 @@
-// BeckPinNumbers.h 5/20/21a
+// BeckPinNumbers.h 5/26/21b
 #pragma once
 #include <BeckBiotaDefines.h>
 
 #if ESP32
+#if DO_TTGO
   static const int    sSDA_GPIO             = 21;   //I2C, TTGO pin 21
   static const int    sSCL_GPIO             = 22;   //I2C, TTGO pin 22
+#else
+  static const int    sSDA_GPIO             = 26;   //I2C, Rover pin 26
+  static const int    sSCL_GPIO             = 27;   //I2C, Rover pin 27
+#endif
   static const int    sOneWireGPIO          = 32;   //TTGO pin 32
   static const int    wHeatPin              = 15;   //Relay 1, was 12
   static const int    wThermostatPin        = 13;   //Relay 2, was 13

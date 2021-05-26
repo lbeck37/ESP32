@@ -1,4 +1,4 @@
-// BeckGasSensorDataClass.h, 5/10/21a
+// BeckGasSensorDataClass.h, 5/26/21a
 #pragma once
 #include <BeckBiotaDefines.h>
 
