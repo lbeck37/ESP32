@@ -1,14 +1,14 @@
 const char szBeckEnviroDisplayClassFileName[]  = "BeckEnviroDisplayClass.cpp";
-const char szEnviroDisplayClassFileDate[]  = "5/25/21a";
+const char szEnviroDisplayClassFileDate[]  = "5/25/21b";
 
 #include <BeckEnviroDisplayClass.h>
 #include <BeckGasSensorDataClass.h>
 #include "Free_Fonts.h"
-#include <Streaming.h>
 #include <Fonts/FreeMonoBold12pt7b.h>
 #include <Fonts/FreeMonoBold24pt7b.h>
 #include <Fonts/FreeSans9pt7b.h>
 #include <Fonts/FreeSansOblique18pt7b.h>
+#include <Streaming.h>
 
 EnviroDisplayClass EnviroDisplay;                   //So every module can use the same object
 
@@ -24,15 +24,15 @@ EnviroDisplayClass::~EnviroDisplayClass(void) {
 
 void EnviroDisplayClass::Setup(void){
   //FillScreen(Gas_BackgroundColor);    //Minimize this, later.
-/*
   Serial << "EnviroDisplayClass::Setup(): Call DisplayBegin()" << endl;
   DisplayBegin();
-*/
 
+/*
   //Debug white screen bug
   Serial << "EnviroDisplayClass::Setup(): Call GLib.begin()" << endl;
   GLib.begin();
   //GLib.setRotation(1);
+*/
 
   uint16_t FillDelay= 2000;
   Serial << "EnviroDisplayClass::Setup(): Fill screen with red" << endl;
@@ -55,10 +55,13 @@ void EnviroDisplayClass::Handle(void){
   if(millis() >= ulNextGasSensorDisplayMsec){
     ulNextGasSensorDisplayMsec= millis() + ulGasSensorDisplayPeriodMsec;
     Serial << "EnviroDisplayClass::Handle(): Timer is up for next display update" << endl;
+/*
     int32_t   CO2_Value= GasSensorData.GetCO2_Value();
     int32_t   VOC_Value= GasSensorData.GetVOC_Value();
-
     DisplayCO2(CO2_Value);
+*/
+
+    DisplayCO2(437);
   } //if(millis()>=ulNextGasSensorDisplayMsec)
   return;
 } //Handle

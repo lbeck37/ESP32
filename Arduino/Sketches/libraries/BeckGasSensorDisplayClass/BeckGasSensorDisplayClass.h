@@ -1,8 +1,7 @@
-// BeckGasSensorDisplayClass.h, 5/17/21b
+// BeckGasSensorDisplayClass.h, 5/25/21b
 #pragma once
 //Initially used for TTGO ESP32 module. 135 x 240, 1.14", 240dpi display
 
-//#include <BeckDisplayClass.h>
 #include <BeckTTGODisplayClass.h>
 #include <TFT_eSPI.h>
 
@@ -30,6 +29,9 @@ public:
   void  Handle            (void);
 
 protected:
+  void  DrawCO2andTVOC_text  (int32_t CO2_Value, int32_t VOC_Value);
+  void  DrawBar              (GasType eGasType, int32_t wValue);
+
   Colortype         Gas_BackgroundColor             = TFT_BLACK;
   Colortype         Gas_FontColor                   = TFT_CYAN;
 
@@ -94,9 +96,6 @@ protected:
   PUnit             VOC_GreenStartDots              = (ScreenWidth * VOC_GreenStartPercent)  /100;
   PUnit             VOC_YellowStartDots             = (ScreenWidth * VOC_YellowStartPercent) /100;
   PUnit             VOC_RedStartDots                = (ScreenWidth * VOC_RedStartPercent)    /100;
-
-  void  DrawCO2andTVOC_text  (int32_t CO2_Value, int32_t VOC_Value);
-  void  DrawBar              (GasType eGasType, int32_t wValue);
 };  //GasSensorDisplayClass
 
 extern GasSensorDisplayClass    GasSensorDisplay;       //This is so every module can use the same object

@@ -38,6 +38,9 @@
   #include <Roboto_Medium_150.h>
 #endif
 
+//WROVER_KIT_LCD    GLib;
+
+RoverDisplayClass RoverDisplay;
 
 RoverDisplayClass::RoverDisplayClass() {
   GLib.begin             ();

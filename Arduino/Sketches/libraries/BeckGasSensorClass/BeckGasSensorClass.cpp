@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckGasSensorClass.cpp";
-const char szSystemFileDate[]  = "5/25/21b";
+const char szSystemFileDate[]  = "5/25/21c";
 
 #include <BeckGasSensorClass.h>
 #include <BeckGasSensorDataClass.h>
@@ -20,7 +20,7 @@ GasSensorClass::~GasSensorClass() {
 } //destructor
 
 
-#if true
+#if false
 void GasSensorClass::Setup(void){
   if (!CCS811_GasSensor.begin()){
 	  Serial << "GasSensorClass::setup(): Failed to start sensor, please check the wiring." << endl;

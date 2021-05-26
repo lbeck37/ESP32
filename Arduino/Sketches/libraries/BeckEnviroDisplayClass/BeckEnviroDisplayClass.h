@@ -1,6 +1,7 @@
-// BeckEnviroDisplayClass.h, 5/25/21a
+// BeckEnviroDisplayClass.h, 5/25/21c
 #pragma once
 
+/*
 #include <BeckBiotaDefines.h>
 #if DO_TTGO
   #include <BeckTTGODisplayClass.h>
@@ -9,7 +10,9 @@
   #include <BeckRoverDisplayClass.h>
 #endif
 #include <TFT_eSPI.h>
+*/
 #include <BeckMiniLib.h>
+#include <BeckRoverDisplayClass.h>
 
 enum GasType{
   eNoGasType= -1,
@@ -41,8 +44,8 @@ protected:
   void  DisplayVOC          (void);
   void  DisplayLowerBanner  (void);
 
-  Colortype         Gas_BackgroundColor             = TFT_BLACK;
-  Colortype         Gas_FontColor                   = TFT_CYAN;
+  Colortype         Gas_BackgroundColor             = BECK_BLACK;
+  Colortype         Gas_FontColor                   = BECK_CYAN;
 
   FontFaceType      eGas_Font                       = eMonospacedBold;
   FontPointType     eGas_PointSize                  = e30point;
