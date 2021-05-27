@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_RoverDisplayTest.ino";
-const char szFileDate[]    = "5/26/21q";
+const char szFileDate[]    = "5/27/21c";
 // 5/26/21, Copied from BeckE32_RoverGraphics.ino to isolate white screen problem
 #include <BeckI2cClass.h>
 #include <BeckGasSensorClass.h>
@@ -13,6 +13,7 @@ const char szFileDate[]    = "5/26/21q";
 #include <Fonts/FreeMonoBold24pt7b.h>
 #include <Fonts/FreeSans9pt7b.h>
 #include <Fonts/FreeSansOblique18pt7b.h>
+#include <Streaming.h>
 
 #define min(X, Y)     (((X) < (Y)) ? (X) : (Y))
 #define PAUSE_DELAY   delay(2000)
@@ -44,9 +45,11 @@ WROVER_KIT_LCD    RoverLCD;
 
 //Number of not handled presses, up to sMaxButtonPresses
 static int              sButtonCount[]           = { 0, 0, 0};
+/*
 static boolean          abButtonBeingHeld[]      = { false, false, false};
 static unsigned long    ulNextModeTime           = 0;  //msec when a mode switch can take place
 static unsigned long    ulModeReadyTime          = 0;  //msec when button presses can be handled
+*/
 static boolean          bButtonsChanged          = true;
 static boolean          bGearChanged             = true;
 static boolean          bServoChanged            = true;
@@ -57,8 +60,7 @@ static boolean          bGyroChanged             = true;
 static boolean          bMotorChanged            = true;
 static boolean          bMPHChanged              = true;
 
-static int         sLineCount= 0;     //Used in outputs to Serial Monitor for clarity.
-
+//static int         sLineCount= 0;     //Used in outputs to Serial Monitor for clarity.
 static char       szTempBuffer[100];   //DOGS102 line is 17 chars with 6x8 normal font.
 static char       sz100CharString[101];
 
@@ -81,7 +83,6 @@ void setup()   {
   Serial << endl << "setup(): Begin " << szSketchName << ", " << szFileDate << endl;
 
   Serial << "setup(): Call Wire.begin(sI2C_SDA, sI2C_SCL) " << sI2C_SDA << ", " << sI2C_SCL << endl;
-  //Wire.begin(sI2C_SDA, sI2C_SCL);
   I2C_Object.Setup();
   GasSensor.Setup();
   DisplayBegin();
@@ -119,18 +120,10 @@ void ShowSplash(void) {
 }  //ShowSplash
 
 void DisplayUpdate(void) {
- if (true || bScreenChanged()) {
-    DisplayCurrentGear();
-    DisplayServoPos();
-    //DisplayGs();
-    DisplayCO2();
-    DisplayVOC();
-    DisplayMotor();
-    DisplayMPH();
-    DisplayLowerBanner();
-    ClearChangeFlags();
-   } //if(bScreenChanged())
-   return;
+  DisplayCO2();
+  DisplayVOC();
+  DisplayLowerBanner();
+  return;
 }  //DisplayUpdate
 
 void DisplayClear() {
@@ -142,27 +135,6 @@ void FillScreen(UINT16 usColor) {
   RoverLCD.fillScreen(usColor);
   return;
 }  //FillScreen
-
-bool bScreenChanged() {
-   //Determine if something being displayed has changed & clear the flags.
-  bool  bCO2Changed= GasSensor.bCO2Changed();
-  bool  bVOCChanged= GasSensor.bVOCChanged();
-  bool bChanged= false;
-/*
-  bool bChanged= bGyroChanged  || bCO2Changed || bGearChanged  || bButtonsChanged || bServoChanged ||
-       bModeChanged || bVOCChanged || bMotorChanged || bMPHChanged;
-*/
-  if (bCO2Changed || bCO2Changed){
-    bChanged= true;
-  }
-  return bChanged;
-}  //bScreenChanged
-
-void ClearChangeFlags(){
-  bGyroChanged= bGearChanged  = bButtonsChanged= bServoChanged= bModeChanged=
-                 bMotorChanged = bMPHChanged= false;
-  return;
-} //ClearChangeFlags
 
 void DisplayText(UINT16 usCursorX, UINT16 usCursorY, char *pcText,
                  const GFXfont *pFont, UINT8 ucSize, UINT16 usColor) {
@@ -202,7 +174,7 @@ void DisplayLowerBanner(){
   bool            bRightJustify   = false;
 
 //DisplayText( usCursorX, usCursorY, "PowerShift Coach", pFont, ucSize, usColor);
-  DisplayText( usCursorX, usCursorY, "  Air Quality Center", pFont, ucSize, usColor);
+  DisplayText( usCursorX, usCursorY, "      Air Quality", pFont, ucSize, usColor);
   return;
 } //DisplayLowerBanner
 
@@ -220,11 +192,9 @@ void DisplayCO2() {
   static UINT16   usLastClearWidth= 0;
 
   //Serial << "DisplayCO2(): Begin" << endl;
-  if(GasSensor.bCO2Changed()) {
-    //sprintf(szTempBuffer, "%+4.1f%%", dPitchPercent);
+  if(GasSensorData.bCO2Changed()) {
     UINT16 CO2Value= GasSensorData.GetCO2_Value();
-    sprintf(szTempBuffer, "%5d", CO2Value);
-    //sprintf(szTempBuffer, "%+4.1f %+03.0f", dPitchPercent, dPitchDeg);
+    sprintf(szTempBuffer, "%6d", CO2Value);
     //Calculate width to clear based on number of characters + 2, use that unless last width was bigger
     usClearWidth= (strlen(szTempBuffer) + 2) * usCharWidth;
     usClearWidth= std::max(usClearWidth, usLastClearWidth);
@@ -246,18 +216,17 @@ void DisplayVOC() {
   UINT16          usCursorY       = usBoostTop;   //GFX fonts Y is bottom 90
   UINT8           ucSize          = 1;
   UINT16          usColor         = WROVER_WHITE;
-  //UINT16          usRightInset    = 2;  //Number of pixels to right of justified text
   INT16           sClearLeftX     = usCursorX;
   INT16           sClearTopY      = usCursorY - 32;
   UINT16          usClearWidth    = 120;
   UINT16          usClearHeight   = 40;
   static UINT16   usLastClearWidth= 0;
 
-  //Serial << "DisplayVOC(): Begin" << endl;
-  if(GasSensor.bVOCChanged()) {
-    //sprintf(szTempBuffer, "%3.0f W", dBoostWatts);
-    UINT16 VOCValue= GasSensorData.GetVOC_Value();
-    sprintf(szTempBuffer, "%5d", VOCValue);
+  if(GasSensorData.bVOCChanged()) {
+    UINT16  VOCValue_ppm      = GasSensorData.GetVOC_Value();
+    float   VOC_to_mg_per_m3  = 3.23;
+    float   VOC_mgPerM3       = (float)VOCValue_ppm * VOC_to_mg_per_m3;
+    sprintf(szTempBuffer, "%6.1f", VOC_mgPerM3);
     //Calculate width to clear based on number of characters + 2, use that unless last width was bigger
     usClearWidth= (strlen(szTempBuffer) + 2) * usCharWidth;
     usClearWidth= std::max(usClearWidth, usLastClearWidth);
@@ -267,12 +236,13 @@ void DisplayVOC() {
 
     usCursorX= 50;
     usCursorY += 20;
-    sprintf(szTempBuffer, "VOC ppb");
+    sprintf(szTempBuffer, "VOC mg/m^3");
     DisplayLine(FreeSans9pt7b, usColor, usCursorX, usCursorY, usClearWidth, usClearHeight, szTempBuffer, false);
   } //if(GasSensorData.bVOCChanged())
   return;
 }  //DisplayVOC
 
+/*
 void DisplayCurrentGear() {
   UINT16          usCharWidth     = 120;
   UINT16          usCursorX       = 200;
@@ -408,4 +378,5 @@ void DisplayButtons() {
   DisplayText( usCursorX, usCursorY, szTempBuffer, pFont, ucSize, usColor);
   return;
 }  //DisplayButtons
+*/
 //Last line

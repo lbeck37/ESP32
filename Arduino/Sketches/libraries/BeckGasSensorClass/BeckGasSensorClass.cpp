@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckGasSensorClass.cpp";
-const char szSystemFileDate[]  = "5/26/21e";
+const char szSystemFileDate[]  = "5/27/21a";
 
 #include <BeckGasSensorClass.h>
 #include <BeckGasSensorDataClass.h>
@@ -53,8 +53,7 @@ void GasSensorClass::Handle(){
   } //if(CCS811_GasSensor.available())
   return;
 } //Handle
-
-
+/*
 bool GasSensorClass::bCO2Changed(void){
   bool  bChanged= false;
   if (LastCO2_Value != CO2_Value){
@@ -73,4 +72,5 @@ bool GasSensorClass::bVOCChanged(void){
   }
   return bChanged;
 } //bVOCChanged
+*/
 //Last line.
