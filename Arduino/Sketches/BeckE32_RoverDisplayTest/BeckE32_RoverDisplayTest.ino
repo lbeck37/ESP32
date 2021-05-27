@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_RoverDisplayTest.ino";
-const char szFileDate[]    = "5/26/21p";
+const char szFileDate[]    = "5/26/21q";
 // 5/26/21, Copied from BeckE32_RoverGraphics.ino to isolate white screen problem
 #include <BeckI2cClass.h>
 #include <BeckGasSensorClass.h>
@@ -42,20 +42,20 @@ static int sServoPosLast                  = 0;
 
 WROVER_KIT_LCD    RoverLCD;
 
-//Number of unhandled presses, up to sMaxButtonPresses
-static int              sButtonCount[]       = { 0, 0, 0};
-static boolean          abButtonBeingHeld[]  = { false, false, false};
-static unsigned long    ulNextModeTime       = 0;  //msec when a mode switch can take place
-static unsigned long    ulModeReadyTime      = 0;  //msec when button presses can be handled
-static boolean     bButtonsChanged          = true;
-static boolean     bGearChanged             = true;
-static boolean     bServoChanged            = true;
-static boolean     bModeChanged             = true;
-static boolean     bGyroChanged             = true;
-static boolean     bPitchChanged            = true;
-static boolean     bBoostChanged            = true;
-static boolean     bMotorChanged            = true;
-static boolean     bMPHChanged              = true;
+//Number of not handled presses, up to sMaxButtonPresses
+static int              sButtonCount[]           = { 0, 0, 0};
+static boolean          abButtonBeingHeld[]      = { false, false, false};
+static unsigned long    ulNextModeTime           = 0;  //msec when a mode switch can take place
+static unsigned long    ulModeReadyTime          = 0;  //msec when button presses can be handled
+static boolean          bButtonsChanged          = true;
+static boolean          bGearChanged             = true;
+static boolean          bServoChanged            = true;
+static boolean          bModeChanged             = true;
+static boolean          bGyroChanged             = true;
+//static boolean          bCO2Changed              = true;
+//static boolean          bVOCChanged              = true;
+static boolean          bMotorChanged            = true;
+static boolean          bMPHChanged              = true;
 
 static int         sLineCount= 0;     //Used in outputs to Serial Monitor for clarity.
 
@@ -91,7 +91,6 @@ void setup()   {
 
 void loop() {
   GasSensor.Handle();
-  bPitchChanged= bBoostChanged= true;
   DisplayUpdate();
   return;
 }  //loop()
@@ -120,12 +119,12 @@ void ShowSplash(void) {
 }  //ShowSplash
 
 void DisplayUpdate(void) {
- if (bScreenChanged()) {
+ if (true || bScreenChanged()) {
     DisplayCurrentGear();
     DisplayServoPos();
     //DisplayGs();
-    DisplayPitch();
-    DisplayBoost();
+    DisplayCO2();
+    DisplayVOC();
     DisplayMotor();
     DisplayMPH();
     DisplayLowerBanner();
@@ -146,14 +145,22 @@ void FillScreen(UINT16 usColor) {
 
 bool bScreenChanged() {
    //Determine if something being displayed has changed & clear the flags.
-   bool bChanged= bGyroChanged  || bPitchChanged || bGearChanged  || bButtonsChanged || bServoChanged || bModeChanged ||
-                  bBoostChanged || bMotorChanged || bMPHChanged;
-   return bChanged;
+  bool  bCO2Changed= GasSensor.bCO2Changed();
+  bool  bVOCChanged= GasSensor.bVOCChanged();
+  bool bChanged= false;
+/*
+  bool bChanged= bGyroChanged  || bCO2Changed || bGearChanged  || bButtonsChanged || bServoChanged ||
+       bModeChanged || bVOCChanged || bMotorChanged || bMPHChanged;
+*/
+  if (bCO2Changed || bCO2Changed){
+    bChanged= true;
+  }
+  return bChanged;
 }  //bScreenChanged
 
 void ClearChangeFlags(){
-  bGyroChanged= bPitchChanged= bGearChanged  = bButtonsChanged= bServoChanged= bModeChanged=
-                bBoostChanged= bMotorChanged = bMPHChanged= false;
+  bGyroChanged= bGearChanged  = bButtonsChanged= bServoChanged= bModeChanged=
+                 bMotorChanged = bMPHChanged= false;
   return;
 } //ClearChangeFlags
 
@@ -186,7 +193,20 @@ void DisplayLine(const GFXfont stFont, UINT16 usColor, UINT16 usCursorX, UINT16 
   return;
 } //DisplayLine
 
-void DisplayPitch() {
+void DisplayLowerBanner(){
+  const GFXfont   *pFont          = &FreeSansOblique18pt7b;
+  UINT16          usCursorX       = 7;
+  UINT16          usCursorY       = 232;    //Was 72
+  UINT8           ucSize          = 1;
+  UINT16          usColor         = WROVER_CYAN;
+  bool            bRightJustify   = false;
+
+//DisplayText( usCursorX, usCursorY, "PowerShift Coach", pFont, ucSize, usColor);
+  DisplayText( usCursorX, usCursorY, "  Air Quality Center", pFont, ucSize, usColor);
+  return;
+} //DisplayLowerBanner
+
+void DisplayCO2() {
   UINT16          usCharWidth     = 25;
   UINT16          usCursorX       = 0;
   UINT16          usCursorY       = 30;   //GFX fonts Y is bottom
@@ -199,8 +219,8 @@ void DisplayPitch() {
   UINT16          usClearHeight   = 35;
   static UINT16   usLastClearWidth= 0;
 
-  //Serial << "DisplayPitch(): Begin" << endl;
-  if(bPitchChanged) {
+  //Serial << "DisplayCO2(): Begin" << endl;
+  if(GasSensor.bCO2Changed()) {
     //sprintf(szTempBuffer, "%+4.1f%%", dPitchPercent);
     UINT16 CO2Value= GasSensorData.GetCO2_Value();
     sprintf(szTempBuffer, "%5d", CO2Value);
@@ -216,11 +236,11 @@ void DisplayPitch() {
     usCursorY += 20;
     sprintf(szTempBuffer, "CO2 ppm");
     DisplayLine(FreeSans9pt7b, usColor, usCursorX, usCursorY, usClearWidth, usClearHeight, szTempBuffer, false);
-  } //if(bPitchChanged)
+  } //if(GasSensorData.bCO2Changed())
   return;
-}  //DisplayPitch
+}  //DisplayCO2
 
-void DisplayBoost() {
+void DisplayVOC() {
   UINT16          usCharWidth     = 25;
   UINT16          usCursorX       = 0;
   UINT16          usCursorY       = usBoostTop;   //GFX fonts Y is bottom 90
@@ -233,8 +253,8 @@ void DisplayBoost() {
   UINT16          usClearHeight   = 40;
   static UINT16   usLastClearWidth= 0;
 
-  //Serial << "DisplayBoost(): Begin" << endl;
-  if(bBoostChanged) {
+  //Serial << "DisplayVOC(): Begin" << endl;
+  if(GasSensor.bVOCChanged()) {
     //sprintf(szTempBuffer, "%3.0f W", dBoostWatts);
     UINT16 VOCValue= GasSensorData.GetVOC_Value();
     sprintf(szTempBuffer, "%5d", VOCValue);
@@ -249,9 +269,9 @@ void DisplayBoost() {
     usCursorY += 20;
     sprintf(szTempBuffer, "VOC ppb");
     DisplayLine(FreeSans9pt7b, usColor, usCursorX, usCursorY, usClearWidth, usClearHeight, szTempBuffer, false);
-  } //if(bBoostChanged)
+  } //if(GasSensorData.bVOCChanged())
   return;
-}  //DisplayBoost
+}  //DisplayVOC
 
 void DisplayCurrentGear() {
   UINT16          usCharWidth     = 120;
@@ -388,16 +408,4 @@ void DisplayButtons() {
   DisplayText( usCursorX, usCursorY, szTempBuffer, pFont, ucSize, usColor);
   return;
 }  //DisplayButtons
-
-void DisplayLowerBanner(){
-  const GFXfont   *pFont          = &FreeSansOblique18pt7b;
-  UINT16          usCursorX       = 7;
-  UINT16          usCursorY       = 232;    //Was 72
-  UINT8           ucSize          = 1;
-  UINT16          usColor         = WROVER_CYAN;
-  bool            bRightJustify   = false;
-
-  DisplayText( usCursorX, usCursorY, "PowerShift Coach", pFont, ucSize, usColor);
-  return;
-} //DisplayLowerBanner
 //Last line

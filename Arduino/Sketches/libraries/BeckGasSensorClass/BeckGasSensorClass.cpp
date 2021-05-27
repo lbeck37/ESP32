@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckGasSensorClass.cpp";
-const char szSystemFileDate[]  = "5/26/21d";
+const char szSystemFileDate[]  = "5/26/21e";
 
 #include <BeckGasSensorClass.h>
 #include <BeckGasSensorDataClass.h>
@@ -20,7 +20,6 @@ GasSensorClass::~GasSensorClass() {
 } //destructor
 
 
-#if true
 void GasSensorClass::Setup(void){
   if (!CCS811_GasSensor.begin()){
 	  Serial << "GasSensorClass::setup(): Failed to start sensor, please check the wiring." << endl;
@@ -32,17 +31,18 @@ void GasSensorClass::Setup(void){
 return;
 } //Setup
 
+
 void GasSensorClass::Handle(){
   if (CCS811_GasSensor.available()){
     if (!CCS811_GasSensor.readData()){
       CO2_Value= CCS811_GasSensor.geteCO2();
-      TVOC_Value= CCS811_GasSensor.getTVOC();
+      VOC_Value= CCS811_GasSensor.getTVOC();
       GasSensorData.SetCO2_Value(CO2_Value);
-      GasSensorData.SetVOC_Value(TVOC_Value);
+      GasSensorData.SetVOC_Value(VOC_Value);
 
       if(false || (millis() >= ulNextPrintMsec)){
         ulNextPrintMsec= millis() + ulPrintPeriodMsec;
-        Serial << "GasSensorClass::Handle(): CO2= " << CO2_Value << "ppm, TVOC= " << TVOC_Value << endl;
+        Serial << "GasSensorClass::Handle(): CO2= " << CO2_Value << "ppm, VOC= " << VOC_Value << endl;
       }	//if(millis()>=ulNextPrintMsec)
     } //if(!CCS811_GasSensor.readData())
     else{
@@ -53,24 +53,24 @@ void GasSensorClass::Handle(){
   } //if(CCS811_GasSensor.available())
   return;
 } //Handle
-#else
-//These versions of Setup() and Handle are for debugging w/o a CO2 sensor
-void GasSensorClass::Setup(void){
-  CO2_Value= 400;
-  TVOC_Value= 0;
-return;
-} //Setup
 
-void GasSensorClass::Handle(){
-  if(false || (millis() >= ulNextPrintMsec)){
-    ulNextPrintMsec= millis() + ulPrintPeriodMsec;
-    CO2_Value++;
-    TVOC_Value++;
-    GasSensorData.SetCO2_Value(CO2_Value);
-    GasSensorData.SetVOC_Value(TVOC_Value);
-    Serial << "GasSensorClass::Handle(): CO2= " << CO2_Value << "ppm, TVOC= " << TVOC_Value << endl;
-  } //if(millis()>=ulNextPrintMsec)
-  return;
-} //Handle
-#endif
+
+bool GasSensorClass::bCO2Changed(void){
+  bool  bChanged= false;
+  if (LastCO2_Value != CO2_Value){
+    bChanged= true;
+    LastCO2_Value= CO2_Value;
+  }
+  return bChanged;
+} //bCO2Changed
+
+
+bool GasSensorClass::bVOCChanged(void){
+  bool  bChanged= false;
+  if (LastVOC_Value != VOC_Value){
+    bChanged= true;
+    LastVOC_Value= VOC_Value;
+  }
+  return bChanged;
+} //bVOCChanged
 //Last line.

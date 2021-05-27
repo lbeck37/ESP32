@@ -9,7 +9,7 @@ public:
 
   void    	SetCO2_Value    (uint16_t NewCO2Value);
   uint16_t  GetCO2_Value    (void);
-  void    	SetVOC_Value    (uint16_t NewTVOCValue);
+  void    	SetVOC_Value    (uint16_t NewVOCValue);
   uint16_t  GetVOC_Value    (void);
 
 protected:
