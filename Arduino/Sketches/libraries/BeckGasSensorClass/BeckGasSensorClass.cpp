@@ -21,13 +21,16 @@ GasSensorClass::~GasSensorClass() {
 
 
 void GasSensorClass::Setup(void){
+  Serial << "GasSensorClass::setup(): Begin" << endl;
   if (!CCS811_GasSensor.begin()){
 	  Serial << "GasSensorClass::setup(): Failed to start sensor, please check the wiring." << endl;
 	  while(1);
   } //if(!GasSensor.begin())
 
-  // Wait for the sensor to be ready
+  // Wait for CCS811_GasSensor.available()
+  Serial << "GasSensorClass::setup(): Wait for CCS811_GasSensor.available()" << endl;
   while(!CCS811_GasSensor.available());
+  Serial << "GasSensorClass::setup(): Return" << endl;
 return;
 } //Setup
 

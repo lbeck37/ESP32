@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_RoverDisplayTest.ino";
-const char szFileDate[]    = "5/27/21e";
+const char szFileDate[]    = "5/27/21f";
 // 5/26/21, Copied from BeckE32_RoverGraphics.ino to isolate white screen problem
 #include <BeckI2cClass.h>
 #include <BeckGasSensorClass.h>
@@ -27,14 +27,12 @@ static const UINT16    usBoostTop           = 90;
 WROVER_KIT_LCD    RoverLCD;
 static char       sz100CharString[101];
 
-
 void(* ResetESP32)(void)= 0;        //Hopefully system crashes and reset when this is called.
 
 void setup()   {
   Serial.begin(115200);
-  Serial << endl << "setup(): Begin " << szSketchName << ", " << szFileDate << endl;
-
-  Serial << "setup(): Call Wire.begin(sI2C_SDA, sI2C_SCL) " << sI2C_SDA << ", " << sI2C_SCL << endl;
+  Serial << endl<< LOG0 << "setup(): Begin " << szSketchName << ", " << szFileDate << endl;
+  Serial << LOG0 << "setup(): Call Wire.begin(sI2C_SDA, sI2C_SCL) " << sI2C_SDA << ", " << sI2C_SCL << endl;
   I2C_Object.Setup();
   GasSensor.Setup();
   DisplayBegin();
@@ -50,7 +48,7 @@ void loop() {
 
 
 void DisplayBegin() {
-  Serial << "DisplayBegin(): Call RoverLCD.begin()" << endl;
+  Serial << LOG0 << "DisplayBegin(): Call RoverLCD.begin()" << endl;
   RoverLCD.begin();
   RoverLCD.setRotation(1);
   DisplayClear();
@@ -58,6 +56,7 @@ void DisplayBegin() {
 }  //DisplayBegin
 
 
+/*
 void ShowStartScreen(void) {
   Serial << "ShowStartScreen(): Call DisplayBegin()" << endl;
   DisplayBegin();
@@ -73,6 +72,7 @@ void ShowSplash(void) {
    DisplayClear();
    return;
 }  //ShowSplash
+*/
 
 
 void DisplayUpdate(void) {
