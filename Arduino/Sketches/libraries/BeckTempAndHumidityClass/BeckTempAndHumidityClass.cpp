@@ -1,7 +1,7 @@
-const char szSystemFileName[]  = "BeckTempAndHumidClass.cpp";
-const char szSystemFileDate[]  = "5/31/21a";
+const char szSystemFileName[]  = "BeckTempAndHumidityClass.cpp";
+const char szSystemFileDate[]  = "5/31/21c";
 
-#include <BeckTempAndHumidClass.h>
+#include <BeckTempAndHumidityClass.h>
 //#include <BeckEnviroDataClass.h>
 //#include <Adafruit_CCS811.h>
 #include "DHTesp.h" // Click here to get the library: http://librarymanager/All#DHTesp
@@ -9,8 +9,7 @@ const char szSystemFileDate[]  = "5/31/21a";
 #include <Streaming.h>
 #include <Wire.h>
 
-//Adafruit_CCS811     CCS811_GasSensor;
-TempAndHumidClass      TempAndHumidSensor;       //This is so every module can use the same object
+TempAndHumidityClass      TempAndHumiditySensor;       //This is so every module can use the same object
 
 DHTesp dht;
 
@@ -23,35 +22,36 @@ bool            tasksEnabled    = false;  /** Flag if task should run */
 //int dhtPin = 17;      //ESP32 Dev Board
 int dhtPin = 25;        //ESP-WROVER-KIT
 
-TempAndHumidClass::TempAndHumidClass() {
-  Serial << "TempAndHumidClass::TempAndHumidClass(): " << szSystemFileName << ", " << szSystemFileDate << endl;
-} //constructor
+/* Task to reads temperature from DHT11 sensor
+ * @param pvParameters
+ *    pointer to task parameters */
+void ReadDHT_Task(void *pvParameters) {
+  //Serial.println("tempTask loop started");
+  Serial << "ReadDHT_Task(): Start while loop" << endl;
+  while (1) // ReadDHT_Task loop
+  {
+    if (tasksEnabled) {
+      // Get temperature values
+      Serial << "ReadDHT_Task(): Call ReadTempAndHumidity()" << endl;
+      TempAndHumiditySensor.ReadTempAndHumidity();
+    }
+    // Go to sleep again
+    Serial << "ReadDHT_Task(): Call vTaskSuspend()" << endl;
+    vTaskSuspend(NULL);
+  }
+  return;   //Never gets here
+} //ReadDHT_Task
 
 
-TempAndHumidClass::~TempAndHumidClass() {
-  Serial << "~TempAndHumidClass(): Destructing" << endl;
-} //destructor
-
-
-void TempAndHumidClass::Setup(void){
-  Serial << "TempAndHumidClass::setup(): Begin" << endl;
-  Serial << "setup(): Call SetupDHT()" << endl;
-  SetupDHT();
-return;
-} //Setup
-
-
-void TempAndHumidClass::Handle(){
-  if (!tasksEnabled) {
-    delay(2000);            // Wait 2 seconds to let system settle down
-    tasksEnabled = true;    // Enable task that will read values from the DHT sensor
-    if (DHT_TaskHandle != NULL) {
-      vTaskResume(DHT_TaskHandle);
-    } //if (DHT_TaskHandle!=NULL)
-  } //if(!tasksEnabled)
-  yield();
+/* triggerGetTemp
+ * Sets flag dhtUpdated to true for handling in loop()
+ * called by Ticker getTempTimer*/
+void triggerGetTemp() {
+  if (DHT_TaskHandle != NULL) {
+     xTaskResumeFromISR(DHT_TaskHandle);
+  }
   return;
-} //Handle
+} //triggerGetTemp
 
 
 /* SetupDHT
@@ -60,7 +60,7 @@ void TempAndHumidClass::Handle(){
  * @return bool
  *    true if task and timer are started
  *    false if task or timer couldn't be started */
-bool TempAndHumidClass::SetupDHT() {
+bool SetupDHT() {
   //byte resultValue = 0;
   //dht.setup(dhtPin, DHTesp::DHT11);
   //dht.setup(dhtPin, DHTesp::DHT22);
@@ -99,36 +99,35 @@ bool TempAndHumidClass::SetupDHT() {
 } //SetupDHT
 
 
-/* triggerGetTemp
- * Sets flag dhtUpdated to true for handling in loop()
- * called by Ticker getTempTimer*/
-void TempAndHumidClass::triggerGetTemp() {
-  if (DHT_TaskHandle != NULL) {
-     xTaskResumeFromISR(DHT_TaskHandle);
-  }
+TempAndHumidityClass::TempAndHumidityClass() {
+  Serial << "TempAndHumidityClass::TempAndHumidityClass(): " << szSystemFileName << ", " << szSystemFileDate << endl;
+} //constructor
+
+
+TempAndHumidityClass::~TempAndHumidityClass() {
+  Serial << "~TempAndHumidityClass(): Destructing" << endl;
+} //destructor
+
+
+void TempAndHumidityClass::Setup(void){
+  Serial << "TempAndHumidityClass::setup(): Begin" << endl;
+  Serial << "setup(): Call SetupDHT()" << endl;
+  SetupDHT();
+return;
+} //Setup
+
+
+void TempAndHumidityClass::Handle(){
+  if (!tasksEnabled) {
+    delay(2000);            // Wait 2 seconds to let system settle down
+    tasksEnabled = true;    // Enable task that will read values from the DHT sensor
+    if (DHT_TaskHandle != NULL) {
+      vTaskResume(DHT_TaskHandle);
+    } //if (DHT_TaskHandle!=NULL)
+  } //if(!tasksEnabled)
+  yield();
   return;
-} //triggerGetTemp
-
-
-/* Task to reads temperature from DHT11 sensor
- * @param pvParameters
- *    pointer to task parameters */
-void TempAndHumidClass::ReadDHT_Task(void *pvParameters) {
-  //Serial.println("tempTask loop started");
-  Serial << "ReadDHT_Task(): Start while loop" << endl;
-  while (1) // ReadDHT_Task loop
-  {
-    if (tasksEnabled) {
-      // Get temperature values
-      Serial << "ReadDHT_Task(): Call ReadTempAndHumidity()" << endl;
-      ReadTempAndHumidity();
-    }
-    // Go to sleep again
-    Serial << "ReadDHT_Task(): Call vTaskSuspend()" << endl;
-    vTaskSuspend(NULL);
-  }
-  return;   //Never gets here
-} //ReadDHT_Task
+} //Handle
 
 
 /* ReadTempAndHumidity
@@ -136,7 +135,7 @@ void TempAndHumidClass::ReadDHT_Task(void *pvParameters) {
  * @return bool
  *    true if temperature could be acquired
  *    false if acquisition failed */
-bool TempAndHumidClass::ReadTempAndHumidity() {
+bool TempAndHumidityClass::ReadTempAndHumidity() {
   // Reading temperature for humidity takes about 250 milliseconds!
   // Sensor readings may also be up to 2 seconds 'old' (it's a very slow sensor)
   TempAndHumidity   newValues= dht.getTempAndHumidity();

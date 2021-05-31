@@ -1,4 +1,4 @@
-// BeckEnviroDataClass.h, 5/31/21a
+// BeckEnviroDataClass.h, 5/31/21b
 #pragma once
 #include <BeckBiotaDefines.h>
 
@@ -29,5 +29,5 @@ protected:
   bool        bVOCFirstTime     = true;
 };  //EnviroDataClass
 
-extern EnviroDataClass EnviroDataData;
+extern EnviroDataClass EnviroData;
 //Last line.

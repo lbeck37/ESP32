@@ -4,7 +4,7 @@ const char szGasSensorDataClassFileDate[]  = "5/31/21a";
 #include <BeckEnviroDataClass.h>
 #include <Streaming.h>
 
-EnviroDataClass GasSensorData;
+EnviroDataClass EnviroData;
 
 EnviroDataClass::EnviroDataClass() {
 } //constructor

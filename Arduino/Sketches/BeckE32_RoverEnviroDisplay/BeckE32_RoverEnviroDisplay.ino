@@ -1,14 +1,13 @@
 const char szSketchName[]  = "BeckE32_RoverEnviroDisplay.ino";
-const char szFileDate[]    = "5/31/21d";
+const char szFileDate[]    = "5/31/21g";
 // 5/26/21, Copied from BeckE32_RoverDisplayTest.ino to isolate white screen problem
 #include <BeckBiotaDefines.h>
 #include <BeckEnviroDataClass.h>
 #include <BeckI2cClass.h>
 #include <BeckGasSensorClass.h>
-//#include <BeckGasSensorDataClass.h>
 #include <BeckLogLib.h>
 #include <BeckMiniLib.h>
-#include <BeckTempAndHumidClass.h>
+#include <BeckTempAndHumidityClass.h>
 
 #include <Adafruit_GFX.h>
 #include <WROVER_KIT_LCD.h>
@@ -36,10 +35,20 @@ void(* ResetESP32)(void)= 0;        //Hopefully system crashes and reset when th
 void setup()   {
   Serial.begin(115200);
   Serial << endl<< LOG0 << "setup(): Begin " << szSketchName << ", " << szFileDate << endl;
-  //Serial << LOG0 << "setup(): Call Wire.begin(sI2C_SDA, sI2C_SCL) " << sI2C_SDA << ", " << sI2C_SCL << endl;
+
+  Serial << LOG0 << "setup(): Call I2C_Object.Setup()" << endl;
   I2C_Object.Setup();
-  TempAndHumidSensor.Setup();
+
+  Serial << LOG0 << "setup(): Call TempAndHumidSensor.Setup()" << endl;
+  TempAndHumiditySensor.Setup();
+
+  Serial << LOG0 << "setup(): Call GasSensor.Setup()" << endl;
+  GasSensor.Setup();
+
+  Serial << LOG0 << "setup(): Call DisplayBegin()" << endl;
   DisplayBegin();
+
+  Serial << LOG0 << "setup(): return" << endl;
   return;
 }  //setup
 
@@ -136,8 +145,8 @@ void DisplayCO2() {
   UINT16          usClearHeight   = 35;
   static UINT16   usLastClearWidth= 0;
 
-  if(GasSensorData.bCO2Changed()) {
-    UINT16 CO2Value= GasSensorData.GetCO2_Value();
+  if(EnviroData.bCO2Changed()) {
+    UINT16 CO2Value= EnviroData.GetCO2_Value();
     sprintf(sz100CharString, "%6d", CO2Value);
     //Calculate width to clear based on number of characters + 2, use that unless last width was bigger
     usClearWidth= (strlen(sz100CharString) + 2) * usCharWidth;
@@ -150,7 +159,7 @@ void DisplayCO2() {
     usCursorY += 20;
     sprintf(sz100CharString, "CO2 ppm");
     DisplayLine(FreeSans9pt7b, usColor, usCursorX, usCursorY, usClearWidth, usClearHeight, sz100CharString, false);
-  } //if(GasSensorData.bCO2Changed())
+  } //if(EnviroData.bCO2Changed())
   return;
 }  //DisplayCO2
 
@@ -167,8 +176,8 @@ void DisplayVOC() {
   UINT16          usClearHeight   = 40;
   static UINT16   usLastClearWidth= 0;
 
-  if(GasSensorData.bVOCChanged()) {
-    UINT16  VOCValue_ppm      = GasSensorData.GetVOC_Value();
+  if(EnviroData.bVOCChanged()) {
+    UINT16  VOCValue_ppm      = EnviroData.GetVOC_Value();
     float   VOC_to_mg_per_m3  = 3.23;
     float   VOC_mgPerM3       = (float)VOCValue_ppm * VOC_to_mg_per_m3;
     sprintf(sz100CharString, "%6.1f", VOC_mgPerM3);
@@ -183,7 +192,7 @@ void DisplayVOC() {
     usCursorY += 20;
     sprintf(sz100CharString, "VOC mg/m^3");
     DisplayLine(FreeSans9pt7b, usColor, usCursorX, usCursorY, usClearWidth, usClearHeight, sz100CharString, false);
-  } //if(GasSensorData.bVOCChanged())
+  } //if(EnviroData.bVOCChanged())
   return;
 }  //DisplayVOC
 
@@ -200,8 +209,8 @@ void DisplayTemperature() {
   UINT16          usClearHeight   = 35;
   static UINT16   usLastClearWidth= 0;
 
-  if(GasSensorData.bCO2Changed()) {
-    UINT16 CO2Value= GasSensorData.GetCO2_Value();
+  if(EnviroData.bCO2Changed()) {
+    UINT16 CO2Value= EnviroData.GetCO2_Value();
     sprintf(sz100CharString, "%6d", CO2Value);
     //Calculate width to clear based on number of characters + 2, use that unless last width was bigger
     usClearWidth= (strlen(sz100CharString) + 2) * usCharWidth;
@@ -214,7 +223,7 @@ void DisplayTemperature() {
     usCursorY += 20;
     sprintf(sz100CharString, "CO2 ppm");
     DisplayLine(FreeSans9pt7b, usColor, usCursorX, usCursorY, usClearWidth, usClearHeight, sz100CharString, false);
-  } //if(GasSensorData.bCO2Changed())
+  } //if(EnviroData.bCO2Changed())
   return;
 }  //DisplayTemperature
 //Last line

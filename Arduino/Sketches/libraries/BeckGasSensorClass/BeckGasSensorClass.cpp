@@ -1,8 +1,8 @@
 const char szSystemFileName[]  = "BeckGasSensorClass.cpp";
-const char szSystemFileDate[]  = "5/27/21a";
+const char szSystemFileDate[]  = "5/31/21a";
 
 #include <BeckGasSensorClass.h>
-#include <BeckGasSensorDataClass.h>
+#include <BeckEnviroDataClass.h>
 #include <Adafruit_CCS811.h>
 #include <Streaming.h>
 #include <Wire.h>
@@ -40,8 +40,8 @@ void GasSensorClass::Handle(){
     if (!CCS811_GasSensor.readData()){
       CO2_Value= CCS811_GasSensor.geteCO2();
       VOC_Value= CCS811_GasSensor.getTVOC();
-      GasSensorData.SetCO2_Value(CO2_Value);
-      GasSensorData.SetVOC_Value(VOC_Value);
+      EnviroData.SetCO2_Value(CO2_Value);
+      EnviroData.SetVOC_Value(VOC_Value);
 
       if(false || (millis() >= ulNextPrintMsec)){
         ulNextPrintMsec= millis() + ulPrintPeriodMsec;
