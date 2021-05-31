@@ -37,10 +37,12 @@
 #endif
 
 //typedef int32_t       Colortype;
+/* Went to BeckBiotaDefines.h
 typedef int16_t       Colortype;      //See Adafruit_GFX.h
 typedef int32_t       PUnit;          //Pixel Unit
 typedef uint8_t       FontSize;
 typedef float         DegreeType;
+*/
 
 //TTGO 1.14" display
 const PUnit          ScreenWidth  = 240;

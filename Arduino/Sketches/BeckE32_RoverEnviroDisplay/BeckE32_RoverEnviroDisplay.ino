@@ -1,11 +1,15 @@
 const char szSketchName[]  = "BeckE32_RoverEnviroDisplay.ino";
-const char szFileDate[]    = "5/31/21a";
+const char szFileDate[]    = "5/31/21d";
 // 5/26/21, Copied from BeckE32_RoverDisplayTest.ino to isolate white screen problem
+#include <BeckBiotaDefines.h>
+#include <BeckEnviroDataClass.h>
 #include <BeckI2cClass.h>
 #include <BeckGasSensorClass.h>
-#include <BeckGasSensorDataClass.h>
+//#include <BeckGasSensorDataClass.h>
 #include <BeckLogLib.h>
 #include <BeckMiniLib.h>
+#include <BeckTempAndHumidClass.h>
+
 #include <Adafruit_GFX.h>
 #include <WROVER_KIT_LCD.h>
 #include <Wire.h>
@@ -34,7 +38,7 @@ void setup()   {
   Serial << endl<< LOG0 << "setup(): Begin " << szSketchName << ", " << szFileDate << endl;
   //Serial << LOG0 << "setup(): Call Wire.begin(sI2C_SDA, sI2C_SCL) " << sI2C_SDA << ", " << sI2C_SCL << endl;
   I2C_Object.Setup();
-  GasSensor.Setup();
+  TempAndHumidSensor.Setup();
   DisplayBegin();
   return;
 }  //setup
@@ -59,7 +63,7 @@ void DisplayBegin() {
 void DisplayUpdate(void) {
   DisplayCO2();
   DisplayVOC();
-  DisplayLowerBanner();
+  //DisplayLowerBanner();
   return;
 }  //DisplayUpdate
 
@@ -182,4 +186,35 @@ void DisplayVOC() {
   } //if(GasSensorData.bVOCChanged())
   return;
 }  //DisplayVOC
+
+
+void DisplayTemperature() {
+  UINT16          usCharWidth     = 25;
+  UINT16          usCursorX       = 0;
+  UINT16          usCursorY       = 30;   //GFX fonts Y is bottom
+  UINT8           ucSize          = 1;
+  UINT16          usColor         = WROVER_WHITE;
+  INT16           sClearLeftX     = usCursorX;
+  INT16           sClearTopY      = 0;
+  UINT16          usClearWidth    = 120;
+  UINT16          usClearHeight   = 35;
+  static UINT16   usLastClearWidth= 0;
+
+  if(GasSensorData.bCO2Changed()) {
+    UINT16 CO2Value= GasSensorData.GetCO2_Value();
+    sprintf(sz100CharString, "%6d", CO2Value);
+    //Calculate width to clear based on number of characters + 2, use that unless last width was bigger
+    usClearWidth= (strlen(sz100CharString) + 2) * usCharWidth;
+    usClearWidth= std::max(usClearWidth, usLastClearWidth);
+    usLastClearWidth= usClearWidth;
+    ClearTextBackground(sClearLeftX, sClearTopY, usClearWidth, usClearHeight);
+    DisplayLine(FreeMonoBold24pt7b, usColor, usCursorX, usCursorY, usClearWidth, usClearHeight, sz100CharString, false, ucSize);
+
+    usCursorX= 50;
+    usCursorY += 20;
+    sprintf(sz100CharString, "CO2 ppm");
+    DisplayLine(FreeSans9pt7b, usColor, usCursorX, usCursorY, usClearWidth, usClearHeight, sz100CharString, false);
+  } //if(GasSensorData.bCO2Changed())
+  return;
+}  //DisplayTemperature
 //Last line

@@ -1,6 +1,11 @@
-// BeckBiotaDefines.h, 5/29/21b
+// BeckBiotaDefines.h, 5/31/21a
 #pragma once
 #include <cstdint>
+
+typedef int16_t       Colortype;      //See Adafruit_GFX.h
+typedef int32_t       PUnit;          //Pixel Unit
+typedef uint8_t       FontSize;
+typedef float         DegreeType;
 
 enum ProjectType{
   eNoProject  = 0,
