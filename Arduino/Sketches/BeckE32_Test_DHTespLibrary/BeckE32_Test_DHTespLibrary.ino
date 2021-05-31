@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_Test_DHTespLibrary.ino";
-const char szFileDate[]    = "5/28/21p";
+const char szFileDate[]    = "5/29/21a";
 #include "DHTesp.h" // Click here to get the library: http://librarymanager/All#DHTesp
 #include <Ticker.h>
 #include <Streaming.h>
@@ -98,7 +98,8 @@ bool SetupDHT() {
   else {
     // Start update of environment data every 20 seconds
     Serial << "SetupDHT(): Call DHT_Ticker.attach()" << endl;
-    DHT_Ticker.attach(20, triggerGetTemp);
+    //DHT_Ticker.attach(20, triggerGetTemp);
+    DHT_Ticker.attach(5.0, triggerGetTemp);
   } //if(DHT_TaskHandle==NULL)else
   Serial << "SetupDHT(): return true" << endl;
   return true;
@@ -112,7 +113,9 @@ void triggerGetTemp() {
   if (DHT_TaskHandle != NULL) {
 	   xTaskResumeFromISR(DHT_TaskHandle);
   }
-}
+  return;
+} //triggerGetTemp
+
 
 /* Task to reads temperature from DHT11 sensor
  * @param pvParameters

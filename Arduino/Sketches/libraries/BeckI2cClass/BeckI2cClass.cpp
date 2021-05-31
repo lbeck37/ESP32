@@ -1,5 +1,5 @@
 const char szI2cClassFileName[]  = "BeckI2cClass.cpp";
-const char szI2cClassFileDate[]  = "5/27/21a";
+const char szI2cClassFileDate[]  = "5/29/21b";
 
 #include <BeckI2cClass.h>
 #include <BeckLogLib.h>
@@ -23,7 +23,7 @@ void I2cClass::Setup(){
   Serial << LOG0 << "I2cClass::Setup(): Call Wire.begin(sSDA_GPIO= " << sSDA_GPIO <<
       ", sSCL_GPIO= " << sSCL_GPIO << ")" << endl;
   Wire.begin(sSDA_GPIO, sSCL_GPIO);
-  bool  bScanForDevices= false;
+  bool  bScanForDevices= true;
   if (bScanForDevices){
     Serial << LOG0 << "I2cClass::Setup(): Call ScanForDevices()" << endl;
     ScanForDevices();

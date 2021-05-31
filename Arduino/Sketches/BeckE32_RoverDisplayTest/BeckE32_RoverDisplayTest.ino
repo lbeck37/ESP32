@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_RoverDisplayTest.ino";
-const char szFileDate[]    = "5/27/21f";
+const char szFileDate[]    = "5/29/21b";
 // 5/26/21, Copied from BeckE32_RoverGraphics.ino to isolate white screen problem
 #include <BeckI2cClass.h>
 #include <BeckGasSensorClass.h>
@@ -32,7 +32,7 @@ void(* ResetESP32)(void)= 0;        //Hopefully system crashes and reset when th
 void setup()   {
   Serial.begin(115200);
   Serial << endl<< LOG0 << "setup(): Begin " << szSketchName << ", " << szFileDate << endl;
-  Serial << LOG0 << "setup(): Call Wire.begin(sI2C_SDA, sI2C_SCL) " << sI2C_SDA << ", " << sI2C_SCL << endl;
+  //Serial << LOG0 << "setup(): Call Wire.begin(sI2C_SDA, sI2C_SCL) " << sI2C_SDA << ", " << sI2C_SCL << endl;
   I2C_Object.Setup();
   GasSensor.Setup();
   DisplayBegin();
@@ -54,25 +54,6 @@ void DisplayBegin() {
   DisplayClear();
   return;
 }  //DisplayBegin
-
-
-/*
-void ShowStartScreen(void) {
-  Serial << "ShowStartScreen(): Call DisplayBegin()" << endl;
-  DisplayBegin();
-  Serial << "ShowStartScreen(): Call sShowSplash()" << endl;
-  ShowSplash();
-  delay(3000);
-  DisplayClear();
-  return;
-}  //ShowStartScreen
-
-
-void ShowSplash(void) {
-   DisplayClear();
-   return;
-}  //ShowSplash
-*/
 
 
 void DisplayUpdate(void) {
