@@ -1,6 +1,6 @@
-const char szSketchName[]  = "BeckE32_RoverDisplayTest.ino";
+const char szSketchName[]  = "BeckE32_RoverEnviroDisplay.ino";
 const char szFileDate[]    = "5/31/21a";
-// 5/26/21, Copied from BeckE32_RoverGraphics.ino to isolate white screen problem
+// 5/26/21, Copied from BeckE32_RoverDisplayTest.ino to isolate white screen problem
 #include <BeckI2cClass.h>
 #include <BeckGasSensorClass.h>
 #include <BeckGasSensorDataClass.h>
