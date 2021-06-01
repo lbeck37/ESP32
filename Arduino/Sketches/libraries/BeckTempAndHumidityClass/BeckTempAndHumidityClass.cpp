@@ -1,10 +1,9 @@
 const char szSystemFileName[]  = "BeckTempAndHumidityClass.cpp";
-const char szSystemFileDate[]  = "5/31/21c";
+const char szSystemFileDate[]  = "5/31/21e";
 
+#include <BeckEnviroDataClass.h>
 #include <BeckTempAndHumidityClass.h>
-//#include <BeckEnviroDataClass.h>
-//#include <Adafruit_CCS811.h>
-#include "DHTesp.h" // Click here to get the library: http://librarymanager/All#DHTesp
+#include "DHTesp.h"
 #include <Ticker.h>
 #include <Streaming.h>
 #include <Wire.h>
@@ -61,9 +60,6 @@ void triggerGetTemp() {
  *    true if task and timer are started
  *    false if task or timer couldn't be started */
 bool SetupDHT() {
-  //byte resultValue = 0;
-  //dht.setup(dhtPin, DHTesp::DHT11);
-  //dht.setup(dhtPin, DHTesp::DHT22);
   Serial << "SetupDHT(): Call dht.setup(dhtPin, DHTesp::AUTO_DETECT)" << endl;
   dht.setup(dhtPin, DHTesp::AUTO_DETECT);
   Serial << "SetupDHT(): Back from dht.setup()" << endl;
@@ -89,9 +85,8 @@ bool SetupDHT() {
     return false;
   } //if(DHT_TaskHandle==NULL)
   else {
-    // Start update of environment data every 20 seconds
+    // Start update of environment data every 5 seconds
     Serial << "SetupDHT(): Call DHT_Ticker.attach()" << endl;
-    //DHT_Ticker.attach(20, triggerGetTemp);
     DHT_Ticker.attach(5.0, triggerGetTemp);
   } //if(DHT_TaskHandle==NULL)else
   Serial << "SetupDHT(): return true" << endl;
@@ -145,6 +140,10 @@ bool TempAndHumidityClass::ReadTempAndHumidity() {
     Serial.println("DHT11 error status: " + String(dht.getStatusString()));
     return false;
   }
+  float CurrentDegF= ((newValues.temperature) * 1.8) + 32.0;
+  EnviroData.SetDegF_Value  (CurrentDegF);
+  EnviroData.SetRH_Value    (newValues.humidity);
+
   float heatIndex = dht.computeHeatIndex(newValues.temperature, newValues.humidity);
   float dewPoint = dht.computeDewPoint(newValues.temperature, newValues.humidity);
   float cr = dht.getComfortRatio(ComfortLevel, newValues.temperature, newValues.humidity);

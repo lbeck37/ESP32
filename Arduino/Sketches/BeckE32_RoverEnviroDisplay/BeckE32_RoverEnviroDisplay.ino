@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_RoverEnviroDisplay.ino";
-const char szFileDate[]    = "5/31/21g";
+const char szFileDate[]    = "5/31/21j";
 // 5/26/21, Copied from BeckE32_RoverDisplayTest.ino to isolate white screen problem
 #include <BeckBiotaDefines.h>
 #include <BeckEnviroDataClass.h>
@@ -25,12 +25,22 @@ static const int       sI2C_SDA              = 26;
 static const int       sI2C_SCL              = 27;
 
 static const uint16_t  usBackgroundColor    = WROVER_BLACK;
-static const UINT16    usBoostTop           = 90;
+
+static const UINT16    usCO2_CursorY           =  30;
+static const UINT16    usVOC_CursorY           =  90;
+static const UINT16    usDegF_CursorY          = 150;
+static const UINT16    usRH_CursorY            = 210;
 
 WROVER_KIT_LCD    RoverLCD;
 static char       sz100CharString[101];
 
 void(* ResetESP32)(void)= 0;        //Hopefully system crashes and reset when this is called.
+
+//Function prototypes
+void  DisplayCO2          (void);
+void  DisplayVOC          (void);
+void  DisplayTemperature  (void);
+void  DisplayHumidity     (void);
 
 void setup()   {
   Serial.begin(115200);
@@ -55,6 +65,7 @@ void setup()   {
 
 void loop() {
   GasSensor.Handle();
+  TempAndHumiditySensor.Handle();
   DisplayUpdate();
   return;
 }  //loop()
@@ -72,6 +83,8 @@ void DisplayBegin() {
 void DisplayUpdate(void) {
   DisplayCO2();
   DisplayVOC();
+  DisplayTemperature();
+  DisplayHumidity();
   //DisplayLowerBanner();
   return;
 }  //DisplayUpdate
@@ -167,7 +180,7 @@ void DisplayCO2() {
 void DisplayVOC() {
   UINT16          usCharWidth     = 25;
   UINT16          usCursorX       = 0;
-  UINT16          usCursorY       = usBoostTop;   //GFX fonts Y is bottom 90
+  UINT16          usCursorY       = usVOC_CursorY;   //GFX fonts Y is bottom 90
   UINT8           ucSize          = 1;
   UINT16          usColor         = WROVER_WHITE;
   INT16           sClearLeftX     = usCursorX;
@@ -200,7 +213,7 @@ void DisplayVOC() {
 void DisplayTemperature() {
   UINT16          usCharWidth     = 25;
   UINT16          usCursorX       = 0;
-  UINT16          usCursorY       = 30;   //GFX fonts Y is bottom
+  UINT16          usCursorY       = usDegF_CursorY;   //GFX fonts Y is bottom
   UINT8           ucSize          = 1;
   UINT16          usColor         = WROVER_WHITE;
   INT16           sClearLeftX     = usCursorX;
@@ -209,9 +222,9 @@ void DisplayTemperature() {
   UINT16          usClearHeight   = 35;
   static UINT16   usLastClearWidth= 0;
 
-  if(EnviroData.bCO2Changed()) {
-    UINT16 CO2Value= EnviroData.GetCO2_Value();
-    sprintf(sz100CharString, "%6d", CO2Value);
+  if(EnviroData.bDegFChanged()) {
+    UINT16 DegFValue= EnviroData.GetDegF_Value();
+    sprintf(sz100CharString, "%6d", DegFValue);
     //Calculate width to clear based on number of characters + 2, use that unless last width was bigger
     usClearWidth= (strlen(sz100CharString) + 2) * usCharWidth;
     usClearWidth= std::max(usClearWidth, usLastClearWidth);
@@ -221,9 +234,40 @@ void DisplayTemperature() {
 
     usCursorX= 50;
     usCursorY += 20;
-    sprintf(sz100CharString, "CO2 ppm");
+    sprintf(sz100CharString, "Temperature");
     DisplayLine(FreeSans9pt7b, usColor, usCursorX, usCursorY, usClearWidth, usClearHeight, sz100CharString, false);
-  } //if(EnviroData.bCO2Changed())
+  } //if(EnviroData.bDegFChanged())
   return;
 }  //DisplayTemperature
+
+
+void DisplayHumidity() {
+  UINT16          usCharWidth     = 25;
+  UINT16          usCursorX       = 0;
+  UINT16          usCursorY       = usRH_CursorY;   //GFX fonts Y is bottom
+  UINT8           ucSize          = 1;
+  UINT16          usColor         = WROVER_WHITE;
+  INT16           sClearLeftX     = usCursorX;
+  INT16           sClearTopY      = 0;
+  UINT16          usClearWidth    = 120;
+  UINT16          usClearHeight   = 35;
+  static UINT16   usLastClearWidth= 0;
+
+  if(EnviroData.bRHChanged()) {
+    UINT16 RHValue= EnviroData.GetRH_Value();
+    sprintf(sz100CharString, "%6d", RHValue);
+    //Calculate width to clear based on number of characters + 2, use that unless last width was bigger
+    usClearWidth= (strlen(sz100CharString) + 2) * usCharWidth;
+    usClearWidth= std::max(usClearWidth, usLastClearWidth);
+    usLastClearWidth= usClearWidth;
+    ClearTextBackground(sClearLeftX, sClearTopY, usClearWidth, usClearHeight);
+    DisplayLine(FreeMonoBold24pt7b, usColor, usCursorX, usCursorY, usClearWidth, usClearHeight, sz100CharString, false, ucSize);
+
+    usCursorX= 50;
+    usCursorY += 20;
+    sprintf(sz100CharString, "Humidity");
+    DisplayLine(FreeSans9pt7b, usColor, usCursorX, usCursorY, usClearWidth, usClearHeight, sz100CharString, false);
+  } //if(EnviroData.bRHChanged())
+  return;
+}  //DisplayHumidity
 //Last line

@@ -1,4 +1,4 @@
-// BeckTempAndHumidClass.h, 5/31/21b
+// BeckTempAndHumidClass.h, 5/31/21c
 #pragma once
 #include <BeckBiotaDefines.h>
 
@@ -17,10 +17,9 @@ protected:
   unsigned long     ulNextPrintMsec   = 0;
   unsigned long     ulPrintPeriodMsec = 1000; //mSec between printing current CO2 and TVOC vales
 
-  //bool  SetupDHT              (void);
   void  triggerGetTemp        (void);
   void  ReadDHT_Task          (void *pvParameters);
-};  //TempAndHumidClass
+};  //TempAndHumidityClass
 
 extern TempAndHumidityClass          TempAndHumiditySensor;       //This is so every module can use the same object
 
