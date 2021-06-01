@@ -1,9 +1,10 @@
-// BeckBiotaDefines.h, 5/31/21a
+// BeckBiotaDefines.h, 6/1/21a
 #pragma once
 #include <cstdint>
 
 typedef int16_t       Colortype;      //See Adafruit_GFX.h
-typedef int32_t       PUnit;          //Pixel Unit
+//typedef int32_t       PUnit;          //Pixel Unit
+typedef int16_t       PUnit;          //Pixel Unit
 typedef uint8_t       FontSize;
 typedef float         DegreeType;
 

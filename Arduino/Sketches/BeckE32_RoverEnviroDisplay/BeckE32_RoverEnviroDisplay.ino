@@ -1,6 +1,7 @@
 const char szSketchName[]  = "BeckE32_RoverEnviroDisplay.ino";
-const char szFileDate[]    = "5/31/21n";
+const char szFileDate[]    = "6/1/21a";
 // 5/26/21, Copied from BeckE32_RoverDisplayTest.ino to isolate white screen problem
+#include <BeckBarClass.h>
 #include <BeckBiotaDefines.h>
 #include <BeckEnviroDataClass.h>
 #include <BeckI2cClass.h>
@@ -21,18 +22,23 @@ const char szFileDate[]    = "5/31/21n";
 #define min(X, Y)     (((X) < (Y)) ? (X) : (Y))
 
 //Digital Pins
-static const int       sI2C_SDA              = 26;
-static const int       sI2C_SCL              = 27;
+//static const int       sI2C_SDA              = 26;
+//static const int       sI2C_SCL              = 27;
+//static const UINT16    usCO2_CursorY           =  30;
 
 static const uint16_t  usBackgroundColor    = WROVER_BLACK;
 
-static const UINT16    usCO2_CursorY           =  30;
 static const UINT16    usVOC_CursorY           =  90;
 static const UINT16    usDegF_CursorY          = 150;
 static const UINT16    usRH_CursorY            = 210;
 
 WROVER_KIT_LCD    RoverLCD;
 static char       sz100CharString[101];
+
+BarClass          CO2Bar  = BarClass(eCO2Bar);
+BarClass          VOCBar  = BarClass(eVOCBar);
+BarClass          DegFBar = BarClass(eDegFBar);
+BarClass          RHBar   = BarClass(eRHBar);
 
 void(* ResetESP32)(void)= 0;        //Hopefully system crashes and reset when this is called.
 
@@ -179,7 +185,6 @@ void DisplayCO2() {
   return;
 }  //DisplayCO2
 
-
 void DisplayVOC() {
   UINT16          usCharWidth     = 25;
   UINT16          usCursorX       = 0;
@@ -214,7 +219,6 @@ void DisplayVOC() {
   } //if(EnviroData.bVOCChanged())
   return;
 }  //DisplayVOC
-
 
 void DisplayTemperature() {
   UINT16          usCharWidth     = 25;
@@ -251,7 +255,6 @@ void DisplayTemperature() {
   } //if(EnviroData.bDegFChanged())
   return;
 }  //DisplayTemperature
-
 
 void DisplayHumidity() {
   UINT16          usCharWidth     = 25;
