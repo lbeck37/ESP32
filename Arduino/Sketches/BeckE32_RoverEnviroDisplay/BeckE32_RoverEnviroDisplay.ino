@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_RoverEnviroDisplay.ino";
-const char szFileDate[]    = "5/31/21j";
+const char szFileDate[]    = "5/31/21n";
 // 5/26/21, Copied from BeckE32_RoverDisplayTest.ino to isolate white screen problem
 #include <BeckBiotaDefines.h>
 #include <BeckEnviroDataClass.h>
@@ -121,11 +121,11 @@ void ClearTextBackground(INT16 sUpperLeftX, INT16 sUpperLeftY, UINT16 usWidth, U
 } //ClearTextBackground
 
 
-void DisplayLine(const GFXfont stFont, UINT16 usColor, UINT16 usCursorX, UINT16 usCursorY, UINT16 usClearWidth, UINT16 usClearHeight,
-                 char szText[], bool bClearText= true, UINT8 ucSize= 1) {
+void DisplayLine(const GFXfont stFont, UINT16 usColor, UINT16 usCursorX, UINT16 usCursorY,
+                  UINT16 usClearWidth, UINT16 usClearHeight,
+                  char szText[], bool bClearText= true, UINT8 ucSize= 1) {
   INT16           sClearXstart    = usCursorX - 10;
   INT16           sClearYstart    = usCursorY - 18;
-
   if(bClearText){
     ClearTextBackground(sClearXstart, sClearYstart, usClearWidth, usClearHeight);
   }
@@ -165,9 +165,12 @@ void DisplayCO2() {
     usClearWidth= (strlen(sz100CharString) + 2) * usCharWidth;
     usClearWidth= std::max(usClearWidth, usLastClearWidth);
     usLastClearWidth= usClearWidth;
+    Serial << LOG0 << "DisplayCO2(): Call ClearTextBackground(" << sClearLeftX << ", " << sClearTopY <<
+        ", " << usClearWidth << ", " << usClearHeight << ")" << endl;
     ClearTextBackground(sClearLeftX, sClearTopY, usClearWidth, usClearHeight);
-    DisplayLine(FreeMonoBold24pt7b, usColor, usCursorX, usCursorY, usClearWidth, usClearHeight, sz100CharString, false, ucSize);
-
+    Serial << LOG0 << "DisplayCO2(): Call DisplayLine for: " << sz100CharString << endl;
+    DisplayLine(FreeMonoBold24pt7b, usColor, usCursorX, usCursorY, usClearWidth, usClearHeight,
+                 sz100CharString, false, ucSize);
     usCursorX= 50;
     usCursorY += 20;
     sprintf(sz100CharString, "CO2 ppm");
@@ -198,9 +201,12 @@ void DisplayVOC() {
     usClearWidth= (strlen(sz100CharString) + 2) * usCharWidth;
     usClearWidth= std::max(usClearWidth, usLastClearWidth);
     usLastClearWidth= usClearWidth;
+    Serial << LOG0 << "DisplayVOC(): Call ClearTextBackground(" << sClearLeftX << ", " << sClearTopY <<
+        ", " << usClearWidth << ", " << usClearHeight << ")" << endl;
     ClearTextBackground(sClearLeftX, sClearTopY, usClearWidth, usClearHeight);
-    DisplayLine(FreeMonoBold24pt7b, usColor, usCursorX, usCursorY, usClearWidth, usClearHeight, sz100CharString, false, ucSize);
-
+    Serial << LOG0 << "DisplayVOC(): Call DisplayLine for: " << sz100CharString << endl;
+    DisplayLine(FreeMonoBold24pt7b, usColor, usCursorX, usCursorY, usClearWidth, usClearHeight,
+                 sz100CharString, false, ucSize);
     usCursorX= 50;
     usCursorY += 20;
     sprintf(sz100CharString, "VOC mg/m^3");
@@ -217,21 +223,27 @@ void DisplayTemperature() {
   UINT8           ucSize          = 1;
   UINT16          usColor         = WROVER_WHITE;
   INT16           sClearLeftX     = usCursorX;
-  INT16           sClearTopY      = 0;
+  //INT16           sClearTopY      = 0;
+  INT16           sClearTopY      = usCursorY - 32;
   UINT16          usClearWidth    = 120;
   UINT16          usClearHeight   = 35;
   static UINT16   usLastClearWidth= 0;
 
+  //Serial << LOG0 << "DisplayTemperature(): Check EnviroData.bDegFChanged()" << endl;
   if(EnviroData.bDegFChanged()) {
-    UINT16 DegFValue= EnviroData.GetDegF_Value();
-    sprintf(sz100CharString, "%6d", DegFValue);
+    //Serial << LOG0 << "DisplayTemperature(): Call EnviroData.GetDegF_Value()" << endl;
+    float DegFValue= EnviroData.GetDegF_Value();
+    sprintf(sz100CharString, "%6.1f", DegFValue);
     //Calculate width to clear based on number of characters + 2, use that unless last width was bigger
     usClearWidth= (strlen(sz100CharString) + 2) * usCharWidth;
     usClearWidth= std::max(usClearWidth, usLastClearWidth);
     usLastClearWidth= usClearWidth;
+    Serial << LOG0 << "DisplayTemperature(): Call ClearTextBackground(" << sClearLeftX << ", " << sClearTopY <<
+        ", " << usClearWidth << ", " << usClearHeight << ")" << endl;
     ClearTextBackground(sClearLeftX, sClearTopY, usClearWidth, usClearHeight);
-    DisplayLine(FreeMonoBold24pt7b, usColor, usCursorX, usCursorY, usClearWidth, usClearHeight, sz100CharString, false, ucSize);
-
+    Serial << LOG0 << "DisplayTemperature(): Call DisplayLine for: " << sz100CharString << endl;
+    DisplayLine(FreeMonoBold24pt7b, usColor, usCursorX, usCursorY, usClearWidth, usClearHeight,
+                 sz100CharString, false, ucSize);
     usCursorX= 50;
     usCursorY += 20;
     sprintf(sz100CharString, "Temperature");
@@ -248,21 +260,27 @@ void DisplayHumidity() {
   UINT8           ucSize          = 1;
   UINT16          usColor         = WROVER_WHITE;
   INT16           sClearLeftX     = usCursorX;
-  INT16           sClearTopY      = 0;
+  //INT16           sClearTopY      = 0;
+  INT16           sClearTopY      = usCursorY - 32;
   UINT16          usClearWidth    = 120;
   UINT16          usClearHeight   = 35;
   static UINT16   usLastClearWidth= 0;
 
+  //Serial << LOG0 << "DisplayHumidity(): Check EnviroData.bRHChanged()" << endl;
   if(EnviroData.bRHChanged()) {
+    //Serial << LOG0 << "DisplayHumidity(): Call EnviroData.GetRH_Value()" << endl;
     UINT16 RHValue= EnviroData.GetRH_Value();
-    sprintf(sz100CharString, "%6d", RHValue);
+    sprintf(sz100CharString, "%5d%%", RHValue);
     //Calculate width to clear based on number of characters + 2, use that unless last width was bigger
     usClearWidth= (strlen(sz100CharString) + 2) * usCharWidth;
     usClearWidth= std::max(usClearWidth, usLastClearWidth);
     usLastClearWidth= usClearWidth;
+    Serial << LOG0 << "DisplayHumidity(): Call ClearTextBackground(" << sClearLeftX << ", " << sClearTopY <<
+        ", " << usClearWidth << ", " << usClearHeight << ")" << endl;
     ClearTextBackground(sClearLeftX, sClearTopY, usClearWidth, usClearHeight);
-    DisplayLine(FreeMonoBold24pt7b, usColor, usCursorX, usCursorY, usClearWidth, usClearHeight, sz100CharString, false, ucSize);
-
+    Serial << LOG0 << "DisplayHumidity(): Call DisplayLine for: " << sz100CharString << endl;
+    DisplayLine(FreeMonoBold24pt7b, usColor, usCursorX, usCursorY, usClearWidth, usClearHeight,
+                 sz100CharString, false, ucSize);
     usCursorX= 50;
     usCursorY += 20;
     sprintf(sz100CharString, "Humidity");
