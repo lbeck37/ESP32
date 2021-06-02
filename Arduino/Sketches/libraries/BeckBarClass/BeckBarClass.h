@@ -9,60 +9,73 @@ enum OrientationType{
   eLastOrientationType
 };
 
-
-/*
 enum BarType{
   eNoBar  = 0,
   eCO2Bar,
   eVOCBar,
   eDegFBar,
   eRHBar,
-  eBarType
+  eLastBarType
 };
+
+PUnit     StdBarWidth   =  35;
+PUnit     StdBarLength  = 120;
+
+const PUnit     CO2Bar_XLeft     = 200;
+const PUnit     CO2Bar_YBottom   = 30;
+
+/*
+class BarDataClass{
+public:
+  BarDataClass            ();
+  virtual ~BarDataClass   ();
+
+  BarType           eBarType              = eNoBar;
+  OrientationType   Orientation           = eHorizontal;
+  PUnit             XLeft                 = 0;
+  PUnit             YBottom               = 0;
+  PUnit             Width                 = StdBarWidth;
+  PUnit             Length                = StdBarLength;
+  float             fLowValue             = 0.0;
+  float             fHighValue            = 0.0;
+protected:
+};  //BarDataClass
 */
 
 
-class BarDataClass{
+class BarSegmentClass{
 public:
-BarDataClass            ();
-virtual ~BarDataClass   ();
+  BarSegmentClass            ();
+  virtual ~BarSegmentClass   ();
 
-OrientationType   Orientation           = eHorizontal;
-PUnit             XLeft                 = 0;
-PUnit             YBottom               = 0;
-PUnit             Width                 = 10;
-PUnit             Length                = 100;
-float             fLowValue             = 0.0;
-float             fHighValue            = 1000.0;
-
+  uint16_t          StartPercent    = 33;
+  ColorType         BarColor        = BECK_YELLOW;
+  float             fStartValue     =  600.0;
+  float             fEndValue       = 1000.0;
 protected:
-
-};  //BarDataClass
+};  //BarSegmentClass
 
 
 class BarClass{
 public:
-  BarClass            ();
+  BarClass            (BarType eBar);
   virtual ~BarClass   ();
 
-  void  Setup         (void);
-  void  Handle        (void);
+  //void  Setup         (void);
+  //void  Handle        (void);
   bool  DrawBar       (void);
 
 protected:
-  float             fLastValue            = 0.0;
+  BarType           eBarType              = eNoBar;
+  int16_t           NumSegments           = 3;
+  BarSegmentClass   BarSegments[NumSegments];
   OrientationType   Orientation           = eHorizontal;
   PUnit             XLeft                 = 0;
   PUnit             YBottom               = 0;
-  PUnit             Width                 = 10;
-  PUnit             Length                = 100;
+  PUnit             Width                 = StdBarWidth;
+  PUnit             Length                = StdBarLength;
   float             fLowValue             = 0.0;
-  float             fHighValue            = 1000.0;
+  float             fHighValue            = 0.0;
   float             fLastDisplayedValue   = 0.0;
-  //BarType           eBarType              = eCO2Bar;
-
-
-  //unsigned long     ulNextPrintMsec   = 0;
-  //unsigned long     ulPrintPeriodMsec = 1000; //mSec between printing current CO2 and TVOC vales
-};  //TempAndHumidityClass
+};  //BarClass
 //Last line.

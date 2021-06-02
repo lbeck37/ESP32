@@ -1,16 +1,15 @@
 const char szSystemFileName[]  = "BeckBarClass.cpp";
-const char szSystemFileDate[]  = "6/1/21";
+const char szSystemFileDate[]  = "6/1/21b";
 
 //#include <BeckEnviroDataClass.h>
 #include <BeckBarClass.h>
 #include <BeckLogLib.h>
 #include <Streaming.h>
 
-BarClass::BarClass() {
+BarClass::BarClass(BarType eBar) {
   Serial << "BarClass::BarClass(): " << szSystemFileName << ", " << szSystemFileDate << endl;
-/*
   Serial << LOG0 << "BarClass::BarClass(): Set BarType to: " << eNewBarType << endl;
-  eBarType= eNewBarType;
+  eBarType= eBar;
   switch(eBarType){
   case eCO2Bar:
     break;
@@ -24,7 +23,6 @@ BarClass::BarClass() {
       Serial << LOG0 << "BarClass::BarClass(): Bad Switch= " << eBarType << endl;
       break;
   } //switch
-*/
   return;
 } //constructor
 

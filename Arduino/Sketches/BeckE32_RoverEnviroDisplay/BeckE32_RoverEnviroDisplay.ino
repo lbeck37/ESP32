@@ -4,7 +4,6 @@ const char szFileDate[]    = "6/1/21c";
 #include <BeckBarClass.h>
 #include <BeckBiotaDefines.h>
 #include <BeckEnviroDataClass.h>
-//#include <BeckEnviroDisplayClass.h>
 #include <BeckI2cClass.h>
 #include <BeckGasSensorClass.h>
 #include <BeckLogLib.h>
@@ -66,8 +65,6 @@ void setup()   {
 
   Serial << LOG0 << "setup(): Call EnviroDisplay.DisplayBegin()" << endl;
   DisplayBegin();
-  //Serial << LOG0 << "setup(): Call DisplayBegin()" << endl;
-  //EnviroDisplay.DisplayBegin();
 
   Serial << LOG0 << "setup(): return" << endl;
   return;
@@ -205,8 +202,11 @@ void DisplayVOC() {
   if(EnviroData.bVOCChanged()) {
     UINT16  VOCValue_ppm      = EnviroData.GetVOC_Value();
     float   VOC_to_mg_per_m3  = 3.23;
-    float   VOC_mgPerM3       = (float)VOCValue_ppm * VOC_to_mg_per_m3;
-    sprintf(sz100CharString, "%6.1f", VOC_mgPerM3);
+    //float   VOC_mgPerM3       = (float)VOCValue_ppm * VOC_to_mg_per_m3;
+    int16_t   VOC_mgPerM3       = (int16_t)((float)VOCValue_ppm * VOC_to_mg_per_m3);
+
+    //sprintf(sz100CharString, "%6.1f", VOC_mgPerM3);
+    sprintf(sz100CharString, "%6d", VOC_mgPerM3);
     //Calculate width to clear based on number of characters + 2, use that unless last width was bigger
     usClearWidth= (strlen(sz100CharString) + 2) * usCharWidth;
     usClearWidth= std::max(usClearWidth, usLastClearWidth);
@@ -217,6 +217,32 @@ void DisplayVOC() {
     Serial << LOG0 << "DisplayVOC(): Call DisplayLine for: " << sz100CharString << endl;
     DisplayLine(FreeMonoBold24pt7b, usColor, usCursorX, usCursorY, usClearWidth, usClearHeight,
                  sz100CharString, false, ucSize);
+
+/*
+    OrientationType   Orientation           = eHorizontal;
+    ColorType         BarColor              = BECK_RED;
+    PUnit             XLeft                 = 0;
+    PUnit             YBottom               = 0;
+    PUnit             Width                 = 10;
+    PUnit             Length                = 100;
+    float             fLowValue             = 0.0;
+    float             fHighValue            = 1000.0;
+*/
+    BarDataClass    CO2Bar;
+/*
+    CO2Bar.Orientation    = eHorizontal;
+    CO2Bar.BarColor       = BECK_RED;
+*/
+    CO2Bar.XLeft          = 0;
+    CO2Bar.XLeft          = 0;
+    CO2Bar.YBottom        = 0;
+/*
+    CO2Bar.Width          = 10;
+    CO2Bar.Length         = 100;
+*/
+    CO2Bar.fLowValue      =    0.0;
+    CO2Bar.fHighValue     = 2000.0;
+
     usCursorX= 50;
     usCursorY += 20;
     sprintf(sz100CharString, "VOC mg/m^3");
