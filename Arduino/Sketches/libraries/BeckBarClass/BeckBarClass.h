@@ -1,6 +1,7 @@
-// BeckTempAndHumidClass.h, 6/1/21a
+// BeckBarClass.h, 6/2/21a
 #pragma once
 #include <BeckBiotaDefines.h>
+#include <vector>
 
 enum OrientationType{
   eNoOrientation  = 0,
@@ -67,8 +68,11 @@ public:
 
 protected:
   BarType           eBarType              = eNoBar;
+/*
   int16_t           NumSegments           = 3;
-  BarSegmentClass   BarSegments[NumSegments];
+  BarSegmentClass   BarSegments           [NumSegments];
+*/
+  vector<BarSegmentClass>   BarSegments;
   OrientationType   Orientation           = eHorizontal;
   PUnit             XLeft                 = 0;
   PUnit             YBottom               = 0;

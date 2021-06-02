@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckBarClass.cpp";
-const char szSystemFileDate[]  = "6/1/21b";
+const char szSystemFileDate[]  = "6/2/21a";
 
 //#include <BeckEnviroDataClass.h>
 #include <BeckBarClass.h>
