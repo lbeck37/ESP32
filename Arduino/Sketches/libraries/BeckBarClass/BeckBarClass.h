@@ -10,6 +10,7 @@ enum OrientationType{
 };
 
 
+/*
 enum BarType{
   eNoBar  = 0,
   eCO2Bar,
@@ -18,11 +19,30 @@ enum BarType{
   eRHBar,
   eBarType
 };
+*/
+
+
+class BarDataClass{
+public:
+BarDataClass            ();
+virtual ~BarDataClass   ();
+
+OrientationType   Orientation           = eHorizontal;
+PUnit             XLeft                 = 0;
+PUnit             YBottom               = 0;
+PUnit             Width                 = 10;
+PUnit             Length                = 100;
+float             fLowValue             = 0.0;
+float             fHighValue            = 1000.0;
+
+protected:
+
+};  //BarDataClass
 
 
 class BarClass{
 public:
-  BarClass            (BarType eNewBarType);
+  BarClass            ();
   virtual ~BarClass   ();
 
   void  Setup         (void);
@@ -39,7 +59,7 @@ protected:
   float             fLowValue             = 0.0;
   float             fHighValue            = 1000.0;
   float             fLastDisplayedValue   = 0.0;
-  BarType           eBarType              = eCO2Bar;
+  //BarType           eBarType              = eCO2Bar;
 
 
   //unsigned long     ulNextPrintMsec   = 0;

@@ -6,9 +6,10 @@ const char szSystemFileDate[]  = "6/1/21";
 #include <BeckLogLib.h>
 #include <Streaming.h>
 
-BarClass::BarClass(BarType eNewBarType) {
+BarClass::BarClass() {
   Serial << "BarClass::BarClass(): " << szSystemFileName << ", " << szSystemFileDate << endl;
-  Serial << LOG0 << " Set BarType to: " << eNewBarType << endl;
+/*
+  Serial << LOG0 << "BarClass::BarClass(): Set BarType to: " << eNewBarType << endl;
   eBarType= eNewBarType;
   switch(eBarType){
   case eCO2Bar:
@@ -23,6 +24,7 @@ BarClass::BarClass(BarType eNewBarType) {
       Serial << LOG0 << "BarClass::BarClass(): Bad Switch= " << eBarType << endl;
       break;
   } //switch
+*/
   return;
 } //constructor
 

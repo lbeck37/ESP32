@@ -1,9 +1,10 @@
 const char szSketchName[]  = "BeckE32_RoverEnviroDisplay.ino";
-const char szFileDate[]    = "6/1/21a";
+const char szFileDate[]    = "6/1/21c";
 // 5/26/21, Copied from BeckE32_RoverDisplayTest.ino to isolate white screen problem
 #include <BeckBarClass.h>
 #include <BeckBiotaDefines.h>
 #include <BeckEnviroDataClass.h>
+//#include <BeckEnviroDisplayClass.h>
 #include <BeckI2cClass.h>
 #include <BeckGasSensorClass.h>
 #include <BeckLogLib.h>
@@ -35,10 +36,12 @@ static const UINT16    usRH_CursorY            = 210;
 WROVER_KIT_LCD    RoverLCD;
 static char       sz100CharString[101];
 
+/*
 BarClass          CO2Bar  = BarClass(eCO2Bar);
 BarClass          VOCBar  = BarClass(eVOCBar);
 BarClass          DegFBar = BarClass(eDegFBar);
 BarClass          RHBar   = BarClass(eRHBar);
+*/
 
 void(* ResetESP32)(void)= 0;        //Hopefully system crashes and reset when this is called.
 
@@ -61,8 +64,10 @@ void setup()   {
   Serial << LOG0 << "setup(): Call GasSensor.Setup()" << endl;
   GasSensor.Setup();
 
-  Serial << LOG0 << "setup(): Call DisplayBegin()" << endl;
+  Serial << LOG0 << "setup(): Call EnviroDisplay.DisplayBegin()" << endl;
   DisplayBegin();
+  //Serial << LOG0 << "setup(): Call DisplayBegin()" << endl;
+  //EnviroDisplay.DisplayBegin();
 
   Serial << LOG0 << "setup(): return" << endl;
   return;
