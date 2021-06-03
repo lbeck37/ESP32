@@ -47,5 +47,4 @@ DisplayClass::DisplayClass() {
 DisplayClass::~DisplayClass() {
   Serial << "~Display(): Destructing" << endl;
 } //destructor
-
 //Last line.

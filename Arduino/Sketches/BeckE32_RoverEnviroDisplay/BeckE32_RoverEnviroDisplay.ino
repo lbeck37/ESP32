@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_RoverEnviroDisplay.ino";
-const char szFileDate[]    = "6/2/21a";
+const char szFileDate[]    = "6/2/21b";
 // 5/26/21, Copied from BeckE32_RoverDisplayTest.ino to isolate white screen problem
 #include <BeckBarClass.h>
 #include <BeckBiotaDefines.h>
@@ -35,8 +35,14 @@ static const UINT16    usRH_CursorY            = 210;
 WROVER_KIT_LCD    RoverLCD;
 static char       sz100CharString[101];
 
+//BarDataClass      CO2BarData= BarDataClass();
+BarDataClass      CO2BarData;
+
+//CO2BarData.eBarType= eCO2Bar;
+
+//BarClass          CO2Bar  = BarClass(CO2BarData);
+BarClass          CO2Bar;
 /*
-BarClass          CO2Bar  = BarClass(eCO2Bar);
 BarClass          VOCBar  = BarClass(eVOCBar);
 BarClass          DegFBar = BarClass(eDegFBar);
 BarClass          RHBar   = BarClass(eRHBar);
@@ -240,8 +246,8 @@ void DisplayVOC() {
     CO2Bar.Width          = 10;
     CO2Bar.Length         = 100;
 */
-    CO2Bar.fLowValue      =    0.0;
-    CO2Bar.fHighValue     = 2000.0;
+    CO2Bar.fStartValue    =    0.0;
+    CO2Bar.fEndValue      = 2000.0;
 
     usCursorX= 50;
     usCursorY += 20;
