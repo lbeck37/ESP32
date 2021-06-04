@@ -1,6 +1,7 @@
 // BeckBarClass.h, 6/3/21d
 #pragma once
 #include <BeckBiotaDefines.h>
+#include <WROVER_KIT_LCD.h>
 #include <stdlib.h>
 #include <vector>
 
@@ -23,6 +24,9 @@ enum BarType{
   eLastBarType
 };
 
+extern WROVER_KIT_LCD     RoverLCD;
+extern ColorType          BackgroundColor;
+
 const PUnit     CO2Bar_XLeft     = 200;
 const PUnit     CO2Bar_YBottom   = 30;
 
@@ -31,10 +35,10 @@ public:
   BarSegmentClass             ();
   virtual ~BarSegmentClass    ();
 
-  void  Draw                  (void);
-
+  void  Draw                  (float fNewValue);
+  void  DrawFilledRectangle   (PUnit XLeft, PUnit YBottom, PUnit Width, PUnit Length, ColorType Color);
   uint16_t          StartPercent    = 33;
-  ColorType         SegmentColor    = BECK_YELLOW;
+  ColorType         Color           = BECK_YELLOW;
   PUnit             XLeft           = 0;
   PUnit             YBottom         = 0;
   PUnit             Width           = BAR_WIDTH;
@@ -42,6 +46,7 @@ public:
   float             fStartValue     =  600.0;
   float             fEndValue       = 1000.0;
   float             fRange          = fEndValue - fStartValue;
+  float             fLastValue      = fStartValue;
 
 protected:
 };  //BarSegmentClass
@@ -73,7 +78,7 @@ public:
   virtual ~BarClass   ();
 
   //void  Draw          (PUnit XLeft, PUnit YBottom);
-  void  Draw          (void);
+  void  Draw          (float fNewValue);
 
   BarSegmentClass   GreenSegment  = BarSegmentClass();
   BarSegmentClass   YellowSegment = BarSegmentClass();

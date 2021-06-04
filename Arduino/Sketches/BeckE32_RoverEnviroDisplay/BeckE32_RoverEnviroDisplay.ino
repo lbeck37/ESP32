@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_RoverEnviroDisplay.ino";
-const char szFileDate[]    = "6/2/21b";
+const char szFileDate[]    = "6/3/21b";
 // 5/26/21, Copied from BeckE32_RoverDisplayTest.ino to isolate white screen problem
 #include <BeckBarClass.h>
 #include <BeckBiotaDefines.h>
@@ -21,19 +21,13 @@ const char szFileDate[]    = "6/2/21b";
 
 #define min(X, Y)     (((X) < (Y)) ? (X) : (Y))
 
-//Digital Pins
-//static const int       sI2C_SDA              = 26;
-//static const int       sI2C_SCL              = 27;
-//static const UINT16    usCO2_CursorY           =  30;
+//static const uint16_t  usBackgroundColor    = WROVER_BLACK;
 
-static const uint16_t  usBackgroundColor    = WROVER_BLACK;
+static const UINT16     usVOC_CursorY           =  90;
+static const UINT16     usDegF_CursorY          = 150;
+static const UINT16     usRH_CursorY            = 210;
 
-static const UINT16    usVOC_CursorY           =  90;
-static const UINT16    usDegF_CursorY          = 150;
-static const UINT16    usRH_CursorY            = 210;
-
-WROVER_KIT_LCD        RoverLCD;
-static char           sz100CharString[101];
+static char             sz100CharString[101];
 
 BarClass              CO2Bar;
 BarClass              VOCBar;
@@ -143,7 +137,7 @@ void DisplayUpdate(void) {
 
 
 void DisplayClear() {
-  FillScreen(usBackgroundColor);
+  FillScreen(BackgroundColor);
   return;
 }  //DisplayClear
 
@@ -168,7 +162,7 @@ void DisplayText(UINT16 usCursorX, UINT16 usCursorY, char *pcText,
 
 
 void ClearTextBackground(INT16 sUpperLeftX, INT16 sUpperLeftY, UINT16 usWidth, UINT16 usHeight){
-  RoverLCD.fillRect(sUpperLeftX, sUpperLeftY, usWidth, usHeight, usBackgroundColor);
+  RoverLCD.fillRect(sUpperLeftX, sUpperLeftY, usWidth, usHeight, BackgroundColor);
   return;
 } //ClearTextBackground
 
@@ -227,7 +221,7 @@ void DisplayCO2() {
     //Draw bar
     CO2BarData.XLeft    = usCursorX + usClearWidth;
     CO2BarData.YBottom  = usCursorY;
-    CO2Bar.Draw();
+    CO2Bar.Draw(CO2Value);
 
     usCursorX= 50;
     usCursorY += 20;

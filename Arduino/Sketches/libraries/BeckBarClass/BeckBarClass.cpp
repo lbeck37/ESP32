@@ -11,6 +11,9 @@ PUnit     EnviroBarWidth   =  35;
 PUnit     EnviroBarLength  = 120;
 */
 
+WROVER_KIT_LCD    RoverLCD;
+ColorType         BackgroundColor= WROVER_BLACK;
+
 //BarSegmentClass methods
 BarSegmentClass::BarSegmentClass() {
   Serial << "BarSegmentClass::BarSegmentClass(void): " << szBarClassFileName << ", " << szBarClassFileDate << endl;
@@ -20,12 +23,53 @@ BarSegmentClass::~BarSegmentClass() {
   Serial << "~BarSegmentClass(): Destructing" << endl;
 } //destructor
 
-void BarSegmentClass::Draw() {
-  Serial << "BarSegmentClass::Draw(XLeft, YBottom): Begin"<< endl;
+void BarSegmentClass::Draw(float fNewValue) {
+  Serial << "BarSegmentClass::Draw(fNewValue): Begin"<< endl;
+  if (fNewValue == fLastValue){
+    return;
+  } //if(fNewValue==fLastValue
 
+  if ((fNewValue < fStartValue) && (fLastValue < fStartValue)){
+    fLastValue= fNewValue;
+    return;
+  } //if((fNewValue<fStartValue)&&(fLastValue<fStartValue))
+
+  if (fNewValue >= fEndValue){
+    //Fill in the whole segment
+    fLastValue= fNewValue;
+    DrawFilledRectangle(XLeft, YBottom, Width, Length, Color);
+    return;
+  } //if(fNewValue>=fEndValue)
+
+  //See if it's in the segment range
+  if ((fNewValue > fStartValue) && (fNewValue < fEndValue)){
+    if (fNewValue > fLastValue){
+      fLastValue= fNewValue;
+      PUnit PartialLength= (PUnit)(((fNewValue- fStartValue) / fRange) * (float)Length);
+      DrawFilledRectangle(XLeft, YBottom, Width, PartialLength, Color);
+      return;
+    } //if(fNewValue>fLastValue)
+    else{
+      fLastValue= fNewValue;
+      //fLastValue is higher than new value
+      //Blank whole segment and fill at lower amount than last time
+      DrawFilledRectangle(XLeft, YBottom, Width, Length, BackgroundColor);
+
+      //Draw the partial segment bar
+      PUnit PartialLength= (PUnit)(((fNewValue- fStartValue) / fRange) * (float)Length);
+      DrawFilledRectangle(XLeft, YBottom, Width, PartialLength, Color);
+      return;
+    } //if(fNewValue>fLastValue)else
+  }
   return;
 } //Draw
 
+
+void BarSegmentClass::DrawFilledRectangle(PUnit NewXLeft, PUnit NewYBottom,
+                                            PUnit NewWidth, PUnit NewLength, ColorType NewColor){
+  RoverLCD.fillRect(NewXLeft, NewYBottom, NewWidth, NewLength, NewColor);
+  return;
+}
 
 //BarDataClass methods
 BarDataClass::BarDataClass() {
@@ -52,19 +96,19 @@ BarClass::BarClass(BarDataClass BarData) {
   switch(BarData.eBarType){
     case eCO2Bar:
       GreenSegment.StartPercent   = 0;
-      GreenSegment.SegmentColor   = BECK_GREEN;
+      GreenSegment.Color          = BECK_GREEN;
       GreenSegment.fStartValue    =   0.0;
       GreenSegment.fEndValue      = 600.0;
        BarSegments.push_back(GreenSegment);
 
       YellowSegment.StartPercent   = 33;
-      YellowSegment.SegmentColor   = BECK_YELLOW;
+      YellowSegment.Color           = BECK_YELLOW;
       YellowSegment.fStartValue    =  600.0;
       YellowSegment.fEndValue      = 1000.0;
       BarSegments.push_back(YellowSegment);
 
       RedSegment.StartPercent   = 66;
-      RedSegment.SegmentColor   = BECK_RED;
+      RedSegment.Color          = BECK_RED;
       RedSegment.fStartValue    = 1000.0;
       RedSegment.fEndValue      = 2000.0;
       BarSegments.push_back(RedSegment);
@@ -84,7 +128,7 @@ BarClass::BarClass(BarDataClass BarData) {
 } //constructor
 
 
-void BarClass::Draw(void) {
+void BarClass::Draw(float fNewValue) {
   Serial << "BarClass::Draw(XLeft, YBottom): Begin"<< endl;
   for (Iterator= BarSegments.begin(); Iterator != BarSegments.end(); Iterator++){
     //Compute segment XLeft, Length and YBottom
@@ -93,8 +137,8 @@ void BarClass::Draw(void) {
     Iterator->XLeft= (PUnit)((float)_BarData.Length * fSegmentStartRatio) + _BarData.XLeft;
     Iterator->Length= (PUnit)((Iterator->fRange / _BarData.fRange) * (float)_BarData.Length);
     Iterator->YBottom= _BarData.YBottom;
-    Iterator->Draw();
-  } //for
+    Iterator->Draw(fNewValue);
+  } //for(Iterator=BarSegments.begin();...
 
   return;
 } //Draw
