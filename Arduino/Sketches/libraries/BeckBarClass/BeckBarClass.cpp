@@ -88,14 +88,14 @@ void BarClass::Draw(void) {
   Serial << "BarClass::Draw(XLeft, YBottom): Begin"<< endl;
   for (Iterator= BarSegments.begin(); Iterator != BarSegments.end(); Iterator++){
     //Compute segment XLeft, Length and YBottom
-    float fTest= *Iterator->fRange;
-    float fSegmentOffset= (*Iterator->fStartValue - _BarData.fStartValue);
+    float fSegmentOffset= (Iterator->fStartValue - _BarData.fStartValue);
     float fSegmentStartRatio= (fSegmentOffset / _BarData.fRange);
-    *Iterator->XLeft= (PUnit)((float)_BarData.Length * fSegmentStartRatio) + _BarData.XLeft;
-    *Iterator->Length= (PUnit)((*Iterator->fRange / _BarData.fRange) * (float)_BarData.Length);
-    *Iterator->YBottom= _BarData.YBottom;
-    *Iterator->Draw();
+    Iterator->XLeft= (PUnit)((float)_BarData.Length * fSegmentStartRatio) + _BarData.XLeft;
+    Iterator->Length= (PUnit)((Iterator->fRange / _BarData.fRange) * (float)_BarData.Length);
+    Iterator->YBottom= _BarData.YBottom;
+    Iterator->Draw();
   } //for
+
   return;
 } //Draw
 
