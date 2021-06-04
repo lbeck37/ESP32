@@ -1,15 +1,10 @@
 const char szBarClassFileName[]  = "BeckBarClass.cpp";
-const char szBarClassFileDate[]  = "6/3/21d";
+const char szBarClassFileDate[]  = "6/3/21e";
 
 //#include <BeckEnviroDataClass.h>
 #include <BeckBarClass.h>
 #include <BeckLogLib.h>
 #include <Streaming.h>
-
-/*
-PUnit     EnviroBarWidth   =  35;
-PUnit     EnviroBarLength  = 120;
-*/
 
 WROVER_KIT_LCD    RoverLCD;
 ColorType         BackgroundColor= WROVER_BLACK;
@@ -64,12 +59,12 @@ void BarSegmentClass::Draw(float fNewValue) {
   return;
 } //Draw
 
-
 void BarSegmentClass::DrawFilledRectangle(PUnit NewXLeft, PUnit NewYBottom,
                                             PUnit NewWidth, PUnit NewLength, ColorType NewColor){
   RoverLCD.fillRect(NewXLeft, NewYBottom, NewWidth, NewLength, NewColor);
   return;
-}
+} //DrawFilledRectangle
+
 
 //BarDataClass methods
 BarDataClass::BarDataClass() {
@@ -99,7 +94,7 @@ BarClass::BarClass(BarDataClass BarData) {
       GreenSegment.Color          = BECK_GREEN;
       GreenSegment.fStartValue    =   0.0;
       GreenSegment.fEndValue      = 600.0;
-       BarSegments.push_back(GreenSegment);
+      BarSegments.push_back(GreenSegment);
 
       YellowSegment.StartPercent   = 33;
       YellowSegment.Color           = BECK_YELLOW;
@@ -127,7 +122,6 @@ BarClass::BarClass(BarDataClass BarData) {
   } //switch
 } //constructor
 
-
 void BarClass::Draw(float fNewValue) {
   Serial << "BarClass::Draw(XLeft, YBottom): Begin"<< endl;
   for (Iterator= BarSegments.begin(); Iterator != BarSegments.end(); Iterator++){
@@ -139,8 +133,6 @@ void BarClass::Draw(float fNewValue) {
     Iterator->YBottom= _BarData.YBottom;
     Iterator->Draw(fNewValue);
   } //for(Iterator=BarSegments.begin();...
-
   return;
 } //Draw
-
 //Last line.

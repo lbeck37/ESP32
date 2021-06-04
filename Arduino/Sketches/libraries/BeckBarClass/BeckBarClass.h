@@ -1,4 +1,4 @@
-// BeckBarClass.h, 6/3/21d
+// BeckBarClass.h, 6/3/21e
 #pragma once
 #include <BeckBiotaDefines.h>
 #include <WROVER_KIT_LCD.h>
