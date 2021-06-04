@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_RoverEnviroDisplay.ino";
-const char szFileDate[]    = "6/4/21e";
+const char szFileDate[]    = "6/4/21f";
 // 5/26/21, Copied from BeckE32_RoverDisplayTest.ino to isolate white screen problem
 #include <BeckBarClass.h>
 #include <BeckBiotaDefines.h>
@@ -21,25 +21,12 @@ const char szFileDate[]    = "6/4/21e";
 
 #define min(X, Y)     (((X) < (Y)) ? (X) : (Y))
 
-//static const uint16_t  usBackgroundColor    = WROVER_BLACK;
-
 static const UINT16     usVOC_CursorY           =  90;
 static const UINT16     usDegF_CursorY          = 150;
 static const UINT16     usRH_CursorY            = 210;
 
 static char             sz100CharString[101];
 
-/*
-BarClass              CO2Bar;
-BarClass              VOCBar;
-BarClass              DegFBar;
-BarClass              RHBar;
-
-BarDataClass          CO2BarData;
-BarDataClass          VOCBarData;
-BarDataClass          DegFBarData;
-BarDataClass          RHBarData;
-*/
 BarClass              CO2Bar      = BarClass();
 BarClass              VOCBar      = BarClass();
 BarClass              DegFBar     = BarClass();
@@ -108,7 +95,6 @@ void SetupBars(void){
   CO2BarData.Length         = BAR_LENGTH;
   CO2BarData.fStartValue    = 0.0;
   CO2BarData.fEndValue      = 2000.0;
-  //CO2Bar= BarClass(CO2BarData);
 
   Serial << LOG0 << "SetupBars(): Set up VOCBarData object"<< endl;
   VOCBarData.eBarType       = eCO2Bar;
@@ -117,7 +103,6 @@ void SetupBars(void){
   VOCBarData.Length         = BAR_LENGTH;
   VOCBarData.fStartValue    = 0.0;
   VOCBarData.fEndValue      = 2000.0;
-  //VOCBar= BarClass(VOCBarData);
 
   Serial << LOG0 << "SetupBars(): Set up DegFBarData object"<< endl;
   DegFBarData.eBarType      = eCO2Bar;
@@ -126,7 +111,6 @@ void SetupBars(void){
   DegFBarData.Length        = BAR_LENGTH;
   DegFBarData.fStartValue   = 0.0;
   DegFBarData.fEndValue     = 2000.0;
-  //DegFBar= BarClass(DegFBarData);
 
   Serial << LOG0 << "SetupBars(): Set up RHBarData object"<< endl;
   RHBarData.eBarType        = eCO2Bar;
@@ -135,7 +119,6 @@ void SetupBars(void){
   RHBarData.Length          = BAR_LENGTH;
   RHBarData.fStartValue     = 0.0;
   RHBarData.fEndValue       = 2000.0;
-  //RHBar= BarClass(RHBarData);
 
   Serial << LOG0 << "SetupBars(): return"<< endl;
   return;
@@ -277,14 +260,6 @@ void DisplayVOC() {
     Serial << LOG0 << "DisplayVOC(): Call DisplayLine for: " << sz100CharString << endl;
     DisplayLine(FreeMonoBold24pt7b, usColor, usCursorX, usCursorY, usClearWidth, usClearHeight,
                  sz100CharString, false, ucSize);
-/*
-    BarDataClass    CO2Bar;
-    CO2Bar.XLeft          = 0;
-    CO2Bar.XLeft          = 0;
-    CO2Bar.YBottom        = 0;
-    CO2Bar.fStartValue    =    0.0;
-    CO2Bar.fEndValue      = 2000.0;
-*/
     //Draw bar
     VOCBarData.XLeft    = usCursorX + usClearWidth;
     VOCBarData.YBottom  = usCursorY;
@@ -299,6 +274,7 @@ void DisplayVOC() {
   return;
 }  //DisplayVOC
 
+
 void DisplayTemperature() {
   UINT16          usCharWidth     = 25;
   UINT16          usCursorX       = 0;
@@ -312,9 +288,8 @@ void DisplayTemperature() {
   UINT16          usClearHeight   = 35;
   static UINT16   usLastClearWidth= 0;
 
-  //Serial << LOG0 << "DisplayTemperature(): Check EnviroData.bDegFChanged()" << endl;
   if(EnviroData.bDegFChanged()) {
-    //Serial << LOG0 << "DisplayTemperature(): Call EnviroData.GetDegF_Value()" << endl;
+    Serial << LOG0 << "DisplayTemperature(): Call EnviroData.GetDegF_Value()" << endl;
     float DegFValue= EnviroData.GetDegF_Value();
     sprintf(sz100CharString, "%6.1f", DegFValue);
     //Calculate width to clear based on number of characters + 2, use that unless last width was bigger
@@ -335,6 +310,7 @@ void DisplayTemperature() {
   return;
 }  //DisplayTemperature
 
+
 void DisplayHumidity() {
   UINT16          usCharWidth     = 25;
   UINT16          usCursorX       = 0;
@@ -348,9 +324,8 @@ void DisplayHumidity() {
   UINT16          usClearHeight   = 35;
   static UINT16   usLastClearWidth= 0;
 
-  //Serial << LOG0 << "DisplayHumidity(): Check EnviroData.bRHChanged()" << endl;
   if(EnviroData.bRHChanged()) {
-    //Serial << LOG0 << "DisplayHumidity(): Call EnviroData.GetRH_Value()" << endl;
+    Serial << LOG0 << "DisplayHumidity(): Call EnviroData.GetRH_Value()" << endl;
     UINT16 RHValue= EnviroData.GetRH_Value();
     sprintf(sz100CharString, "%5d%%", RHValue);
     //Calculate width to clear based on number of characters + 2, use that unless last width was bigger
