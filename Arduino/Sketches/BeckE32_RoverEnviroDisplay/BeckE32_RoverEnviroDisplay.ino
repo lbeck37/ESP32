@@ -32,25 +32,23 @@ static const UINT16    usVOC_CursorY           =  90;
 static const UINT16    usDegF_CursorY          = 150;
 static const UINT16    usRH_CursorY            = 210;
 
-WROVER_KIT_LCD    RoverLCD;
-static char       sz100CharString[101];
+WROVER_KIT_LCD        RoverLCD;
+static char           sz100CharString[101];
 
-//BarDataClass      CO2BarData= BarDataClass();
-BarDataClass      CO2BarData;
+BarClass              CO2Bar;
+BarClass              VOCBar;
+BarClass              DegFBar;
+BarClass              RHBar;
 
-//CO2BarData.eBarType= eCO2Bar;
-
-//BarClass          CO2Bar  = BarClass(CO2BarData);
-BarClass          CO2Bar;
-/*
-BarClass          VOCBar  = BarClass(eVOCBar);
-BarClass          DegFBar = BarClass(eDegFBar);
-BarClass          RHBar   = BarClass(eRHBar);
-*/
+BarDataClass          CO2BarData;
+BarDataClass          VOCBarData;
+BarDataClass          DegFBarData;
+BarDataClass          RHBarData;
 
 void(* ResetESP32)(void)= 0;        //Hopefully system crashes and reset when this is called.
 
 //Function prototypes
+void  SetupBars           (void);
 void  DisplayCO2          (void);
 void  DisplayVOC          (void);
 void  DisplayTemperature  (void);
@@ -69,8 +67,11 @@ void setup()   {
   Serial << LOG0 << "setup(): Call GasSensor.Setup()" << endl;
   GasSensor.Setup();
 
-  Serial << LOG0 << "setup(): Call EnviroDisplay.DisplayBegin()" << endl;
+  Serial << LOG0 << "setup(): Call DisplayBegin()" << endl;
   DisplayBegin();
+
+  Serial << LOG0 << "setup(): Call SetupBars()" << endl;
+  SetupBars();
 
   Serial << LOG0 << "setup(): return" << endl;
   return;
@@ -92,6 +93,43 @@ void DisplayBegin() {
   DisplayClear();
   return;
 }  //DisplayBegin
+
+
+void SetupBars(void){
+  CO2BarData.eBarType       = eCO2Bar;
+  CO2BarData.Orientation    = eHorizontal;
+  CO2BarData.Width          = BAR_WIDTH;
+  CO2BarData.Length         = BAR_LENGTH;
+  CO2BarData.fStartValue    = 0.0;
+  CO2BarData.fEndValue      = 2000.0;
+  CO2Bar= BarClass(CO2BarData);
+
+  VOCBarData.eBarType       = eCO2Bar;
+  VOCBarData.Orientation    = eHorizontal;
+  VOCBarData.Width          = BAR_WIDTH;
+  VOCBarData.Length         = BAR_LENGTH;
+  VOCBarData.fStartValue    = 0.0;
+  VOCBarData.fEndValue      = 2000.0;
+  VOCBar= BarClass(VOCBarData);
+
+  DegFBarData.eBarType      = eCO2Bar;
+  DegFBarData.Orientation   = eHorizontal;
+  DegFBarData.Width         = BAR_WIDTH;
+  DegFBarData.Length        = BAR_LENGTH;
+  DegFBarData.fStartValue   = 0.0;
+  DegFBarData.fEndValue     = 2000.0;
+  DegFBar= BarClass(DegFBarData);
+
+  RHBarData.eBarType        = eCO2Bar;
+  RHBarData.Orientation     = eHorizontal;
+  RHBarData.Width           = BAR_WIDTH;
+  RHBarData.Length          = BAR_LENGTH;
+  RHBarData.fStartValue     = 0.0;
+  RHBarData.fEndValue       = 2000.0;
+  RHBar= BarClass(RHBarData);
+
+  return;
+} //SetupBars
 
 
 void DisplayUpdate(void) {
@@ -185,6 +223,12 @@ void DisplayCO2() {
     Serial << LOG0 << "DisplayCO2(): Call DisplayLine for: " << sz100CharString << endl;
     DisplayLine(FreeMonoBold24pt7b, usColor, usCursorX, usCursorY, usClearWidth, usClearHeight,
                  sz100CharString, false, ucSize);
+
+    //Draw bar
+    CO2BarData.XLeft    = usCursorX + usClearWidth;
+    CO2BarData.YBottom  = usCursorY;
+    CO2Bar.Draw();
+
     usCursorX= 50;
     usCursorY += 20;
     sprintf(sz100CharString, "CO2 ppm");
@@ -192,6 +236,7 @@ void DisplayCO2() {
   } //if(EnviroData.bCO2Changed())
   return;
 }  //DisplayCO2
+
 
 void DisplayVOC() {
   UINT16          usCharWidth     = 25;
