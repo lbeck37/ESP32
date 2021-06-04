@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_RoverEnviroDisplay.ino";
-const char szFileDate[]    = "6/4/21a";
+const char szFileDate[]    = "6/4/21e";
 // 5/26/21, Copied from BeckE32_RoverDisplayTest.ino to isolate white screen problem
 #include <BeckBarClass.h>
 #include <BeckBiotaDefines.h>
@@ -29,6 +29,7 @@ static const UINT16     usRH_CursorY            = 210;
 
 static char             sz100CharString[101];
 
+/*
 BarClass              CO2Bar;
 BarClass              VOCBar;
 BarClass              DegFBar;
@@ -38,6 +39,16 @@ BarDataClass          CO2BarData;
 BarDataClass          VOCBarData;
 BarDataClass          DegFBarData;
 BarDataClass          RHBarData;
+*/
+BarClass              CO2Bar      = BarClass();
+BarClass              VOCBar      = BarClass();
+BarClass              DegFBar     = BarClass();
+BarClass              RHBar       = BarClass();
+
+BarDataClass          CO2BarData  = BarDataClass();
+BarDataClass          VOCBarData  = BarDataClass();
+BarDataClass          DegFBarData = BarDataClass();
+BarDataClass          RHBarData   = BarDataClass();
 
 void(* ResetESP32)(void)= 0;        //Hopefully system crashes and reset when this is called.
 
@@ -90,38 +101,43 @@ void DisplayBegin() {
 
 
 void SetupBars(void){
+  Serial << LOG0 << "SetupBars(): Set up CO2BarData object"<< endl;
   CO2BarData.eBarType       = eCO2Bar;
   CO2BarData.Orientation    = eHorizontal;
   CO2BarData.Width          = BAR_WIDTH;
   CO2BarData.Length         = BAR_LENGTH;
   CO2BarData.fStartValue    = 0.0;
   CO2BarData.fEndValue      = 2000.0;
-  CO2Bar= BarClass(CO2BarData);
+  //CO2Bar= BarClass(CO2BarData);
 
+  Serial << LOG0 << "SetupBars(): Set up VOCBarData object"<< endl;
   VOCBarData.eBarType       = eCO2Bar;
   VOCBarData.Orientation    = eHorizontal;
   VOCBarData.Width          = BAR_WIDTH;
   VOCBarData.Length         = BAR_LENGTH;
   VOCBarData.fStartValue    = 0.0;
   VOCBarData.fEndValue      = 2000.0;
-  VOCBar= BarClass(VOCBarData);
+  //VOCBar= BarClass(VOCBarData);
 
+  Serial << LOG0 << "SetupBars(): Set up DegFBarData object"<< endl;
   DegFBarData.eBarType      = eCO2Bar;
   DegFBarData.Orientation   = eHorizontal;
   DegFBarData.Width         = BAR_WIDTH;
   DegFBarData.Length        = BAR_LENGTH;
   DegFBarData.fStartValue   = 0.0;
   DegFBarData.fEndValue     = 2000.0;
-  DegFBar= BarClass(DegFBarData);
+  //DegFBar= BarClass(DegFBarData);
 
+  Serial << LOG0 << "SetupBars(): Set up RHBarData object"<< endl;
   RHBarData.eBarType        = eCO2Bar;
   RHBarData.Orientation     = eHorizontal;
   RHBarData.Width           = BAR_WIDTH;
   RHBarData.Length          = BAR_LENGTH;
   RHBarData.fStartValue     = 0.0;
   RHBarData.fEndValue       = 2000.0;
-  RHBar= BarClass(RHBarData);
+  //RHBar= BarClass(RHBarData);
 
+  Serial << LOG0 << "SetupBars(): return"<< endl;
   return;
 } //SetupBars
 
@@ -221,6 +237,7 @@ void DisplayCO2() {
     //Draw bar
     CO2BarData.XLeft    = usCursorX + usClearWidth;
     CO2BarData.YBottom  = usCursorY;
+    Serial << LOG0 << "DisplayCO2(): Call CO2Bar.Draw(" << CO2Value << ")" << endl;
     CO2Bar.Draw(CO2Value);
 
     usCursorX= 50;
@@ -247,10 +264,8 @@ void DisplayVOC() {
   if(EnviroData.bVOCChanged()) {
     UINT16  VOCValue_ppm      = EnviroData.GetVOC_Value();
     float   VOC_to_mg_per_m3  = 3.23;
-    //float   VOC_mgPerM3       = (float)VOCValue_ppm * VOC_to_mg_per_m3;
-    int16_t   VOC_mgPerM3       = (int16_t)((float)VOCValue_ppm * VOC_to_mg_per_m3);
+    int16_t   VOC_mgPerM3     = (int16_t)((float)VOCValue_ppm * VOC_to_mg_per_m3);
 
-    //sprintf(sz100CharString, "%6.1f", VOC_mgPerM3);
     sprintf(sz100CharString, "%6d", VOC_mgPerM3);
     //Calculate width to clear based on number of characters + 2, use that unless last width was bigger
     usClearWidth= (strlen(sz100CharString) + 2) * usCharWidth;
@@ -262,31 +277,19 @@ void DisplayVOC() {
     Serial << LOG0 << "DisplayVOC(): Call DisplayLine for: " << sz100CharString << endl;
     DisplayLine(FreeMonoBold24pt7b, usColor, usCursorX, usCursorY, usClearWidth, usClearHeight,
                  sz100CharString, false, ucSize);
-
 /*
-    OrientationType   Orientation           = eHorizontal;
-    ColorType         BarColor              = BECK_RED;
-    PUnit             XLeft                 = 0;
-    PUnit             YBottom               = 0;
-    PUnit             Width                 = 10;
-    PUnit             Length                = 100;
-    float             fLowValue             = 0.0;
-    float             fHighValue            = 1000.0;
-*/
     BarDataClass    CO2Bar;
-/*
-    CO2Bar.Orientation    = eHorizontal;
-    CO2Bar.BarColor       = BECK_RED;
-*/
     CO2Bar.XLeft          = 0;
     CO2Bar.XLeft          = 0;
     CO2Bar.YBottom        = 0;
-/*
-    CO2Bar.Width          = 10;
-    CO2Bar.Length         = 100;
-*/
     CO2Bar.fStartValue    =    0.0;
     CO2Bar.fEndValue      = 2000.0;
+*/
+    //Draw bar
+    VOCBarData.XLeft    = usCursorX + usClearWidth;
+    VOCBarData.YBottom  = usCursorY;
+    Serial << LOG0 << "DisplayVOC(): Call VOCBar.Draw(" << VOC_mgPerM3 << ")" << endl;
+    VOCBar.Draw(VOC_mgPerM3);
 
     usCursorX= 50;
     usCursorY += 20;

@@ -61,6 +61,7 @@ void BarSegmentClass::Draw(float fNewValue) {
 
 void BarSegmentClass::DrawFilledRectangle(PUnit NewXLeft, PUnit NewYBottom,
                                             PUnit NewWidth, PUnit NewLength, ColorType NewColor){
+  Serial << "BarSegmentClass::DrawFilledRectangle(): Call RoverLCD.fillRect()"<< endl;
   RoverLCD.fillRect(NewXLeft, NewYBottom, NewWidth, NewLength, NewColor);
   return;
 } //DrawFilledRectangle
@@ -131,6 +132,7 @@ void BarClass::Draw(float fNewValue) {
     Iterator->XLeft= (PUnit)((float)_BarData.Length * fSegmentStartRatio) + _BarData.XLeft;
     Iterator->Length= (PUnit)((Iterator->fRange / _BarData.fRange) * (float)_BarData.Length);
     Iterator->YBottom= _BarData.YBottom;
+    Serial << "BarClass::Draw(): Call Iterator->Draw(" << fNewValue << ")" << endl;
     Iterator->Draw(fNewValue);
   } //for(Iterator=BarSegments.begin();...
   return;
