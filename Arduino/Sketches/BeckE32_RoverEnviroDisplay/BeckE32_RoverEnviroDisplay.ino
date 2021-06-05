@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_RoverEnviroDisplay.ino";
-const char szFileDate[]    = "6/4/21f";
+const char szFileDate[]    = "6/4/21k";
 // 5/26/21, Copied from BeckE32_RoverDisplayTest.ino to isolate white screen problem
 #include <BeckBarClass.h>
 #include <BeckBiotaDefines.h>
@@ -260,11 +260,13 @@ void DisplayVOC() {
     Serial << LOG0 << "DisplayVOC(): Call DisplayLine for: " << sz100CharString << endl;
     DisplayLine(FreeMonoBold24pt7b, usColor, usCursorX, usCursorY, usClearWidth, usClearHeight,
                  sz100CharString, false, ucSize);
+/*
     //Draw bar
     VOCBarData.XLeft    = usCursorX + usClearWidth;
     VOCBarData.YBottom  = usCursorY;
     Serial << LOG0 << "DisplayVOC(): Call VOCBar.Draw(" << VOC_mgPerM3 << ")" << endl;
     VOCBar.Draw(VOC_mgPerM3);
+*/
 
     usCursorX= 50;
     usCursorY += 20;
