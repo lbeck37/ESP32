@@ -1,11 +1,10 @@
-// BeckBarClass.h, 6/7/21a
+// BeckBarClass.h, 6/7/21e
 #pragma once
 #include <BeckBiotaDefines.h>
 #include <WROVER_KIT_LCD.h>
 #include <stdlib.h>
 #include <string.h>
 #include <vector>
-
 //#include <string>
 //using std::string;
 //using std::vector;
@@ -30,16 +29,49 @@ enum BarType{
   eLastBarType
 };
 
+enum SegmentPosition{
+  eNoPosition  = 0,
+  eFirstSegment,
+  eSecondSegment,
+  eThirdSegment,
+  eLastSegmentPosition
+};
+
 extern WROVER_KIT_LCD     RoverLCD;
 extern ColorType          BackgroundColor;
 
 const PUnit     CO2Bar_XLeft     = 200;
 const PUnit     CO2Bar_YBottom   = 30;
 
-class BarSegmentClass{
+class SegmentData{
 public:
-  BarSegmentClass             ();
-  virtual ~BarSegmentClass    ();
+  SegmentData             ();
+  virtual ~SegmentData    ();
+
+  void  Draw                  (float fNewValue);
+  void  DrawFilledRectangle   (PUnit XLeft, PUnit YBottom, PUnit Width, PUnit Length, ColorType Color);
+
+  char              BarName[20]     = "No bar";
+  ColorType         Color           = BECK_YELLOW;
+  char              ColorName[20]   = "No color";
+  int               StartPercent    = 33;
+  PUnit             XLeft           = 0;
+  PUnit             YBottom         = 0;
+  PUnit             Width           = BAR_WIDTH;
+  PUnit             Length          = BAR_LENGTH;
+  float             fStartValue     = 777.0;
+  float             fEndValue       = 888.0;
+  float             fRange          = fEndValue - fStartValue;
+  float             fLastValue      = 999.0;
+
+protected:
+};  //SegmentData
+
+class BarSegment{
+public:
+BarSegment             ();
+BarSegment             (SegmentData& SegmentData);
+virtual ~BarSegment    ();
 
   void  Draw                  (float fNewValue);
   void  DrawFilledRectangle   (PUnit XLeft, PUnit YBottom, PUnit Width, PUnit Length, ColorType Color);
@@ -59,33 +91,7 @@ public:
   float             fLastValue      = 999.0;
 
 protected:
-};  //BarSegmentClass
-
-
-class SegmentData{
-public:
-  SegmentData             ();
-  virtual ~SegmentData    ();
-
-  void  Draw                  (float fNewValue);
-  void  DrawFilledRectangle   (PUnit XLeft, PUnit YBottom, PUnit Width, PUnit Length, ColorType Color);
-
-  uint16_t          StartPercent    = 33;
-  ColorType         Color           = BECK_YELLOW;
-  char              ColorName[20]   = "No color";
-  char              BarName[20]     = "No bar";
-  PUnit             XLeft           = 0;
-  PUnit             YBottom         = 0;
-  PUnit             Width           = BAR_WIDTH;
-  PUnit             Length          = BAR_LENGTH;
-  float             fStartValue     = 777.0;
-  float             fEndValue       = 888.0;
-  float             fRange          = fEndValue - fStartValue;
-  float             fLastValue      = 999.0;
-
-protected:
-};  //SegmentData
-
+};  //BarSegment
 
 class BarData{
 public:
@@ -101,12 +107,14 @@ public:
   float             fStartValue           = 0.0;
   float             fEndValue             = 0.0;
   float             fRange                = fEndValue - fStartValue;
+  BarSegment   FirstSegment;
+  BarSegment   SecondSegment;
+  BarSegment   ThirdSegment;
   //int               NumberOfSegments      = 3;      //Doesn't work
-  SegmentData       SegmentArray          [NUMBER_OF_SEGMENTS];
+  //SegmentData       SegmentArray          [NUMBER_OF_SEGMENTS];
 
 protected:
 };  //BarData
-
 
 class BarDataClass{
 public:
@@ -126,11 +134,10 @@ public:
 protected:
 };  //BarDataClass
 
-
 class BarClass{
 public:
   BarClass            ();
-  BarClass            (BarDataClass BarData);
+  BarClass            (BarData& BarData);
   virtual ~BarClass   ();
 
   //void  Draw          (PUnit XLeft, PUnit YBottom);
@@ -141,11 +148,11 @@ public:
   BarSegmentClass   RedSegment    = BarSegmentClass();
 */
 protected:
-  BarDataClass      _BarData;
+  BarData      _BarData;
 /*
   std::vector<BarSegmentClass>              BarSegments;
   std::vector<BarSegmentClass>::iterator    Iterator;
 */
-  BarSegmentClass     BarSegmentArray[3];
+  BarSegment     BarSegmentArray[3];
 };  //BarClass
 //Last line.

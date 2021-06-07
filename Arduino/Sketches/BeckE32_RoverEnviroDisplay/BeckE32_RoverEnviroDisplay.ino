@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_RoverEnviroDisplay.ino";
-const char szFileDate[]    = "6/7/21a";
+const char szFileDate[]    = "6/7/21c";
 // 5/26/21, Copied from BeckE32_RoverDisplayTest.ino to isolate white screen problem
 #include <BeckBarClass.h>
 #include <BeckBiotaDefines.h>
@@ -30,22 +30,10 @@ static char             sz100CharString[101];
 BarClass              CO2Bar;
 BarData               CO2BarData;
 
-/*
-BarClass              VOCBar      = BarClass();
-BarClass              DegFBar     = BarClass();
-BarClass              RHBar       = BarClass();
-
-BarDataClass          CO2BarData  = BarDataClass();
-BarDataClass          VOCBarData  = BarDataClass();
-BarDataClass          DegFBarData = BarDataClass();
-BarDataClass          RHBarData   = BarDataClass();
-*/
-
 void(* ResetESP32)(void)= 0;        //Hopefully system crashes and reset when this is called.
 
 //Function prototypes
-void              SetupBars           (void);
-const BarData&   CreateBarData       (void);
+const BarData&    CreateBarData       (BarType eBarType);
 void              DisplayCO2          (void);
 void              DisplayVOC          (void);
 void              DisplayTemperature  (void);
@@ -67,9 +55,9 @@ void setup()   {
   Serial << LOG0 << "setup(): Call DisplayBegin()" << endl;
   DisplayBegin();
 
-  Serial << LOG0 << "setup(): Call SetupBars()" << endl;
-  //SetupBars();
-  CO2BarData= CreateBarData();
+  Serial << LOG0 << "setup(): Call CreateBarData() and initialize CO2Bar" << endl;
+  CO2BarData  = CreateBarData(eCO2Bar);
+  CO2Bar      = BarClass(CO2BarData);
 
   Serial << LOG0 << "setup(): return" << endl;
   return;
@@ -93,64 +81,76 @@ void DisplayBegin() {
 }  //DisplayBegin
 
 
-//void  CreateBarData(BarClass& CO2Bar, BarDataClass& CO2BarData){
-const BarData& CreateBarData(){
+const SegmentData& CreateSegmentData(BarType eBarType, SegmentPosition eSegmentPosition){
+  SegmentData*          pSegmentData        = new SegmentData;
+  SegmentData           &NewSegmentData     = *pSegmentData;
+
+  switch(eBarType) {
+  case eCO2Bar:
+    switch(eSegmentPosition){
+    case eFirstSegment:
+      NewSegmentData.StartPercent     = 0;
+      NewSegmentData.Color           = BECK_GREEN;
+      NewSegmentData.fStartValue      = 0.0;
+      NewSegmentData.fEndValue        = 600.0;
+      NewSegmentData.fRange           = NewSegmentData.fEndValue - NewSegmentData.fStartValue;
+      break;
+    case eSecondSegment:
+      NewSegmentData.StartPercent     = 33;
+      NewSegmentData.Color            = BECK_YELLOW;
+      NewSegmentData.fStartValue      =  600.0;
+      NewSegmentData.fEndValue        = 1000.0;
+      NewSegmentData.fRange           = NewSegmentData.fEndValue - NewSegmentData.fStartValue;
+      break;
+    case eThirdSegment:
+      NewSegmentData.StartPercent     = 66;
+      NewSegmentData.Color            = BECK_RED;
+      NewSegmentData.fStartValue      = 1000.0;
+      NewSegmentData.fEndValue        = 2000.0;
+      NewSegmentData.fRange           = NewSegmentData.fEndValue - NewSegmentData.fStartValue;
+      break;
+    default:
+      Serial << LOG0 << "CreateSegmentData(): Bad switch, eSegmentPosition= " << eSegmentPosition << endl;
+      break;
+    } //switch(eSegmentPosition)
+    break;
+  default:
+    Serial << LOG0 << "CreateSegmentData(): Bad switch, eBarType= " << eBarType << endl;
+    break;
+  } //switch(eBarType)
+
+  return NewSegmentData;
+} //CreateSegmentData
+
+
+const BarData& CreateBarData(BarType eBarType){
   BarData*          pBarData              = new BarData;
-  //BarData           &NewBarData           = pBarData;
   BarData           &NewBarData           = *pBarData;
 
-  NewBarData.eBarType= eCO2Bar;
-  //BarType           eBarType              = eNoBar;
-  NewBarData.Orientation           = eHorizontal;
-  NewBarData.XLeft                 = 0;
-  NewBarData.YBottom               = 0;
-  NewBarData.Width                 = BAR_WIDTH;
-  NewBarData.Length                = BAR_LENGTH;
-  NewBarData.fStartValue           = 0.0;
-  NewBarData.fEndValue             = 0.0;
-  NewBarData.fRange                = NewBarData.fEndValue - NewBarData.fStartValue;
-  //SegmentData       SegmentArray          [NUMBER_OF_SEGMENTS];
+  switch(eBarType) {
+  case eCO2Bar:
+    {
+      NewBarData.eBarType= eCO2Bar;
+      NewBarData.Orientation           = eHorizontal;
+      //NewBarData.XLeft                 = 0;
+      //NewBarData.YBottom               = 0;
+      NewBarData.Width                 = BAR_WIDTH;
+      NewBarData.Length                = BAR_LENGTH;
+      NewBarData.fStartValue           = 0.0;
+      NewBarData.fEndValue             = 2000.0;
+      NewBarData.fRange                = NewBarData.fEndValue - NewBarData.fStartValue;
+      SegmentData   FirstSegmentData= CreateSegmentData(eBarType, eFirstSegment);
+      NewBarData.FirstSegment= BarSegment(FirstSegmentData);
+    } //eCO2Bar
+    break;
+  case eLastBarType:
+    break;
+  default:
+    Serial << LOG0 << "CreateBarData(): Bad switch, eBarType= " << eBarType << endl;
+    break;
+  } //switch(eBarType)
   return NewBarData;
-} //SetupCO2Bar
-
-
-void SetupBars(void){
-  Serial << LOG0 << "OLD SetupBars(): Set up CO2BarData object"<< endl;
-/*
-  CO2BarData.eBarType       = eCO2Bar;
-  CO2BarData.Orientation    = eHorizontal;
-  CO2BarData.Width          = BAR_WIDTH;
-  CO2BarData.Length         = BAR_LENGTH;
-  CO2BarData.fStartValue    = 0.0;
-  CO2BarData.fEndValue      = 2000.0;
-
-  Serial << LOG0 << "SetupBars(): Set up VOCBarData object"<< endl;
-  VOCBarData.eBarType       = eCO2Bar;
-  VOCBarData.Orientation    = eHorizontal;
-  VOCBarData.Width          = BAR_WIDTH;
-  VOCBarData.Length         = BAR_LENGTH;
-  VOCBarData.fStartValue    = 0.0;
-  VOCBarData.fEndValue      = 2000.0;
-
-  Serial << LOG0 << "SetupBars(): Set up DegFBarData object"<< endl;
-  DegFBarData.eBarType      = eCO2Bar;
-  DegFBarData.Orientation   = eHorizontal;
-  DegFBarData.Width         = BAR_WIDTH;
-  DegFBarData.Length        = BAR_LENGTH;
-  DegFBarData.fStartValue   = 0.0;
-  DegFBarData.fEndValue     = 2000.0;
-
-  Serial << LOG0 << "SetupBars(): Set up RHBarData object"<< endl;
-  RHBarData.eBarType        = eCO2Bar;
-  RHBarData.Orientation     = eHorizontal;
-  RHBarData.Width           = BAR_WIDTH;
-  RHBarData.Length          = BAR_LENGTH;
-  RHBarData.fStartValue     = 0.0;
-  RHBarData.fEndValue       = 2000.0;
-*/
-  Serial << LOG0 << "SetupBars(): return"<< endl;
-  return;
-} //SetupBars
+} //CreateBarData
 
 
 void DisplayUpdate(void) {
@@ -290,13 +290,6 @@ void DisplayVOC() {
     Serial << LOG0 << "DisplayVOC(): Call DisplayLine for: " << sz100CharString << endl;
     DisplayLine(FreeMonoBold24pt7b, usColor, usCursorX, usCursorY, usClearWidth, usClearHeight,
                  sz100CharString, false, ucSize);
-/*
-    //Draw bar
-    VOCBarData.XLeft    = usCursorX + usClearWidth;
-    VOCBarData.YBottom  = usCursorY;
-    Serial << LOG0 << "DisplayVOC(): Call VOCBar.Draw(" << VOC_mgPerM3 << ")" << endl;
-    VOCBar.Draw(VOC_mgPerM3);
-*/
 
     usCursorX= 50;
     usCursorY += 20;
