@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_RoverEnviroDisplay.ino";
-const char szFileDate[]    = "6/6/21a";
+const char szFileDate[]    = "6/7/21a";
 // 5/26/21, Copied from BeckE32_RoverDisplayTest.ino to isolate white screen problem
 #include <BeckBarClass.h>
 #include <BeckBiotaDefines.h>
@@ -28,6 +28,8 @@ static const UINT16     usRH_CursorY            = 210;
 static char             sz100CharString[101];
 
 BarClass              CO2Bar;
+BarData               CO2BarData;
+
 /*
 BarClass              VOCBar      = BarClass();
 BarClass              DegFBar     = BarClass();
@@ -42,12 +44,12 @@ BarDataClass          RHBarData   = BarDataClass();
 void(* ResetESP32)(void)= 0;        //Hopefully system crashes and reset when this is called.
 
 //Function prototypes
-void  SetupBars           (void);
-const BarClass&  CreateBarData(void);
-void  DisplayCO2          (void);
-void  DisplayVOC          (void);
-void  DisplayTemperature  (void);
-void  DisplayHumidity     (void);
+void              SetupBars           (void);
+const BarData&   CreateBarData       (void);
+void              DisplayCO2          (void);
+void              DisplayVOC          (void);
+void              DisplayTemperature  (void);
+void              DisplayHumidity     (void);
 
 void setup()   {
   Serial.begin(115200);
@@ -67,7 +69,7 @@ void setup()   {
 
   Serial << LOG0 << "setup(): Call SetupBars()" << endl;
   //SetupBars();
-  CO2Bar= CreateBarData();
+  CO2BarData= CreateBarData();
 
   Serial << LOG0 << "setup(): return" << endl;
   return;
@@ -94,7 +96,8 @@ void DisplayBegin() {
 //void  CreateBarData(BarClass& CO2Bar, BarDataClass& CO2BarData){
 const BarData& CreateBarData(){
   BarData*          pBarData              = new BarData;
-  BarData           &NewBarData           = pBarData;
+  //BarData           &NewBarData           = pBarData;
+  BarData           &NewBarData           = *pBarData;
 
   NewBarData.eBarType= eCO2Bar;
   //BarType           eBarType              = eNoBar;

@@ -1,5 +1,5 @@
 const char szBarClassFileName[]  = "BeckBarClass.cpp";
-const char szBarClassFileDate[]  = "6/6/21a";
+const char szBarClassFileDate[]  = "6/7/21b"; //Was 6/4/21d
 
 //#include <BeckEnviroDataClass.h>
 #include <BeckBarClass.h>
@@ -9,9 +9,23 @@ const char szBarClassFileDate[]  = "6/6/21a";
 WROVER_KIT_LCD    RoverLCD;
 ColorType         BackgroundColor= WROVER_BLACK;
 
-BarSegmentClass   GreenSegment  = BarSegmentClass();
-BarSegmentClass   YellowSegment = BarSegmentClass();
-BarSegmentClass   RedSegment    = BarSegmentClass();
+//BarSegmentClass methods
+SegmentData::SegmentData() {
+  Serial << "SegmentData::SegmentData(void): " << szBarClassFileName << ", " << szBarClassFileDate << endl;
+} //constructor
+
+SegmentData::~SegmentData() {
+  Serial << "~SegmentData(): Destructing" << endl;
+} //destructor
+
+//BarSegmentClass methods
+BarData::BarData() {
+  Serial << "BarData::BarData(void): " << szBarClassFileName << ", " << szBarClassFileDate << endl;
+} //constructor
+
+BarData::~BarData() {
+  Serial << "~BarData(): Destructing" << endl;
+} //destructor
 
 //BarSegmentClass methods
 BarSegmentClass::BarSegmentClass() {
