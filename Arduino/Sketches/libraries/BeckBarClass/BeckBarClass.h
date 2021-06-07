@@ -1,4 +1,4 @@
-// BeckBarClass.h, 6/6/21a
+// BeckBarClass.h, 6/6/21b
 #pragma once
 #include <BeckBiotaDefines.h>
 #include <WROVER_KIT_LCD.h>
@@ -10,8 +10,9 @@
 //using std::string;
 //using std::vector;
 
-#define BAR_WIDTH      35
-#define BAR_LENGTH    120
+#define BAR_WIDTH              35
+#define BAR_LENGTH            120
+#define NUMBER_OF_SEGMENTS    3
 
 enum OrientationType{
   eNoOrientation  = 0,
@@ -100,8 +101,8 @@ public:
   float             fStartValue           = 0.0;
   float             fEndValue             = 0.0;
   float             fRange                = fEndValue - fStartValue;
-  int               NumberOfSegments      = 3;
-  SegmentData       SegmentArray          [NumberOfSegments];
+  //int               NumberOfSegments      = 3;      //Doesn't work
+  SegmentData       SegmentArray          [NUMBER_OF_SEGMENTS];
 
 protected:
 };  //BarData

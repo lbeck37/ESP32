@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_RoverEnviroDisplay.ino";
-const char szFileDate[]    = "66/6/21a";
+const char szFileDate[]    = "6/6/21a";
 // 5/26/21, Copied from BeckE32_RoverDisplayTest.ino to isolate white screen problem
 #include <BeckBarClass.h>
 #include <BeckBiotaDefines.h>
@@ -27,7 +27,8 @@ static const UINT16     usRH_CursorY            = 210;
 
 static char             sz100CharString[101];
 
-BarClass              CO2Bar      = BarClass();
+BarClass              CO2Bar;
+/*
 BarClass              VOCBar      = BarClass();
 BarClass              DegFBar     = BarClass();
 BarClass              RHBar       = BarClass();
@@ -36,12 +37,13 @@ BarDataClass          CO2BarData  = BarDataClass();
 BarDataClass          VOCBarData  = BarDataClass();
 BarDataClass          DegFBarData = BarDataClass();
 BarDataClass          RHBarData   = BarDataClass();
+*/
 
 void(* ResetESP32)(void)= 0;        //Hopefully system crashes and reset when this is called.
 
 //Function prototypes
 void  SetupBars           (void);
-void  SetupCO2Bar         (BarClass& CO2Bar, BarDataClass& CO2BarData);
+const BarClass&  CreateBarData(void);
 void  DisplayCO2          (void);
 void  DisplayVOC          (void);
 void  DisplayTemperature  (void);
@@ -64,7 +66,8 @@ void setup()   {
   DisplayBegin();
 
   Serial << LOG0 << "setup(): Call SetupBars()" << endl;
-  SetupBars();
+  //SetupBars();
+  CO2Bar= CreateBarData();
 
   Serial << LOG0 << "setup(): return" << endl;
   return;
@@ -88,13 +91,29 @@ void DisplayBegin() {
 }  //DisplayBegin
 
 
-void  SetupCO2Bar(BarClass& CO2Bar, BarDataClass& CO2BarData){
-  return;
+//void  CreateBarData(BarClass& CO2Bar, BarDataClass& CO2BarData){
+const BarData& CreateBarData(){
+  BarData*          pBarData              = new BarData;
+  BarData           &NewBarData           = pBarData;
+
+  NewBarData.eBarType= eCO2Bar;
+  //BarType           eBarType              = eNoBar;
+  NewBarData.Orientation           = eHorizontal;
+  NewBarData.XLeft                 = 0;
+  NewBarData.YBottom               = 0;
+  NewBarData.Width                 = BAR_WIDTH;
+  NewBarData.Length                = BAR_LENGTH;
+  NewBarData.fStartValue           = 0.0;
+  NewBarData.fEndValue             = 0.0;
+  NewBarData.fRange                = NewBarData.fEndValue - NewBarData.fStartValue;
+  //SegmentData       SegmentArray          [NUMBER_OF_SEGMENTS];
+  return NewBarData;
 } //SetupCO2Bar
 
 
 void SetupBars(void){
-  Serial << LOG0 << "SetupBars(): Set up CO2BarData object"<< endl;
+  Serial << LOG0 << "OLD SetupBars(): Set up CO2BarData object"<< endl;
+/*
   CO2BarData.eBarType       = eCO2Bar;
   CO2BarData.Orientation    = eHorizontal;
   CO2BarData.Width          = BAR_WIDTH;
@@ -125,7 +144,7 @@ void SetupBars(void){
   RHBarData.Length          = BAR_LENGTH;
   RHBarData.fStartValue     = 0.0;
   RHBarData.fEndValue       = 2000.0;
-
+*/
   Serial << LOG0 << "SetupBars(): return"<< endl;
   return;
 } //SetupBars
@@ -223,11 +242,13 @@ void DisplayCO2() {
     DisplayLine(FreeMonoBold24pt7b, usColor, usCursorX, usCursorY, usClearWidth, usClearHeight,
                  sz100CharString, false, ucSize);
 
+/*
     //Draw bar
     CO2BarData.XLeft    = usCursorX + usClearWidth;
     CO2BarData.YBottom  = usCursorY;
     Serial << LOG0 << "DisplayCO2(): Call CO2Bar.Draw(" << CO2Value << ")" << endl;
     CO2Bar.Draw(CO2Value);
+*/
 
     usCursorX= 50;
     usCursorY += 20;
