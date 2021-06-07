@@ -1,5 +1,5 @@
 const char szBarClassFileName[]  = "BeckBarClass.cpp";
-const char szBarClassFileDate[]  = "6/7/21d";
+const char szBarClassFileDate[]  = "6/7/21j";
 
 //#include <BeckEnviroDataClass.h>
 #include <BeckBarClass.h>
@@ -36,6 +36,7 @@ BarSegment::BarSegment() {
 
 BarSegment::BarSegment(SegmentData& SegmentData) {
   Serial << "BarSegment::BarSegment(SegmentData&): " << szBarClassFileName << ", " << szBarClassFileDate << endl;
+  _SegmentData= SegmentData;
 } //constructor
 
 BarSegment::~BarSegment() {
@@ -45,58 +46,59 @@ BarSegment::~BarSegment() {
 void BarSegment::Draw(float fNewValue) {
   Serial << "BarSegment::Draw(" << fNewValue << "): Begin" << endl;
   Serial << "BarSegment::Draw(): fNewValue= "  << fNewValue << endl;
-  Serial << "BarSegment::Draw(): fLastValue= " << fLastValue << endl;
+  Serial << "BarSegment::Draw(): fLastValue= " << _SegmentData.fLastValue << endl;
 
-  Serial << LOG0 << "BarSegment::Draw(); BarName= " << BarName << endl;
-  Serial << LOG0 << "BarSegment::Draw(); ColorName= " << ColorName << endl;
-  if (fNewValue == fLastValue){
+  Serial << LOG0 << "BarSegment::Draw(); BarName= " << _SegmentData.BarName << endl;
+  Serial << LOG0 << "BarSegment::Draw(); ColorName= " << _SegmentData.ColorName << endl;
+  if (fNewValue == _SegmentData.fLastValue){
     Serial << "BarSegment::Draw(): (fNewValue == fLastValue), return"<< endl;
     return;
   } //if(fNewValue==fLastValue
 
-  if ((fNewValue < fStartValue) && (fLastValue < fStartValue)){
-    fLastValue= fNewValue;
+  if ((fNewValue < _SegmentData.fStartValue) && (_SegmentData.fLastValue < _SegmentData.fStartValue)){
+    _SegmentData.fLastValue= fNewValue;
     Serial << "BarSegment::Draw():((fNewValue<fStartValue)&&(fLastValue<fStartValue)), return"<< endl;
     return;
   } //if((fNewValue<fStartValue)&&(fLastValue<fStartValue))
 
-  if (fNewValue >= fEndValue){
+  if (fNewValue >= _SegmentData.fEndValue){
     Serial << "BarSegment::Draw():(fNewValue >= fEndValue), Fill in the whole segment"<< endl;
     //Fill in the whole segment
-    fLastValue= fNewValue;
+    _SegmentData.fLastValue= fNewValue;
     Serial << "BarSegment::Call DrawFilledRectangle()"<< endl;
-    DrawFilledRectangle(XLeft, YBottom, Width, Length, Color);
+    DrawFilledRectangle(_SegmentData.XLeft, _SegmentData.YBottom,
+                        _SegmentData.Width, _SegmentData.Length, _SegmentData.Color);
     return;
   } //if(fNewValue>=fEndValue)
 
   //See if it's in the segment range
-  if ((fNewValue > fStartValue) && (fNewValue < fEndValue)){
+  if ((fNewValue > _SegmentData.fStartValue) && (fNewValue < _SegmentData.fEndValue)){
     Serial << "BarSegment::Draw():((fNewValue > fStartValue) && (fNewValue < fEndValue))"<< endl;
-    if (fNewValue > fLastValue){
+    if (fNewValue > _SegmentData.fLastValue){
       Serial << "BarSegment::Draw():(fNewValue > fLastValue), Partial fill segment"<< endl;
-      fLastValue= fNewValue;
-      PUnit PartialLength= (PUnit)(((fNewValue- fStartValue) / fRange) * (float)Length);
+      _SegmentData.fLastValue= fNewValue;
+      PUnit PartialLength= (PUnit)(((fNewValue- _SegmentData.fStartValue) / _SegmentData.fRange) * (float)_SegmentData.Length);
       Serial << "BarSegment::Call DrawFilledRectangle()"<< endl;
-      DrawFilledRectangle(XLeft, YBottom, Width, PartialLength, Color);
+      DrawFilledRectangle(_SegmentData.XLeft, _SegmentData.YBottom, _SegmentData.Width, PartialLength, _SegmentData.Color);
       return;
     } //if(fNewValue>fLastValue)
     else{
       Serial << "BarSegment::Draw():(fNewValue > fLastValue)else,Blank&partial fill segment"<< endl;
-      fLastValue= fNewValue;
+      _SegmentData.fLastValue= fNewValue;
       //fLastValue is higher than new value
       //Blank whole segment and fill at lower amount than last time
       Serial << "BarSegment::Call DrawFilledRectangle() to blank old segment"<< endl;
-      DrawFilledRectangle(XLeft, YBottom, Width, Length, BackgroundColor);
+      DrawFilledRectangle(_SegmentData.XLeft, _SegmentData.YBottom, _SegmentData.Width, _SegmentData.Length, BackgroundColor);
 
       //Draw the partial segment bar
-      PUnit PartialLength= (PUnit)(((fNewValue- fStartValue) / fRange) * (float)Length);
+      PUnit PartialLength= (PUnit)(((fNewValue- _SegmentData.fStartValue) / _SegmentData.fRange) * (float)_SegmentData.Length);
       Serial << "BarSegment::Call DrawFilledRectangle()" << endl;
-      DrawFilledRectangle(XLeft, YBottom, Width, PartialLength, Color);
+      DrawFilledRectangle(_SegmentData.XLeft, _SegmentData.YBottom, _SegmentData.Width, PartialLength, _SegmentData.Color);
       return;
     } //if(fNewValue>fLastValue)else
   } //if((fNewValue>fStartValue)&&(fNewValue<fEndValue))
   else{
-    Serial << "BarSegment::Draw(): Not in range from " << fStartValue << " to " << fEndValue << endl;
+    Serial << "BarSegment::Draw(): Not in range from " << _SegmentData.fStartValue << " to " << _SegmentData.fEndValue << endl;
   } //if((fNewValue>fStartValue)&&(fNewValue<fEndValue))else
   return;
 } //Draw
@@ -108,15 +110,6 @@ void BarSegment::DrawFilledRectangle(PUnit NewXLeft, PUnit NewYBottom,
   return;
 } //DrawFilledRectangle
 
-
-//BarDataClass methods
-BarDataClass::BarDataClass() {
-  Serial << "BarDataClass::BarDataClass(void): " << szBarClassFileName << ", " << szBarClassFileDate << endl;
-} //constructor
-
-BarDataClass::~BarDataClass() {
-  Serial << "~BarDataClass(): Destructing" << endl;
-} //destructor
 
 //BarClass methods
 BarClass::BarClass() {
@@ -134,19 +127,28 @@ BarClass::BarClass(BarData& BarData) {
   _BarData= BarData;
 } //constructor
 
+
+void BarClass::SetLowerLeftCorner(PUnit XLeft, PUnit YBottom){
+  _BarData.XLeft    = XLeft;
+  _BarData.YBottom  = YBottom;
+  return;
+} //SetowerCorner
+
 void BarClass::Draw(float fNewValue) {
   Serial << "BarClass::Draw("<< fNewValue << "): Begin" << endl;
   int SegmentCount;
-  BarSegment   CurrentSegment= BarSegment();
+  //BarSegment   CurrentSegment= BarSegment();
+  BarSegment   CurrentSegment;
   for (SegmentCount= 0; SegmentCount < 3; SegmentCount++){
-    //Compute segment XLeft, Length and YBottom
-    CurrentSegment= BarSegmentArray[SegmentCount];
+    CurrentSegment= _BarData.BarSegmentArray[SegmentCount];
 
-    float fSegmentOffset= (CurrentSegment.fStartValue - _BarData.fStartValue);
+    float fSegmentOffset= (CurrentSegment._SegmentData.fStartValue - _BarData.fStartValue);
     float fSegmentStartRatio= (fSegmentOffset / _BarData.fRange);
-    CurrentSegment.XLeft= (PUnit)((float)_BarData.Length * fSegmentStartRatio) + _BarData.XLeft;
-    CurrentSegment.Length= (PUnit)((CurrentSegment.fRange / _BarData.fRange) * (float)_BarData.Length);
-    CurrentSegment.YBottom= _BarData.YBottom;
+
+    CurrentSegment._SegmentData.XLeft  = (PUnit)((float)_BarData.Length * fSegmentStartRatio) + _BarData.XLeft;
+    CurrentSegment._SegmentData.YBottom= _BarData.YBottom;
+    CurrentSegment._SegmentData.Length = (PUnit)((CurrentSegment._SegmentData.fRange / _BarData.fRange) * (float)_BarData.Length);
+
     Serial << "BarClass::Draw(): Call CurrentSegment.Draw(" << fNewValue << ")" << endl;
     CurrentSegment.Draw(fNewValue);
   } //for(Iterator=BarSegments.begin();...
