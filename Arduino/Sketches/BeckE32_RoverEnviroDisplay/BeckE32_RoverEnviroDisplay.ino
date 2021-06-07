@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_RoverEnviroDisplay.ino";
-const char szFileDate[]    = "6/4/21k";
+const char szFileDate[]    = "66/6/21a";
 // 5/26/21, Copied from BeckE32_RoverDisplayTest.ino to isolate white screen problem
 #include <BeckBarClass.h>
 #include <BeckBiotaDefines.h>
@@ -41,6 +41,7 @@ void(* ResetESP32)(void)= 0;        //Hopefully system crashes and reset when th
 
 //Function prototypes
 void  SetupBars           (void);
+void  SetupCO2Bar         (BarClass& CO2Bar, BarDataClass& CO2BarData);
 void  DisplayCO2          (void);
 void  DisplayVOC          (void);
 void  DisplayTemperature  (void);
@@ -85,6 +86,11 @@ void DisplayBegin() {
   DisplayClear();
   return;
 }  //DisplayBegin
+
+
+void  SetupCO2Bar(BarClass& CO2Bar, BarDataClass& CO2BarData){
+  return;
+} //SetupCO2Bar
 
 
 void SetupBars(void){
