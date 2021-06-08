@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_RoverEnviroDisplay.ino";
-const char szFileDate[]    = "6/8/21c";
+const char szFileDate[]    = "6/8/21d";
 #include <BeckBarClass.h>
 #include <BeckBiotaDefines.h>
 #include <BeckEnviroDataClass.h>
@@ -82,37 +82,46 @@ void DisplayBegin() {
 
 const SegmentData& CreateSegmentData(BarType eBarType, SegmentPosition eSegmentPosition){
   SegmentData*          pSegmentData        = new SegmentData;
-  SegmentData           &NewSegmentData     = *pSegmentData;
+  SegmentData           &SegData     = *pSegmentData;
 
   switch(eBarType) {
   case eCO2Bar:
     switch(eSegmentPosition){
     case eFirstSegment:
-      strcpy(NewSegmentData.BarName  , "CO2");
-      strcpy(NewSegmentData.ColorName, "Green");
-      NewSegmentData.StartPercent     = 0;
-      NewSegmentData.Color            = BECK_GREEN;
-      NewSegmentData.fStartValue      =   0.0;
-      NewSegmentData.fEndValue        = 600.0;
-      NewSegmentData.fRange           = NewSegmentData.fEndValue - NewSegmentData.fStartValue;
+      strcpy(SegData.BarName  , "CO2");
+      strcpy(SegData.ColorName, "Green");
+      SegData.StartPercent     = 0;
+      SegData.Color            = BECK_GREEN;
+      SegData.fStartValue      =   0.0;
+      SegData.fEndValue        = 600.0;
+      SegData.fRange           = SegData.fEndValue - SegData.fStartValue;
+      SegData.XLeft            = CO2_XLEFT + ((SegData.StartPercent * BAR_LENGTH) / 100);
+      SegData.YBottom          = CO2_YBOTTOM;
+      SegData.Length           = (SegData.fRange / CO2_RANGE) * BAR_LENGTH;
       break;
     case eSecondSegment:
-      strcpy(NewSegmentData.BarName  , "CO2");
-      strcpy(NewSegmentData.ColorName, "Yellow");
-      NewSegmentData.StartPercent     = 33;
-      NewSegmentData.Color            = BECK_YELLOW;
-      NewSegmentData.fStartValue      =  600.0;
-      NewSegmentData.fEndValue        = 1000.0;
-      NewSegmentData.fRange           = NewSegmentData.fEndValue - NewSegmentData.fStartValue;
+      strcpy(SegData.BarName  , "CO2");
+      strcpy(SegData.ColorName, "Yellow");
+      SegData.StartPercent     = 33;
+      SegData.Color            = BECK_YELLOW;
+      SegData.fStartValue      =  600.0;
+      SegData.fEndValue        = 1000.0;
+      SegData.fRange           = SegData.fEndValue - SegData.fStartValue;
+      SegData.XLeft            = CO2_XLEFT + ((SegData.StartPercent * BAR_LENGTH) / 100);
+      SegData.YBottom          = CO2_YBOTTOM;
+      SegData.Length           = (SegData.fRange / CO2_RANGE) * BAR_LENGTH;
       break;
     case eThirdSegment:
-      strcpy(NewSegmentData.BarName  , "CO2");
-      strcpy(NewSegmentData.ColorName, "Red");
-      NewSegmentData.StartPercent     = 66;
-      NewSegmentData.Color            = BECK_RED;
-      NewSegmentData.fStartValue      = 1000.0;
-      NewSegmentData.fEndValue        = 2000.0;
-      NewSegmentData.fRange           = NewSegmentData.fEndValue - NewSegmentData.fStartValue;
+      strcpy(SegData.BarName  , "CO2");
+      strcpy(SegData.ColorName, "Red");
+      SegData.StartPercent     = 66;
+      SegData.Color            = BECK_RED;
+      SegData.fStartValue      = 1000.0;
+      SegData.fEndValue        = 2000.0;
+      SegData.fRange           = SegData.fEndValue - SegData.fStartValue;
+      SegData.XLeft            = CO2_XLEFT + ((SegData.StartPercent * BAR_LENGTH) / 100);
+      SegData.YBottom          = CO2_YBOTTOM;
+      SegData.Length           = (SegData.fRange / CO2_RANGE) * BAR_LENGTH;
       break;
     default:
       Serial << LOG0 << "CreateSegmentData(): Bad switch, eSegmentPosition= " << eSegmentPosition << endl;
@@ -124,7 +133,7 @@ const SegmentData& CreateSegmentData(BarType eBarType, SegmentPosition eSegmentP
     break;
   } //switch(eBarType)
 
-  return NewSegmentData;
+  return SegData;
 } //CreateSegmentData
 
 
@@ -134,12 +143,12 @@ const BarData& CreateBarData(BarType eBarType){
 
   NewBarData.eBarType= eCO2Bar;
   NewBarData.Orientation            = eHorizontal;
-  NewBarData.XLeft                  = CO2_BAR_XLEFT;
-  NewBarData.YBottom                = CO2_BAR_YBOTTOM;
+  NewBarData.XLeft                  = CO2_XLEFT;
+  NewBarData.YBottom                = CO2_YBOTTOM;
   NewBarData.Thickness              = BAR_THICKNESS;
   NewBarData.Length                 = BAR_LENGTH;
-  NewBarData.fStartValue            = 0.0;
-  NewBarData.fEndValue              = 2000.0;
+  NewBarData.fStartValue            = CO2_START_VALUE;
+  NewBarData.fEndValue              = CO2_END_VALUE;
   NewBarData.fRange                 = NewBarData.fEndValue - NewBarData.fStartValue;
 
   SegmentData   FirstSegmentData    = CreateSegmentData(eBarType, eFirstSegment);
@@ -237,7 +246,8 @@ void DisplayCO2() {
     UINT16 CO2Value= EnviroData.GetCO2_Value();
     sprintf(sz100CharString, "%6d", CO2Value);
     //Calculate width to clear based on number of characters + 2, use that unless last width was bigger
-    usClearWidth= (strlen(sz100CharString) + 2) * usCharWidth;
+    //usClearWidth= (strlen(sz100CharString) + 2) * usCharWidth;
+    usClearWidth= strlen(sz100CharString) * usCharWidth;
     usClearWidth= std::max(usClearWidth, usLastClearWidth);
     usLastClearWidth= usClearWidth;
     Serial << LOG0 << "DisplayCO2(): Call ClearTextBackground(" << sClearLeftX << ", " << sClearTopY <<
@@ -249,7 +259,7 @@ void DisplayCO2() {
 
     //Draw the CO2 bar
     //CO2Bar.SetLowerLeftCorner((usCursorX + usClearWidth), usCursorY);
-    CO2Bar.SetLowerLeftCorner(CO2_BAR_XLEFT, CO2_BAR_YBOTTOM);
+    CO2Bar.SetLowerLeftCorner(CO2_XLEFT, CO2_YBOTTOM);
     Serial << LOG0 << "DisplayCO2(): Call CO2Bar.Draw(" << CO2Value << ")" << endl;
     CO2Bar.Draw(CO2Value);
 

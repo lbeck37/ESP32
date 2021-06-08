@@ -10,8 +10,12 @@
 //Dimensions are in pixels
 #define BAR_THICKNESS          35
 #define BAR_LENGTH            120
-#define CO2_BAR_XLEFT         190
-#define CO2_BAR_YBOTTOM        12
+#define CO2_XLEFT             190
+#define CO2_YBOTTOM            12
+
+#define CO2_START_VALUE          0.00
+#define CO2_END_VALUE         2000.00
+#define CO2_RANGE             (CO2_END_VALUE - CO2_START_VALUE)
 
 enum OrientationType{
   eNoOrientation  = 0,
@@ -76,7 +80,7 @@ virtual ~BarSegment    ();
   void  Draw                  (float fNewValue, float fLastValue);
   void  DrawFilledRectangle   (PUnit XLeft, PUnit YBottom, PUnit Thickness, PUnit Length, ColorType Color);
 
-  SegmentData _SegmentData;
+  SegmentData _SegData;
 protected:
 };  //BarSegment
 
