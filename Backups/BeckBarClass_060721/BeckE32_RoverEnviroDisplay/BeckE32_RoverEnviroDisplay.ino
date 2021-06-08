@@ -1,5 +1,6 @@
 const char szSketchName[]  = "BeckE32_RoverEnviroDisplay.ino";
-const char szFileDate[]    = "6/7/21s";
+const char szFileDate[]    = "6/7/21n";
+// 5/26/21, Copied from BeckE32_RoverDisplayTest.ino to isolate white screen problem
 #include <BeckBarClass.h>
 #include <BeckBiotaDefines.h>
 #include <BeckEnviroDataClass.h>
@@ -134,21 +135,40 @@ const BarData& CreateBarData(BarType eBarType){
 
   NewBarData.eBarType= eCO2Bar;
   NewBarData.Orientation           = eHorizontal;
+  //NewBarData.XLeft                 = 0;
+  //NewBarData.YBottom               = 0;
   NewBarData.Width                 = BAR_WIDTH;
   NewBarData.Length                = BAR_LENGTH;
   NewBarData.fStartValue           = 0.0;
   NewBarData.fEndValue             = 2000.0;
   NewBarData.fRange                = NewBarData.fEndValue - NewBarData.fStartValue;
 
+  //NewBarData.FirstSegment= BarSegment(FirstSegmentData);
   SegmentData   FirstSegmentData    = CreateSegmentData(eBarType, eFirstSegment);
   SegmentData   SecondSegmentData   = CreateSegmentData(eBarType, eSecondSegment);
   SegmentData   ThirdSegmentData    = CreateSegmentData(eBarType, eThirdSegment);
 
-  Serial << LOG0 << "CreateBarData(): Save BarSegments in BarSegs array" << endl;
-  NewBarData.BarSegs[0]= BarSegment(FirstSegmentData);
-  NewBarData.BarSegs[1]= BarSegment(SecondSegmentData);
-  NewBarData.BarSegs[2]= BarSegment(ThirdSegmentData);
+  NewBarData.BarSegmentArray[0]= BarSegment(FirstSegmentData);
+  NewBarData.BarSegmentArray[1]= BarSegment(SecondSegmentData);
+  NewBarData.BarSegmentArray[2]= BarSegment(ThirdSegmentData);
 
+  Serial << LOG0 << "CreateBarData(): BarName      = " << FirstSegmentData.BarName << endl;
+  Serial << LOG0 << "CreateBarData(): Array BarName= " << NewBarData.BarSegmentArray[0]._SegmentData.BarName << endl;
+
+  Serial << LOG0 << "CreateBarData(): fEndValue= " << FirstSegmentData.fEndValue << endl;
+  Serial << LOG0 << "CreateBarData(): Array fEndValue= " << NewBarData.BarSegmentArray[0]._SegmentData.fEndValue << endl;
+
+  Serial << endl << LOG0 << "CreateBarData(): BarName= " << SecondSegmentData.BarName << endl;
+  Serial << LOG0 << "CreateBarData(): Array BarName= " << NewBarData.BarSegmentArray[1]._SegmentData.BarName << endl;
+
+  Serial << LOG0 << "CreateBarData(): fEndValue= " << SecondSegmentData.fEndValue << endl;
+  Serial << LOG0 << "CreateBarData(): Array fEndValue= " << NewBarData.BarSegmentArray[1]._SegmentData.fEndValue << endl;
+
+  Serial << endl << LOG0 << "CreateBarData(): BarName= " << ThirdSegmentData.BarName << endl;
+  Serial << LOG0 << "CreateBarData(): Array BarName= " << NewBarData.BarSegmentArray[2]._SegmentData.BarName << endl;
+
+  Serial << LOG0 << "CreateBarData(): fEndValue= " << ThirdSegmentData.fEndValue << endl;
+  Serial << LOG0 << "CreateBarData(): Array fEndValue= " << NewBarData.BarSegmentArray[2]._SegmentData.fEndValue << endl;
   return NewBarData;
 } //CreateBarData
 
@@ -245,6 +265,10 @@ void DisplayCO2() {
     DisplayLine(FreeMonoBold24pt7b, usColor, usCursorX, usCursorY, usClearWidth, usClearHeight,
                  sz100CharString, false, ucSize);
 
+/*
+    CO2BarData.XLeft    = usCursorX + usClearWidth;
+    CO2BarData.YBottom  = usCursorY;
+*/
     //Draw the CO2 bar
     CO2Bar.SetLowerLeftCorner((usCursorX + usClearWidth), usCursorY);
     Serial << LOG0 << "DisplayCO2(): Call CO2Bar.Draw(" << CO2Value << ")" << endl;

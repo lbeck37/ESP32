@@ -1,4 +1,4 @@
-// BeckBarClass.h, 6/7/21q
+// BeckBarClass.h, 6/7/21k
 #pragma once
 #include <BeckBiotaDefines.h>
 #include <WROVER_KIT_LCD.h>
@@ -45,6 +45,9 @@ public:
   SegmentData                 ();
   virtual ~SegmentData        ();
 
+  void  Draw                  (float fNewValue);
+  void  DrawFilledRectangle   (PUnit XLeft, PUnit YBottom, PUnit Width, PUnit Length, ColorType Color);
+
   char              BarName[20]     = "No bar";
   ColorType         Color           = BECK_YELLOW;
   char              ColorName[20]   = "No color";
@@ -56,6 +59,7 @@ public:
   float             fStartValue     = 777.0;
   float             fEndValue       = 888.0;
   float             fRange          = fEndValue - fStartValue;
+  float             fLastValue      = 999.0;
 protected:
 };  //SegmentData
 
@@ -66,11 +70,7 @@ BarSegment             ();
 BarSegment             (SegmentData& SegmentData);
 virtual ~BarSegment    ();
 
-/*
-  void  SetLastValue          (float fNewLastValue);
-  float GetLastValue          ();
-*/
-  void  Draw                  (float fNewValue, float fLastValue);
+  void  Draw                  (float fNewValue);
   void  DrawFilledRectangle   (PUnit XLeft, PUnit YBottom, PUnit Width, PUnit Length, ColorType Color);
 
   SegmentData _SegmentData;
@@ -92,8 +92,7 @@ public:
   float             fStartValue           = 0.0;
   float             fEndValue             = 0.0;
   float             fRange                = fEndValue - fStartValue;
-  float             fLastValue            = 999.0;
-  BarSegment        BarSegs               [NUMBER_OF_SEGMENTS];
+  BarSegment        BarSegmentArray       [NUMBER_OF_SEGMENTS];
 protected:
 };  //BarData
 
@@ -107,7 +106,6 @@ public:
   void  SetLowerLeftCorner  (PUnit XLeft, PUnit YBottom);
   void  Draw                (float fNewValue);
 protected:
-  float        _fLastValue= 9999.9;
   BarData      _BarData;
 };  //BarClass
 //Last line.
