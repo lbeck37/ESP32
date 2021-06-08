@@ -1,4 +1,4 @@
-// BeckBarClass.h, 6/7/21q
+// BeckBarClass.h, 6/8/21a
 #pragma once
 #include <BeckBiotaDefines.h>
 #include <WROVER_KIT_LCD.h>
@@ -6,9 +6,12 @@
 #include <string.h>
 #include <vector>
 
-#define BAR_WIDTH              35
+#define NUMBER_OF_SEGMENTS      3
+//Dimensions are in pixels
+#define BAR_THICKNESS          35
 #define BAR_LENGTH            120
-#define NUMBER_OF_SEGMENTS    3
+#define CO2_BAR_XLEFT         190
+#define CO2_BAR_YBOTTOM        12
 
 enum OrientationType{
   eNoOrientation  = 0,
@@ -51,7 +54,7 @@ public:
   int               StartPercent    = 33;
   PUnit             XLeft           = 0;
   PUnit             YBottom         = 0;
-  PUnit             Width           = BAR_WIDTH;
+  PUnit             Thickness       = BAR_THICKNESS;
   PUnit             Length          = BAR_LENGTH;
   float             fStartValue     = 777.0;
   float             fEndValue       = 888.0;
@@ -71,7 +74,7 @@ virtual ~BarSegment    ();
   float GetLastValue          ();
 */
   void  Draw                  (float fNewValue, float fLastValue);
-  void  DrawFilledRectangle   (PUnit XLeft, PUnit YBottom, PUnit Width, PUnit Length, ColorType Color);
+  void  DrawFilledRectangle   (PUnit XLeft, PUnit YBottom, PUnit Thickness, PUnit Length, ColorType Color);
 
   SegmentData _SegmentData;
 protected:
@@ -87,7 +90,7 @@ public:
   OrientationType   Orientation           = eHorizontal;
   PUnit             XLeft                 = 0;
   PUnit             YBottom               = 0;
-  PUnit             Width                 = BAR_WIDTH;
+  PUnit             Thickness             = BAR_THICKNESS;
   PUnit             Length                = BAR_LENGTH;
   float             fStartValue           = 0.0;
   float             fEndValue             = 0.0;

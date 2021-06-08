@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_RoverEnviroDisplay.ino";
-const char szFileDate[]    = "6/7/21s";
+const char szFileDate[]    = "6/8/21c";
 #include <BeckBarClass.h>
 #include <BeckBiotaDefines.h>
 #include <BeckEnviroDataClass.h>
@@ -133,12 +133,14 @@ const BarData& CreateBarData(BarType eBarType){
   BarData           &NewBarData           = *pBarData;
 
   NewBarData.eBarType= eCO2Bar;
-  NewBarData.Orientation           = eHorizontal;
-  NewBarData.Width                 = BAR_WIDTH;
-  NewBarData.Length                = BAR_LENGTH;
-  NewBarData.fStartValue           = 0.0;
-  NewBarData.fEndValue             = 2000.0;
-  NewBarData.fRange                = NewBarData.fEndValue - NewBarData.fStartValue;
+  NewBarData.Orientation            = eHorizontal;
+  NewBarData.XLeft                  = CO2_BAR_XLEFT;
+  NewBarData.YBottom                = CO2_BAR_YBOTTOM;
+  NewBarData.Thickness              = BAR_THICKNESS;
+  NewBarData.Length                 = BAR_LENGTH;
+  NewBarData.fStartValue            = 0.0;
+  NewBarData.fEndValue              = 2000.0;
+  NewBarData.fRange                 = NewBarData.fEndValue - NewBarData.fStartValue;
 
   SegmentData   FirstSegmentData    = CreateSegmentData(eBarType, eFirstSegment);
   SegmentData   SecondSegmentData   = CreateSegmentData(eBarType, eSecondSegment);
@@ -246,7 +248,8 @@ void DisplayCO2() {
                  sz100CharString, false, ucSize);
 
     //Draw the CO2 bar
-    CO2Bar.SetLowerLeftCorner((usCursorX + usClearWidth), usCursorY);
+    //CO2Bar.SetLowerLeftCorner((usCursorX + usClearWidth), usCursorY);
+    CO2Bar.SetLowerLeftCorner(CO2_BAR_XLEFT, CO2_BAR_YBOTTOM);
     Serial << LOG0 << "DisplayCO2(): Call CO2Bar.Draw(" << CO2Value << ")" << endl;
     CO2Bar.Draw(CO2Value);
 

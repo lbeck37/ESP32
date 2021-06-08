@@ -1,5 +1,5 @@
 const char szBarClassFileName[]  = "BeckBarClass.cpp";
-const char szBarClassFileDate[]  = "6/7/21q";
+const char szBarClassFileDate[]  = "6/8/21a";
 
 //#include <BeckEnviroDataClass.h>
 #include <BeckBarClass.h>
@@ -44,23 +44,8 @@ BarSegment::~BarSegment() {
 } //destructor
 
 
-/*
-void BarSegment::SetLastValue(float fNewLastValue){
-  _fLastValue= fNewLastValue;
-  Serial << "BarSegment::SetLastValue(): fLastValue set to " << _fLastValue << endl;
-  return;
-} //SetLastValue
-
-
-float BarSegment::GetLastValue(){
-  Serial << "BarSegment::GetLastValue(): Returning " << _fLastValue << endl;
-  return _fLastValue;
-} //GetLastValue
-*/
-
-
 void BarSegment::Draw(float fNewValue, float fLastValue) {
-  Serial << LOG0 << "BarSegment::Draw(" << fNewValue << "): Begin" << endl;
+  Serial << LOG0 << "BarSegment::Draw(" << fNewValue << ", " << fLastValue << "): Begin" << endl;
   Serial << LOG0 << "BarSegment::Draw(): fNewValue  = " << fNewValue << endl;
   Serial << LOG0 << "BarSegment::Draw(); BarName    = " << _SegmentData.BarName << endl;
   Serial << LOG0 << "BarSegment::Draw(); ColorName  = " << _SegmentData.ColorName << endl;
@@ -81,8 +66,12 @@ void BarSegment::Draw(float fNewValue, float fLastValue) {
     Serial << "BarSegment::Draw():(fNewValue >= fEndValue), Fill in the whole segment"<< endl;
     //Fill in the whole segment
     Serial << "BarSegment::Call DrawFilledRectangle()"<< endl;
+/*
     DrawFilledRectangle(_SegmentData.XLeft, _SegmentData.YBottom,
-                        _SegmentData.Width, _SegmentData.Length, _SegmentData.Color);
+                        _SegmentData.Thickness, _SegmentData.Length, _SegmentData.Color);
+*/
+    DrawFilledRectangle(_SegmentData.XLeft, _SegmentData.YBottom,
+                        _SegmentData.Length, _SegmentData.Thickness, _SegmentData.Color);
     return;
   } //if(fNewValue>=fEndValue)
 
@@ -93,7 +82,8 @@ void BarSegment::Draw(float fNewValue, float fLastValue) {
       Serial << "BarSegment::Draw():(fNewValue > fLastValue), Partial fill segment"<< endl;
       PUnit PartialLength= (PUnit)(((fNewValue- _SegmentData.fStartValue) / _SegmentData.fRange) * (float)_SegmentData.Length);
       Serial << "BarSegment::Call DrawFilledRectangle()"<< endl;
-      DrawFilledRectangle(_SegmentData.XLeft, _SegmentData.YBottom, _SegmentData.Width, PartialLength, _SegmentData.Color);
+      //DrawFilledRectangle(_SegmentData.XLeft, _SegmentData.YBottom, _SegmentData.Thickness, PartialLength, _SegmentData.Color);
+      DrawFilledRectangle(_SegmentData.XLeft, _SegmentData.YBottom, PartialLength, _SegmentData.Thickness, _SegmentData.Color);
       return;
     } //if(fNewValue>fLastValue)
     else{
@@ -101,12 +91,14 @@ void BarSegment::Draw(float fNewValue, float fLastValue) {
       //fLastValue is higher than new value
       //Blank whole segment and fill at lower amount than last time
       Serial << "BarSegment::Call DrawFilledRectangle() to blank old segment"<< endl;
-      DrawFilledRectangle(_SegmentData.XLeft, _SegmentData.YBottom, _SegmentData.Width, _SegmentData.Length, BackgroundColor);
+      //DrawFilledRectangle(_SegmentData.XLeft, _SegmentData.YBottom, _SegmentData.Thickness, _SegmentData.Length, BackgroundColor);
+      DrawFilledRectangle(_SegmentData.XLeft, _SegmentData.YBottom, _SegmentData.Length, _SegmentData.Thickness, BackgroundColor);
 
       //Draw the partial segment bar
       PUnit PartialLength= (PUnit)(((fNewValue- _SegmentData.fStartValue) / _SegmentData.fRange) * (float)_SegmentData.Length);
       Serial << "BarSegment::Call DrawFilledRectangle()" << endl;
-      DrawFilledRectangle(_SegmentData.XLeft, _SegmentData.YBottom, _SegmentData.Width, PartialLength, _SegmentData.Color);
+      //DrawFilledRectangle(_SegmentData.XLeft, _SegmentData.YBottom, _SegmentData.Thickness, PartialLength, _SegmentData.Color);
+      DrawFilledRectangle(_SegmentData.XLeft, PartialLength, _SegmentData.YBottom, _SegmentData.Thickness, _SegmentData.Color);
       return;
     } //if(fNewValue>fLastValue)else
   } //if((fNewValue>fStartValue)&&(fNewValue<fEndValue))
@@ -118,7 +110,7 @@ void BarSegment::Draw(float fNewValue, float fLastValue) {
 
 
 void BarSegment::DrawFilledRectangle(PUnit NewXLeft, PUnit NewYBottom,
-                                          PUnit NewWidth, PUnit NewLength, ColorType NewColor){
+                                     PUnit NewWidth, PUnit NewLength, ColorType NewColor){
   Serial << "BarSegment::DrawFilledRectangle(" << NewXLeft << ", " << NewYBottom << ", " <<
       NewWidth << ", " << NewLength << ", " << NewColor << ")" << endl;
   Serial << "BarSegment::DrawFilledRectangle(): Call RoverLCD.fillRect()"<< endl;
@@ -164,7 +156,8 @@ void BarClass::Draw(float fNewValue) {
     Serial << "BarClass::Draw(): Call _BarData.BarSegs[" << SegNum << "].Draw(" << fNewValue << ", " << _fLastValue << ")" << endl;
     _BarData.BarSegs[SegNum].Draw(fNewValue, _fLastValue);
   } //for(Iterator=BarSegments.begin();...
-  Serial << "BarClass::Draw(XLeft, YBottom): return"<< endl;
+  _fLastValue= fNewValue;
+  Serial << "BarClass::Draw(float fNewValue): return"<< endl;
   return;
 } //Draw
 //Last line.
