@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_RoverEnviroDisplay.ino";
-const char szFileDate[]    = "6/8/21d";
+const char szFileDate[]    = "6/8/21f";
 #include <BeckBarClass.h>
 #include <BeckBiotaDefines.h>
 #include <BeckEnviroDataClass.h>
@@ -95,9 +95,9 @@ const SegmentData& CreateSegmentData(BarType eBarType, SegmentPosition eSegmentP
       SegData.fStartValue      =   0.0;
       SegData.fEndValue        = 600.0;
       SegData.fRange           = SegData.fEndValue - SegData.fStartValue;
-      SegData.XLeft            = CO2_XLEFT + ((SegData.StartPercent * BAR_LENGTH) / 100);
+      SegData.XLeft            = CO2_XLEFT + CO2_GREEN_START;
       SegData.YBottom          = CO2_YBOTTOM;
-      SegData.Length           = (SegData.fRange / CO2_RANGE) * BAR_LENGTH;
+      SegData.Length           = CO2_YELLOW_START - CO2_GREEN_START;
       break;
     case eSecondSegment:
       strcpy(SegData.BarName  , "CO2");
@@ -107,9 +107,9 @@ const SegmentData& CreateSegmentData(BarType eBarType, SegmentPosition eSegmentP
       SegData.fStartValue      =  600.0;
       SegData.fEndValue        = 1000.0;
       SegData.fRange           = SegData.fEndValue - SegData.fStartValue;
-      SegData.XLeft            = CO2_XLEFT + ((SegData.StartPercent * BAR_LENGTH) / 100);
+      SegData.XLeft            = CO2_XLEFT + CO2_YELLOW_START;
       SegData.YBottom          = CO2_YBOTTOM;
-      SegData.Length           = (SegData.fRange / CO2_RANGE) * BAR_LENGTH;
+      SegData.Length           = CO2_RED_START - CO2_YELLOW_START;
       break;
     case eThirdSegment:
       strcpy(SegData.BarName  , "CO2");
@@ -119,9 +119,9 @@ const SegmentData& CreateSegmentData(BarType eBarType, SegmentPosition eSegmentP
       SegData.fStartValue      = 1000.0;
       SegData.fEndValue        = 2000.0;
       SegData.fRange           = SegData.fEndValue - SegData.fStartValue;
-      SegData.XLeft            = CO2_XLEFT + ((SegData.StartPercent * BAR_LENGTH) / 100);
+      SegData.XLeft            = CO2_XLEFT + CO2_RED_START;
       SegData.YBottom          = CO2_YBOTTOM;
-      SegData.Length           = (SegData.fRange / CO2_RANGE) * BAR_LENGTH;
+      SegData.Length           = BAR_LENGTH - CO2_RED_START;
       break;
     default:
       Serial << LOG0 << "CreateSegmentData(): Bad switch, eSegmentPosition= " << eSegmentPosition << endl;
@@ -247,7 +247,7 @@ void DisplayCO2() {
     sprintf(sz100CharString, "%6d", CO2Value);
     //Calculate width to clear based on number of characters + 2, use that unless last width was bigger
     //usClearWidth= (strlen(sz100CharString) + 2) * usCharWidth;
-    usClearWidth= strlen(sz100CharString) * usCharWidth;
+    usClearWidth= (strlen(sz100CharString) + 1) * usCharWidth;
     usClearWidth= std::max(usClearWidth, usLastClearWidth);
     usLastClearWidth= usClearWidth;
     Serial << LOG0 << "DisplayCO2(): Call ClearTextBackground(" << sClearLeftX << ", " << sClearTopY <<
@@ -258,8 +258,6 @@ void DisplayCO2() {
                  sz100CharString, false, ucSize);
 
     //Draw the CO2 bar
-    //CO2Bar.SetLowerLeftCorner((usCursorX + usClearWidth), usCursorY);
-    CO2Bar.SetLowerLeftCorner(CO2_XLEFT, CO2_YBOTTOM);
     Serial << LOG0 << "DisplayCO2(): Call CO2Bar.Draw(" << CO2Value << ")" << endl;
     CO2Bar.Draw(CO2Value);
 

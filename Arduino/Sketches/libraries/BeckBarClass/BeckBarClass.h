@@ -1,4 +1,4 @@
-// BeckBarClass.h, 6/8/21a
+// BeckBarClass.h, 6/8/21b
 #pragma once
 #include <BeckBiotaDefines.h>
 #include <WROVER_KIT_LCD.h>
@@ -8,10 +8,13 @@
 
 #define NUMBER_OF_SEGMENTS      3
 //Dimensions are in pixels
+#define CO2_XLEFT             190
+#define CO2_YBOTTOM             5
 #define BAR_THICKNESS          35
 #define BAR_LENGTH            120
-#define CO2_XLEFT             190
-#define CO2_YBOTTOM            12
+#define CO2_GREEN_START         0
+#define CO2_YELLOW_START       40
+#define CO2_RED_START          80
 
 #define CO2_START_VALUE          0.00
 #define CO2_END_VALUE         2000.00
@@ -111,7 +114,7 @@ public:
   BarClass                  (BarData& BarData);
   virtual ~BarClass         ();
 
-  void  SetLowerLeftCorner  (PUnit XLeft, PUnit YBottom);
+  //void  SetLowerLeftCorner  (PUnit XLeft, PUnit YBottom);
   void  Draw                (float fNewValue);
 protected:
   float        _fLastValue= 9999.9;
