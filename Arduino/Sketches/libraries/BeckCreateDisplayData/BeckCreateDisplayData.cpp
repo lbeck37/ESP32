@@ -60,7 +60,7 @@ const SegmentData& CreateSegmentData(BarType eBarType, SegmentPosition eSegmentP
         strcpy(SegData.ColorName, "Green");
         SegData.StartPercent     = 0;
         SegData.Color            = BECK_GREEN;
-        SegData.fStartValue      =   0.0;
+        SegData.fStartValue      =   0.0;               //VOC units are mg/m3, which is 3.23 * ppm
         SegData.fEndValue        = 600.0;
         SegData.fRange           = SegData.fEndValue - SegData.fStartValue;
         SegData.XLeft            = VOC_XLEFT + VOC_GREEN_START;
@@ -96,6 +96,92 @@ const SegmentData& CreateSegmentData(BarType eBarType, SegmentPosition eSegmentP
         break;
       } //switch(eSegmentPosition)
       break;
+      case eDegFBar:
+        switch(eSegmentPosition){
+        case eFirstSegment:
+          strcpy(SegData.BarName  , "DEGF");
+          strcpy(SegData.ColorName, "Blue");
+          SegData.StartPercent     = 0;
+          SegData.Color            = BECK_BLUE;
+          SegData.fStartValue      =  60.0;
+          SegData.fEndValue        =  68.0;
+          SegData.fRange           = SegData.fEndValue - SegData.fStartValue;
+          SegData.XLeft            = DEGF_XLEFT + DEGF_GREEN_START;
+          SegData.YBottom          = DEGF_YBOTTOM;
+          SegData.Length           = DEGF_GREEN_START - DEGF_BLUE_START;
+          break;
+        case eSecondSegment:
+          strcpy(SegData.BarName  , "DEGF");
+          strcpy(SegData.ColorName, "Green");
+          SegData.StartPercent     = 30;
+          SegData.Color            = BECK_GREEN;
+          SegData.fStartValue      =  68.0;
+          SegData.fEndValue        =  80.0;
+          SegData.fRange           = SegData.fEndValue - SegData.fStartValue;
+          SegData.XLeft            = DEGF_XLEFT + DEGF_GREEN_START;
+          SegData.YBottom          = DEGF_YBOTTOM;
+          SegData.Length           = DEGF_RED_START - DEGF_GREEN_START;
+          break;
+        case eThirdSegment:
+          strcpy(SegData.BarName  , "DEGF");
+          strcpy(SegData.ColorName, "Red");
+          SegData.StartPercent     = 80;
+          SegData.Color            = BECK_RED;
+          SegData.fStartValue      =   80.0;
+          SegData.fEndValue        =  100.0;
+          SegData.fRange           = SegData.fEndValue - SegData.fStartValue;
+          SegData.XLeft            = DEGF_XLEFT + DEGF_RED_START;
+          SegData.YBottom          = DEGF_YBOTTOM;
+          SegData.Length           = BAR_LENGTH - DEGF_RED_START;
+          break;
+        default:
+          Serial << LOG0 << "CreateSegmentData(): Bad switch, eSegmentPosition= " << eSegmentPosition << endl;
+          break;
+        } //switch(eSegmentPosition)
+        break;
+        case eRHBar:
+          switch(eSegmentPosition){
+          case eFirstSegment:
+            strcpy(SegData.BarName  , "RH");
+            strcpy(SegData.ColorName, "Green");
+            SegData.StartPercent     = 0;
+            SegData.Color            = BECK_BLUE;
+            SegData.fStartValue      =  60.0;
+            SegData.fEndValue        =  68.0;
+            SegData.fRange           = SegData.fEndValue - SegData.fStartValue;
+            SegData.XLeft            = RH_XLEFT + RH_GREEN_START;
+            SegData.YBottom          = RH_YBOTTOM;
+            SegData.Length           = RH_YELLOW_START - RH_GREEN_START;
+            break;
+          case eSecondSegment:
+            strcpy(SegData.BarName  , "RH");
+            strcpy(SegData.ColorName, "Yellow");
+            SegData.StartPercent     = 30;
+            SegData.Color            = BECK_GREEN;
+            SegData.fStartValue      =  68.0;
+            SegData.fEndValue        =  80.0;
+            SegData.fRange           = SegData.fEndValue - SegData.fStartValue;
+            SegData.XLeft            = RH_XLEFT + RH_GREEN_START;
+            SegData.YBottom          = RH_YBOTTOM;
+            SegData.Length           = RH_RED_START - RH_GREEN_START;
+            break;
+          case eThirdSegment:
+            strcpy(SegData.BarName  , "RH");
+            strcpy(SegData.ColorName, "Red");
+            SegData.StartPercent     = 80;
+            SegData.Color            = BECK_RED;
+            SegData.fStartValue      =   80.0;
+            SegData.fEndValue        =  100.0;
+            SegData.fRange           = SegData.fEndValue - SegData.fStartValue;
+            SegData.XLeft            = RH_XLEFT + RH_RED_START;
+            SegData.YBottom          = RH_YBOTTOM;
+            SegData.Length           = BAR_LENGTH - RH_RED_START;
+            break;
+          default:
+            Serial << LOG0 << "CreateSegmentData(): Bad switch, eSegmentPosition= " << eSegmentPosition << endl;
+            break;
+          } //switch(eSegmentPosition)
+          break;
   default:
     Serial << LOG0 << "CreateSegmentData(): Bad switch, eBarType= " << eBarType << endl;
     break;

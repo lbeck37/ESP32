@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_RoverEnviroDisplay.ino";
-const char szFileDate[]    = "6/10/21b";
+const char szFileDate[]    = "6/10/21c";
 #include <BeckBarClass.h>
 #include <BeckBiotaDefines.h>
 #include <BeckCreateDisplayData.h>
@@ -34,6 +34,12 @@ BarData               CO2BarData;
 BarClass              VOCBar;
 BarData               VOCBarData;
 
+BarClass              DegFBar;
+BarData               DegFBarData;
+
+BarClass              RHBar;
+BarData               RHBarData;
+
 void(* ResetESP32)(void)= 0;        //Hopefully system crashes and reset when this is called.
 
 //Function prototypes
@@ -67,6 +73,14 @@ void setup()   {
   VOCBarData  = CreateBarData(eVOCBar);
   VOCBar      = BarClass(VOCBarData);
 
+  Serial << LOG0 << "setup(): Call CreateBarData() and initialize DegFBar" << endl;
+  DegFBarData  = CreateBarData(eDegFBar);
+  DegFBar      = BarClass(DegFBarData);
+
+  Serial << LOG0 << "setup(): Call CreateBarData() and initialize RHBar" << endl;
+  RHBarData  = CreateBarData(eRHBar);
+  RHBar      = BarClass(RHBarData);
+
   Serial << LOG0 << "setup(): return" << endl;
   return;
 }  //setup
@@ -89,90 +103,6 @@ void DisplayBegin() {
 }  //DisplayBegin
 
 
-/*
-const SegmentData& CreateSegmentData(BarType eBarType, SegmentPosition eSegmentPosition){
-  SegmentData*          pSegmentData        = new SegmentData;
-  SegmentData           &SegData     = *pSegmentData;
-
-  switch(eBarType) {
-  case eCO2Bar:
-    switch(eSegmentPosition){
-    case eFirstSegment:
-      strcpy(SegData.BarName  , "CO2");
-      strcpy(SegData.ColorName, "Green");
-      SegData.StartPercent     = 0;
-      SegData.Color            = BECK_GREEN;
-      SegData.fStartValue      =   0.0;
-      SegData.fEndValue        = 600.0;
-      SegData.fRange           = SegData.fEndValue - SegData.fStartValue;
-      SegData.XLeft            = CO2_XLEFT + CO2_GREEN_START;
-      SegData.YBottom          = CO2_YBOTTOM;
-      SegData.Length           = CO2_YELLOW_START - CO2_GREEN_START;
-      break;
-    case eSecondSegment:
-      strcpy(SegData.BarName  , "CO2");
-      strcpy(SegData.ColorName, "Yellow");
-      SegData.StartPercent     = 33;
-      SegData.Color            = BECK_YELLOW;
-      SegData.fStartValue      =  600.0;
-      SegData.fEndValue        = 1000.0;
-      SegData.fRange           = SegData.fEndValue - SegData.fStartValue;
-      SegData.XLeft            = CO2_XLEFT + CO2_YELLOW_START;
-      SegData.YBottom          = CO2_YBOTTOM;
-      SegData.Length           = CO2_RED_START - CO2_YELLOW_START;
-      break;
-    case eThirdSegment:
-      strcpy(SegData.BarName  , "CO2");
-      strcpy(SegData.ColorName, "Red");
-      SegData.StartPercent     = 66;
-      SegData.Color            = BECK_RED;
-      SegData.fStartValue      = 1000.0;
-      SegData.fEndValue        = 2000.0;
-      SegData.fRange           = SegData.fEndValue - SegData.fStartValue;
-      SegData.XLeft            = CO2_XLEFT + CO2_RED_START;
-      SegData.YBottom          = CO2_YBOTTOM;
-      SegData.Length           = BAR_LENGTH - CO2_RED_START;
-      break;
-    default:
-      Serial << LOG0 << "CreateSegmentData(): Bad switch, eSegmentPosition= " << eSegmentPosition << endl;
-      break;
-    } //switch(eSegmentPosition)
-    break;
-  default:
-    Serial << LOG0 << "CreateSegmentData(): Bad switch, eBarType= " << eBarType << endl;
-    break;
-  } //switch(eBarType)
-
-  return SegData;
-} //CreateSegmentData
-
-
-const BarData& CreateBarData(BarType eBarType){
-  BarData*          pBarData              = new BarData;
-  BarData           &NewBarData           = *pBarData;
-
-  NewBarData.eBarType= eCO2Bar;
-  NewBarData.Orientation            = eHorizontal;
-  NewBarData.XLeft                  = CO2_XLEFT;
-  NewBarData.YBottom                = CO2_YBOTTOM;
-  NewBarData.Thickness              = BAR_THICKNESS;
-  NewBarData.Length                 = BAR_LENGTH;
-  NewBarData.fStartValue            = CO2_START_VALUE;
-  NewBarData.fEndValue              = CO2_END_VALUE;
-  NewBarData.fRange                 = NewBarData.fEndValue - NewBarData.fStartValue;
-
-  SegmentData   FirstSegmentData    = CreateSegmentData(eBarType, eFirstSegment);
-  SegmentData   SecondSegmentData   = CreateSegmentData(eBarType, eSecondSegment);
-  SegmentData   ThirdSegmentData    = CreateSegmentData(eBarType, eThirdSegment);
-
-  Serial << LOG0 << "CreateBarData(): Save BarSegments in BarSegs array" << endl;
-  NewBarData.BarSegs[0]= BarSegment(FirstSegmentData);
-  NewBarData.BarSegs[1]= BarSegment(SecondSegmentData);
-  NewBarData.BarSegs[2]= BarSegment(ThirdSegmentData);
-
-  return NewBarData;
-} //CreateBarData
-*/
 
 
 void DisplayUpdate(void) {
@@ -269,14 +199,14 @@ void DisplayCO2() {
     DisplayLine(FreeMonoBold24pt7b, usColor, usCursorX, usCursorY, usClearWidth, usClearHeight,
                  sz100CharString, false, ucSize);
 
-    //Draw the CO2 bar
-    Serial << LOG0 << "DisplayCO2(): Call CO2Bar.Draw(" << CO2Value << ")" << endl;
-    CO2Bar.Draw(CO2Value);
-
     usCursorX= 50;
     usCursorY += 20;
     sprintf(sz100CharString, "CO2 ppm");
     DisplayLine(FreeSans9pt7b, usColor, usCursorX, usCursorY, usClearWidth, usClearHeight, sz100CharString, false);
+
+    //Draw the bar
+    Serial << LOG0 << "DisplayCO2(): Call CO2Bar.Draw(" << CO2Value << ")" << endl;
+    CO2Bar.Draw(CO2Value);
   } //if(EnviroData.bCO2Changed())
   return;
 }  //DisplayCO2
@@ -293,11 +223,12 @@ void DisplayVOC() {
   UINT16          usClearWidth    = 120;
   UINT16          usClearHeight   = 40;
   static UINT16   usLastClearWidth= 0;
+  int16_t         VOC_mgPerM3     = 0;
 
   if(EnviroData.bVOCChanged()) {
     UINT16  VOCValue_ppm      = EnviroData.GetVOC_Value();
     float   VOC_to_mg_per_m3  = 3.23;
-    int16_t   VOC_mgPerM3     = (int16_t)((float)VOCValue_ppm * VOC_to_mg_per_m3);
+    VOC_mgPerM3               = (int16_t)((float)VOCValue_ppm * VOC_to_mg_per_m3);
 
     sprintf(sz100CharString, "%6d", VOC_mgPerM3);
     //Calculate width to clear based on number of characters + 1, use that unless last width was bigger
@@ -311,14 +242,14 @@ void DisplayVOC() {
     DisplayLine(FreeMonoBold24pt7b, usColor, usCursorX, usCursorY, usClearWidth, usClearHeight,
                  sz100CharString, false, ucSize);
 
-    //Draw the CO2 bar
-    Serial << LOG0 << "DisplayVOC(): Call VOCBar.Draw(" << VOC_mgPerM3 << ")" << endl;
-    VOCBar.Draw(VOC_mgPerM3);
-
     usCursorX= 50;
     usCursorY += 20;
     sprintf(sz100CharString, "VOC mg/m^3");
     DisplayLine(FreeSans9pt7b, usColor, usCursorX, usCursorY, usClearWidth, usClearHeight, sz100CharString, false);
+
+    //Draw the bar
+    Serial << LOG0 << "DisplayVOC(): Call VOCBar.Draw(" << VOC_mgPerM3 << ")" << endl;
+    VOCBar.Draw(VOC_mgPerM3);
   } //if(EnviroData.bVOCChanged())
   return;
 }  //DisplayVOC
@@ -336,10 +267,11 @@ void DisplayTemperature() {
   UINT16          usClearWidth    = 120;
   UINT16          usClearHeight   = 35;
   static UINT16   usLastClearWidth= 0;
+  float           DegFValue       = 0.0;
 
   if(EnviroData.bDegFChanged()) {
     Serial << LOG0 << "DisplayTemperature(): Call EnviroData.GetDegF_Value()" << endl;
-    float DegFValue= EnviroData.GetDegF_Value();
+    DegFValue= EnviroData.GetDegF_Value();
     sprintf(sz100CharString, "%6.1f", DegFValue);
     //Calculate width to clear based on number of characters + 1, use that unless last width was bigger
     usClearWidth= (strlen(sz100CharString) + 1) * usCharWidth;
@@ -356,6 +288,10 @@ void DisplayTemperature() {
     sprintf(sz100CharString, "Temperature");
     DisplayLine(FreeSans9pt7b, usColor, usCursorX, usCursorY, usClearWidth, usClearHeight, sz100CharString, false);
   } //if(EnviroData.bDegFChanged())
+
+  //Draw the bar
+  Serial << LOG0 << "DisplayTemperature(): Call DegfBar.Draw(" << DegFValue << ")" << endl;
+  VOCBar.Draw(DegFValue);
   return;
 }  //DisplayTemperature
 
@@ -372,10 +308,11 @@ void DisplayHumidity() {
   UINT16          usClearWidth    = 120;
   UINT16          usClearHeight   = 35;
   static UINT16   usLastClearWidth= 0;
+  UINT16          RHValue         = 0;
 
   if(EnviroData.bRHChanged()) {
     Serial << LOG0 << "DisplayHumidity(): Call EnviroData.GetRH_Value()" << endl;
-    UINT16 RHValue= EnviroData.GetRH_Value();
+    RHValue= EnviroData.GetRH_Value();
     sprintf(sz100CharString, "%5d%%", RHValue);
     //Calculate width to clear based on number of characters + 1, use that unless last width was bigger
     usClearWidth= (strlen(sz100CharString) + 1) * usCharWidth;
@@ -391,6 +328,10 @@ void DisplayHumidity() {
     usCursorY += 20;
     sprintf(sz100CharString, "Humidity");
     DisplayLine(FreeSans9pt7b, usColor, usCursorX, usCursorY, usClearWidth, usClearHeight, sz100CharString, false);
+
+    //Draw the bar
+    Serial << LOG0 << "DisplayVOC(): Call VOCBar.Draw(" << RHValue << ")" << endl;
+    VOCBar.Draw(RHValue);
   } //if(EnviroData.bRHChanged())
   return;
 }  //DisplayHumidity

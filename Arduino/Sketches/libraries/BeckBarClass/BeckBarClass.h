@@ -17,8 +17,8 @@
 #define CO2_YELLOW_START       40
 #define CO2_RED_START          80
 
-#define CO2_START_VALUE          0.00
-#define CO2_END_VALUE         2000.00
+#define CO2_START_VALUE          0.0
+#define CO2_END_VALUE         2000.0
 #define CO2_RANGE             (CO2_END_VALUE - CO2_START_VALUE)
 
 #define VOC_XLEFT             190
@@ -27,9 +27,29 @@
 #define VOC_YELLOW_START       40
 #define VOC_RED_START          80
 
-#define VOC_START_VALUE          0.00
-#define VOC_END_VALUE         3000.00
+#define VOC_START_VALUE          0.0
+#define VOC_END_VALUE         3000.0
 #define VOC_RANGE             (VOC_END_VALUE - VOC_START_VALUE)
+
+#define DEGF_XLEFT             190
+#define DEGF_YBOTTOM            70         //Text on display is spaced 60 pixels going down
+#define DEGF_BLUE_START          0         //The start pixels are spaced over the BAR_LENGTH
+#define DEGF_GREEN_START        32
+#define DEGF_RED_START          80
+
+#define DEGF_START_VALUE        60.0
+#define DEGF_END_VALUE          90.0
+#define DEGF_RANGE             (DEGF_END_VALUE - DEGF_START_VALUE)
+
+#define RH_XLEFT                190
+#define RH_YBOTTOM               70         //Text on display is spaced 60 pixels going down
+#define RH_YELLOW_START           0         //The start pixels are spaced over the BAR_LENGTH
+#define RH_GREEN_START           32
+#define RH_RED_START             96
+
+#define RH_START_VALUE          0.0
+#define RH_END_VALUE          100.0
+#define RH_RANGE             (RH_END_VALUE - RH_START_VALUE)
 
 enum OrientationType{
   eNoOrientation  = 0,
