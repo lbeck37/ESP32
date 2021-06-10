@@ -1,5 +1,5 @@
 const char szBarClassFileName[]  = "BeckBarClass.cpp";
-const char szBarClassFileDate[]  = "6/8/21b";
+const char szBarClassFileDate[]  = "6/10/21a";
 
 //#include <BeckEnviroDataClass.h>
 #include <BeckBarClass.h>
@@ -52,13 +52,16 @@ void BarSegment::Draw(float fNewValue, float fLastValue) {
   Serial << LOG0 << "BarSegment::Draw(): fLastValue = " << fLastValue << endl;
   Serial << LOG0 << "BarSegment::Draw(): fStartValue= " << _SegData.fStartValue << endl;
   Serial << LOG0 << "BarSegment::Draw(): fEndValue  = " << _SegData.fEndValue << endl;
+  PUnit PartialLength= 0;
+
   if (fNewValue == fLastValue){
     Serial << "BarSegment::Draw(): fNewValue same as fLastValue), return"<< endl;
     return;
   } //if(fNewValue==_SegData.fLastValue)
 
   if ((fNewValue < _SegData.fStartValue) && (fLastValue < _SegData.fStartValue)){
-    Serial << "BarSegment::Draw(): fNewValue and fLastValue are less than fStartValue, blank the seg"<< endl;
+    Serial << "BarSegment::Draw(): fNewValue and fLastValue are less than fStartValue"<< endl;
+    Serial << "BarSegment::Draw(): Blank the segment for good measure."<< endl;
     DrawFilledRectangle(_SegData.XLeft, _SegData.YBottom,
                         _SegData.Length, _SegData.Thickness, BackgroundColor);
     return;
@@ -67,7 +70,6 @@ void BarSegment::Draw(float fNewValue, float fLastValue) {
   if (fNewValue >= _SegData.fEndValue){
     Serial << "BarSegment::Draw():(fNewValue >= fEndValue), Fill in the whole segment"<< endl;
     //Fill in the whole segment
-    Serial << "BarSegment::Call DrawFilledRectangle()"<< endl;
     DrawFilledRectangle(_SegData.XLeft, _SegData.YBottom,
                         _SegData.Length, _SegData.Thickness, _SegData.Color);
     return;
@@ -88,13 +90,21 @@ void BarSegment::Draw(float fNewValue, float fLastValue) {
     else{
       Serial << "BarSegment::Draw():(fNewValue less than fLastValue, Blank & partial fill segment"<< endl;
       //fLastValue is higher than new value
+/*
       //Blank whole segment and fill at lower amount than last time
+      Serial << "BarSegment::Call DrawFilledRectangle() to blank old segment"<< endl;
+      DrawFilledRectangle(_SegData.XLeft , _SegData.YBottom,
+                          _SegData.Length, _SegData.Thickness, BackgroundColor);
+*/
+      //Blank the area between current value and the last value
+      PartialLength=
+          (PUnit)(((fLastValue - fNewValue) / _SegData.fRange) * (float)_SegData.Length);
       Serial << "BarSegment::Call DrawFilledRectangle() to blank old segment"<< endl;
       DrawFilledRectangle(_SegData.XLeft , _SegData.YBottom,
                           _SegData.Length, _SegData.Thickness, BackgroundColor);
 
       //Draw the partial segment bar
-      PUnit PartialLength=
+      PartialLength=
           (PUnit)(((fNewValue- _SegData.fStartValue) / _SegData.fRange) * (float)_SegData.Length);
       Serial << "BarSegment::Call DrawFilledRectangle()" << endl;
       DrawFilledRectangle(_SegData.XLeft, _SegData.YBottom,

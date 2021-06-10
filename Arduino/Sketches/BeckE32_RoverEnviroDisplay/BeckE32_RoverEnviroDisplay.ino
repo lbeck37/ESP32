@@ -1,7 +1,8 @@
 const char szSketchName[]  = "BeckE32_RoverEnviroDisplay.ino";
-const char szFileDate[]    = "6/8/21f";
+const char szFileDate[]    = "6/10/21b";
 #include <BeckBarClass.h>
 #include <BeckBiotaDefines.h>
+#include <BeckCreateDisplayData.h>
 #include <BeckEnviroDataClass.h>
 #include <BeckI2cClass.h>
 #include <BeckGasSensorClass.h>
@@ -20,6 +21,7 @@ const char szFileDate[]    = "6/8/21f";
 
 #define min(X, Y)     (((X) < (Y)) ? (X) : (Y))
 
+static const UINT16     usCO2_CursorY           =  30;
 static const UINT16     usVOC_CursorY           =  90;
 static const UINT16     usDegF_CursorY          = 150;
 static const UINT16     usRH_CursorY            = 210;
@@ -28,6 +30,9 @@ static char             sz100CharString[101];
 
 BarClass              CO2Bar;
 BarData               CO2BarData;
+
+BarClass              VOCBar;
+BarData               VOCBarData;
 
 void(* ResetESP32)(void)= 0;        //Hopefully system crashes and reset when this is called.
 
@@ -58,6 +63,10 @@ void setup()   {
   CO2BarData  = CreateBarData(eCO2Bar);
   CO2Bar      = BarClass(CO2BarData);
 
+  Serial << LOG0 << "setup(): Call CreateBarData() and initialize VOCBar" << endl;
+  VOCBarData  = CreateBarData(eVOCBar);
+  VOCBar      = BarClass(VOCBarData);
+
   Serial << LOG0 << "setup(): return" << endl;
   return;
 }  //setup
@@ -80,6 +89,7 @@ void DisplayBegin() {
 }  //DisplayBegin
 
 
+/*
 const SegmentData& CreateSegmentData(BarType eBarType, SegmentPosition eSegmentPosition){
   SegmentData*          pSegmentData        = new SegmentData;
   SegmentData           &SegData     = *pSegmentData;
@@ -162,6 +172,7 @@ const BarData& CreateBarData(BarType eBarType){
 
   return NewBarData;
 } //CreateBarData
+*/
 
 
 void DisplayUpdate(void) {
@@ -233,7 +244,8 @@ void DisplayLowerBanner(){
 void DisplayCO2() {
   UINT16          usCharWidth     = 25;
   UINT16          usCursorX       = 0;
-  UINT16          usCursorY       = 30;   //GFX fonts Y is bottom
+  //UINT16          usCursorY       = 30;   //GFX fonts Y is bottom
+  UINT16          usCursorY       = usCO2_CursorY;   //GFX fonts Y is bottom 90
   UINT8           ucSize          = 1;
   UINT16          usColor         = WROVER_WHITE;
   INT16           sClearLeftX     = usCursorX;
@@ -288,8 +300,8 @@ void DisplayVOC() {
     int16_t   VOC_mgPerM3     = (int16_t)((float)VOCValue_ppm * VOC_to_mg_per_m3);
 
     sprintf(sz100CharString, "%6d", VOC_mgPerM3);
-    //Calculate width to clear based on number of characters + 2, use that unless last width was bigger
-    usClearWidth= (strlen(sz100CharString) + 2) * usCharWidth;
+    //Calculate width to clear based on number of characters + 1, use that unless last width was bigger
+    usClearWidth= (strlen(sz100CharString) + 1) * usCharWidth;
     usClearWidth= std::max(usClearWidth, usLastClearWidth);
     usLastClearWidth= usClearWidth;
     Serial << LOG0 << "DisplayVOC(): Call ClearTextBackground(" << sClearLeftX << ", " << sClearTopY <<
@@ -298,6 +310,10 @@ void DisplayVOC() {
     Serial << LOG0 << "DisplayVOC(): Call DisplayLine for: " << sz100CharString << endl;
     DisplayLine(FreeMonoBold24pt7b, usColor, usCursorX, usCursorY, usClearWidth, usClearHeight,
                  sz100CharString, false, ucSize);
+
+    //Draw the CO2 bar
+    Serial << LOG0 << "DisplayVOC(): Call VOCBar.Draw(" << VOC_mgPerM3 << ")" << endl;
+    VOCBar.Draw(VOC_mgPerM3);
 
     usCursorX= 50;
     usCursorY += 20;
@@ -325,8 +341,8 @@ void DisplayTemperature() {
     Serial << LOG0 << "DisplayTemperature(): Call EnviroData.GetDegF_Value()" << endl;
     float DegFValue= EnviroData.GetDegF_Value();
     sprintf(sz100CharString, "%6.1f", DegFValue);
-    //Calculate width to clear based on number of characters + 2, use that unless last width was bigger
-    usClearWidth= (strlen(sz100CharString) + 2) * usCharWidth;
+    //Calculate width to clear based on number of characters + 1, use that unless last width was bigger
+    usClearWidth= (strlen(sz100CharString) + 1) * usCharWidth;
     usClearWidth= std::max(usClearWidth, usLastClearWidth);
     usLastClearWidth= usClearWidth;
     Serial << LOG0 << "DisplayTemperature(): Call ClearTextBackground(" << sClearLeftX << ", " << sClearTopY <<
@@ -361,8 +377,8 @@ void DisplayHumidity() {
     Serial << LOG0 << "DisplayHumidity(): Call EnviroData.GetRH_Value()" << endl;
     UINT16 RHValue= EnviroData.GetRH_Value();
     sprintf(sz100CharString, "%5d%%", RHValue);
-    //Calculate width to clear based on number of characters + 2, use that unless last width was bigger
-    usClearWidth= (strlen(sz100CharString) + 2) * usCharWidth;
+    //Calculate width to clear based on number of characters + 1, use that unless last width was bigger
+    usClearWidth= (strlen(sz100CharString) + 1) * usCharWidth;
     usClearWidth= std::max(usClearWidth, usLastClearWidth);
     usLastClearWidth= usClearWidth;
     Serial << LOG0 << "DisplayHumidity(): Call ClearTextBackground(" << sClearLeftX << ", " << sClearTopY <<
