@@ -67,6 +67,15 @@ enum BarType{
   eLastBarType
 };
 
+enum DataValueType{
+  eNoDataValue  = -1,
+  eCO2DataValue =  0,
+  eVOCDataValue,
+  eDegFDataValue,
+  eRHDataValue,
+  eLastDataValueType
+};
+
 enum SegmentPosition{
   eNoPosition  = 0,
   eFirstSegment,
