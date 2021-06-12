@@ -1,5 +1,5 @@
 const char szGasSensorDataClassFileName[]  = "BeckEnviroDataClass.cpp";
-const char szGasSensorDataClassFileDate[]  = "6/12/21a";
+const char szGasSensorDataClassFileDate[]  = "6/12/21b";
 
 #include <BeckEnviroDataClass.h>
 #include <Streaming.h>
@@ -65,7 +65,7 @@ bool EnviroDataClass::bVOCChanged(void){
 
 
 void EnviroDataClass::SetLastVOC_Value(uint16_t LastVOCValue){
-  LastCO2_Value= LastVOCValue;
+  LastVOC_Value= LastVOCValue;
   return;
 }
 

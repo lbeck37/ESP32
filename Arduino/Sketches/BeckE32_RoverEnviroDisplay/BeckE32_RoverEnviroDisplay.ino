@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_RoverEnviroDisplay.ino";
-const char szFileDate[]    = "6/12/21e";
+const char szFileDate[]    = "6/12/21g";
 #include <BeckBarClass.h>
 #include <BeckBiotaDefines.h>
 #include <BeckCreateDisplayData.h>
@@ -184,13 +184,6 @@ void DisplayCO2() {
   UINT16          usCursorY       = usCO2_CursorY;   //GFX fonts Y is bottom 90
   UINT8           ucSize          = 1;
   UINT16          usColor         = WROVER_WHITE;
-/*
-  INT16           sClearLeftX     = usCursorX;
-  INT16           sClearTopY      = 0;
-  UINT16          usClearWidth    = 120;
-  UINT16          usClearHeight   = 35;
-  static UINT16   usLastClearWidth= 0;
-*/
 
   if(EnviroData.bCO2Changed()) {
     //Erase the currently displayed value by overwriting it with the background color
