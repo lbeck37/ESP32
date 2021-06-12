@@ -1,6 +1,5 @@
-//BeckCreateDisplayData.cpp, 6/1021
 const char szCreateDisplayDataName[]  = "BeckCreateDisplayData.cpp";
-const char szszCreateDisplayDataDate[]  = "6/10/21a";
+const char szszCreateDisplayDataDate[]  = "6/10/21b";
 #include <BeckCreateDisplayData.h>
 #include <BeckLogLib.h>
 #include <Streaming.h>
@@ -196,15 +195,55 @@ const BarData& CreateBarData(BarType eBarType){
   BarData*          pBarData              = new BarData;
   BarData           &NewBarData           = *pBarData;
 
-  NewBarData.eBarType= eCO2Bar;
-  NewBarData.Orientation            = eHorizontal;
-  NewBarData.XLeft                  = CO2_XLEFT;
-  NewBarData.YBottom                = CO2_YBOTTOM;
-  NewBarData.Thickness              = BAR_THICKNESS;
-  NewBarData.Length                 = BAR_LENGTH;
-  NewBarData.fStartValue            = CO2_START_VALUE;
-  NewBarData.fEndValue              = CO2_END_VALUE;
-  NewBarData.fRange                 = NewBarData.fEndValue - NewBarData.fStartValue;
+  switch(eBarType) {
+  case eCO2Bar:
+    NewBarData.eBarType= eCO2Bar;
+    NewBarData.Orientation            = eHorizontal;
+    NewBarData.XLeft                  = CO2_XLEFT;
+    NewBarData.YBottom                = CO2_YBOTTOM;
+    NewBarData.Thickness              = BAR_THICKNESS;
+    NewBarData.Length                 = BAR_LENGTH;
+    NewBarData.fStartValue            = CO2_START_VALUE;
+    NewBarData.fEndValue              = CO2_END_VALUE;
+    NewBarData.fRange                 = NewBarData.fEndValue - NewBarData.fStartValue;
+    break;
+  case eVOCBar:
+    NewBarData.eBarType= eCO2Bar;
+    NewBarData.Orientation            = eHorizontal;
+    NewBarData.XLeft                  = CO2_XLEFT;
+    NewBarData.YBottom                = CO2_YBOTTOM;
+    NewBarData.Thickness              = BAR_THICKNESS;
+    NewBarData.Length                 = BAR_LENGTH;
+    NewBarData.fStartValue            = CO2_START_VALUE;
+    NewBarData.fEndValue              = CO2_END_VALUE;
+    NewBarData.fRange                 = NewBarData.fEndValue - NewBarData.fStartValue;
+    break;
+  case eDegFBar:
+    NewBarData.eBarType= eCO2Bar;
+    NewBarData.Orientation            = eHorizontal;
+    NewBarData.XLeft                  = CO2_XLEFT;
+    NewBarData.YBottom                = CO2_YBOTTOM;
+    NewBarData.Thickness              = BAR_THICKNESS;
+    NewBarData.Length                 = BAR_LENGTH;
+    NewBarData.fStartValue            = CO2_START_VALUE;
+    NewBarData.fEndValue              = CO2_END_VALUE;
+    NewBarData.fRange                 = NewBarData.fEndValue - NewBarData.fStartValue;
+    break;
+  case eRHBar:
+    NewBarData.eBarType= eCO2Bar;
+    NewBarData.Orientation            = eHorizontal;
+    NewBarData.XLeft                  = CO2_XLEFT;
+    NewBarData.YBottom                = CO2_YBOTTOM;
+    NewBarData.Thickness              = BAR_THICKNESS;
+    NewBarData.Length                 = BAR_LENGTH;
+    NewBarData.fStartValue            = CO2_START_VALUE;
+    NewBarData.fEndValue              = CO2_END_VALUE;
+    NewBarData.fRange                 = NewBarData.fEndValue - NewBarData.fStartValue;
+    break;
+  default:
+    Serial << LOG0 << "CreateSegmentData(): Bad switch, eBarType= " << eBarType << endl;
+    break;
+  } //switch(eBarType)
 
   SegmentData   FirstSegmentData    = CreateSegmentData(eBarType, eFirstSegment);
   SegmentData   SecondSegmentData   = CreateSegmentData(eBarType, eSecondSegment);

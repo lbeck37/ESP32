@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_RoverEnviroDisplay.ino";
-const char szFileDate[]    = "6/10/21c";
+const char szFileDate[]    = "6/12/21e";
 #include <BeckBarClass.h>
 #include <BeckBiotaDefines.h>
 #include <BeckCreateDisplayData.h>
@@ -27,6 +27,9 @@ static const UINT16     usDegF_CursorY          = 150;
 static const UINT16     usRH_CursorY            = 210;
 
 static char             sz100CharString[101];
+
+unsigned long     ulNextDisplayMsec   =    0;
+unsigned long     ulDisplayPeriodMsec = 2000; //mSec between output to display
 
 BarClass              CO2Bar;
 BarData               CO2BarData;
@@ -73,6 +76,7 @@ void setup()   {
   VOCBarData  = CreateBarData(eVOCBar);
   VOCBar      = BarClass(VOCBarData);
 
+/*
   Serial << LOG0 << "setup(): Call CreateBarData() and initialize DegFBar" << endl;
   DegFBarData  = CreateBarData(eDegFBar);
   DegFBar      = BarClass(DegFBarData);
@@ -80,6 +84,7 @@ void setup()   {
   Serial << LOG0 << "setup(): Call CreateBarData() and initialize RHBar" << endl;
   RHBarData  = CreateBarData(eRHBar);
   RHBar      = BarClass(RHBarData);
+*/
 
   Serial << LOG0 << "setup(): return" << endl;
   return;
@@ -103,13 +108,14 @@ void DisplayBegin() {
 }  //DisplayBegin
 
 
-
-
 void DisplayUpdate(void) {
-  DisplayCO2();
-  DisplayVOC();
-  DisplayTemperature();
-  DisplayHumidity();
+  if (millis() > ulNextDisplayMsec){
+    ulNextDisplayMsec= millis() + ulDisplayPeriodMsec;
+    DisplayCO2();
+    DisplayVOC();
+    DisplayTemperature();
+    DisplayHumidity();
+  } //if (millis()>ulNextDisplayMsec)
   //DisplayLowerBanner();
   return;
 }  //DisplayUpdate
@@ -178,31 +184,36 @@ void DisplayCO2() {
   UINT16          usCursorY       = usCO2_CursorY;   //GFX fonts Y is bottom 90
   UINT8           ucSize          = 1;
   UINT16          usColor         = WROVER_WHITE;
+/*
   INT16           sClearLeftX     = usCursorX;
   INT16           sClearTopY      = 0;
   UINT16          usClearWidth    = 120;
   UINT16          usClearHeight   = 35;
   static UINT16   usLastClearWidth= 0;
+*/
 
   if(EnviroData.bCO2Changed()) {
-    UINT16 CO2Value= EnviroData.GetCO2_Value();
-    sprintf(sz100CharString, "%6d", CO2Value);
-    //Calculate width to clear based on number of characters + 2, use that unless last width was bigger
-    //usClearWidth= (strlen(sz100CharString) + 2) * usCharWidth;
-    usClearWidth= (strlen(sz100CharString) + 1) * usCharWidth;
-    usClearWidth= std::max(usClearWidth, usLastClearWidth);
-    usLastClearWidth= usClearWidth;
-    Serial << LOG0 << "DisplayCO2(): Call ClearTextBackground(" << sClearLeftX << ", " << sClearTopY <<
-        ", " << usClearWidth << ", " << usClearHeight << ")" << endl;
-    ClearTextBackground(sClearLeftX, sClearTopY, usClearWidth, usClearHeight);
-    Serial << LOG0 << "DisplayCO2(): Call DisplayLine for: " << sz100CharString << endl;
-    DisplayLine(FreeMonoBold24pt7b, usColor, usCursorX, usCursorY, usClearWidth, usClearHeight,
-                 sz100CharString, false, ucSize);
+    //Erase the currently displayed value by overwriting it with the background color
+    UINT16 LastCO2Value= EnviroData.GetLastCO2_Value();
+    sprintf(sz100CharString, "%6d", LastCO2Value);
+    Serial << LOG0 << "DisplayCO2(): Call DisplayText(): Clear text, String= |" << LastCO2Value << "|" << endl;
+    Serial << LOG0 << "DisplayCO2(): Call DisplayText(): Color= " << BackgroundColor << ")" << endl;
+    DisplayText( usCursorX, usCursorY, sz100CharString, &FreeMonoBold24pt7b, ucSize, BackgroundColor);
 
+    //Display the new value
+    UINT16 CO2Value= EnviroData.GetCO2_Value();
+    EnviroData.SetLastCO2_Value(CO2Value);
+    sprintf(sz100CharString, "%6d", CO2Value);
+    Serial << LOG0 << "DisplayCO2(): Call DisplayText(): Display text, CO2Value= " << CO2Value << endl;
+    Serial << LOG0 << "DisplayCO2(): Call DisplayText(): Color= " << usColor << ")" << endl;
+    DisplayText( usCursorX, usCursorY, sz100CharString, &FreeMonoBold24pt7b, ucSize, usColor);
+
+    //Put the label underneath
     usCursorX= 50;
     usCursorY += 20;
     sprintf(sz100CharString, "CO2 ppm");
-    DisplayLine(FreeSans9pt7b, usColor, usCursorX, usCursorY, usClearWidth, usClearHeight, sz100CharString, false);
+    //DisplayLine(FreeSans9pt7b, usColor, usCursorX, usCursorY, usClearWidth, usClearHeight, sz100CharString, false);
+    DisplayText( usCursorX, usCursorY, sz100CharString, &FreeSans9pt7b, ucSize, usColor);
 
     //Draw the bar
     Serial << LOG0 << "DisplayCO2(): Call CO2Bar.Draw(" << CO2Value << ")" << endl;
@@ -218,34 +229,33 @@ void DisplayVOC() {
   UINT16          usCursorY       = usVOC_CursorY;   //GFX fonts Y is bottom 90
   UINT8           ucSize          = 1;
   UINT16          usColor         = WROVER_WHITE;
-  INT16           sClearLeftX     = usCursorX;
-  INT16           sClearTopY      = usCursorY - 32;
-  UINT16          usClearWidth    = 120;
-  UINT16          usClearHeight   = 40;
-  static UINT16   usLastClearWidth= 0;
   int16_t         VOC_mgPerM3     = 0;
 
   if(EnviroData.bVOCChanged()) {
+    //Erase the currently displayed value by overwriting it with the background color
+    UINT16 LastVOCValue= EnviroData.GetLastVOC_Value();
+    sprintf(sz100CharString, "%6d", LastVOCValue);
+    //Serial << LOG0 << "DisplayVOC(): Call DisplayText(): Clear text, LastVOCValue= " << LastVOCValue << endl;
+    Serial << LOG0 << "DisplayVOC(): Call DisplayText(): Clear text, String= |" << sz100CharString << "|" << endl;
+    Serial << LOG0 << "DisplayVOC(): Call DisplayText(): Color= " << BackgroundColor << ")" << endl;
+    DisplayText( usCursorX, usCursorY, sz100CharString, &FreeMonoBold24pt7b, ucSize, BackgroundColor);
+
     UINT16  VOCValue_ppm      = EnviroData.GetVOC_Value();
     float   VOC_to_mg_per_m3  = 3.23;
     VOC_mgPerM3               = (int16_t)((float)VOCValue_ppm * VOC_to_mg_per_m3);
 
+    EnviroData.SetLastVOC_Value(VOC_mgPerM3);
     sprintf(sz100CharString, "%6d", VOC_mgPerM3);
-    //Calculate width to clear based on number of characters + 1, use that unless last width was bigger
-    usClearWidth= (strlen(sz100CharString) + 1) * usCharWidth;
-    usClearWidth= std::max(usClearWidth, usLastClearWidth);
-    usLastClearWidth= usClearWidth;
-    Serial << LOG0 << "DisplayVOC(): Call ClearTextBackground(" << sClearLeftX << ", " << sClearTopY <<
-        ", " << usClearWidth << ", " << usClearHeight << ")" << endl;
-    ClearTextBackground(sClearLeftX, sClearTopY, usClearWidth, usClearHeight);
-    Serial << LOG0 << "DisplayVOC(): Call DisplayLine for: " << sz100CharString << endl;
-    DisplayLine(FreeMonoBold24pt7b, usColor, usCursorX, usCursorY, usClearWidth, usClearHeight,
-                 sz100CharString, false, ucSize);
+
+    Serial << LOG0 << "DisplayVOC(): Call DisplayText(): Display text, String= |" << sz100CharString << "|" << endl;
+    Serial << LOG0 << "DisplayVOC(): Call DisplayText(): Color= " << usColor << ")" << endl;
+    DisplayText( usCursorX, usCursorY, sz100CharString, &FreeMonoBold24pt7b, ucSize, usColor);
 
     usCursorX= 50;
     usCursorY += 20;
     sprintf(sz100CharString, "VOC mg/m^3");
-    DisplayLine(FreeSans9pt7b, usColor, usCursorX, usCursorY, usClearWidth, usClearHeight, sz100CharString, false);
+    //DisplayLine(FreeSans9pt7b, usColor, usCursorX, usCursorY, usClearWidth, usClearHeight, sz100CharString, false);
+    DisplayText( usCursorX, usCursorY, sz100CharString, &FreeSans9pt7b, ucSize, usColor);
 
     //Draw the bar
     Serial << LOG0 << "DisplayVOC(): Call VOCBar.Draw(" << VOC_mgPerM3 << ")" << endl;
@@ -287,11 +297,13 @@ void DisplayTemperature() {
     usCursorY += 20;
     sprintf(sz100CharString, "Temperature");
     DisplayLine(FreeSans9pt7b, usColor, usCursorX, usCursorY, usClearWidth, usClearHeight, sz100CharString, false);
-  } //if(EnviroData.bDegFChanged())
 
-  //Draw the bar
-  Serial << LOG0 << "DisplayTemperature(): Call DegfBar.Draw(" << DegFValue << ")" << endl;
-  VOCBar.Draw(DegFValue);
+/*
+    //Draw the bar
+    Serial << LOG0 << "DisplayTemperature(): Call DegFBar.Draw(" << DegFValue << ")" << endl;
+    DegFBar.Draw(DegFValue);
+*/
+  } //if(EnviroData.bDegFChanged())
   return;
 }  //DisplayTemperature
 
@@ -329,9 +341,11 @@ void DisplayHumidity() {
     sprintf(sz100CharString, "Humidity");
     DisplayLine(FreeSans9pt7b, usColor, usCursorX, usCursorY, usClearWidth, usClearHeight, sz100CharString, false);
 
+/*
     //Draw the bar
-    Serial << LOG0 << "DisplayVOC(): Call VOCBar.Draw(" << RHValue << ")" << endl;
-    VOCBar.Draw(RHValue);
+    Serial << LOG0 << "DisplayVOC(): Call RHBar.Draw(" << RHValue << ")" << endl;
+    RHBar.Draw(RHValue);
+*/
   } //if(EnviroData.bRHChanged())
   return;
 }  //DisplayHumidity
