@@ -1,5 +1,5 @@
 const char szGasSensorDataClassFileName[]  = "BeckEnviroDataClass.cpp";
-const char szGasSensorDataClassFileDate[]  = "6/12/21b";
+const char szGasSensorDataClassFileDate[]  = "6/13/21b";
 
 #include <BeckEnviroDataClass.h>
 #include <Streaming.h>
@@ -55,7 +55,7 @@ uint16_t EnviroDataClass::GetVOC_Value(){
 
 bool EnviroDataClass::bVOCChanged(void){
   bool  bChanged= false;
-  if (bVOCFirstTime || (GetLastVOC_Value() != GetVOC_Value())){
+  if ((GetLastVOC_Value() != GetVOC_Value()) || bVOCFirstTime){
     bChanged      = true;
     bVOCFirstTime = false;
     //LastVOC_Value = VOC_Value;
@@ -74,7 +74,12 @@ uint16_t EnviroDataClass::GetLastVOC_Value(){
 
 
 void EnviroDataClass::SetDegF_Value(float NewDegFValue){
-  DegF_Value= NewDegFValue;
+  //Round NewDegFValue to (1) decimal place.
+  //Display flashes if more decimal places than displayed are stored
+  int     wNumDecPlaces= 1;
+  float   fRoundedNewDegFValue;
+  fRoundedNewDegFValue= ceil((NewDegFValue * pow(10, wNumDecPlaces)) - 0.49) / pow(10, wNumDecPlaces);
+  DegF_Value= fRoundedNewDegFValue;
   return;
 }
 
@@ -84,7 +89,7 @@ float EnviroDataClass::GetDegF_Value(){
 
 bool EnviroDataClass::bDegFChanged(void){
   bool  bChanged= false;
-  if (bDegFFirstTime || (LastDegF_Value != DegF_Value)){
+  if ((GetLastDegF_Value() != GetDegF_Value()) || bDegFFirstTime){
     bChanged       = true;
     bDegFFirstTime = false;
     //LastDegF_Value = DegF_Value;
@@ -92,12 +97,12 @@ bool EnviroDataClass::bDegFChanged(void){
   return bChanged;
 } //bDegFChanged
 
-void EnviroDataClass::SetLastDegF_Value(uint16_t LastDegFValue){
+void EnviroDataClass::SetLastDegF_Value(float LastDegFValue){
   LastDegF_Value= LastDegFValue;
   return;
 }
 
-uint16_t EnviroDataClass::GetLastDegF_Value(){
+float EnviroDataClass::GetLastDegF_Value(){
   return LastDegF_Value;
 }
 
@@ -113,7 +118,7 @@ uint16_t EnviroDataClass::GetRH_Value(){
 
 bool EnviroDataClass::bRHChanged(void){
   bool  bChanged= false;
-  if (bRHFirstTime || (LastRH_Value != GetRH_Value())){
+  if ((GetLastRH_Value() != GetRH_Value()) || bRHFirstTime){
     bChanged     = true;
     bRHFirstTime = false;
     //LastRH_Value = RH_Value;
