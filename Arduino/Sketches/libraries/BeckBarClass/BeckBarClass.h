@@ -11,6 +11,7 @@
 #define BAR_THICKNESS          20
 #define BAR_LENGTH            120
 
+#define TEXT_SPACING           60
 #define CO2_XLEFT             190
 #define CO2_YBOTTOM            10
 #define CO2_GREEN_START         0       //The start pixels are evenly spaced over the BAR_LENGTH
@@ -22,7 +23,7 @@
 #define CO2_RANGE             (CO2_END_VALUE - CO2_START_VALUE)
 
 #define VOC_XLEFT             190
-#define VOC_YBOTTOM            70         //Text on display is spaced 60 pixels going down
+#define VOC_YBOTTOM           (CO2_YBOTTOM + TEXT_SPACING)         //Text on display is spaced going down
 #define VOC_GREEN_START         0         //The start pixels are evenly spaced over the BAR_LENGTH
 #define VOC_YELLOW_START       40
 #define VOC_RED_START          80
@@ -32,7 +33,7 @@
 #define VOC_RANGE             (VOC_END_VALUE - VOC_START_VALUE)
 
 #define DEGF_XLEFT             190
-#define DEGF_YBOTTOM            70         //Text on display is spaced 60 pixels going down
+#define DEGF_YBOTTOM           (VOC_YBOTTOM + TEXT_SPACING)         //Text on display is spaced going down
 #define DEGF_BLUE_START          0         //The start pixels are spaced over the BAR_LENGTH
 #define DEGF_GREEN_START        32
 #define DEGF_RED_START          80
@@ -42,7 +43,7 @@
 #define DEGF_RANGE             (DEGF_END_VALUE - DEGF_START_VALUE)
 
 #define RH_XLEFT                190
-#define RH_YBOTTOM               70         //Text on display is spaced 60 pixels going down
+#define RH_YBOTTOM              (DEGF_YBOTTOM + TEXT_SPACING)         //Text on display is spaced going down
 #define RH_YELLOW_START           0         //The start pixels are spaced over the BAR_LENGTH
 #define RH_GREEN_START           32
 #define RH_RED_START             96
@@ -144,7 +145,7 @@ public:
   float             fStartValue           = 0.0;
   float             fEndValue             = 0.0;
   float             fRange                = fEndValue - fStartValue;
-  float             fLastValue            = 999.0;
+  //float             fLastValue            = 999.0;
   BarSegment        BarSegs               [NUMBER_OF_SEGMENTS];
 protected:
 };  //BarData
@@ -157,9 +158,10 @@ public:
   virtual ~BarClass         ();
 
   //void  SetLowerLeftCorner  (PUnit XLeft, PUnit YBottom);
-  void  Draw                (float fNewValue);
+  //void  Draw                (float fNewValue);
+  void  Draw                (float fNewValue, float fLastValue);
 protected:
-  float        _fLastValue= 9999.9;
+  //float        _fLastValue= 9999.9;
   BarData      _BarData;
 };  //BarClass
 //Last line.

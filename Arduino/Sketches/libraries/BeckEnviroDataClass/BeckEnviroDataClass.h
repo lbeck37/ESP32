@@ -32,6 +32,8 @@ public:
   void      SetDegF_Value       (float NewDegFValue);
   float     GetDegF_Value       (void);
   bool      bDegFChanged        (void);
+  void      SetLastDegF_Value   (uint16_t LastDegFValue);
+  uint16_t  GetLastDegF_Value   (void);
 protected:
   float       DegF_Value        = 0.0;
   float       LastDegF_Value    = 0.0;
@@ -41,7 +43,8 @@ public:
   void      SetRH_Value         (uint16_t NewDegFValue);
   uint16_t  GetRH_Value         (void);
   bool      bRHChanged          (void);
-
+  void      SetLastRH_Value     (uint16_t LastRHValue);
+  uint16_t  GetLastRH_Value     (void);
 protected:
   uint16_t    LastRH_Value      = 0;
   uint16_t    RH_Value          = 0;

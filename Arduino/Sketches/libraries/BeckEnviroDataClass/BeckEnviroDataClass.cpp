@@ -63,7 +63,6 @@ bool EnviroDataClass::bVOCChanged(void){
   return bChanged;
 } //bVOCChanged
 
-
 void EnviroDataClass::SetLastVOC_Value(uint16_t LastVOCValue){
   LastVOC_Value= LastVOCValue;
   return;
@@ -72,6 +71,7 @@ void EnviroDataClass::SetLastVOC_Value(uint16_t LastVOCValue){
 uint16_t EnviroDataClass::GetLastVOC_Value(){
   return LastVOC_Value;
 }
+
 
 void EnviroDataClass::SetDegF_Value(float NewDegFValue){
   DegF_Value= NewDegFValue;
@@ -87,10 +87,19 @@ bool EnviroDataClass::bDegFChanged(void){
   if (bDegFFirstTime || (LastDegF_Value != DegF_Value)){
     bChanged       = true;
     bDegFFirstTime = false;
-    LastDegF_Value = DegF_Value;
+    //LastDegF_Value = DegF_Value;
   }
   return bChanged;
 } //bDegFChanged
+
+void EnviroDataClass::SetLastDegF_Value(uint16_t LastDegFValue){
+  LastDegF_Value= LastDegFValue;
+  return;
+}
+
+uint16_t EnviroDataClass::GetLastDegF_Value(){
+  return LastDegF_Value;
+}
 
 
 void EnviroDataClass::SetRH_Value(uint16_t NewRHValue){
@@ -104,11 +113,20 @@ uint16_t EnviroDataClass::GetRH_Value(){
 
 bool EnviroDataClass::bRHChanged(void){
   bool  bChanged= false;
-  if (bRHFirstTime || (LastRH_Value != RH_Value)){
+  if (bRHFirstTime || (LastRH_Value != GetRH_Value())){
     bChanged     = true;
     bRHFirstTime = false;
-    LastRH_Value = RH_Value;
+    //LastRH_Value = RH_Value;
   }
   return bChanged;
 } //bRHChanged
+
+void EnviroDataClass::SetLastRH_Value(uint16_t LastRHValue){
+  LastRH_Value= LastRHValue;
+  return;
+}
+
+uint16_t EnviroDataClass::GetLastRH_Value(){
+  return LastRH_Value;
+}
 //Last line.

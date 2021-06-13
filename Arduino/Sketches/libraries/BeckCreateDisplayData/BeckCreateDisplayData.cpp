@@ -1,5 +1,5 @@
 const char szCreateDisplayDataName[]  = "BeckCreateDisplayData.cpp";
-const char szszCreateDisplayDataDate[]  = "6/10/21b";
+const char szszCreateDisplayDataDate[]  = "6/12/21b";
 #include <BeckCreateDisplayData.h>
 #include <BeckLogLib.h>
 #include <Streaming.h>
@@ -105,7 +105,7 @@ const SegmentData& CreateSegmentData(BarType eBarType, SegmentPosition eSegmentP
           SegData.fStartValue      =  60.0;
           SegData.fEndValue        =  68.0;
           SegData.fRange           = SegData.fEndValue - SegData.fStartValue;
-          SegData.XLeft            = DEGF_XLEFT + DEGF_GREEN_START;
+          SegData.XLeft            = DEGF_XLEFT + DEGF_BLUE_START;
           SegData.YBottom          = DEGF_YBOTTOM;
           SegData.Length           = DEGF_GREEN_START - DEGF_BLUE_START;
           break;
@@ -142,22 +142,22 @@ const SegmentData& CreateSegmentData(BarType eBarType, SegmentPosition eSegmentP
           switch(eSegmentPosition){
           case eFirstSegment:
             strcpy(SegData.BarName  , "RH");
-            strcpy(SegData.ColorName, "Green");
+            strcpy(SegData.ColorName, "Yellow");
             SegData.StartPercent     = 0;
-            SegData.Color            = BECK_BLUE;
-            SegData.fStartValue      =  60.0;
-            SegData.fEndValue        =  68.0;
+            SegData.Color            = BECK_YELLOW;
+            SegData.fStartValue      =   0.0;
+            SegData.fEndValue        =  30.0;
             SegData.fRange           = SegData.fEndValue - SegData.fStartValue;
-            SegData.XLeft            = RH_XLEFT + RH_GREEN_START;
+            SegData.XLeft            = RH_XLEFT + RH_YELLOW_START;
             SegData.YBottom          = RH_YBOTTOM;
-            SegData.Length           = RH_YELLOW_START - RH_GREEN_START;
+            SegData.Length           = RH_GREEN_START - RH_YELLOW_START;
             break;
           case eSecondSegment:
             strcpy(SegData.BarName  , "RH");
-            strcpy(SegData.ColorName, "Yellow");
+            strcpy(SegData.ColorName, "Green");
             SegData.StartPercent     = 30;
             SegData.Color            = BECK_GREEN;
-            SegData.fStartValue      =  68.0;
+            SegData.fStartValue      =  30.0;
             SegData.fEndValue        =  80.0;
             SegData.fRange           = SegData.fEndValue - SegData.fStartValue;
             SegData.XLeft            = RH_XLEFT + RH_GREEN_START;

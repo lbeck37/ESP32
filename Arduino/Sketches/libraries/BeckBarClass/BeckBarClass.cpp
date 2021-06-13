@@ -1,7 +1,7 @@
 const char szBarClassFileName[]  = "BeckBarClass.cpp";
-const char szBarClassFileDate[]  = "6/10/21a";
+const char szBarClassFileDate[]  = "6/12/21a";
 
-//#include <BeckEnviroDataClass.h>
+#include <BeckEnviroDataClass.h>
 #include <BeckBarClass.h>
 #include <BeckLogLib.h>
 #include <Streaming.h>
@@ -144,16 +144,15 @@ BarClass::BarClass(BarData& BarData) {
 } //constructor
 
 
-void BarClass::Draw(float fNewValue) {
-  Serial << "BarClass::Draw("<< fNewValue << "): Begin" << endl;
+void BarClass::Draw(float fNewValue, float fLastValue) {
+  Serial << "BarClass::Draw("<< fNewValue << ", " << fLastValue << "): Begin" << endl;
   int SegNum;
   //Going from left to right is attempt to remove line on left that remains until next draw
   //for (SegNum= 0; SegNum < 3; SegNum++){
   for (SegNum= 2; SegNum >= 0; SegNum--){
-    Serial << "BarClass::Draw(): Call _BarData.BarSegs[" << SegNum << "].Draw(" << fNewValue << ", " << _fLastValue << ")" << endl;
-    _BarData.BarSegs[SegNum].Draw(fNewValue, _fLastValue);
+    Serial << "BarClass::Draw(): Call _BarData.BarSegs[" << SegNum << "].Draw(" << fNewValue << ", " << fLastValue << ")" << endl;
+    _BarData.BarSegs[SegNum].Draw(fNewValue, fLastValue);
   } //for(SegNum= ...
-  _fLastValue= fNewValue;
   Serial << "BarClass::Draw(float fNewValue): return"<< endl;
   return;
 } //Draw
