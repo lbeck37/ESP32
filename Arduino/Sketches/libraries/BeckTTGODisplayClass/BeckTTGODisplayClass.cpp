@@ -63,30 +63,30 @@ void TTGODisplayClass::SetCursor(PUnit CursorX, PUnit CursorY){
   return;
 }
 
-void  TTGODisplayClass::SetBackgroundColor(Colortype NewBackgroundColor){
+void  TTGODisplayClass::SetBackgroundColor(ColorType NewBackgroundColor){
   _BackgroundColor= NewBackgroundColor;
   return;
 }
 
-void  TTGODisplayClass::SetTextColor(Colortype NewTextColor){
+void  TTGODisplayClass::SetTextColor(ColorType NewTextColor){
   _TextColor= NewTextColor;
   GLib.setTextColor(_TextColor);
   return;
 }
 
-void  TTGODisplayClass::SetTextBGColor(Colortype NewTextBGColor){
+void  TTGODisplayClass::SetTextBGColor(ColorType NewTextBGColor){
   _TextBGColor= NewTextBGColor;
   GLib.setTextColor(_TextColor, _TextBGColor);    //No separate call to set the Text BG color.
   return;
 }
 
-void  TTGODisplayClass::SetFillColor(Colortype NewFillColor){
+void  TTGODisplayClass::SetFillColor(ColorType NewFillColor){
   _FillColor= NewFillColor;
   GLib.setTextColor(_TextColor, _TextBGColor);    //No separate call to set the Text BG color.
   return;
 }
 
-void  TTGODisplayClass::SetLineColor(Colortype NewLineColor){
+void  TTGODisplayClass::SetLineColor(ColorType NewLineColor){
   _LineColor= NewLineColor;
   GLib.setTextColor(_TextColor, _TextBGColor);    //No seperate call to set the Text BG color.
   return;
@@ -216,7 +216,7 @@ void TTGODisplayClass::FillScreen(void){
   return;
 } //FillScreen(void)
 
-void TTGODisplayClass::FillScreen(Colortype FillColor){
+void TTGODisplayClass::FillScreen(ColorType FillColor){
   GLib.fillScreen(FillColor);
   return;
 } //FillScreen(ColorType)

@@ -1,4 +1,4 @@
-// BeckTTGODisplayClass.h, 5/19/21a
+// BeckTTGODisplayClass.h, 6/14/21a
 
 #include <BeckDisplayClass.h>
 
@@ -13,12 +13,12 @@ public:
   PUnit Invert_Y              (PUnit Y1);
   void  SetCursor             (PUnit CursorX, PUnit CursorY);
   void  FillScreen            (void);
-  void  FillScreen            (Colortype FillColor);
-  void  SetBackgroundColor    (Colortype NewBackgroundColor);
-  void  SetTextColor          (Colortype NewTextColor);
-  void  SetTextBGColor        (Colortype NewTextBGColor);
-  void  SetFillColor          (Colortype NewFillColor);
-  void  SetLineColor          (Colortype NewLineColor);
+  void  FillScreen            (ColorType FillColor);
+  void  SetBackgroundColor    (ColorType NewBackgroundColor);
+  void  SetTextColor          (ColorType NewTextColor);
+  void  SetTextBGColor        (ColorType NewTextBGColor);
+  void  SetFillColor          (ColorType NewFillColor);
+  void  SetLineColor          (ColorType NewLineColor);
   void  SelectFont            (FontFaceType eFontFace, FontPointType eFontPoint);
   void  DrawLine              (PUnit X1, PUnit Y1, PUnit X2, PUnit Y2);
   void  DrawRectangle         (PUnit XLeft, PUnit YTop, PUnit Width, PUnit Height);

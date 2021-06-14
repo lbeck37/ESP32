@@ -1,4 +1,4 @@
-// BeckDisplayClass.h, 5/25/21a
+// BeckDisplayClass.h, 6/21a
 #pragma once
 //Initially used for TTGO ESP32 module. 135 x 240, 1.14", 240dpi display
 
@@ -36,9 +36,9 @@
   typedef WROVER_KIT_LCD            GraphicsLibrary;
 #endif
 
-//typedef int32_t       Colortype;
+//typedef int32_t       ColorType;
 /* Went to BeckBiotaDefines.h
-typedef int16_t       Colortype;      //See Adafruit_GFX.h
+typedef int16_t       ColorType;      //See Adafruit_GFX.h
 typedef int32_t       PUnit;          //Pixel Unit
 typedef uint8_t       FontSize;
 typedef float         DegreeType;
@@ -142,14 +142,14 @@ public:
   virtual void  Setup                 (void){}
   virtual void  Handle                (void){}
   virtual void  SetCursor             (PUnit CursorX, PUnit CursorY){}
-  virtual void  SetBackgroundColor    (Colortype NewBackgroundColor){}
-  virtual void  SetTextColor          (Colortype NewTextColor){}
-  virtual void  SetTextBGColor        (Colortype NewTextBGColor){}
-  virtual void  SetFillColor          (Colortype NewFillColor){}
-  virtual void  SetLineColor          (Colortype NewLineColor){}
+  virtual void  SetBackgroundColor    (ColorType NewBackgroundColor){}
+  virtual void  SetTextColor          (ColorType NewTextColor){}
+  virtual void  SetTextBGColor        (ColorType NewTextBGColor){}
+  virtual void  SetFillColor          (ColorType NewFillColor){}
+  virtual void  SetLineColor          (ColorType NewLineColor){}
   virtual void  SelectFont            (FontFaceType eFontFace, FontPointType eFontPoint){}
   virtual void  FillScreen            (void){}
-  virtual void  FillScreen            (Colortype FillColor){}
+  virtual void  FillScreen            (ColorType FillColor){}
   virtual void  DrawLine              (PUnit X1, PUnit Y1, PUnit X2, PUnit Y2){}
   virtual void  DrawRectangle         (PUnit XLeft, PUnit YBottom, PUnit Width, PUnit Height){}
   virtual void  DrawFilledRectangle   (PUnit XLeft, PUnit YBottom, PUnit Width, PUnit Height){}
@@ -169,11 +169,11 @@ protected:
   GraphicsLibrary         GLib                  = GraphicsLibrary();
 
   ScreenOrientationType   _eScreenOrientation   = eUSBLeft;
-  Colortype               _BackgroundColor      = BECK_BLACK;
-  Colortype               _TextColor            = BECK_WHITE;
-  Colortype               _TextBGColor          = BECK_BLACK;
-  Colortype               _FillColor            = BECK_GREEN;
-  Colortype               _LineColor            = BECK_WHITE;
+  ColorType               _BackgroundColor      = BECK_BLACK;
+  ColorType               _TextColor            = BECK_WHITE;
+  ColorType               _TextBGColor          = BECK_BLACK;
+  ColorType               _FillColor            = BECK_GREEN;
+  ColorType               _LineColor            = BECK_WHITE;
   PUnit                   _CursorX              = 0;
   PUnit                   _CursorY              = 0;
   FontLibraryType         _eFontLibrary         = eGFXFont;

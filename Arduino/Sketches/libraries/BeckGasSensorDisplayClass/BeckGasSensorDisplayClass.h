@@ -32,8 +32,8 @@ protected:
   void  DrawCO2andTVOC_text  (int32_t CO2_Value, int32_t VOC_Value);
   void  DrawBar              (GasType eGasType, int32_t wValue);
 
-  Colortype         Gas_BackgroundColor             = TFT_BLACK;
-  Colortype         Gas_FontColor                   = TFT_CYAN;
+  ColorType         Gas_BackgroundColor             = TFT_BLACK;
+  ColorType         Gas_FontColor                   = TFT_CYAN;
 
   FontFaceType      eGas_Font                       = eMonospacedBold;
   FontPointType     eGas_PointSize                  = e30point;

@@ -6,7 +6,7 @@ const char szszCreateDisplayDataDate[]  = "6/12/21b";
 
 const SegmentData& CreateSegmentData(BarType eBarType, SegmentPosition eSegmentPosition){
   SegmentData*          pSegmentData        = new SegmentData;
-  SegmentData           &SegData     = *pSegmentData;
+  SegmentData           &SegData            = *pSegmentData;
 
   switch(eBarType) {
   case eCO2Bar:

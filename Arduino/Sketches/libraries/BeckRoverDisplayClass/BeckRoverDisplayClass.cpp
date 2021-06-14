@@ -69,13 +69,13 @@ void RoverDisplayClass::FillScreen(void){
   return;
 } //FillScreen(void)
 
-void RoverDisplayClass::FillScreen(Colortype Color) {
+void RoverDisplayClass::FillScreen(ColorType Color) {
   GLib.fillScreen(Color);
   return;
 }  //FillScreen
 
 void RoverDisplayClass::DisplayText(uint16_t usCursorX, uint16_t usCursorY, char *pcText,
-                                    const GFXfont *pFont, uint8_t ucSize, Colortype Color) {
+                                    const GFXfont *pFont, uint8_t ucSize, ColorType Color) {
   //240x320 3.2", 10 lines => 24 pixels/line
   Serial << "RoverDisplayClass::DisplayText(): Color= " << Color << ", CursorX= " << usCursorX << ", CursorY= " << usCursorY << endl;
   Serial << "RoverDisplayClass::DisplayText():Size= " << ucSize <<  ", Text=" << pcText << endl;
@@ -130,30 +130,30 @@ void RoverDisplayClass::SetCursor(PUnit CursorX, PUnit CursorY){
   return;
 }
 
-void  RoverDisplayClass::SetBackgroundColor(Colortype NewBackgroundColor){
+void  RoverDisplayClass::SetBackgroundColor(ColorType NewBackgroundColor){
   _BackgroundColor= NewBackgroundColor;
   return;
 }
 
-void  RoverDisplayClass::SetTextColor(Colortype NewTextColor){
+void  RoverDisplayClass::SetTextColor(ColorType NewTextColor){
   _TextColor= NewTextColor;
   GLib.setTextColor(_TextColor);
   return;
 }
 
-void  RoverDisplayClass::SetTextBGColor(Colortype NewTextBGColor){
+void  RoverDisplayClass::SetTextBGColor(ColorType NewTextBGColor){
   _TextBGColor= NewTextBGColor;
   GLib.setTextColor(_TextColor, _TextBGColor);    //No separate call to set the Text BG color.
   return;
 }
 
-void  RoverDisplayClass::SetFillColor(Colortype NewFillColor){
+void  RoverDisplayClass::SetFillColor(ColorType NewFillColor){
   _FillColor= NewFillColor;
   GLib.setTextColor(_TextColor, _TextBGColor);    //No separate call to set the Text BG color.
   return;
 }
 
-void  RoverDisplayClass::SetLineColor(Colortype NewLineColor){
+void  RoverDisplayClass::SetLineColor(ColorType NewLineColor){
   _LineColor= NewLineColor;
   GLib.setTextColor(_TextColor, _TextBGColor);    //No seperate call to set the Text BG color.
   return;

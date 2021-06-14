@@ -1,4 +1,4 @@
-// BeckBiotaDefines.h, 6/1/21c
+// BeckBiotaDefines.h, 6/14/21a
 #pragma once
 #include <cstdint>
 
@@ -10,9 +10,9 @@
 #define USE_IMU                 false
 #define DO_NTP                  false
 #define DO_OTA                  false
-#define DO_ROVER                  true
+#define DO_ROVER                false
 #define DO_THERMOSTAT           false
-#define DO_TTGO                 false
+#define DO_TTGO                   true
 #define DO_WEB_SERVER           false
 
 typedef   int16_t       ColorType;      //See Adafruit_GFX.h
