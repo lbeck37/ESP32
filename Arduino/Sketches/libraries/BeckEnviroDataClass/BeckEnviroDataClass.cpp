@@ -1,5 +1,5 @@
 const char szGasSensorDataClassFileName[]  = "BeckEnviroDataClass.cpp";
-const char szGasSensorDataClassFileDate[]  = "6/13/21b";
+const char szGasSensorDataClassFileDate[]  = "6/13/21c";
 
 #include <BeckEnviroDataClass.h>
 #include <Streaming.h>
@@ -26,11 +26,9 @@ uint16_t EnviroDataClass::GetCO2_Value(){
 
 bool EnviroDataClass::bCO2Changed(void){
   bool  bChanged= false;
-  //if (bCO2FirstTime || (LastCO2_Value != CO2_Value)){
   if ((GetLastCO2_Value() != GetCO2_Value()) || bCO2FirstTime){
     bChanged      = true;
     bCO2FirstTime = false;
-    //LastCO2_Value = CO2_Value;
   }
   return bChanged;
 } //bCO2Changed
@@ -44,8 +42,9 @@ uint16_t EnviroDataClass::GetLastCO2_Value(){
   return LastCO2_Value;
 }
 
+
 void EnviroDataClass::SetVOC_Value(uint16_t NewVOCValue){
-	VOC_Value= NewVOCValue;
+  VOC_Value= NewVOCValue;
   return;
 }
 
@@ -58,7 +57,6 @@ bool EnviroDataClass::bVOCChanged(void){
   if ((GetLastVOC_Value() != GetVOC_Value()) || bVOCFirstTime){
     bChanged      = true;
     bVOCFirstTime = false;
-    //LastVOC_Value = VOC_Value;
   }
   return bChanged;
 } //bVOCChanged
@@ -92,7 +90,6 @@ bool EnviroDataClass::bDegFChanged(void){
   if ((GetLastDegF_Value() != GetDegF_Value()) || bDegFFirstTime){
     bChanged       = true;
     bDegFFirstTime = false;
-    //LastDegF_Value = DegF_Value;
   }
   return bChanged;
 } //bDegFChanged
@@ -121,7 +118,6 @@ bool EnviroDataClass::bRHChanged(void){
   if ((GetLastRH_Value() != GetRH_Value()) || bRHFirstTime){
     bChanged     = true;
     bRHFirstTime = false;
-    //LastRH_Value = RH_Value;
   }
   return bChanged;
 } //bRHChanged
