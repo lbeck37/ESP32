@@ -1,11 +1,12 @@
-const char szSketchName[]  = "BeckE32_RoverEnviroDisplay.ino";
-const char szFileDate[]    = "6/14/21a";
+const char szSketchName[]  = "BeckE32_EnviroDisplay.ino";
+const char szFileDate[]    = "6/14/21c";
 #include <BeckBarClass.h>
 #include <BeckBiotaDefines.h>
 #include <BeckCreateDisplayData.h>
 #include <BeckEnviroDataClass.h>
 #include <BeckI2cClass.h>
 #include <BeckGasSensorClass.h>
+#include <BeckGasSensorDisplayClass.h>
 #include <BeckLogLib.h>
 #include <BeckMiniLib.h>
 #include <BeckTempAndHumidityClass.h>
@@ -20,12 +21,19 @@ const char szFileDate[]    = "6/14/21a";
 #include <Streaming.h>
 
 #define min(X, Y)       (((X) < (Y)) ? (X) : (Y))
+#if DO_ROVER
+  const bool       bDoRover                = true;
+  const UINT16     usTopText_CursorY       =  35;
+#else
+  const bool       bDoRover                = false;
+  const UINT16     usTopText_CursorY       =  35;
+#endif
 
-static const UINT16     usTextSpacing           =  BAR_SPACING;
-static const UINT16     usCO2_CursorY           =  35;
-static const UINT16     usVOC_CursorY           = usCO2_CursorY   + usTextSpacing;
-static const UINT16     usDegF_CursorY          = usVOC_CursorY   + usTextSpacing;
-static const UINT16     usRH_CursorY            = usDegF_CursorY  + usTextSpacing;
+static  UINT16     usTextSpacing           = BAR_SPACING;
+static  UINT16     usCO2_CursorY           = usTopText_CursorY;
+static  UINT16     usVOC_CursorY           = usCO2_CursorY   + usTextSpacing;
+static  UINT16     usDegF_CursorY          = usVOC_CursorY   + usTextSpacing;
+static  UINT16     usRH_CursorY            = usDegF_CursorY  + usTextSpacing;
 
 static char             sz100CharString[101];
 
@@ -66,8 +74,13 @@ void setup()   {
   Serial << LOG0 << "setup(): Call GasSensor.Setup()" << endl;
   GasSensor.Setup();
 
-  Serial << LOG0 << "setup(): Call DisplayBegin()" << endl;
-  DisplayBegin();
+  if (bDoRover){
+    Serial << LOG0 << "setup(): Call RoverDisplayBegin()" << endl;
+    RoverDisplayBegin();
+  }
+  else{
+    GasSensorDisplay.Setup();
+  }
 
   Serial << LOG0 << "setup(): Call CreateBarData() and initialize CO2Bar" << endl;
   CO2BarData  = CreateBarData(eCO2Bar);
@@ -93,21 +106,26 @@ void setup()   {
 void loop() {
   GasSensor.Handle();
   TempAndHumiditySensor.Handle();
-  DisplayUpdate();
+  if (bDoRover){
+    RoverDisplayUpdate();
+  }
+  else{
+    GasSensorDisplay.Handle();
+  }
   return;
 }  //loop()
 
 
-void DisplayBegin() {
-  Serial << LOG0 << "DisplayBegin(): Call RoverLCD.begin()" << endl;
+void RoverDisplayBegin() {
+  Serial << LOG0 << "RoverDisplayBegin(): Call RoverLCD.begin()" << endl;
   RoverLCD.begin();
   RoverLCD.setRotation(1);
   DisplayClear();
   return;
-}  //DisplayBegin
+}  //RoverDisplayBegin
 
 
-void DisplayUpdate(void) {
+void RoverDisplayUpdate(void) {
   if (millis() > ulNextDisplayMsec){
     ulNextDisplayMsec= millis() + ulDisplayPeriodMsec;
     DisplayCO2();
@@ -117,7 +135,7 @@ void DisplayUpdate(void) {
   } //if (millis()>ulNextDisplayMsec)
   //DisplayLowerBanner();
   return;
-}  //DisplayUpdate
+}  //RoverDisplayUpdate
 
 
 void DisplayClear() {
@@ -151,21 +169,6 @@ void ClearTextBackground(INT16 sUpperLeftX, INT16 sUpperLeftY, UINT16 usWidth, U
 } //ClearTextBackground
 
 
-/*
-void DisplayLine(const GFXfont stFont, UINT16 usColor, UINT16 usCursorX, UINT16 usCursorY,
-                  UINT16 usClearWidth, UINT16 usClearHeight,
-                  char szText[], bool bClearText= true, UINT8 ucSize= 1) {
-  INT16           sClearXstart    = usCursorX - 10;
-  INT16           sClearYstart    = usCursorY - 18;
-  if(bClearText){
-    ClearTextBackground(sClearXstart, sClearYstart, usClearWidth, usClearHeight);
-  }
-  DisplayText( usCursorX, usCursorY, szText, &stFont, ucSize, usColor);
-  return;
-} //DisplayLine
-*/
-
-
 void DisplayLowerBanner(){
   const GFXfont   *pFont          = &FreeSansOblique18pt7b;
   UINT16          usCursorX       = 7;
@@ -180,7 +183,6 @@ void DisplayLowerBanner(){
 
 
 void DisplayCO2() {
-  //UINT16          usCharWidth     = 25;
   UINT16          usCursorX       = 0;
   UINT16          usCursorY       = usCO2_CursorY;   //GFX fonts Y is bottom 90
   UINT8           ucSize          = 1;
@@ -214,7 +216,6 @@ void DisplayCO2() {
 
 
 void DisplayVOC() {
-  //UINT16          usCharWidth     = 25;
   UINT16          usCursorX       = 0;
   UINT16          usCursorY       = usVOC_CursorY;   //GFX fonts Y is bottom 90
   UINT8           ucSize          = 1;
@@ -253,7 +254,6 @@ void DisplayTemperature() {
   UINT16          usCursorX       = 0;
   UINT16          usCursorY       = usDegF_CursorY;   //GFX fonts Y is bottom
   UINT8           ucSize          = 1;
-  //UINT16          usColor         = WROVER_WHITE;
   ColorType       usColor         = WROVER_WHITE;
   float           fDegFValue       = 0.0;
 

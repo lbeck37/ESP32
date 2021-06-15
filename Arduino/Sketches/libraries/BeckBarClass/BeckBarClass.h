@@ -1,4 +1,4 @@
-// BeckBarClass.h, 6/13/21a
+// BeckBarClass.h, 6/14/21a
 #pragma once
 #include <BeckBiotaDefines.h>
 #include <WROVER_KIT_LCD.h>
@@ -11,10 +11,11 @@
 #define BAR_THICKNESS          20
 #define BAR_LENGTH            120
 #define DEFAULT_XLEFT         190
+#define TOP_BAR_YBOTTOM        10
 #define BAR_SPACING            60
 
 #define CO2_XLEFT             DEFAULT_XLEFT
-#define CO2_YBOTTOM            10
+#define CO2_YBOTTOM           TOP_BAR_YBOTTOM
 #define CO2_GREEN_START         0       //The start pixels are evenly spaced over the BAR_LENGTH
 #define CO2_YELLOW_START       40
 #define CO2_RED_START          80
