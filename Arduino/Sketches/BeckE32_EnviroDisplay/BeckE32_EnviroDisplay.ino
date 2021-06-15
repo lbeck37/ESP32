@@ -6,7 +6,9 @@ const char szFileDate[]    = "6/14/21c";
 #include <BeckEnviroDataClass.h>
 #include <BeckI2cClass.h>
 #include <BeckGasSensorClass.h>
-#include <BeckGasSensorDisplayClass.h>
+#if !DO_ROVER
+  #include <BeckGasSensorDisplayClass.h>
+#endif
 #include <BeckLogLib.h>
 #include <BeckMiniLib.h>
 #include <BeckTempAndHumidityClass.h>
