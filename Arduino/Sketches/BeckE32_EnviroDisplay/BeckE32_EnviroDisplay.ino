@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_EnviroDisplay.ino";
-const char szFileDate[]    = "6/14/21c";
+const char szFileDate[]    = "6/15/21a";
 #include <BeckBarClass.h>
 #include <BeckBiotaDefines.h>
 #include <BeckCreateDisplayData.h>
@@ -24,10 +24,10 @@ const char szFileDate[]    = "6/14/21c";
 
 #define min(X, Y)       (((X) < (Y)) ? (X) : (Y))
 #if DO_ROVER
-  const bool       bDoRover                = true;
+  //const bool       bDoRover                = true;
   const UINT16     usTopText_CursorY       =  35;
 #else
-  const bool       bDoRover                = false;
+  //const bool       bDoRover                = false;
   const UINT16     usTopText_CursorY       =  35;
 #endif
 
@@ -76,13 +76,13 @@ void setup()   {
   Serial << LOG0 << "setup(): Call GasSensor.Setup()" << endl;
   GasSensor.Setup();
 
-  if (bDoRover){
-    Serial << LOG0 << "setup(): Call RoverDisplayBegin()" << endl;
-    RoverDisplayBegin();
-  }
-  else{
+  //if (bDoRover){
+#if DO_ROVER
+    Serial << LOG0 << "setup(): Call DisplayBegin()" << endl;
+    DisplayBegin();
+#else
     GasSensorDisplay.Setup();
-  }
+#endif
 
   Serial << LOG0 << "setup(): Call CreateBarData() and initialize CO2Bar" << endl;
   CO2BarData  = CreateBarData(eCO2Bar);
@@ -108,26 +108,27 @@ void setup()   {
 void loop() {
   GasSensor.Handle();
   TempAndHumiditySensor.Handle();
-  if (bDoRover){
-    RoverDisplayUpdate();
-  }
-  else{
-    GasSensorDisplay.Handle();
-  }
-  return;
+#if DO_ROVER
+  DisplayUpdate();
+#else
+    GasSensorDisplay.Setup();
+#endif
 }  //loop()
 
 
-void RoverDisplayBegin() {
-  Serial << LOG0 << "RoverDisplayBegin(): Call RoverLCD.begin()" << endl;
+void DisplayBegin() {
+#if DO_ROVER
+  Serial << LOG0 << "DisplayBegin(): Call RoverLCD.begin()" << endl;
   RoverLCD.begin();
   RoverLCD.setRotation(1);
   DisplayClear();
+#else
+#endif
   return;
-}  //RoverDisplayBegin
+}  //DisplayBegin
 
 
-void RoverDisplayUpdate(void) {
+void DisplayUpdate(void) {
   if (millis() > ulNextDisplayMsec){
     ulNextDisplayMsec= millis() + ulDisplayPeriodMsec;
     DisplayCO2();
@@ -137,7 +138,7 @@ void RoverDisplayUpdate(void) {
   } //if (millis()>ulNextDisplayMsec)
   //DisplayLowerBanner();
   return;
-}  //RoverDisplayUpdate
+}  //DisplayUpdate
 
 
 void DisplayClear() {
@@ -147,7 +148,10 @@ void DisplayClear() {
 
 
 void FillScreen(UINT16 usColor) {
+#if DO_ROVER
   RoverLCD.fillScreen(usColor);
+#else
+#endif
   return;
 }  //FillScreen
 
@@ -155,17 +159,24 @@ void FillScreen(UINT16 usColor) {
 void DisplayText(UINT16 usCursorX, UINT16 usCursorY, char *pcText,
                  const GFXfont *pFont, UINT8 ucSize, UINT16 usColor) {
   //240x320 3.2", 10 lines => 24 pixels/line
+#if DO_ROVER
   RoverLCD.setFont(pFont);
   RoverLCD.setTextColor(usColor);
   RoverLCD.setTextSize(ucSize);
   RoverLCD.setTextWrap(false);
   RoverLCD.setCursor(usCursorX, usCursorY);
   RoverLCD.print(pcText);
+#else
+#endif
   return;
 }  //DisplayText
 
 
 void ClearTextBackground(INT16 sUpperLeftX, INT16 sUpperLeftY, UINT16 usWidth, UINT16 usHeight){
+#if DO_ROVER
+  RoverLCD.fillRect(sUpperLeftX, sUpperLeftY, usWidth, usHeight, BackgroundColor);
+#else
+#endif
   RoverLCD.fillRect(sUpperLeftX, sUpperLeftY, usWidth, usHeight, BackgroundColor);
   return;
 } //ClearTextBackground
@@ -190,7 +201,7 @@ void DisplayCO2() {
   UINT8           ucSize          = 1;
   UINT16          usColor         = WROVER_WHITE;
 
-  if(EnviroData.bCO2Changed()) {
+  if (EnviroData.bCO2Changed()) {
     //Erase the currently displayed value by overwriting it with the background color
     UINT16 LastCO2Value= EnviroData.GetLastCO2_Value();
     sprintf(sz100CharString, "%6d", LastCO2Value);
