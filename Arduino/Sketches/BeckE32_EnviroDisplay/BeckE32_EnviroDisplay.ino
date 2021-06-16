@@ -1,20 +1,17 @@
 const char szSketchName[]  = "BeckE32_EnviroDisplay.ino";
-const char szFileDate[]    = "6/15/21a";
+const char szFileDate[]    = "6/16/21c";
+
 #include <BeckBarClass.h>
-#include <BeckBiotaDefines.h>
+#include <BeckBiotaDefines.h>         //Set DO_ROVER to true to display to ROVER
 #include <BeckCreateDisplayData.h>
 #include <BeckEnviroDataClass.h>
 #include <BeckI2cClass.h>
 #include <BeckGasSensorClass.h>
-#if !DO_ROVER
-  #include <BeckGasSensorDisplayClass.h>
-#endif
 #include <BeckLogLib.h>
 #include <BeckMiniLib.h>
 #include <BeckTempAndHumidityClass.h>
 
 #include <Adafruit_GFX.h>
-#include <WROVER_KIT_LCD.h>
 #include <Wire.h>
 #include <Fonts/FreeMonoBold12pt7b.h>
 #include <Fonts/FreeMonoBold24pt7b.h>
@@ -24,10 +21,8 @@ const char szFileDate[]    = "6/15/21a";
 
 #define min(X, Y)       (((X) < (Y)) ? (X) : (Y))
 #if DO_ROVER
-  //const bool       bDoRover                = true;
   const UINT16     usTopText_CursorY       =  35;
 #else
-  //const bool       bDoRover                = false;
   const UINT16     usTopText_CursorY       =  35;
 #endif
 
@@ -111,7 +106,7 @@ void loop() {
 #if DO_ROVER
   DisplayUpdate();
 #else
-    GasSensorDisplay.Setup();
+  GasSensorDisplay.Handle();
 #endif
 }  //loop()
 
@@ -123,6 +118,8 @@ void DisplayBegin() {
   RoverLCD.setRotation(1);
   DisplayClear();
 #else
+  // TTGODisplayClass::TTGODisplay() constructor handles setup, GasSensorDisplay inherits it
+  // class GasSensorDisplay: public TTGO_DisplayClass
 #endif
   return;
 }  //DisplayBegin
@@ -177,7 +174,6 @@ void ClearTextBackground(INT16 sUpperLeftX, INT16 sUpperLeftY, UINT16 usWidth, U
   RoverLCD.fillRect(sUpperLeftX, sUpperLeftY, usWidth, usHeight, BackgroundColor);
 #else
 #endif
-  RoverLCD.fillRect(sUpperLeftX, sUpperLeftY, usWidth, usHeight, BackgroundColor);
   return;
 } //ClearTextBackground
 

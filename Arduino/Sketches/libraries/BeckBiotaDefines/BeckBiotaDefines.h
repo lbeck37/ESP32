@@ -1,4 +1,4 @@
-// BeckBiotaDefines.h, 6/14/21b
+// BeckBiotaDefines.h, 6/16/21a
 #pragma once
 #include <cstdint>
 
@@ -10,10 +10,14 @@
 #define USE_IMU                 false
 #define DO_NTP                  false
 #define DO_OTA                  false
-#define DO_ROVER                  true
 #define DO_THERMOSTAT           false
-#define DO_TTGO                 false
 #define DO_WEB_SERVER           false
+#define DO_ROVER                  true
+//If DO_ROVER is not true, then the display is on TTGO instead of the ESP-WROVER-KIT
+
+#include <WROVER_KIT_LCD.h>
+//#include <TFT_eSPI.h>
+
 
 typedef   int16_t       ColorType;      //See Adafruit_GFX.h
 typedef   int16_t       PUnit;          //Pixel Unit

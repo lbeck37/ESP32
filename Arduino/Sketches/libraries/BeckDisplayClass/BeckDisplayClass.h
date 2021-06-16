@@ -1,14 +1,14 @@
-// BeckDisplayClass.h, 6/21a
+// BeckDisplayClass.h, 6/15/21a
 #pragma once
 //Initially used for TTGO ESP32 module. 135 x 240, 1.14", 240dpi display
 
 #include <BeckBiotaDefines.h>
 #if DO_ROVER
   #include <WROVER_KIT_LCD.h>
-#endif
-
-#if DO_TTGO
+  typedef WROVER_KIT_LCD      GraphicsLibrary;
+#else
   #include <TFT_eSPI.h>
+  typedef TFT_eSPI            GraphicsLibrary;
 #endif
 
 //Remove the "//" in front of the #define for a font you use
@@ -23,26 +23,6 @@
 #define ROBOTO_CONDENSED_130
 //#define ROBOTO_CONDENSED_BOLD_130
 //#define ROBOTO_MEDIUM_150
-
-/*
-#if DO_ROVER
-  typedef WROVER_KIT_LCD      GraphicsLibrary;
-#endif
-*/
-
-#if DO_TTGO
-  typedef TFT_eSPI                  GraphicsLibrary;
-#else
-  typedef WROVER_KIT_LCD            GraphicsLibrary;
-#endif
-
-//typedef int32_t       ColorType;
-/* Went to BeckBiotaDefines.h
-typedef int16_t       ColorType;      //See Adafruit_GFX.h
-typedef int32_t       PUnit;          //Pixel Unit
-typedef uint8_t       FontSize;
-typedef float         DegreeType;
-*/
 
 //TTGO 1.14" display
 const PUnit          ScreenWidth  = 240;
@@ -159,14 +139,8 @@ public:
   virtual void  PrintLine             (const char* szLineToPrint){}
 
 protected:
-/*
-#if DO_ROVER
-  //WROVER_KIT_LCD          GLib    = WROVER_KIT_LCD();
-  WROVER_KIT_LCD          GLib;
-  //typedef WROVER_KIT_LCD      GraphicsLibrary;
-#endif
-*/
   GraphicsLibrary         GLib                  = GraphicsLibrary();
+  //TTGO_GLib         GLib                     = TTGO_GLib();
 
   ScreenOrientationType   _eScreenOrientation   = eUSBLeft;
   ColorType               _BackgroundColor      = BECK_BLACK;

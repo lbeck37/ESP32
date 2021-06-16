@@ -8,6 +8,9 @@ const char szDisplayClassFileDate[]  = "5/21/21a";
 #include "Free_Fonts.h"
 #include <Streaming.h>
 
+short int   TTGO_Width  = 135;
+short int   TTGO_Height = 240
+
 //Scalable fonts created by Font Creator, http://oleddisplay.squix.ch/#/home
 #ifdef REDRESSED__REGULAR_20
   #include <Redressed_Regular_20.h>
