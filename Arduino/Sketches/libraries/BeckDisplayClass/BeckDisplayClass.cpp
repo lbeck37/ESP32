@@ -1,5 +1,5 @@
 const char szDisplayClassFileName[]  = "BeckDisplayClass.cpp";
-const char szDisplayClassFileDate[]  = "5/21/21a";
+const char szDisplayClassFileDate[]  = "6/16/21a";
 
 #include <BeckDisplayClass.h>
 #if DO_THERMOSTAT
@@ -9,7 +9,7 @@ const char szDisplayClassFileDate[]  = "5/21/21a";
 #include <Streaming.h>
 
 short int   TTGO_Width  = 135;
-short int   TTGO_Height = 240
+short int   TTGO_Height = 240;
 
 //Scalable fonts created by Font Creator, http://oleddisplay.squix.ch/#/home
 #ifdef REDRESSED__REGULAR_20

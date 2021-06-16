@@ -1,7 +1,14 @@
-// BeckTTGODisplayClass.cpp, 5/19/21a
+// BeckTTGODisplayClass.cpp, 6/16/21b
+const char szTTGODisplayClassFileName[]  = "BeckBarClass.cpp";
+const char szTTGODisplayClassFileDate[]  = "6/16/21a";
+
 
 #include <BeckTTGODisplayClass.h>
 #include "Free_Fonts.h"
+#include <Fonts/FreeMonoBold12pt7b.h>
+#include <Fonts/FreeMonoBold24pt7b.h>
+#include <Fonts/FreeSans9pt7b.h>
+#include <Fonts/FreeSansOblique18pt7b.h>
 #include <Streaming.h>
 
 //Scalable fonts created by Font Creator, http://oleddisplay.squix.ch/#/home
@@ -38,13 +45,14 @@
 
 
 TTGODisplayClass::TTGODisplayClass() {
+  Serial << "TTGODisplayClass::TTGODisplayClass(void): " << szTTGODisplayClassFileName << ", " << szTTGODisplayClassFileDate << endl;
   GLib.init             ();
   GLib.setRotation      (_eScreenOrientation);
   GLib.setTextColor     (_TextColor, _BackgroundColor);
   GLib.setTextFont      (4);   //26 pixels
   GLib.fillScreen       (_FillColor);
   //GLib.setCursor        (0, 10);             //Upper left corner, no inverting, good with text
-  GLib.setCursor    (_CursorX, _CursorY);
+  GLib.setCursor        (_CursorX, _CursorY);
   return;
 } //constructor
 
