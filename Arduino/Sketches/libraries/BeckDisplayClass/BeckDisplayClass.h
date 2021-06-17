@@ -26,7 +26,7 @@
 
 //TTGO 1.14" display
 const PUnit          ScreenWidth  = 240;
-const PUnit          ScreenHeight = 135;;
+const PUnit          ScreenHeight = 135;
 
 extern char           sz100CharDisplayBuffer[100];    //For building strings for display
 

@@ -1,8 +1,8 @@
 const char szGasSensorDisplayClassFileName[]  = "BeckGasSensorDisplayClass.cpp";
-const char szGasSensorDisplayClassFileDate[]  = "5/13/21d";
+const char szGasSensorDisplayClassFileDate[]  = "6/16/21b";
 
 #include <BeckGasSensorDisplayClass.h>
-#include <BeckGasSensorDataClass.h>
+#include <BeckEnviroDataClass.h>
 #include "Free_Fonts.h"
 #include <Streaming.h>
 
@@ -28,9 +28,14 @@ void GasSensorDisplayClass::Setup(void){
 void GasSensorDisplayClass::Handle(){
    if(millis() >= ulNextGasSensorDisplayMsec){
     ulNextGasSensorDisplayMsec= millis() + ulGasSensorDisplayPeriodMsec;
+    Serial << "GasSensorDisplayClass::Handle(): ulNextGasSensorDisplayMsec= " << ulNextGasSensorDisplayMsec << endl;
     //DrawCO2andTVOC();
+/*
     int32_t   CO2_Value= GasSensorData.GetCO2_Value();
     int32_t   VOC_Value= GasSensorData.GetVOC_Value();
+*/
+    int32_t   CO2_Value= EnviroData.GetCO2_Value();
+    int32_t   VOC_Value= EnviroData.GetVOC_Value();
 
     DrawCO2andTVOC_text(CO2_Value, VOC_Value);
     DrawBar(eCO2Gas, CO2_Value);
@@ -42,23 +47,30 @@ void GasSensorDisplayClass::Handle(){
 
 
 void GasSensorDisplayClass::DrawCO2andTVOC_text(int32_t CO2_Value, int32_t VOC_Value){
+  Serial << "GasSensorDisplayClass::DrawCO2andTVOC_text(" << CO2_Value << ", " << VOC_Value << "): Begin" << endl;
   SetTextColor  (Gas_FontColor);
   SelectFont    (eGas_Font, eGas_PointSize);
 
   //If the new value is different than last value, clear the changed area and display the new value.
   if (CO2_Value != CO2_LastValue){
+    Serial << "GasSensorDisplayClass::DrawCO2andTVOC_text():(CO2_Value!=CO2_LastValue)"<< endl;
     SetFillColor(Gas_BackgroundColor);
     DrawFilledRectangle(BlankTextLeftDots, BlankTextCO2BottomDots, BlankTextWidthDots, BlankTextHeightDots);
 
+    Serial << "GasSensorDisplayClass::DrawCO2andTVOC_text(): CO2: Call SetCursor("<< CO2_TextLeftDots <<", "<<
+        CO2_TextBottomDots <<")"<<endl;
     SetCursor(CO2_TextLeftDots, CO2_TextBottomDots);
     sprintf(sz100CharDisplayBuffer, "CO2:%4dppm", CO2_Value);
     Print(sz100CharDisplayBuffer);
   } //if(CO2Value!=CO2_LastValue)
 
   if (VOC_Value != VOC_LastValue){
+    Serial << "DrawCO2andTVOC_text():(VOC_Value!=VOC_LastValue)"<< endl;
     SetFillColor(Gas_BackgroundColor);
     DrawFilledRectangle(BlankTextLeftDots, BlankTextVOCBottomDots, BlankTextWidthDots, BlankTextHeightDots);
 
+    Serial << "GasSensorDisplayClass::DrawCO2andTVOC_text(): VOC:Call SetCursor("<< VOC_TextLeftDots <<", "<<
+        VOC_TextBottomDots <<")"<<endl;
     SetCursor(VOC_TextLeftDots, VOC_TextBottomDots);
     sprintf(sz100CharDisplayBuffer, "VOC:%4dppb", VOC_Value);
     Print(sz100CharDisplayBuffer);
@@ -69,6 +81,7 @@ void GasSensorDisplayClass::DrawCO2andTVOC_text(int32_t CO2_Value, int32_t VOC_V
 
 
 void GasSensorDisplayClass::DrawBar(GasType eGasType, int32_t wValue){
+  Serial << "GasSensorDisplayClass::DrawBar(): Begin"<< endl;
   int32_t   XLeftDots;
   //int32_t   XRightDots;
   int32_t   YBottomDots;

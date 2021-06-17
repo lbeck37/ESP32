@@ -45,7 +45,9 @@ void GasSensorClass::Handle(){
 
       if(false || (millis() >= ulNextPrintMsec)){
         ulNextPrintMsec= millis() + ulPrintPeriodMsec;
-        Serial << "GasSensorClass::Handle(): CO2= " << CO2_Value << "ppm, VOC= " << VOC_Value << endl;
+        //Serial << "GasSensorClass::Handle(): CO2= " << CO2_Value << "ppm, VOC= " << VOC_Value << endl;
+        Serial << "GasSensorClass::Handle(): CO2= " << EnviroData.GetCO2_Value() <<
+            "ppm, VOC= " << EnviroData.GetVOC_Value() << endl;
       }	//if(millis()>=ulNextPrintMsec)
     } //if(!CCS811_GasSensor.readData())
     else{

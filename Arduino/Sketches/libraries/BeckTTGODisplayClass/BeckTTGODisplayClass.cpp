@@ -242,6 +242,8 @@ void TTGODisplayClass::DrawRectangle(PUnit XLeft, PUnit YBottom, PUnit Width, PU
 }
 
 void TTGODisplayClass::DrawFilledRectangle(PUnit XLeft, PUnit YBottom, PUnit Width, PUnit Height){
+  Serial << "TTGODisplayClass::DrawFilledRectangle(" << XLeft << ", " <<
+      YBottom << ", " << Width << ", " << Height << "): Begin" << endl;
   PUnit   X1= XLeft;
   PUnit   Y1= ScreenHeight - (YBottom + Height);
   GLib.fillRect(X1, Y1, Width, Height, _FillColor);
@@ -291,12 +293,14 @@ void TTGODisplayClass::DrawGrid(void){
   return;
 } //DrawGrid
 
-void TTGODisplayClass::Print(const char* szLineToPrint) {
-  GLib.print(szLineToPrint);
+void TTGODisplayClass::Print(const char* szTextToPrint) {
+  Serial << "TTGODisplayClass::Print(): szTextToPrint=" << szTextToPrint<< endl;
+  GLib.print(szTextToPrint);
   return;
 } //Print
 
 void TTGODisplayClass::PrintLine(const char* szLineToPrint) {
+  Serial << "TTGODisplayClass::PrintLine(): szLineToPrint=" << szLineToPrint<< endl;
   GLib.println(szLineToPrint);
   return;
 } //PrintLine

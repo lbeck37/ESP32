@@ -62,7 +62,7 @@ void SystemClass::Setup(ProjectType eBiotaProjectType){
   GasSensor.Setup();
 
 #if DO_TTGO
-  Serial << LOG0 << "SystemClass::Setup(): Call BiotaDisplay.Setup()" << endl;
+  Serial << LOG0 << "SystemClass::Setup(): Call GasSensorDisplay.Setup()" << endl;
   GasSensorDisplay.Setup();
 #endif
 

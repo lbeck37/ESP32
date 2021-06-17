@@ -1,4 +1,4 @@
-// BeckTTGODisplayClass.h, 6/14/21a
+// BeckTTGODisplayClass.h, 6/14/21b
 
 #include <BeckDisplayClass.h>
 
@@ -25,7 +25,7 @@ public:
   void  DrawFilledRectangle   (PUnit XLeft, PUnit YTop, PUnit Width, PUnit Height);
   void  DrawFilledCircle      (PUnit XCenter, PUnit YCenter, PUnit Radius);
   void  DrawGrid              (void);
-  void  Print                 (const char* szLineToPrint);
+  void  Print                 (const char* szTextToPrint);
   void  PrintLine             (const char* szLineToPrint);
 
 protected:
