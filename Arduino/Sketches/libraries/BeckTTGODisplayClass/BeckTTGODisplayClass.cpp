@@ -1,6 +1,6 @@
-// BeckTTGODisplayClass.cpp, 6/16/21b
+// BeckTTGODisplayClass.cpp, 6/17/21a
 const char szTTGODisplayClassFileName[]  = "BeckBarClass.cpp";
-const char szTTGODisplayClassFileDate[]  = "6/16/21a";
+const char szTTGODisplayClassFileDate[]  = "6/17/21a";
 
 
 #include <BeckTTGODisplayClass.h>
@@ -57,17 +57,33 @@ TTGODisplayClass::TTGODisplayClass() {
 } //constructor
 
 TTGODisplayClass::~TTGODisplayClass() {
-  Serial << "~ColorDisplay(): Destructing" << endl;
+  Serial << "~TTGODisplayClass(): Destructing" << endl;
 } //destructor
 
 PUnit TTGODisplayClass::Invert_Y(PUnit Y1){
   return(ScreenHeight - Y1);
 }
 
+void TTGODisplayClass::Print(const char* szTextToPrint) {
+  Serial << "TTGODisplayClass::Print(): szTextToPrint=" << szTextToPrint<< endl;
+  GLib.print(szTextToPrint);
+  return;
+} //Print
+
+void TTGODisplayClass::PrintLine(const char* szLineToPrint) {
+  Serial << "TTGODisplayClass::PrintLine(): szLineToPrint=" << szLineToPrint<< endl;
+  GLib.println(szLineToPrint);
+  return;
+} //PrintLine
+
 void TTGODisplayClass::SetCursor(PUnit CursorX, PUnit CursorY){
+  Serial << "TTGODisplayClass::SetCursor(" << CursorX << ", " << CursorY << "): Begin" << endl;
   _CursorX= CursorX;
   _CursorY= CursorY;
-  GLib.setCursor(CursorX, Invert_Y(CursorY));
+  PUnit   InvertedCursorY= Invert_Y(CursorY);
+  //GLib.setCursor(CursorX, Invert_Y(CursorY));
+  Serial << "TTGODisplayClass::SetCursor(): Call GLib.setCursor(" << CursorX << ", " << InvertedCursorY << ")" << endl;
+  GLib.setCursor(CursorX, InvertedCursorY);
   return;
 }
 
@@ -100,9 +116,17 @@ void  TTGODisplayClass::SetLineColor(ColorType NewLineColor){
   return;
 }
 
+void TTGODisplayClass::SetFreeFont(const GFXfont *Font){
+  Serial << "TTGODisplayClass::SetFreeFont(): Call GLib.setFreeFont()" << endl;
+  GLib.setFreeFont(Font);
+  return;
+}
+
 void TTGODisplayClass::SelectFont(FontFaceType eFontFace, FontPointType eFontPoint){
   _eFontFace    = eFontFace;
   _eFontPoint   = eFontPoint;
+  Serial << "TTGODisplayClass::SelectFont(): eFontFace= " << eFontFace <<
+      ", eFontPoint= " << eFontPoint << endl;
   switch (eFontFace){
     case eMonoFace:
       switch (eFontPoint){
@@ -110,7 +134,7 @@ void TTGODisplayClass::SelectFont(FontFaceType eFontFace, FontPointType eFontPoi
           GLib.setFreeFont(&FreeMonoBold12pt7b);
           break;
         default:
-          Serial << "ColorDisplay::SelectFont() Font point not yet supported= " << eFontPoint << endl;
+          Serial << "TTGODisplayClass::SelectFont() Font point not yet supported= " << eFontPoint << endl;
           break;
         } //switch(eFontPoint)
       break;  //eRondoCondencedFace
@@ -124,7 +148,7 @@ void TTGODisplayClass::SelectFont(FontFaceType eFontFace, FontPointType eFontPoi
         GLib.setTextFont(4);
         break;
         default:
-          Serial << "ColorDisplay::SelectFont() Font point not yet supported= " << eFontPoint << endl;
+          Serial << "TTGODisplayClass::SelectFont() Font point not yet supported= " << eFontPoint << endl;
           break;
         } //switch(eFontPoint)
       break;
@@ -132,16 +156,18 @@ void TTGODisplayClass::SelectFont(FontFaceType eFontFace, FontPointType eFontPoi
         switch (eFontPoint){
       #ifdef MONOSPACED_BOLD_30
         case e30point:
-         GLib.setFreeFont(&Monospaced_bold_30);
+          Serial << "TTGODisplayClass::SelectFont(): Call SetFreeFont(&Monospaced_bold_30)" << endl;
+          //GLib.setFreeFont(&Monospaced_bold_30);
+          SetFreeFont(&Monospaced_bold_30);
         break;
       #endif
       #ifdef MONOSPACED_BOLD_60
         case e60point:
-         GLib.setFreeFont(&Monospaced_bold_60);
+          GLib.setFreeFont(&Monospaced_bold_60);
         break;
       #endif
           default:
-            Serial << "ColorDisplay::SelectFont() Font point not yet supported= " << eFontPoint << endl;
+            Serial << "TTGODisplayClass::SelectFont() Font point not yet supported= " << eFontPoint << endl;
             break;
           } //switch(eFontPoint)
         break;  //eRedressedRegularFace
@@ -154,7 +180,7 @@ void TTGODisplayClass::SelectFont(FontFaceType eFontFace, FontPointType eFontPoi
                 break;
             #endif
             default:
-              Serial << "ColorDisplay::SelectFont() Font point not yet supported= " << eFontPoint << endl;
+              Serial << "TTGODisplayClass::SelectFont() Font point not yet supported= " << eFontPoint << endl;
               break;
             } //switch(eFontPoint)
           break;  //eRedressedRegularFace
@@ -173,12 +199,12 @@ void TTGODisplayClass::SelectFont(FontFaceType eFontFace, FontPointType eFontPoi
           #endif
           #ifdef ROBOTO_MEDIUM_150
             case e150point:
-              //Serial << "ColorDisplay::SelectFont(): Font set to Roboto_Medium_150" << endl;
+              //Serial << "TTGODisplayClass::SelectFont(): Font set to Roboto_Medium_150" << endl;
               GLib.setFreeFont(&Roboto_Medium_150);
               break;
           #endif
           default:
-            Serial << "ColorDisplay::SelectFont() Font point not yet supported= " << eFontPoint << endl;
+            Serial << "TTGODisplayClass::SelectFont() Font point not yet supported= " << eFontPoint << endl;
             break;
           } //switch(eFontPoint)
         break;  //eRobotoMediumFace
@@ -196,7 +222,7 @@ void TTGODisplayClass::SelectFont(FontFaceType eFontFace, FontPointType eFontPoi
                 break;
             #endif
             default:
-              Serial << "ColorDisplay::SelectFont() Font point not supported= " << eFontPoint << endl;
+              Serial << "TTGODisplayClass::SelectFont() Font point not supported= " << eFontPoint << endl;
               break;
           } //switch(eFontPoint)
           break;
@@ -208,12 +234,12 @@ void TTGODisplayClass::SelectFont(FontFaceType eFontFace, FontPointType eFontPoi
                 break;
             #endif
             default:
-              Serial << "ColorDisplay::SelectFont() Font point not supported= " << eFontPoint << endl;
+              Serial << "TTGODisplayClass::SelectFont() Font point not supported= " << eFontPoint << endl;
               break;
           } //switch(eFontPoint)
           break;
         default:
-          Serial << "ColorDisplay::SelectFont() Font face not yet supported= " << eFontFace << endl;
+          Serial << "TTGODisplayClass::SelectFont() Font face not yet supported= " << eFontFace << endl;
           break;
   } //switch (eFontFace)
   return;
@@ -257,7 +283,7 @@ void TTGODisplayClass::DrawFilledCircle(PUnit XCenter, PUnit YCenter, PUnit Radi
 
 //For reference, draw a grid of lines with labels under every 25 horizontal lines.
 void TTGODisplayClass::DrawGrid(void){
-  Serial << "ColorDisplay::DrawGrid()" << endl;
+  Serial << "TTGODisplayClass::DrawGrid()" << endl;
   SetLineColor(BECK_BLACK);
 
   //Draw vertical lines
@@ -292,16 +318,4 @@ void TTGODisplayClass::DrawGrid(void){
   }   //for
   return;
 } //DrawGrid
-
-void TTGODisplayClass::Print(const char* szTextToPrint) {
-  Serial << "TTGODisplayClass::Print(): szTextToPrint=" << szTextToPrint<< endl;
-  GLib.print(szTextToPrint);
-  return;
-} //Print
-
-void TTGODisplayClass::PrintLine(const char* szLineToPrint) {
-  Serial << "TTGODisplayClass::PrintLine(): szLineToPrint=" << szLineToPrint<< endl;
-  GLib.println(szLineToPrint);
-  return;
-} //PrintLine
 //Last line.

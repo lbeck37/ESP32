@@ -1,5 +1,5 @@
 const char szGasSensorDisplayClassFileName[]  = "BeckGasSensorDisplayClass.cpp";
-const char szGasSensorDisplayClassFileDate[]  = "6/16/21b";
+const char szGasSensorDisplayClassFileDate[]  = "6/17/21b";
 
 #include <BeckGasSensorDisplayClass.h>
 #include <BeckEnviroDataClass.h>
@@ -48,8 +48,9 @@ void GasSensorDisplayClass::Handle(){
 
 void GasSensorDisplayClass::DrawCO2andTVOC_text(int32_t CO2_Value, int32_t VOC_Value){
   Serial << "GasSensorDisplayClass::DrawCO2andTVOC_text(" << CO2_Value << ", " << VOC_Value << "): Begin" << endl;
-  SetTextColor  (Gas_FontColor);
-  SelectFont    (eGas_Font, eGas_PointSize);
+  Serial << "GasSensorDisplayClass::DrawCO2andTVOC_text(): Call SetTextColor(" << Gas_FontColor << ")" << endl;
+  SetTextColor(Gas_FontColor);
+  SelectFont(eGas_Font, eGas_PointSize);
 
   //If the new value is different than last value, clear the changed area and display the new value.
   if (CO2_Value != CO2_LastValue){
@@ -65,7 +66,7 @@ void GasSensorDisplayClass::DrawCO2andTVOC_text(int32_t CO2_Value, int32_t VOC_V
   } //if(CO2Value!=CO2_LastValue)
 
   if (VOC_Value != VOC_LastValue){
-    Serial << "DrawCO2andTVOC_text():(VOC_Value!=VOC_LastValue)"<< endl;
+    Serial << "GasSensorDisplayClass::DrawCO2andTVOC_text():(VOC_Value!=VOC_LastValue)"<< endl;
     SetFillColor(Gas_BackgroundColor);
     DrawFilledRectangle(BlankTextLeftDots, BlankTextVOCBottomDots, BlankTextWidthDots, BlankTextHeightDots);
 

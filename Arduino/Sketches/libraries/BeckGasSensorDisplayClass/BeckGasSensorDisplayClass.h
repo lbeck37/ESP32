@@ -1,4 +1,4 @@
-// BeckGasSensorDisplayClass.h, 5/25/21b
+// BeckGasSensorDisplayClass.h, 6/17/21a
 #pragma once
 //Initially used for TTGO ESP32 module. 135 x 240, 1.14", 240dpi display
 
@@ -37,6 +37,7 @@ protected:
 
   FontFaceType      eGas_Font                       = eMonospacedBold;
   FontPointType     eGas_PointSize                  = e30point;
+  //FontPointType     eGas_PointSize                  = e60point;
 
   PUnit             BlankTextLeftDots               =  72;     //Area of screen to clear before writing text values
   PUnit             BlankTextWidthDots              =  84;
