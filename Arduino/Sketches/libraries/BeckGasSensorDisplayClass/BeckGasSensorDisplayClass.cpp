@@ -6,6 +6,13 @@ const char szGasSensorDisplayClassFileDate[]  = "6/17/21b";
 #include "Free_Fonts.h"
 #include <Streaming.h>
 
+#ifdef MONOSPACED_BOLD_30
+  #include <Monospaced_Bold_30.h>
+#endif
+#ifdef MONOSPACED_BOLD_60
+  #include <Monospaced_Bold_60.h>
+#endif
+
 GasSensorDisplayClass GasSensorDisplay;                   //So every module can use the same object
 
 GasSensorDisplayClass::GasSensorDisplayClass() {
@@ -46,6 +53,36 @@ void GasSensorDisplayClass::Handle(){
 } //Handle
 
 
+/*
+void GasSensorDisplayClass::DisplayText(UINT16 usCursorX, UINT16 usCursorY, char *pcText,
+                 const GFXfont *pFont, UINT8 ucSize, UINT16 usColor) {
+*/
+void GasSensorDisplayClass::DisplayText(uint16_t usCursorX, uint16_t usCursorY, char *pcText,
+                                        const GFXfont *pFont, uint8_t ucSize, uint16_t usColor){
+  //240x320 3.2", 10 lines => 24 pixels/line
+#if DO_ROVER
+  RoverLCD.setFont(pFont);
+  RoverLCD.setTextColor(usColor);
+  RoverLCD.setTextSize(ucSize);
+  RoverLCD.setTextWrap(false);
+  RoverLCD.setCursor(usCursorX, usCursorY);
+  RoverLCD.print(pcText);
+#else
+  #if DO_TTGO
+  SetFreeFont (&Monospaced_bold_30);
+  SetTextColor(usColor);
+  SetTextSize (1);
+  SetTextWrap(false);
+  SetCursor(usCursorX, usCursorY);
+  Print(pcText);
+  #else
+    Serial << "GasSensorDisplayClass::DisplayText(): Display is neither DO_ROVER nor DO_TTGO" << endl;
+  #endif
+#endif
+  return;
+}  //DisplayText
+
+
 void GasSensorDisplayClass::DrawCO2andTVOC_text(int32_t CO2_Value, int32_t VOC_Value){
   Serial << "GasSensorDisplayClass::DrawCO2andTVOC_text(" << CO2_Value << ", " << VOC_Value << "): Begin" << endl;
   Serial << "GasSensorDisplayClass::DrawCO2andTVOC_text(): Call SetTextColor(" << Gas_FontColor << ")" << endl;
@@ -58,12 +95,22 @@ void GasSensorDisplayClass::DrawCO2andTVOC_text(int32_t CO2_Value, int32_t VOC_V
     SetFillColor(Gas_BackgroundColor);
     DrawFilledRectangle(BlankTextLeftDots, BlankTextCO2BottomDots, BlankTextWidthDots, BlankTextHeightDots);
 
+/*
     Serial << "GasSensorDisplayClass::DrawCO2andTVOC_text(): CO2: Call SetCursor("<< CO2_TextLeftDots <<", "<<
         CO2_TextBottomDots <<")"<<endl;
     SetCursor(CO2_TextLeftDots, CO2_TextBottomDots);
     sprintf(sz100CharDisplayBuffer, "CO2:%4dppm", CO2_Value);
     Print(sz100CharDisplayBuffer);
+void GasSensorDisplayClass::DisplayText(uint16_t usCursorX, uint16_t usCursorY, char *pcText,
+                                        const GFXfont *pFont, uint8_t ucSize, uint16_t usColor);
+*/
   } //if(CO2Value!=CO2_LastValue)
+  uint8_t ucSize  = 1;
+  uint16_t usColor  = TFT_WHITE;
+  sprintf(sz100CharDisplayBuffer, "CO2:%4dppm", CO2_Value);
+  //SelectFont(eGas_Font, eGas_PointSize);
+  DisplayText(CO2_TextLeftDots, CO2_TextBottomDots, sz100CharDisplayBuffer,
+              &Monospaced_bold_30, ucSize, usColor);
 
   if (VOC_Value != VOC_LastValue){
     Serial << "GasSensorDisplayClass::DrawCO2andTVOC_text():(VOC_Value!=VOC_LastValue)"<< endl;

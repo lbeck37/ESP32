@@ -98,9 +98,20 @@ void  TTGODisplayClass::SetTextColor(ColorType NewTextColor){
   return;
 }
 
-void  TTGODisplayClass::SetTextBGColor(ColorType NewTextBGColor){
+void TTGODisplayClass::SetTextBGColor(ColorType NewTextBGColor){
   _TextBGColor= NewTextBGColor;
   GLib.setTextColor(_TextColor, _TextBGColor);    //No separate call to set the Text BG color.
+  return;
+}
+
+void TTGODisplayClass::SetTextSize(uint8_t ucSize){
+  GLib.setTextSize(ucSize);
+  return;
+}
+
+void TTGODisplayClass::SetTextWrap(bool bWrap){
+  Serial << "TTGODisplayClass::SetTextWrap(): bWrap= " << bWrap << endl;
+  GLib.setTextWrap(bWrap);
   return;
 }
 

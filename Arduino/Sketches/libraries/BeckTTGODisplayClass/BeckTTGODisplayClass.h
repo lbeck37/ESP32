@@ -19,6 +19,8 @@ public:
   void  SetBackgroundColor    (ColorType NewBackgroundColor);
   void  SetTextColor          (ColorType NewTextColor);
   void  SetTextBGColor        (ColorType NewTextBGColor);
+  void  SetTextSize           (uint8_t ucSize);
+  void  SetTextWrap           (bool bWrap);
   void  SetFillColor          (ColorType NewFillColor);
   void  SetLineColor          (ColorType NewLineColor);
   void  SetFreeFont           (const GFXfont *Font);

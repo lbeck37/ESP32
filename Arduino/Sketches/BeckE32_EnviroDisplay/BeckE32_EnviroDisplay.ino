@@ -76,7 +76,7 @@ void setup()   {
     Serial << LOG0 << "setup(): Call DisplayBegin()" << endl;
     DisplayBegin();
 #else
-    GasSensorDisplay.Setup();
+    //GasSensorDisplay.Setup();
 #endif
 
   Serial << LOG0 << "setup(): Call CreateBarData() and initialize CO2Bar" << endl;
@@ -106,7 +106,7 @@ void loop() {
 #if DO_ROVER
   DisplayUpdate();
 #else
-  GasSensorDisplay.Handle();
+  //GasSensorDisplay.Handle();
 #endif
 }  //loop()
 
