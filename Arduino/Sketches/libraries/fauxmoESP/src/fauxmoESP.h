@@ -1,9 +1,8 @@
-// Beck, 10/21/20a, turn on DEBUG_FAUXMO
 /*
 
 FAUXMO ESP
 
-Copyright (C) 2016-2018 by Xose Pérez <xose dot perez at gmail dot com>
+Copyright (C) 2016-2020 by Xose Pérez <xose dot perez at gmail dot com>
 
 The MIT License (MIT)
 
@@ -36,10 +35,6 @@ THE SOFTWARE.
 #define FAUXMO_RX_TIMEOUT           3
 
 //#define DEBUG_FAUXMO                Serial
-#ifdef DEBUG_FAUXMO
-  #undef DEBUG_FAUXMO
-#endif
-
 #ifdef DEBUG_FAUXMO
     #if defined(ARDUINO_ARCH_ESP32)
         #define DEBUG_MSG_FAUXMO(fmt, ...) { DEBUG_FAUXMO.printf_P((PGM_P) PSTR(fmt), ## __VA_ARGS__); }

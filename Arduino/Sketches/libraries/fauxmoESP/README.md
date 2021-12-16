@@ -4,12 +4,17 @@ Amazon Alexa support for ESP8266 and ESP32 devices.
 
 This is a library for ESP8266/ESP32-based devices that emulates Philips Hue lights and thus allows you to control them using this protocol, in particular from Alexa-powered devices like the Amazon Echo or the Dot.
 
-[![version](https://img.shields.io/badge/version-3.1.0-brightgreen.svg)](CHANGELOG.md)
-[![codacy](https://img.shields.io/codacy/grade/44478ddd58fe4cc6a2bc5598232663b8/dev.svg)](https://www.codacy.com/app/xoseperez/fauxmoesp/dashboard)
+[![version](https://img.shields.io/badge/version-3.1.1-brightgreen.svg)](CHANGELOG.md)
+[![codacy](https://img.shields.io/codacy/grade/44478ddd58fe4cc6a2bc5598232663b8/master.svg)](https://www.codacy.com/app/xoseperez/fauxmoesp/dashboard)
 [![license](https://img.shields.io/badge/license-MIT-orange.svg)](LICENSE)
 
 [![donate](https://img.shields.io/badge/donate-PayPal-blue.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=xose%2eperez%40gmail%2ecom&lc=US&no_note=0&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHostedGuest)
 [![twitter](https://img.shields.io/twitter/follow/xoseperez.svg?style=social)](https://twitter.com/intent/follow?screen_name=xoseperez)
+
+## Notice
+
+**As of October 2020, this project is now being maintained at https://github.com/vintlabs/fauxmoESP**
+
 
 ## History
 
@@ -108,6 +113,8 @@ Current status of the library:
 
 * Some people have reported problems when the ESP and the Alexa devices are connected to different wireless networks (like 2.4 and 5GHz bands on some routers). See https://bitbucket.org/xoseperez/fauxmoesp/issues/53.
 
+* Latest version of ESP Async Webserver fails building with the current setup. Use version 1.2.2 max. See fauxmoESP_External_Server example `platformio.ini` file.
+
 [1]:https://github.com/esp8266/Arduino
 [2]:http://docs.platformio.org/en/stable/platforms/espressif8266.html#using-arduino-framework-with-staging-version
 [3]:https://github.com/me-no-dev/ESPAsyncTCP
@@ -117,7 +124,7 @@ Current status of the library:
 
 ## License
 
-Copyright (C) 2016-2018 by Xose Pérez <xose dot perez at gmail dot com>
+Copyright (C) 2016-2020 by Xose Pérez <xose dot perez at gmail dot com>
 
 The MIT License (MIT)
 
