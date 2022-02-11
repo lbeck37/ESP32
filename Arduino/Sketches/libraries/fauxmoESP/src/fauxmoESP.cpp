@@ -1,30 +1,4 @@
-/*
-
-FAUXMO ESP
-
-Copyright (C) 2016-2020 by Xose Pérez <xose dot perez at gmail dot com>
-
-The MIT License (MIT)
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-
-*/
+// Beck, fauxmoESP.cpp 12/16/21a
 
 #include <Arduino.h>
 #include "fauxmoESP.h"
@@ -32,7 +6,6 @@ THE SOFTWARE.
 // -----------------------------------------------------------------------------
 // UDP
 // -----------------------------------------------------------------------------
-
 void fauxmoESP::_sendUDPResponse() {
 
 	DEBUG_MSG_FAUXMO("[FAUXMO] Responding to M-SEARCH request\n");
@@ -171,7 +144,7 @@ bool fauxmoESP::_onTCPList(AsyncClient *client, String url, String body) {
 	// Get the id
 	unsigned char id = url.substring(pos+7).toInt();
 
-	// This will hold the response string	
+	// This will hold the response string
 	String response;
 
 	// Client is requesting all devices
@@ -190,7 +163,7 @@ bool fauxmoESP::_onTCPList(AsyncClient *client, String url, String body) {
 	}
 
 	_sendTCPResponse(client, "200 OK", (char *) response.c_str(), "application/json");
-	
+
 	return true;
 
 }
@@ -251,7 +224,7 @@ bool fauxmoESP::_onTCPControl(AsyncClient *client, String url, String body) {
 	}
 
 	return false;
-	
+
 }
 
 bool fauxmoESP::_onTCPRequest(AsyncClient *client, bool isGet, String url, String body) {
@@ -297,7 +270,7 @@ bool fauxmoESP::_onTCPData(AsyncClient *client, void *data, size_t len) {
 	while (*p != ' ') p++;
 	*p = 0;
 	p++;
-	
+
 	// Split word and flag start of url
 	char * url = p;
 
@@ -383,13 +356,13 @@ void fauxmoESP::_onTCPClient(AsyncClient *client) {
 // -----------------------------------------------------------------------------
 
 fauxmoESP::~fauxmoESP() {
-  	
+
 	// Free the name for each device
 	for (auto& device : _devices) {
 		free(device.name);
   	}
-  	
-	// Delete devices  
+
+	// Delete devices
 	_devices.clear();
 
 }
@@ -522,5 +495,5 @@ void fauxmoESP::enable(bool enable) {
         DEBUG_MSG_FAUXMO("[FAUXMO] UDP server started\n");
 
 	}
-
 }
+//Last line.

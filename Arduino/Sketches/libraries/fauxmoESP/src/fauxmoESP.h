@@ -1,9 +1,6 @@
 /*
-
 FAUXMO ESP
-
 Copyright (C) 2016-2020 by Xose Pérez <xose dot perez at gmail dot com>
-
 The MIT License (MIT)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -101,7 +98,6 @@ class fauxmoESP {
         void handle();
 
     private:
-
         AsyncServer * _server;
         bool _enabled = false;
         bool _internal = true;
@@ -127,5 +123,5 @@ class fauxmoESP {
         bool _onTCPList(AsyncClient *client, String url, String body);
         bool _onTCPControl(AsyncClient *client, String url, String body);
         void _sendTCPResponse(AsyncClient *client, const char * code, char * body, const char * mime);
-
 };
+//Last line.

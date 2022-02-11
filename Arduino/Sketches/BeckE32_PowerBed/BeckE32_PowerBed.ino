@@ -1,10 +1,10 @@
-/* BeckE32_PowerBed.ino, 12/16/21a
- * I found it on 12/15/21 at https://randomnerdtutorials.com/alexa-echo-with-esp32-and-esp8266/
- * Rui Santos
- * Complete Project Details https://randomnerdtutorials.com
-*/
+const char szSketchName[]  = "BeckE32_PowerBed.ino";
+const char szFileDate[]    = "12/16/21f";
+
+//Rui Santos, found 12/15/21 at https://randomnerdtutorials.com/alexa-echo-with-esp32-and-esp8266/
 
 #include <Arduino.h>
+#include <BeckLogLib.h>
 #ifdef ESP32
   #include <WiFi.h>
   #define RF_RECEIVER 13
@@ -17,27 +17,21 @@
   #define RELAY_PIN_2 14
 #endif
 #include "fauxmoESP.h"
-
-//#include <RCSwitch.h>
+#include <Streaming.h>
 
 #define SERIAL_BAUDRATE 115200
 
 #define WIFI_SSID "Aspot24b"
 #define WIFI_PASS "Qazqaz11"
 
-#define LAMP_1 "lamp one"
-#define LAMP_2 "lamp two"
+#define LAMP_1 "Lamp One"
+#define LAMP_2 "Lamp Two"
 
 fauxmoESP fauxmo;
 
-//RCSwitch mySwitch = RCSwitch();
-
-// Wi-Fi Connection
 void wifiSetup() {
-  // Set WIFI module to STA mode
   WiFi.mode(WIFI_STA);
 
-  // Connect
   Serial.printf("[WIFI] Connecting to %s ", WIFI_SSID);
   WiFi.begin(WIFI_SSID, WIFI_PASS);
 
@@ -49,13 +43,17 @@ void wifiSetup() {
   Serial.println();
 
   // Connected!
-  Serial.printf("[WIFI] STATION Mode, SSID: %s, IP address: %s\n", WiFi.SSID().c_str(), WiFi.localIP().toString().c_str());
-}
+  Serial.printf("[WIFI] STATION Mode, SSID: %s, IP address: %s\n",
+		        WiFi.SSID().c_str(), WiFi.localIP().toString().c_str());
+}	//wifiSetup
+
 
 void setup() {
   // Init serial port and clean garbage
   Serial.begin(SERIAL_BAUDRATE);
-  Serial.println();
+  //Serial.println();
+  delay(100);
+  Serial << endl << LOG0 << "setup() Sketch: " << szSketchName << ", " << szFileDate << endl;
 
   // Wi-Fi connection
   wifiSetup();
@@ -66,8 +64,6 @@ void setup() {
 
   pinMode(RELAY_PIN_2, OUTPUT);
   digitalWrite(RELAY_PIN_2, HIGH);
-
-  //mySwitch.enableReceive(RF_RECEIVER);  // Receiver on interrupt 0 => that is pin #2
 
   // By default, fauxmoESP creates it's own webserver on the defined port
   // The TCP port must be 80 for gen3 devices (default is 1901)
@@ -94,17 +90,18 @@ void setup() {
     // If you have to do something more involved here set a flag and process it in your main loop.
 
     Serial.printf("[MAIN] Device #%d (%s) state: %s value: %d\n", device_id, device_name, state ? "ON" : "OFF", value);
-    if ( (strcmp(device_name, LAMP_1) == 0) ) {
+
+    if (strcmp(device_name, LAMP_1) == 0) {
       // this just sets a variable that the main loop() does something about
       Serial.println("RELAY 1 switched by Alexa");
-      //digitalWrite(RELAY_PIN_1, !digitalRead(RELAY_PIN_1));
       if (state) {
         digitalWrite(RELAY_PIN_1, LOW);
       } else {
         digitalWrite(RELAY_PIN_1, HIGH);
       }
-    }
-    if ( (strcmp(device_name, LAMP_2) == 0) ) {
+    }	//if (strcmp(device_name,LAMP_1)==0)
+
+    if (strcmp(device_name, LAMP_2) == 0) {
       // this just sets a variable that the main loop() does something about
       Serial.println("RELAY 2 switched by Alexa");
       if (state) {
@@ -112,39 +109,31 @@ void setup() {
       } else {
         digitalWrite(RELAY_PIN_2, HIGH);
       }
-    }
-  });
+    }	//if (strcmp(device_name,LAMP_2)==0)
+  });	//fauxmo.onSetState
 
-}
+  return;
+}	//setup
+
 
 void loop() {
   // fauxmoESP uses an async TCP server but a sync UDP server
   // Therefore, we have to manually poll for UDP packets
   fauxmo.handle();
 
+/*
   static unsigned long last = millis();
   if (millis() - last > 5000) {
     last = millis();
-    Serial.printf("[MAIN] Free heap: %d bytes\n", ESP.getFreeHeap());
-  }
-
-/*
-  if (mySwitch.available()) {
-   Serial.print("Received ");
-    Serial.print( mySwitch.getReceivedValue() );
-    Serial.print(" / ");
-    Serial.print( mySwitch.getReceivedBitlength() );
-    Serial.print("bit ");
-    Serial.print("Protocol: ");
-    Serial.println( mySwitch.getReceivedProtocol() );
-    if (mySwitch.getReceivedValue()==6819768) {
-      digitalWrite(RELAY_PIN_1, !digitalRead(RELAY_PIN_1));
-    }
-    if (mySwitch.getReceivedValue()==9463928) {
-      digitalWrite(RELAY_PIN_2, !digitalRead(RELAY_PIN_2));
-    }
-    delay(600);
-    mySwitch.resetAvailable();
+    Serial.printf("loop(): Just hanging out, the Free heap is %d bytes\n", ESP.getFreeHeap());
   }
 */
+  static unsigned long ulNext = millis();
+  if (millis() > ulNext) {
+    ulNext = millis() + 5000;
+    Serial.printf("loop(): Just hanging out, the Free heap is %d bytes\n", ESP.getFreeHeap());
+  } //if(millis()>ulNext)
+
+return;
 }	//loop
+//Last line.
