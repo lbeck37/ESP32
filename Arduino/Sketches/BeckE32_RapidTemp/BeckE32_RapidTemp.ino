@@ -1,14 +1,15 @@
 const String SketchName  = "BeckE32_RapidTemp.ino";
-const String FileDate    = "Feb 11, 2022d";
-//#include <BeckLogLib.h>
+const String FileDate    = "Feb 12, 2022m";
+#include <BeckLogLib.h>
 #include <BeckMiniLib.h>
 #include <SPI.h>
 #include <Adafruit_GFX.h>
 #include <WROVER_KIT_LCD.h>
 //#include <esp_wp1.h>
 //#include <esp_wp2.h>
-#include <Wire.h>
+//#include <Wire.h>
 #include <EasyButton.h>
+#include <max6675.h>
 #include <Fonts/FreeMonoBold12pt7b.h>
 #include <Fonts/FreeMonoBold24pt7b.h>
 #include <Fonts/FreeSans9pt7b.h>
@@ -36,11 +37,6 @@ static const int       sUpButton             =  2;
 static const int       sDownButton           =  4;
 static const int       sI2C_SDA              = 26;
 static const int       sI2C_SCL              = 27;
-
-static const byte      cSPICmdDataPin        = 16;    //Pin 16, D0
-static const byte      cSPIChipSelectPin     = 15;    //Pin 15, D8
-static const byte      cSPI_MOSI_Pin         = 13;    //Pin 13, D7
-static const byte      cSPI_CLK_Pin          = 14;    //Pin 14, D5
 
 static const int       sMaxButtonPresses  = 10;
 
@@ -86,6 +82,20 @@ static char       sz100CharString[101];
 
 void(* ResetESP32)(void)= 0;        //Hopefully system crashes and reset when this is called.
 
+//Prototype: MAX6675(int8_t SCLK, int8_t CS, int8_t MISO);
+INT8    cMISO     = 19;
+INT8    cMOSI_CS  = 23;
+INT8    cSCLK     =  5;
+
+//static const byte      cSPICmdDataPin        = 16;    //Pin 16, D0
+static const byte      cSPI_MOSI_Pin         = 13;    //Pin 13, D7
+static const byte      cSPI_CLK_Pin          = 14;    //Pin 14, D5
+static const byte      cSPIChipSelectPin     = 15;    //Pin 15, D8
+static const byte      cSPI_MISO_Pin         = 16;    //Pin 16, D0
+
+
+//MAX6675   Thermo1(cSCLK, cMOSI_CS, cMISO);
+MAX6675   Thermo1(cSPI_CLK_Pin, cSPIChipSelectPin, cSPI_MISO_Pin);
 
 void setup()   {
   Serial.begin(115200);
@@ -93,12 +103,18 @@ void setup()   {
 
   DisplayBegin();
   bButtonsChanged= true;  //Make the display show up during debugging.
+  Serial << "setup(): Done " << endl;
   return;
 }  //setup
 
 
 // The Arduino loop() method gets called over and over.
 void loop() {
+  double    dfDegF;
+  dfDegF= Thermo1.readFahrenheit();
+  Serial << "Loop(): Degrees F= " << dfDegF << endl;
+  delay(1000);
+
   CheckButtons();
   DisplayUpdate();
   HandleButtons();
