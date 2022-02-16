@@ -1,5 +1,5 @@
 const char szSketchName[]  = "Beck_WebServerDemo.ino";
-const char szFileDate[]    = "2/16/22a"       //Was "3/29/21c";
+const char szFileDate[]    = "3/29/21c";
 // https://randomnerdtutorials.com/esp32-esp8266-web-server-outputs-momentary-switch/
 
 #ifdef ESP32
@@ -18,7 +18,7 @@ const char szFileDate[]    = "2/16/22a"       //Was "3/29/21c";
 const char* ssid = "REPLACE_WITH_YOUR_SSID";
 const char* password = "REPLACE_WITH_YOUR_PASSWORD";
 */
-const char* ssid = "Aspot24b";
+const char* ssid = "Aspot24";
 const char* password = "Qazqaz11";
 
 const int output = 2;

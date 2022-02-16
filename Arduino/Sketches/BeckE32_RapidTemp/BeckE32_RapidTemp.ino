@@ -1,10 +1,16 @@
 const String SketchName  = "BeckE32_RapidTemp.ino";
-const String FileDate    = "Feb 12, 2022m";
+const String FileDate    = "Feb 16, 2022a";
+#ifndef ESP8266
+  #define ESP32
+#endif
+
 #include <BeckLogLib.h>
 #include <BeckMiniLib.h>
 #include <SPI.h>
 #include <Adafruit_GFX.h>
-#include <WROVER_KIT_LCD.h>
+#ifdef ESP32
+//#include <WROVER_KIT_LCD.h>
+#endif
 //#include <esp_wp1.h>
 //#include <esp_wp2.h>
 //#include <Wire.h>
@@ -42,10 +48,9 @@ static const int       sMaxButtonPresses  = 10;
 
 static const unsigned long    ulModeSwitchTime  = 1000;  //Minimum msecs between mode changes
 static const unsigned long    ulModeWaitTime    = 2000;  //Minimum msecs before mode is on
-//static const unsigned long    ulReadTimeSpacing    = 500;   //Gyro and ADC reads spaced by this.
 static const unsigned long    ulReadTimeSpacing    = 2000;   //Gyro and ADC reads spaced by this.
 
-static const uint16_t  usBackgroundColor    = WROVER_BLACK;
+//static const uint16_t  usBackgroundColor    = WROVER_BLACK;
 static const UINT16    usBoostTop           = 90;
 static const UINT16    usAccelMotorTop      = 135;
 static const UINT16    usMotorLeft          = 130;
@@ -54,7 +59,7 @@ static const INT16     sPCF8591             = 0x48;  // I2C address of the PCF85
 
 static int sCurrentMode= sNormalMode;
 
-WROVER_KIT_LCD    RoverLCD;
+//WROVER_KIT_LCD    RoverLCD;
 
 #if DO_BUTTONS
 //Create EasyButton objects to handle button presses.
@@ -72,7 +77,6 @@ static unsigned long    ulNextReadTime       = 0;  //msec when the gyro will be 
 
 //State of display items being changed and needing refresh.
 static boolean     bButtonsChanged          = true;
-
 static boolean     bModeChanged             = true;
 
 static int         sLineCount= 0;     //Used in outputs to Serial Monitor for clarity.
@@ -80,19 +84,45 @@ static int         sLineCount= 0;     //Used in outputs to Serial Monitor for cl
 static char       szTempBuffer[100];   //DOGS102 line is 17 chars with 6x8 normal font.
 static char       sz100CharString[101];
 
-void(* ResetESP32)(void)= 0;        //Hopefully system crashes and reset when this is called.
+//void(* ResetESP32)(void)= 0;        //Hopefully system crashes and reset when this is called.
 
 //Prototype: MAX6675(int8_t SCLK, int8_t CS, int8_t MISO);
+/*
 INT8    cMISO     = 19;
 INT8    cMOSI_CS  = 23;
 INT8    cSCLK     =  5;
+*/
 
+/*
+//Try number 2
 //static const byte      cSPICmdDataPin        = 16;    //Pin 16, D0
 static const byte      cSPI_MOSI_Pin         = 13;    //Pin 13, D7
 static const byte      cSPI_CLK_Pin          = 14;    //Pin 14, D5
 static const byte      cSPIChipSelectPin     = 15;    //Pin 15, D8
 static const byte      cSPI_MISO_Pin         = 16;    //Pin 16, D0
 
+//Try number 3
+static const byte      cSPI_MOSI_Pin         = 23;
+static const byte      cSPI_CLK_Pin          = 18;    //Pin 14, D5
+static const byte      cSPIChipSelectPin     = 5;    //Pin 15, D8
+static const byte      cSPI_MISO_Pin         = 19;
+*/
+
+#ifdef ESP8266
+// nodeMCU ESP8266
+// https://randomnerdtutorials.com/esp8266-pinout-reference-gpios/
+static const byte      cSPI_MISO_Pin         = 12;
+static const byte      cSPI_MOSI_Pin         = 13;
+static const byte      cSPI_CLK_Pin          = 14;    //Pin 14, D5
+static const byte      cSPIChipSelectPin     = 15;    //Pin 15, D8
+#else
+//ESP32
+// https://randomnerdtutorials.com/esp32-pinout-reference-gpios/
+static const byte      cSPI_MISO_Pin         = 19;
+static const byte      cSPI_MOSI_Pin         = 23;
+static const byte      cSPI_CLK_Pin          = 18;
+static const byte      cSPIChipSelectPin     =  5;
+#endif
 
 //MAX6675   Thermo1(cSCLK, cMOSI_CS, cMISO);
 MAX6675   Thermo1(cSPI_CLK_Pin, cSPIChipSelectPin, cSPI_MISO_Pin);
@@ -101,7 +131,7 @@ void setup()   {
   Serial.begin(115200);
   Serial << endl << "setup(): Begin " << SketchName << ", " << FileDate << endl;
 
-  DisplayBegin();
+  //DisplayBegin();
   bButtonsChanged= true;  //Make the display show up during debugging.
   Serial << "setup(): Done " << endl;
   return;
@@ -115,9 +145,9 @@ void loop() {
   Serial << "Loop(): Degrees F= " << dfDegF << endl;
   delay(1000);
 
-  CheckButtons();
-  DisplayUpdate();
-  HandleButtons();
+  //CheckButtons();
+ // DisplayUpdate();
+  //HandleButtons();
   CheckKeyboard();
   return;
 }  //loop()
@@ -137,7 +167,7 @@ void CheckKeyboard() {
     switch (cChar) {
       case 'r':
       case 'R':
-        ResetESP32();
+        //ResetESP32();
         break;
       case 'u':
       case 'U':
@@ -155,6 +185,7 @@ void CheckKeyboard() {
 }  //CheckKeyboard
 
 
+/*
 void DisplayBegin() {
   Serial << "DisplayBegin(): Call RoverLCD.begin()" << endl;
   RoverLCD.begin();
@@ -177,7 +208,7 @@ void ShowStartScreen(void) {
 
 void ShowSplash(void) {
    DisplayClear();
-/*
+
    //2 lines of big font takes lines 0-3
    RoverLCD.setTextColor(WROVER_YELLOW);
    sDisplayText(0, 0, sFontSize3, (char *)"PowerShift");
@@ -190,7 +221,7 @@ void ShowSplash(void) {
    //sDisplayText(7, 0, sFontNormal, (char *)"**Larry & Candy**");
    sDisplayText(7, 0, sFontSize2, (char *)"October 19, 2017J ");
    //sDisplayText(7, 0, sFontSize2, (char *)FileDate);
-*/
+
    return;
 }  //ShowSplash
 
@@ -260,8 +291,6 @@ void DisplayLine(const GFXfont stFont, UINT16 usColor, UINT16 usCursorX, UINT16 
 } //DisplayLine
 
 
-
-
 void DisplayButtons() {
   const GFXfont   *pFont          = &FreeSans9pt7b;
   UINT16          usCursorX       = 260;
@@ -298,17 +327,15 @@ void DisplayLowerBanner(){
 } //DisplayLowerBanner
 
 
-
-
 void HandleButtons(void) {
   if (!bHandleBothHeld()) {
      if (millis() > ulModeReadyTime) {
        switch(sCurrentMode) {
          case sNormalMode:
-            HandleNormalMode();
+            //HandleNormalMode();
             break;   //sNormalMode
          case sCalibMode:
-            HandleCalibMode();
+            //HandleCalibMode();
             break;   //sCalibMode
          default:
             Serial << "HandleButtons(): Unexpected switch value." << endl;
@@ -365,10 +392,12 @@ void HandleNormalMode(void) {
 void HandleCalibMode(void) {
  return;
 }  //HandleCalibMode
+*/
 
 
+/*
 void CheckButtons(void) {
-/*Algorithm to determine when a button has been pressed or held.
+Algorithm to determine when a button has been pressed or held.
  * Use IsRelease() to indicate the button has been pressed
  * Use IsHold() to indicate the button has been held down
  * States (Initial idea, not sure how close method is to this 4/25/15)
@@ -384,7 +413,7 @@ void CheckButtons(void) {
  *    0   Nothing to be done
  *   99   Button was held and not yet released
  *   1-10 Number of button presses not yet handled, max 10
- */
+
   //static int   sLocalButtonState[]  = {0, 0};
   boolean      bReturn              = false;
   int          sButton;
@@ -462,4 +491,5 @@ void TestButtonPins() {
   } //for(inti= 0;...
   return;
 }  //TestButtonPins
+*/
 //Last line
