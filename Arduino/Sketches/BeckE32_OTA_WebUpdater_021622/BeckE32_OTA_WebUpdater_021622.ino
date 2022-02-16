@@ -1,13 +1,17 @@
 // BeckE32_OTA_WebUpdater_021622.ino
+const char szSketchName[]  = "BeckE32_Biota.ino";
+const char szFileDate[]    = "2/16/22c";
+
 #include <WiFi.h>
 #include <WiFiClient.h>
 #include <WebServer.h>
 #include <ESPmDNS.h>
 #include <Update.h>
+#include <Streaming.h>
 
 const char* host = "esp32";
-const char* ssid = "xxx";
-const char* password = "xxxx";
+const char* ssid = "Aspot24b";
+const char* password = "Qazqaz11";
 
 WebServer server(80);
 
@@ -88,6 +92,7 @@ void setup(void) {
   // Connect to WiFi network
   WiFi.begin(ssid, password);
   Serial.println("");
+  Serial << endl << "setup(): Sketch: " << szSketchName << ", " << szFileDate << endl;
 
   // Wait for connection
   while (WiFi.status() != WL_CONNECTED) {
