@@ -1,15 +1,22 @@
-const String SketchName  = "BeckE32_FankenTemp.ino";
-const String FileDate    = "Feb 17, 2022e";
+const String SketchName  = "BeckE32_FrankenTemp.ino";
+const String FileDate    = "Feb 17, 2022p";
 #ifndef ESP8266
   #define ESP32
 #endif
 
-//#include <BeckE32_OTALib.h>
+#define DO_TEMP       false
+#define DO_WEBSERVER  false
+
+#if DO_WEBSERVER
+  #include <BeckE32_OTALib.h>
+#endif
 //#include <BeckLogLib.h>
 //#include <BeckMiniLib.h>
 //#include <SPI.h>
 //#include <Adafruit_GFX.h>
-#include <max6675.h>
+#if DO_TEMP
+  #include <max6675.h>
+#endif
 //#include <WiFi.h>
 #include <Streaming.h>
 
@@ -34,8 +41,10 @@ static const byte      cSPI_CLK_Pin          = 18;
 static const byte      cSPIChipSelectPin     =  5;
 #endif
 
-//MAX6675   Thermo1(cSCLK, cMOSI_CS, cMISO);
-MAX6675   Thermo1(cSPI_CLK_Pin, cSPIChipSelectPin, cSPI_MISO_Pin);
+#if DO_TEMP
+  //MAX6675   Thermo1(cSCLK, cMOSI_CS, cMISO);
+  MAX6675   Thermo1(cSPI_CLK_Pin, cSPIChipSelectPin, cSPI_MISO_Pin);
+#endif
 
 const char* szWebHostName = "Frankentemp";
 
@@ -43,7 +52,11 @@ void setup()   {
   Serial.begin(115200);
   Serial << endl << "setup(): Begin " << SketchName << ", " << FileDate << endl;
 
-  //SetupWebserver(szWebHostName);
+#if DO_WEBSERVER
+  Serial << "setup(): Call SetupWebServer(" << szWebHostName << ")" << endl;
+  SetupWebserver(szWebHostName);
+#endif
+
   Serial << "setup(): Done " << endl;
   return;
 }  //setup
@@ -51,11 +64,15 @@ void setup()   {
 
 void loop() {
   double    dfDegF= 37.37;
+#if DO_TEMP
   //dfDegF= Thermo1.readFahrenheit();
+#endif
   Serial << "Loop(): Degrees F= " << dfDegF << endl;
   delay(1000);
 
-  //HandleOTAWebserver();
+#if DO_WEBSERVER
+  HandleOTAWebserver();
+#endif
   return;
 }  //loop()
 //Last line
