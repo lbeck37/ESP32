@@ -1,6 +1,6 @@
 //BeckE32_OTALib.cpp, 2/16/22a
 const char szSketchName[]  = "BeckE32_OTALib.cpp";
-const char szFileDate[]    = "2/16/22h";
+const char szFileDate[]    = "2/17/22a";
 
 #include <BeckE32_OTALib.h>
 #include <WiFi.h>
@@ -11,7 +11,7 @@ const char szFileDate[]    = "2/16/22h";
 #include <Streaming.h>
 
 
-const char* host = "esp32";
+//const char* host = "esp32";
 /*
 const char* ssid = "Aspot24b";
 const char* password = "Qazqaz11";
@@ -89,13 +89,13 @@ String serverIndex =
 "});"
 "</script>" + style;
 
-void SetupWebserver(void){
+void SetupWebserver(const char* szWebHostName){
   /*use mdns for host name resolution*/
-  if (!MDNS.begin(host)) { //http://esp32.local
+  if (!MDNS.begin(szWebHostName)) { //http://esp32.local
     Serial.println("Error setting up MDNS responder!");
     while (1) {
       delay(1000);
-    }
+    } //while
   }
   Serial.println("mDNS responder started");
 

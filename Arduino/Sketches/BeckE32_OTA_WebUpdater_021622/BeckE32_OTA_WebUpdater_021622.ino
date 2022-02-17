@@ -1,6 +1,7 @@
 // LastMinuteEngineers.com
+//Works with ESP32 1.0.6, 2/17/22
 const char szSketchName[]  = "BeckE32_OTA_WebUpdater_021622.ino";
-const char szFileDate[]    = "2/17/22f";
+const char szFileDate[]    = "2/17/22g";
 
 #include <BeckE32_OTALib.h>
 #include <WiFi.h>
@@ -9,7 +10,7 @@ const char szFileDate[]    = "2/17/22f";
 const char* ssid = "Aspot24b";
 const char* password = "Qazqaz11";
 
-
+const char* szWebHostName = "OTADemo";
 
 void setup(void) {
   Serial.begin(115200);
@@ -30,7 +31,7 @@ void setup(void) {
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
 
-  SetupWebserver();
+  SetupWebserver(szWebHostName);
   return;
 } //setup
 
