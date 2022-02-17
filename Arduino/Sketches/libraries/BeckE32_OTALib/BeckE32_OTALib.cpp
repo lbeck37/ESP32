@@ -10,11 +10,14 @@ const char szFileDate[]    = "2/16/22h";
 #include <Update.h>
 #include <Streaming.h>
 
+
 const char* host = "esp32";
+/*
 const char* ssid = "Aspot24b";
 const char* password = "Qazqaz11";
-
+*/
 WebServer server(80);
+
 
 /* Style */
 String style =
