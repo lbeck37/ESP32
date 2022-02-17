@@ -1,6 +1,6 @@
 // LastMinuteEngineers.com
 const char szSketchName[]  = "BeckE32_OTA_WebUpdater_021622.ino";
-const char szFileDate[]    = "2/17/22e";
+const char szFileDate[]    = "2/17/22f";
 
 #include <BeckE32_OTALib.h>
 #include <WiFi.h>
