@@ -1,11 +1,11 @@
 const String SketchName  = "BeckE32_FrankenTemp.ino";
-const String FileDate    = "Feb 17, 2022p";
+const String FileDate    = "Feb 17, 2022q";
 #ifndef ESP8266
   #define ESP32
 #endif
 
 #define DO_TEMP       false
-#define DO_WEBSERVER  false
+#define DO_WEBSERVER  true
 
 #if DO_WEBSERVER
   #include <BeckE32_OTALib.h>
