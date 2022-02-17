@@ -1,6 +1,6 @@
-// LastMinuteEngineers.com
-const char szSketchName[]  = "BeckE32_OTA_WebUpdater_021622.ino";
-const char szFileDate[]    = "2/16/22j";
+//BeckE32_OTALib.cpp, 2/16/22a
+const char szSketchName[]  = "BeckE32_OTALib.cpp";
+const char szFileDate[]    = "2/16/22h";
 
 #include <BeckE32_OTALib.h>
 #include <WiFi.h>
@@ -16,8 +16,7 @@ const char* password = "Qazqaz11";
 
 WebServer server(80);
 
-/*
- Style
+/* Style */
 String style =
 "<style>#file-input,input{width:100%;height:44px;border-radius:4px;margin:10px auto;font-size:15px}"
 "input{background:#f1f1f1;border:0;padding:0 15px}body{background:#3498db;font-family:sans-serif;font-size:14px;color:#777}"
@@ -26,7 +25,7 @@ String style =
 "form{background:#fff;max-width:258px;margin:75px auto;padding:30px;border-radius:5px;text-align:center}"
 ".btn{background:#3498db;color:#fff;cursor:pointer}</style>";
 
- Login page
+/* Login page */
 String loginIndex =
 "<form name=loginForm>"
 "<h1>ESP32 Login</h1>"
@@ -42,7 +41,7 @@ String loginIndex =
 "}"
 "</script>" + style;
 
- Server Index Page
+/* Server Index Page */
 String serverIndex =
 "<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>"
 "<form method='POST' action='#' enctype='multipart/form-data' id='upload_form'>"
@@ -87,93 +86,8 @@ String serverIndex =
 "});"
 "</script>" + style;
 
-
-//Function protos
-void  SetupWebserver      (void);
-void  HandleOTAWebserver  (void);
-*/
-
-
-void setup(void) {
-  Serial.begin(115200);
-
-  // Connect to WiFi network
-  WiFi.begin(ssid, password);
-  Serial.println("");
-  Serial << endl << "setup(): Sketch: " << szSketchName << ", " << szFileDate << endl;
-
-  // Wait for connection
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");
-  }
-  Serial.println("");
-  Serial.print("Connected to ");
-  Serial.println(ssid);
-  Serial.print("IP address: ");
-  Serial.println(WiFi.localIP());
-
-/*
-  use mdns for host name resolution
-  if (!MDNS.begin(host)) { //http://esp32.local
-    Serial.println("Error setting up MDNS responder!");
-    while (1) {
-      delay(1000);
-    }
-  }
-  Serial.println("mDNS responder started");
-
-  return index page which is stored in serverIndex
-  server.on("/", HTTP_GET, []() {
-    server.sendHeader("Connection", "close");
-    server.send(200, "text/html", loginIndex);
-  });
-  server.on("/serverIndex", HTTP_GET, []() {
-    server.sendHeader("Connection", "close");
-    server.send(200, "text/html", serverIndex);
-  });
-  handling uploading firmware file
-  server.on("/update", HTTP_POST, []() {
-    server.sendHeader("Connection", "close");
-    server.send(200, "text/plain", (Update.hasError()) ? "FAIL" : "OK");
-    ESP.restart();
-  }, []() {
-    HTTPUpload& upload = server.upload();
-    if (upload.status == UPLOAD_FILE_START) {
-      Serial.printf("Update: %s\n", upload.filename.c_str());
-      if (!Update.begin(UPDATE_SIZE_UNKNOWN)) { //start with max available size
-        Update.printError(Serial);
-      }
-    } else if (upload.status == UPLOAD_FILE_WRITE) {
-       flashing firmware to ESP
-      if (Update.write(upload.buf, upload.currentSize) != upload.currentSize) {
-        Update.printError(Serial);
-      }
-    } else if (upload.status == UPLOAD_FILE_END) {
-      if (Update.end(true)) { //true to set the size to the current progress
-        Serial.printf("Update Success: %u\nRebooting...\n", upload.totalSize);
-      } else {
-        Update.printError(Serial);
-      }
-    }
-  });
-  server.begin();
-*/
-  SetupWebserver();
-  return;
-} //setup
-
-
-void loop(void) {
-  //server.handleClient();
-  HandleOTAWebserver();
-  delay(1);
-  return;
-} //loop
-
-/*
 void SetupWebserver(void){
-  use mdns for host name resolution
+  /*use mdns for host name resolution*/
   if (!MDNS.begin(host)) { //http://esp32.local
     Serial.println("Error setting up MDNS responder!");
     while (1) {
@@ -182,7 +96,7 @@ void SetupWebserver(void){
   }
   Serial.println("mDNS responder started");
 
-  return index page which is stored in serverIndex
+  /*return index page which is stored in serverIndex */
   server.on("/", HTTP_GET, []() {
     server.sendHeader("Connection", "close");
     server.send(200, "text/html", loginIndex);
@@ -191,7 +105,7 @@ void SetupWebserver(void){
     server.sendHeader("Connection", "close");
     server.send(200, "text/html", serverIndex);
   });
-  handling uploading firmware file
+  /*handling uploading firmware file */
   server.on("/update", HTTP_POST, []() {
     server.sendHeader("Connection", "close");
     server.send(200, "text/plain", (Update.hasError()) ? "FAIL" : "OK");
@@ -204,7 +118,7 @@ void SetupWebserver(void){
         Update.printError(Serial);
       }
     } else if (upload.status == UPLOAD_FILE_WRITE) {
-       flashing firmware to ESP
+      /* flashing firmware to ESP*/
       if (Update.write(upload.buf, upload.currentSize) != upload.currentSize) {
         Update.printError(Serial);
       }
@@ -225,5 +139,4 @@ void HandleOTAWebserver(void) {
   server.handleClient();
   return;
 } //HandleOTAWebserver
-*/
-//Last Line.
+//Last line.
