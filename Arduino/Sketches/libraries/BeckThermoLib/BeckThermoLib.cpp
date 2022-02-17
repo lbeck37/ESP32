@@ -1,9 +1,9 @@
-// BeckThermoLib.cpp 4/8/21a
+// BeckThermoLib.cpp 2/17/22a, was 4/8/21a
 #include <BeckThermoLib.h>
 #include <BeckMiniLib.h>
 #include <BeckSwitchLib.h>
-#include <DallasTemperature.h>
-#include <OneWire.h>
+//#include <DallasTemperature.h>
+//#include <OneWire.h>
 
 float           _fMaxHeatRangeF       = 0.10;   //Temp above setpoint before heat is turned off
 float           _fLastDegF            = 37.01;  //Last temperature reading.

@@ -6,7 +6,7 @@ const String FileDate    = "Feb 16, 2022a";
 
 #include <BeckLogLib.h>
 #include <BeckMiniLib.h>
-#include <SPI.h>
+//#include <SPI.h>
 #include <Adafruit_GFX.h>
 #ifdef ESP32
 //#include <WROVER_KIT_LCD.h>
