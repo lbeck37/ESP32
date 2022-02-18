@@ -1,7 +1,7 @@
 // LastMinuteEngineers.com
 //Works with ESP32 1.0.6, 2/17/22
 const char szSketchName[]  = "BeckE32_OTA_WebUpdater_021622.ino";
-const char szFileDate[]    = "2/17/22q";
+const char szFileDate[]    = "2/17/22s";
 
 #define DO_TEMP       true
 #define DO_WEBSERVER  true
@@ -25,11 +25,13 @@ const char* szWebHostName = "OTADemo";
 static const byte      cSPI_MISO_Pin         = 19;
 static const byte      cSPI_MOSI_Pin         = 23;
 static const byte      cSPI_CLK_Pin          = 18;
-static const byte      cSPIChipSelectPin     =  5;
+static const byte      cSPI_CS_Thermo1Pin    =  5;
+static const byte      cSPI_CS_Thermo2Pin    =  4;
 
 #if DO_TEMP
   //MAX6675   Thermo1(cSCLK, cMOSI_CS, cMISO);
-  MAX6675   Thermo1(cSPI_CLK_Pin, cSPIChipSelectPin, cSPI_MISO_Pin);
+MAX6675   Thermo1(cSPI_CLK_Pin, cSPI_CS_Thermo1Pin, cSPI_MISO_Pin);
+MAX6675   Thermo2(cSPI_CLK_Pin, cSPI_CS_Thermo2Pin, cSPI_MISO_Pin);
 #endif
 
 void setup(void) {
@@ -59,11 +61,13 @@ void setup(void) {
 
 
 void loop(void) {
-  double    dfDegF= 37.37;
+  double    dfDegF1= 37.01;
+  double    dfDegF2= 37.02;
 #if DO_TEMP
-  dfDegF= Thermo1.readFahrenheit();
+  dfDegF1= Thermo1.readFahrenheit();
+  dfDegF2= Thermo2.readFahrenheit();
 #endif
-  Serial << "Loop(): Degrees F= " << dfDegF << endl;
+  Serial << "Loop(): Degrees F1= " << dfDegF1 << ", Thermo2= " << dfDegF2 << endl;
   delay(1000);
 
 #if DO_WEBSERVER
