@@ -1,9 +1,10 @@
 // LastMinuteEngineers.com
 //Works with ESP32 1.0.6, 2/17/22
 const char szSketchName[]  = "BeckE32_OTA_WebUpdater_021622.ino";
-const char szFileDate[]    = "2/19/22g";
+const char szFileDate[]    = "2/20/22h"
+    "";
 
-#define DO_MAX6675      false
+#define DO_MAX6675      true
 #define DO_MAX31855     true
 #define DO_WEBSERVER    true
 
@@ -28,31 +29,47 @@ const char* szWebHostName = "OTADemo";
 
 //ESP32
 // https://randomnerdtutorials.com/esp32-pinout-reference-gpios/
-static const byte      cSPI_MISO_Pin         = 19;
-static const byte      cSPI_MOSI_Pin         = 23;
-static const byte      cSPI_CLK_Pin          = 18;
-static const int       wNumberOfThermos      =  3;
-static const uint8_t   acSPI_CS_Pins[wNumberOfThermos + 1]= {0, 5, 4, 2};
+//static const byte    cSPI_MOSI_Pin    = 23;     // MasterOutSlaveIn is not used, chips are read only
+static const byte      cSPI_MISO_Pin    = 19;
+static const byte      cSPI_CLK_Pin     = 18;
+//static const int       wNumThermos      =  3;
+static const int       wNumThermos      =  1;
+
+//static const uint8_t   acSPI_CS_Pin[wNumThermos + 1]= {0, 5, 4, 2};
+//static const uint8_t   acSPI_CS_Pin[]       = {0, 5, 4, 2};
+static const uint8_t   acSPI_CS_Pin[] {0, 5, 4, 2};
 
 #if DO_MAX31855
-MAX31855  MAX31855_Object0(acSPI_CS_Pins[0]);     //Dummy so we can call thermocouples 1, 2 and 3
-MAX31855  MAX31855_Object1(acSPI_CS_Pins[1]);
-MAX31855  MAX31855_Object2(acSPI_CS_Pins[2]);
-MAX31855  MAX31855_Object3(acSPI_CS_Pins[3]);
+MAX31855  MAX31855_Object0(acSPI_CS_Pin[0]);     //Dummy so we can call thermocouples 1, 2 and 3
+MAX31855  MAX31855_Object1(acSPI_CS_Pin[1]);
+MAX31855  MAX31855_Object2(acSPI_CS_Pin[2]);
+MAX31855  MAX31855_Object3(acSPI_CS_Pin[3]);
 
-MAX31855  aThermos[wNumberOfThermos + 1]= {MAX31855_Object0, MAX31855_Object1, MAX31855_Object2, MAX31855_Object3};
+//MAX31855  aThermos[wNumThermos + 1]= {MAX31855_Object0, MAX31855_Object1, MAX31855_Object2, MAX31855_Object3};
+//MAX31855  aThermos[]= {MAX31855_Object0, MAX31855_Object1, MAX31855_Object2, MAX31855_Object3};
+MAX31855  aoMAX31855[] {MAX31855_Object0, MAX31855_Object1, MAX31855_Object2, MAX31855_Object3};
 #endif
 
 #if DO_MAX6675
-  MAX6675   Thermo1(cSPI_CLK_Pin, cSPI_CS_Thermo1Pin, cSPI_MISO_Pin);
-  MAX6675   Thermo2(cSPI_CLK_Pin, cSPI_CS_Thermo2Pin, cSPI_MISO_Pin);
-  MAX6675   Thermo3(cSPI_CLK_Pin, cSPI_CS_Thermo3Pin, cSPI_MISO_Pin);
+//Test SPI bus by connecting a MAX6675 and a MAX31855 on a small BB
+//The pin-outs for the two break-out boards are the same except CS and MISO are reversed
+//I had to connect red thermo wire to "+" on the MAX6675
+  MAX6675   oMAX6675(cSPI_CLK_Pin, acSPI_CS_Pin[3], cSPI_MISO_Pin);
 #endif
+
 
 void setup(void) {
   Serial.begin(115200);
 
   Serial << endl << "setup(): Sketch: " << szSketchName << ", " << szFileDate << endl;
+  Serial << "setup(): Built for WRover-Kit, SPI MISO(green) on pin " << cSPI_MISO_Pin << ", SPI CLK(orange) on pin " << cSPI_CLK_Pin << endl;
+
+  for (int wThermo= 1; wThermo <= wNumThermos; wThermo++){
+    Serial << "setup(): Thermo #" << wThermo << " CS pin is " << acSPI_CS_Pin[wThermo] << endl;
+  } //for
+#if DO_MAX6675
+  Serial << "setup(): Test with MAX6675 in place of Thermo #3 MAX31855, CS and MISO reversed" << endl;
+#endif
 
   // Start WiFi and wait for connection to the network
   WiFi.begin(szRouterName, szRouterPW);
@@ -63,8 +80,13 @@ void setup(void) {
   Serial << endl << "setup(): Connected to " << szRouterName << ", IP address to connect to is " << WiFi.localIP() << endl;
 
 #if DO_MAX31855     //MAX6675 (obsolete) thermocouple reader doesn't have a setup routine
-  for (int wThermo= 1; wThermo > wNumberOfThermos; wThermo++){
-    aThermos[wThermo].begin();
+  for (int wThermo= 1; wThermo > wNumThermos; wThermo++){
+    aoMAX31855[wThermo].begin();
+  } //for
+
+  for (int wThermo= 1; wThermo <= wNumThermos; wThermo++){
+    uint16_t usChipID= aoMAX31855[wThermo].getChipID();
+    Serial << "loop(): Thermocouple Number " << wThermo << " ID is " << usChipID << endl;
   } //for
 #endif
 
@@ -79,24 +101,21 @@ void setup(void) {
 
 void loop(void) {
   int32_t   wRawData;
-  float     afDegreeC[wNumberOfThermos + 1]= { 37.00, 37.01, 37.02, 37.03};
+  float     afDegreeC[] { 37.00, 37.01, 37.02, 37.03};
 
 #if DO_MAX31855
-  for (int wThermo= 1; wThermo <= wNumberOfThermos; wThermo++){
-    //Serial << "loop(): Call readRawData()" << endl;
-    wRawData= aThermos[wThermo].readRawData();
+  for (int wThermo= 1; wThermo <= wNumThermos; wThermo++){
+    wRawData= aoMAX31855[wThermo].readRawData();
+    afDegreeC[wThermo]= aoMAX31855[wThermo].getTemperature(wRawData);
 
-    //Serial << "loop(): Call getTemperature()" << endl;
-    afDegreeC[wThermo]= aThermos[wThermo].getTemperature(wRawData);
-
-    Serial << "loop(): Thermocouple Number " << wThermo << " is at " << afDegreeC[wThermo] << " Degrees C" << endl;
+    Serial << "loop(): Thermocouple Number " << wThermo << " is at " << afDegreeC[wThermo] << "C" << endl;
   } //for
 #endif
 
 #if DO_MAX6675
-  dfDegF1= Thermo1.readFahrenheit();
-  dfDegF2= Thermo2.readFahrenheit();
-  Serial << "Loop(): Degrees F1= " << dfDegF1 << ", Thermo2= " << dfDegF2 << endl;
+  double dfMAX6675DegF= oMAX6675.readFahrenheit();
+  double dfMAX6675DegC= oMAX6675.readCelsius();
+  Serial << "Loop(): MAX6675 Degrees C= " << dfMAX6675DegC << ", F= " << dfMAX6675DegF << endl;
 #endif
   delay(1000);
 
