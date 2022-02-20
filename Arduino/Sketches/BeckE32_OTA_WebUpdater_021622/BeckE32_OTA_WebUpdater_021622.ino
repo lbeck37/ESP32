@@ -1,7 +1,7 @@
 // LastMinuteEngineers.com
 //Works with ESP32 1.0.6, 2/17/22
 const char szSketchName[]  = "BeckE32_OTA_WebUpdater_021622.ino";
-const char szFileDate[]    = "2/20/22h"
+const char szFileDate[]    = "2/20/22n"
     "";
 
 #define DO_MAX6675      true
@@ -26,6 +26,7 @@ const char* szRouterName  = "Aspot24b";
 const char* szRouterPW    = "Qazqaz11";
 
 const char* szWebHostName = "OTADemo";
+const float fLibraryError = 2000.00;
 
 //ESP32
 // https://randomnerdtutorials.com/esp32-pinout-reference-gpios/
@@ -41,7 +42,8 @@ static const uint8_t   acSPI_CS_Pin[] {0, 5, 4, 2};
 
 #if DO_MAX31855
 MAX31855  MAX31855_Object0(acSPI_CS_Pin[0]);     //Dummy so we can call thermocouples 1, 2 and 3
-MAX31855  MAX31855_Object1(acSPI_CS_Pin[1]);
+//MAX31855  MAX31855_Object1(acSPI_CS_Pin[1]);
+MAX31855  MAX31855_Object1(acSPI_CS_Pin[3]);      // 2-20-22 Just for test, swapped CS pins with MAX6675
 MAX31855  MAX31855_Object2(acSPI_CS_Pin[2]);
 MAX31855  MAX31855_Object3(acSPI_CS_Pin[3]);
 
@@ -54,7 +56,8 @@ MAX31855  aoMAX31855[] {MAX31855_Object0, MAX31855_Object1, MAX31855_Object2, MA
 //Test SPI bus by connecting a MAX6675 and a MAX31855 on a small BB
 //The pin-outs for the two break-out boards are the same except CS and MISO are reversed
 //I had to connect red thermo wire to "+" on the MAX6675
-  MAX6675   oMAX6675(cSPI_CLK_Pin, acSPI_CS_Pin[3], cSPI_MISO_Pin);
+//MAX6675   oMAX6675(cSPI_CLK_Pin, acSPI_CS_Pin[3], cSPI_MISO_Pin);
+MAX6675   oMAX6675(cSPI_CLK_Pin, acSPI_CS_Pin[1], cSPI_MISO_Pin); // 2/20/22
 #endif
 
 
@@ -79,14 +82,16 @@ void setup(void) {
   }
   Serial << endl << "setup(): Connected to " << szRouterName << ", IP address to connect to is " << WiFi.localIP() << endl;
 
-#if DO_MAX31855     //MAX6675 (obsolete) thermocouple reader doesn't have a setup routine
+#if DO_MAX31855     //MAX6675 thermocouple reader doesn't have a setup routine
   for (int wThermo= 1; wThermo > wNumThermos; wThermo++){
     aoMAX31855[wThermo].begin();
   } //for
 
   for (int wThermo= 1; wThermo <= wNumThermos; wThermo++){
     uint16_t usChipID= aoMAX31855[wThermo].getChipID();
-    Serial << "loop(): Thermocouple Number " << wThermo << " ID is " << usChipID << endl;
+    if (usChipID != MAX31855_ID){
+      Serial << "loop(): ERROR: Thermocouple Number " << wThermo << " is not connected." << endl;
+    }
   } //for
 #endif
 
@@ -107,8 +112,12 @@ void loop(void) {
   for (int wThermo= 1; wThermo <= wNumThermos; wThermo++){
     wRawData= aoMAX31855[wThermo].readRawData();
     afDegreeC[wThermo]= aoMAX31855[wThermo].getTemperature(wRawData);
-
-    Serial << "loop(): Thermocouple Number " << wThermo << " is at " << afDegreeC[wThermo] << "C" << endl;
+    if (afDegreeC[wThermo] == fLibraryError){
+      Serial << "loop(): ERROR: MAX31855 Thermocouple Number " << wThermo << " is open, shorted or there is a communication error. " << endl;
+    }
+    else{
+      Serial << "loop(): Thermocouple Number " << wThermo << " is at " << afDegreeC[wThermo] << "C" << endl;
+    }
   } //for
 #endif
 
