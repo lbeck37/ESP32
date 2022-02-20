@@ -1,7 +1,7 @@
 // LastMinuteEngineers.com
 //Works with ESP32 1.0.6, 2/17/22
 const char szSketchName[]  = "BeckE32_OTA_WebUpdater_021622.ino";
-const char szFileDate[]    = "2/19/22a";
+const char szFileDate[]    = "2/19/22b";
 
 #define DO_MAX6675      false
 #define DO_MAX31855     true
@@ -38,15 +38,16 @@ static const byte      cSPI_CS_Thermo1Pin    =  5;
 static const byte      cSPI_CS_Thermo2Pin    =  4;
 static const byte      cSPI_CS_Thermo3Pin    =  2;
 */
-static uint8_t   acSPI_CS_Pins[4]= {0, 5, 4, 2};
+static const int      wNumberOfThermos      = 3;
+static uint8_t   acSPI_CS_Pins[wNumberOfThermos + 1]= {0, 5, 4, 2};
 
 #if DO_MAX31855
-MAX31855  MAX31855_Object0(acSPI_CS_Pins[0]);
+MAX31855  MAX31855_Object0(acSPI_CS_Pins[0]);     //Dummy so we can call thermocouples 1, 2 and 3
 MAX31855  MAX31855_Object1(acSPI_CS_Pins[1]);
 MAX31855  MAX31855_Object2(acSPI_CS_Pins[2]);
 MAX31855  MAX31855_Object3(acSPI_CS_Pins[3]);
 
-MAX31855  aThermos[4]= {MAX31855_Object0, MAX31855_Object1, MAX31855_Object2, MAX31855_Object3};
+MAX31855  aThermos[wNumberOfThermos + 1]= {MAX31855_Object0, MAX31855_Object1, MAX31855_Object2, MAX31855_Object3};
 #endif
 
 #if DO_MAX6675
@@ -70,9 +71,9 @@ void setup(void) {
   Serial << endl << "setup(): Connected to " << szRouterName << ", IP address to connect to is " << WiFi.localIP() << endl;
 
 #if DO_MAX31855     //MAX6675 (obsolete) thermocouple reader doesn't have a setup routine
-  Thermo1.begin();
-  Thermo2.begin();
-  Thermo3.begin();
+  for (int wThermo= 1; wThermo > wNumberOfThermos; wThermo++){
+    aThermos[wThermo].begin();
+  } //for
 #endif
 
 #if DO_WEBSERVER
@@ -86,12 +87,11 @@ void setup(void) {
 
 
 void loop(void) {
-  float    dfDegF1= 37.01;
-  double    dfDegF2= 37.02;
-  double    dfDegF3= 37.02;
+  float     afDegreeC[4]= { 37.00, 37.01, 37.02, 37.03};
 
 #if DO_MAX31855
-  dfDegF1= Thermo1.getTemperature(rawValue= MAX31855_FORCE_READ_DATA);
+  int32_t   wRawData= aThermos[1].readRawData();
+  afDegreeC[1]= aThermos[1].getTemperature(wRawData);
 #endif
 
 #if DO_MAX6675
