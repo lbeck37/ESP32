@@ -1,11 +1,10 @@
 const char szSketchName[]  = "BeckE32_TireTemp.ino";	//From BeckE32_EnviroDisplay.ino, 6/16/21c
-const char szFileDate[]    = "2/21/22n";
+const char szFileDate[]    = "2/21/22q";
 
 #define DO_OTA          true
 #define DO_ROVER        true
 
 #include <BeckBiotaDefines.h>         //Set DO_ROVER to true to display to ROVER
-//#include <BeckCreateDisplayData.h>
 #if DO_OTA
   #include <BeckE32_OTALib.h>
 #endif
@@ -31,11 +30,12 @@ const char* szWebHostName = "TireTemp";
   const UINT16     usTopText_CursorY       =  35;
 #endif
 
-static  UINT16     usTextSpacing           = BAR_SPACING;
+static  UINT16     usTextSpacing           = 20;
 static  UINT16     usCO2_CursorY           = usTopText_CursorY;
 static  UINT16     usVOC_CursorY           = usCO2_CursorY   + usTextSpacing;
 static  UINT16     usDegF_CursorY          = usVOC_CursorY   + usTextSpacing;
 static  UINT16     usRH_CursorY            = usDegF_CursorY  + usTextSpacing;
+const   ColorType  BackgroundColor         = WROVER_BLACK;
 
 static char             sz100CharString[101];
 
@@ -47,6 +47,7 @@ void              DisplayTemperature  (void);
 const char* szRouterName  = "Aspot24b";
 const char* szRouterPW    = "Qazqaz11";
 
+extern WROVER_KIT_LCD     RoverLCD;
 
 void setup()   {
   Serial.begin(115200);
@@ -60,13 +61,8 @@ void setup()   {
   }
   Serial << endl << "setup(): Connected to " << szRouterName << ", IP address to connect to is " << WiFi.localIP() << endl;
 
-/*
-  Serial << LOG0 << "setup(): Call I2C_Object.Setup()" << endl;
-  I2C_Object.Setup();
-*/
-
   Serial << LOG0 << "setup(): Call TempAndHumidSensor.Setup()" << endl;
-  TempAndHumiditySensor.Setup();
+  TempProbe.Setup();
 
   Serial << LOG0 << "setup(): Call DisplayBegin()" << endl;
   DisplayBegin();
@@ -82,7 +78,7 @@ void setup()   {
 
 
 void loop() {
-  TempAndHumiditySensor.Handle();
+  TempProbe.Handle();
   DisplayUpdate();
 #if DO_OTA
   HandleOTAWebserver();

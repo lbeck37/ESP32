@@ -1,4 +1,4 @@
-// BeckBiotaDefines.h, 12/16/21a
+// BeckBiotaDefines.h, 2/21/22b
 #pragma once
 #include <cstdint>
 
@@ -9,22 +9,19 @@
 #define DO_FIREBASE             false
 #define USE_IMU                 false
 #define DO_NTP                  false
-#define DO_OTA                  false
 #define DO_THERMOSTAT           false
 #define DO_WEB_SERVER           false
-#define DO_ROVER                false
-#define DO_TTGO                   true
+#define DO_TTGO                 true
+
+#define DO_ROVER                true
+#define DO_OTA                  true
 //If DO_ROVER is not true, then the display is on TTGO instead of the ESP-WROVER-KIT
 
-#if 0		//Beck, 12/16/21
+#if DO_ROVER
 	#include <WROVER_KIT_LCD.h>
 	//#include <TFT_eSPI.h>
 #endif
 
-typedef   int16_t       ColorType;      //See Adafruit_GFX.h
-typedef   int16_t       PUnit;          //Pixel Unit
-typedef   uint8_t       FontSize;
-typedef   float         DegreeType;
 
 enum ProjectType{
   eNoProject  = 0,
@@ -37,6 +34,11 @@ enum ProjectType{
   ePitchMeter,
   eLastProjectType
 };
+
+typedef   int16_t       ColorType;      //See Adafruit_GFX.h
+typedef   int16_t       PUnit;          //Pixel Unit
+typedef   uint8_t       FontSize;
+typedef   float         DegreeType;
 
 // Color definitions, ripped off from WROVER_KIT_LCD.h
 #define BECK_BLACK       0x0000 /*   0,   0,   0 */
