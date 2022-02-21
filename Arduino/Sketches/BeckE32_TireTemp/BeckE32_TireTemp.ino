@@ -1,7 +1,9 @@
-const char szSketchName[]  = "BeckE32_EnviroDisplay.ino";
-const char szFileDate[]    = "2/20/22"      "Was 6/16/21c";
+const char szSketchName[]  = "BeckE32_TireTemp.ino";	//From BeckE32_EnviroDisplay.ino, 6/16/21c
+const char szFileDate[]    = "2/20/22d";
 
 #define DO_OTA          true
+#define DO_ROVER        true
+
 #include <BeckBarClass.h>
 #include <BeckBiotaDefines.h>         //Set DO_ROVER to true to display to ROVER
 #include <BeckCreateDisplayData.h>
@@ -21,9 +23,10 @@ const char szFileDate[]    = "2/20/22"      "Was 6/16/21c";
 #include <Fonts/FreeMonoBold24pt7b.h>
 #include <Fonts/FreeSans9pt7b.h>
 #include <Fonts/FreeSansOblique18pt7b.h>
+#include <WiFi.h>
 #include <Streaming.h>
 
-const char* szWebHostName = "OTADemo";
+const char* szWebHostName = "TireTemp";
 
 #define min(X, Y)       (((X) < (Y)) ? (X) : (Y))
 #if DO_ROVER
@@ -64,9 +67,21 @@ void              DisplayVOC          (void);
 void              DisplayTemperature  (void);
 void              DisplayHumidity     (void);
 
+const char* szRouterName  = "Aspot24b";
+const char* szRouterPW    = "Qazqaz11";
+
+
 void setup()   {
   Serial.begin(115200);
   Serial << endl<< LOG0 << "setup(): Begin " << szSketchName << ", " << szFileDate << endl;
+
+  // Start WiFi and wait for connection to the network
+  WiFi.begin(szRouterName, szRouterPW);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial << endl << "setup(): Connected to " << szRouterName << ", IP address to connect to is " << WiFi.localIP() << endl;
 
   Serial << LOG0 << "setup(): Call I2C_Object.Setup()" << endl;
   I2C_Object.Setup();
@@ -112,9 +127,6 @@ void setup()   {
 
 
 void loop() {
-#if DO_OTA
-  HandleOTAWebserver();
-#endif
   GasSensor.Handle();
   TempAndHumiditySensor.Handle();
 #if DO_ROVER
@@ -122,6 +134,11 @@ void loop() {
 #else
   //GasSensorDisplay.Handle();
 #endif
+
+#if DO_OTA
+  HandleOTAWebserver();
+#endif
+  return;
 }  //loop()
 
 

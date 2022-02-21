@@ -1,14 +1,14 @@
 // LastMinuteEngineers.com
 //Works with ESP32 1.0.6, 2/17/22
 const char szSketchName[]  = "BeckE32_OTA_WebUpdater_021622.ino";
-const char szFileDate[]    = "2/20/22t"
+const char szFileDate[]    = "2/20/22x"
     "";
 
 #define DO_MAX6675      true
 #define DO_MAX31855     false
-#define DO_WEBSERVER    true
+#define DO_OTA          true
 
-#if DO_WEBSERVER
+#if DO_OTA
   #include <BeckE32_OTALib.h>
 #endif
 
@@ -33,7 +33,7 @@ const float fLibraryError = 2000.00;
 //static const byte    cSPI_MOSI_Pin    = 23;     // MasterOutSlaveIn is not used, chips are read only
 static const byte      cSPI_MISO_Pin    = 19;
 static const byte      cSPI_CLK_Pin     = 18;
-static const int       wNumThermos      =  1;
+static const int       wNumThermos      =  3;
 
 static const uint8_t   acSPI_CS_Pin[] {0, 2, 4, 5};
 
@@ -92,7 +92,7 @@ void setup(void) {
   } //for
 #endif
 
-#if DO_WEBSERVER
+#if DO_OTA
   Serial << "setup(): Call SetupWebServer(" << szWebHostName << ")" << endl;
   SetupWebserver(szWebHostName);
 #endif
@@ -119,15 +119,18 @@ void loop(void) {
 #endif
 
 #if DO_MAX6675
+  double adMAX6675DegF[4];
   for (int wThermo= 1; wThermo <= wNumThermos; wThermo++){
     double dfMAX6675DegC= aoMAX6675[wThermo].readCelsius();
     double dfMAX6675DegF= aoMAX6675[wThermo].readFahrenheit();
-    Serial << "loop(): Thermocouple Number " << wThermo << " is at " << dfMAX6675DegF << "F" << ", " << dfMAX6675DegC << "C" << endl;
-  }
+    adMAX6675DegF[wThermo]= dfMAX6675DegF;
+    //Serial << "loop(): Thermocouple Number " << wThermo << " is at " << dfMAX6675DegF << "F" << ", " << dfMAX6675DegC << "C" << endl;
+   }
+  Serial << "loop(): Thermo #1= " << adMAX6675DegF[1] << "F, #2= " << adMAX6675DegF[2] << "F, #3=" << adMAX6675DegF[3] << endl;
 #endif
   delay(1000);
 
-#if DO_WEBSERVER
+#if DO_OTA
   HandleOTAWebserver();
 #endif
   return;
