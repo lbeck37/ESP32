@@ -1,7 +1,7 @@
 // LastMinuteEngineers.com
 //Works with ESP32 1.0.6, 2/17/22
 const char szSketchName[]  = "BeckE32_OTA_WebUpdater_021622.ino";
-const char szFileDate[]    = "2/20/22q"
+const char szFileDate[]    = "2/20/22t"
     "";
 
 #define DO_MAX6675      true
@@ -33,7 +33,7 @@ const float fLibraryError = 2000.00;
 //static const byte    cSPI_MOSI_Pin    = 23;     // MasterOutSlaveIn is not used, chips are read only
 static const byte      cSPI_MISO_Pin    = 19;
 static const byte      cSPI_CLK_Pin     = 18;
-static const int       wNumThermos      =  3;
+static const int       wNumThermos      =  1;
 
 static const uint8_t   acSPI_CS_Pin[] {0, 2, 4, 5};
 
