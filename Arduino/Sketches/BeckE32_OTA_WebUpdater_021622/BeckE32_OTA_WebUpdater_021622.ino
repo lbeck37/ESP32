@@ -1,11 +1,11 @@
 // LastMinuteEngineers.com
 //Works with ESP32 1.0.6, 2/17/22
 const char szSketchName[]  = "BeckE32_OTA_WebUpdater_021622.ino";
-const char szFileDate[]    = "2/20/22n"
+const char szFileDate[]    = "2/20/22q"
     "";
 
 #define DO_MAX6675      true
-#define DO_MAX31855     true
+#define DO_MAX31855     false
 #define DO_WEBSERVER    true
 
 #if DO_WEBSERVER
@@ -33,17 +33,13 @@ const float fLibraryError = 2000.00;
 //static const byte    cSPI_MOSI_Pin    = 23;     // MasterOutSlaveIn is not used, chips are read only
 static const byte      cSPI_MISO_Pin    = 19;
 static const byte      cSPI_CLK_Pin     = 18;
-//static const int       wNumThermos      =  3;
-static const int       wNumThermos      =  1;
+static const int       wNumThermos      =  3;
 
-//static const uint8_t   acSPI_CS_Pin[wNumThermos + 1]= {0, 5, 4, 2};
-//static const uint8_t   acSPI_CS_Pin[]       = {0, 5, 4, 2};
-static const uint8_t   acSPI_CS_Pin[] {0, 5, 4, 2};
+static const uint8_t   acSPI_CS_Pin[] {0, 2, 4, 5};
 
 #if DO_MAX31855
 MAX31855  MAX31855_Object0(acSPI_CS_Pin[0]);     //Dummy so we can call thermocouples 1, 2 and 3
-//MAX31855  MAX31855_Object1(acSPI_CS_Pin[1]);
-MAX31855  MAX31855_Object1(acSPI_CS_Pin[3]);      // 2-20-22 Just for test, swapped CS pins with MAX6675
+MAX31855  MAX31855_Object1(acSPI_CS_Pin[1]);
 MAX31855  MAX31855_Object2(acSPI_CS_Pin[2]);
 MAX31855  MAX31855_Object3(acSPI_CS_Pin[3]);
 
@@ -56,8 +52,12 @@ MAX31855  aoMAX31855[] {MAX31855_Object0, MAX31855_Object1, MAX31855_Object2, MA
 //Test SPI bus by connecting a MAX6675 and a MAX31855 on a small BB
 //The pin-outs for the two break-out boards are the same except CS and MISO are reversed
 //I had to connect red thermo wire to "+" on the MAX6675
-//MAX6675   oMAX6675(cSPI_CLK_Pin, acSPI_CS_Pin[3], cSPI_MISO_Pin);
-MAX6675   oMAX6675(cSPI_CLK_Pin, acSPI_CS_Pin[1], cSPI_MISO_Pin); // 2/20/22
+MAX6675   oMAX6675_Obj0(cSPI_CLK_Pin, acSPI_CS_Pin[0], cSPI_MISO_Pin);
+MAX6675   oMAX6675_Obj1(cSPI_CLK_Pin, acSPI_CS_Pin[1], cSPI_MISO_Pin);
+MAX6675   oMAX6675_Obj2(cSPI_CLK_Pin, acSPI_CS_Pin[2], cSPI_MISO_Pin);
+MAX6675   oMAX6675_Obj3(cSPI_CLK_Pin, acSPI_CS_Pin[3], cSPI_MISO_Pin);
+
+MAX6675  aoMAX6675[] {oMAX6675_Obj0, oMAX6675_Obj1, oMAX6675_Obj2, oMAX6675_Obj3};
 #endif
 
 
@@ -70,9 +70,6 @@ void setup(void) {
   for (int wThermo= 1; wThermo <= wNumThermos; wThermo++){
     Serial << "setup(): Thermo #" << wThermo << " CS pin is " << acSPI_CS_Pin[wThermo] << endl;
   } //for
-#if DO_MAX6675
-  Serial << "setup(): Test with MAX6675 in place of Thermo #3 MAX31855, CS and MISO reversed" << endl;
-#endif
 
   // Start WiFi and wait for connection to the network
   WiFi.begin(szRouterName, szRouterPW);
@@ -122,9 +119,11 @@ void loop(void) {
 #endif
 
 #if DO_MAX6675
-  double dfMAX6675DegF= oMAX6675.readFahrenheit();
-  double dfMAX6675DegC= oMAX6675.readCelsius();
-  Serial << "Loop(): MAX6675 Degrees C= " << dfMAX6675DegC << ", F= " << dfMAX6675DegF << endl;
+  for (int wThermo= 1; wThermo <= wNumThermos; wThermo++){
+    double dfMAX6675DegC= aoMAX6675[wThermo].readCelsius();
+    double dfMAX6675DegF= aoMAX6675[wThermo].readFahrenheit();
+    Serial << "loop(): Thermocouple Number " << wThermo << " is at " << dfMAX6675DegF << "F" << ", " << dfMAX6675DegC << "C" << endl;
+  }
 #endif
   delay(1000);
 
