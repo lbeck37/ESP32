@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_TireTemp.ino";	//From BeckE32_EnviroDisplay.ino, 6/16/21c
-const char szFileDate[]    = "2/21/22ac";
+const char szFileDate[]    = "2/22/22a";
 
 #define DO_OTA          true
 #define DO_ROVER        true
@@ -11,14 +11,15 @@ const char szFileDate[]    = "2/21/22ac";
 #include <BeckTireTempDataClass.h>
 #include <BeckLogLib.h>
 #include <BeckMiniLib.h>
-#include <BeckProbesClass.h>
+#include <BeckProbeClass.h>
+#include <BeckProbeSetClass.h>
 
 #include <Adafruit_GFX.h>
 #include <Fonts/FreeMonoBold12pt7b.h>
 #include <Fonts/FreeMonoBold24pt7b.h>
 #include <Fonts/FreeSans9pt7b.h>
 #include <Fonts/FreeSansOblique18pt7b.h>
-#include <max6675.h>
+//#include <max6675.h>
 #include <WiFi.h>
 #include <Streaming.h>
 
@@ -27,10 +28,11 @@ const char szFileDate[]    = "2/21/22ac";
 //static const byte    cSPI_MOSI_Pin    = 23;     // MasterOutSlaveIn is not used, chips are read only
 static const byte      cSPI_MISO_Pin    = 19;
 static const byte      cSPI_CLK_Pin     = 18;
-static const int       wNumThermos      =  3;
+static const int       wNumProbes       =  3;
 
-static const uint8_t   acSPI_CS_Pin[] {0, 2, 4, 5};
+uint8_t   acSPI_CS_Pin[] {0, 2, 4, 5};
 
+/*
 //I had to connect red thermo wire to "+" on the MAX6675
 MAX6675   oMAX6675_Obj0(cSPI_CLK_Pin, acSPI_CS_Pin[0], cSPI_MISO_Pin);
 MAX6675   oMAX6675_Obj1(cSPI_CLK_Pin, acSPI_CS_Pin[1], cSPI_MISO_Pin);
@@ -38,7 +40,16 @@ MAX6675   oMAX6675_Obj2(cSPI_CLK_Pin, acSPI_CS_Pin[2], cSPI_MISO_Pin);
 MAX6675   oMAX6675_Obj3(cSPI_CLK_Pin, acSPI_CS_Pin[3], cSPI_MISO_Pin);
 
 MAX6675  aoMAX6675[] {oMAX6675_Obj0, oMAX6675_Obj1, oMAX6675_Obj2, oMAX6675_Obj3};
+*/
+//BeckProbeSetClass(byte cSPI_MISO_Pin, byte cSPI_CLK_Pin, int wProbes, BeckProbeClass aoProbe[], uint8_t acSPI_CS_Pin[]);
+//BeckProbeClass(byte cSPI_MISO_Pin, byte cSPI_CLK_Pin, uint8_t ucCS_Pin);
 
+BeckProbeClass   oProbe0(cSPI_MISO_Pin, cSPI_CLK_Pin, acSPI_CS_Pin[0]);
+BeckProbeClass   oProbe1(cSPI_CLK_Pin, acSPI_CS_Pin[3], cSPI_MISO_Pin);
+BeckProbeClass   oProbe2(cSPI_CLK_Pin, acSPI_CS_Pin[3], cSPI_MISO_Pin);
+BeckProbeClass   oProbe3(cSPI_CLK_Pin, acSPI_CS_Pin[3], cSPI_MISO_Pin);
+
+BeckProbeSetClass oProbeSet (BeckProbeClass aoProbe[4]);
 const char* szWebHostName = "TireTemp";
 
 #define min(X, Y)       (((X) < (Y)) ? (X) : (Y))
@@ -118,7 +129,7 @@ void setup()   {
   Serial << endl << "setup(): Connected to " << szRouterName << ", IP address to connect to is " << WiFi.localIP() << endl;
 
   Serial << LOG0 << "setup(): Call TempAndHumidSensor.Setup()" << endl;
-  Probes.Setup();
+  ProbeSet.Setup();
 
   Serial << LOG0 << "setup(): Call DisplayBegin()" << endl;
   DisplayBegin();
@@ -134,11 +145,12 @@ void setup()   {
 
 
 void loop() {
-  Probes.Handle();
+  ProbeSet.Handle();
   DisplayUpdate();
 #if DO_OTA
   HandleOTAWebserver();
 #endif
+/*
   double adMAX6675DegF[4];
   for (int wThermo= 1; wThermo <= wNumThermos; wThermo++){
     double dfMAX6675DegC= aoMAX6675[wThermo].readCelsius();
@@ -147,6 +159,7 @@ void loop() {
     //Serial << "loop(): Thermocouple Number " << wThermo << " is at " << dfMAX6675DegF << "F" << ", " << dfMAX6675DegC << "C" << endl;
    }
   Serial << "loop(): Thermo #1= " << adMAX6675DegF[1] << "F, #2= " << adMAX6675DegF[2] << "F, #3=" << adMAX6675DegF[3] << endl;
+*/
 
   delay(1000);
   return;
