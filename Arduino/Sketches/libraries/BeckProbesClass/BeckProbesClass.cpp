@@ -1,46 +1,46 @@
-const char szSystemFileName[]  = "BeckTempProbeClass.cpp";
+const char szSystemFileName[]  = "BeckProbesClass.cpp";
 const char szSystemFileDate[]  = "2/21/22b";  //From 5/31/21e
 
 #include <BeckEnviroDataClass.h>
-#include <BeckTempProbeClass.h>
+#include <BeckProbesClass.h>
 #include <Streaming.h>
 //#include <Wire.h>
 
-BeckTempProbeClass      TempProbe;       //This is so every module can use the same object
+BeckProbesClass      Probes;       //This is so every module can use the same object
 
 
-BeckTempProbeClass::BeckTempProbeClass() {
-  Serial << "BeckTempProbeClass::BeckTempProbeClass(): " << szSystemFileName << ", " << szSystemFileDate << endl;
+BeckProbesClass::BeckProbesClass() {
+  Serial << "BeckProbesClass::BeckProbesClass(): " << szSystemFileName << ", " << szSystemFileDate << endl;
 } //constructor
 
 
-BeckTempProbeClass::~BeckTempProbeClass() {
-  Serial << "~BeckTempProbeClass(): Destructing" << endl;
+BeckProbesClass::~BeckProbesClass() {
+  Serial << "~BeckProbesClass(): Destructing" << endl;
 } //destructor
 
 
-bool BeckTempProbeClass::SetupProbe() {
+bool BeckProbesClass::SetupProbe() {
   Serial << "SetupProbe(): return true" << endl;
   return true;
 } //SetupProbe
 
 
-void BeckTempProbeClass::Setup(void){
-  Serial << "BeckTempProbeClass::setup(): Begin" << endl;
+void BeckProbesClass::Setup(void){
+  Serial << "BeckProbesClass::setup(): Begin" << endl;
   Serial << "setup(): Call SetupProbe()" << endl;
   SetupProbe();
-  Serial << "BeckTempProbeClass::Setup(): return" << endl;
+  Serial << "BeckProbesClass::Setup(): return" << endl;
 return;
 } //Setup
 
 
-void BeckTempProbeClass::Handle(){
+void BeckProbesClass::Handle(){
   Serial << "ReadProbeTemp(): return" << endl;
   return;
 } //Handle
 
 
-bool BeckTempProbeClass::ReadProbeTemp() {
+bool BeckProbesClass::ReadProbeTemp() {
   //TempAndHumidity   newValues= dht.getTempAndHumidity();
   //float CurrentDegF= ((newValues.temperature) * 1.8) + 32.0;
   //EnviroData.SetDegF_Value  (CurrentDegF);

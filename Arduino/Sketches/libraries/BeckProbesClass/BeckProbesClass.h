@@ -1,11 +1,11 @@
-// BeckTempProbeClass.h, 2/21/22c
+// BeckProbesClass.h, 2/21/22c
 #pragma once
 #include <BeckBiotaDefines.h>
 
-class BeckTempProbeClass{
+class BeckProbesClass{
 public:
-BeckTempProbeClass();
-  virtual ~BeckTempProbeClass();
+BeckProbesClass();
+  virtual ~BeckProbesClass();
 
   void  Setup           (void);
   void  Handle          (void);
@@ -16,8 +16,8 @@ protected:
 
   bool  SetupProbe   		(void);
   void  triggerGetTemp		(void);
-};  //BeckTempProbeClass
+};  //BeckProbesClass
 
-extern BeckTempProbeClass          TempProbe;       //This is so every module can use the same object
+extern BeckProbesClass          Probes;       //This is so every module can use the same object
 
 //Last line.
