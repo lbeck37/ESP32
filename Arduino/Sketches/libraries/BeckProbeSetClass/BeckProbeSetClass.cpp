@@ -8,36 +8,24 @@ const char szSystemFileDate[]  = "2/22/22b";  //From 5/31/21e
 #include <Streaming.h>
 //#include <Wire.h>
 
-BeckProbeSetClass      ProbeSet;       //This is so every module can use the same object
+//BeckProbeSetClass      ProbeSet;       //This is so every module can use the same object
 
 //ESP32
 // https://randomnerdtutorials.com/esp32-pinout-reference-gpios/
 //static const byte    cSPI_MOSI_Pin    = 23;     // MasterOutSlaveIn is not used, chips are read only
 
-byte      _cSPI_MISO_Pin;
-byte      _cSPI_CLK_Pin;
-int       _wNumProbes;
-
-uint8_t   _acSPI_CS_Pin[4];
-
-/*
-BeckProbeClass   oBeckProbe0(cSPI_CLK_Pin, acSPI_CS_Pin[3], cSPI_MISO_Pin);
-BeckProbeClass   oBeckProbe1(cSPI_CLK_Pin, acSPI_CS_Pin[3], cSPI_MISO_Pin);
-BeckProbeClass   oBeckProbe2(cSPI_CLK_Pin, acSPI_CS_Pin[3], cSPI_MISO_Pin);
-BeckProbeClass   oBeckProbe3(cSPI_CLK_Pin, acSPI_CS_Pin[3], cSPI_MISO_Pin);
-*/
-
-BeckProbeClass  _aoProbes[];
-
 
 BeckProbeSetClass::BeckProbeSetClass() {
-  Serial << "BeckProbeSetClass::BeckProbeSetClass(): " << szSystemFileName << ", " << szSystemFileDate << endl;
+  Serial << "BeckProbeSetClass:: Constructor " << szSystemFileName << ", " << szSystemFileDate << endl;
+  return;
 } //constructor
 
 
-BeckProbeSetClass::BeckProbeSetClass(BeckProbeClass aoProbes[4]){
-  _wNumProbes     = sizeof(aoProbes)/sizeof(aoProbes[0]);
-  Serial << "BeckProbeSetClass::BeckProbeSetClass(...): NumProbes= " << _wNumProbes << endl;
+BeckProbeSetClass::BeckProbeSetClass(int wNumProbes, BeckProbeClass* aoProbes){
+  _aoProbes   = aoProbes;
+  _wNumProbes = wNumProbes;
+  Serial << "BeckProbeSetClass: Construtor, NumProbes= " << _wNumProbes << endl;
+  return;
 } //constructor
 
 
@@ -46,54 +34,16 @@ BeckProbeSetClass::~BeckProbeSetClass() {
 } //destructor
 
 
-/*
-bool BeckProbeSetClass::SetupProbe() {
-  Serial << "SetupProbe(): return true" << endl;
-  return true;
-} //SetupProbe
-*/
-
-
-bool BeckProbeSetClass::Setup(void){
-  bool    bReturn= true;
-  Serial << "BeckProbeSetClass::setup(): Begin" << endl;
-  //Serial << "setup(): Call SetupProbe()" << endl;
-  for (int wProbe= 1; wProbe <= _wNumProbes; wProbe++){
-  }
-  //SetupProbe();
-  Serial << "BeckProbeSetClass::Setup(): return " << bReturn << endl;
-  return bReturn;
-} //Setup
-
-
-bool BeckProbeSetClass::Handle(){
-  bool    bReturn= true;
-  double adMAX6675DegF[4];
+void BeckProbeSetClass::Handle(){
+  double adProbeDegF[4];
 
   for (int wProbe= 1; wProbe <= _wNumProbes; wProbe++){
-    double dfMAX6675DegC= aoMAX6675[wProbe].readCelsius();
-    double dfMAX6675DegF= aoMAX6675[wProbe].readFahrenheit();
-    adMAX6675DegF[wThermo]= dfMAX6675DegF;
-    //Serial << "loop(): Thermocouple Number " << wThermo << " is at " << dfMAX6675DegF << "F" << ", " << dfMAX6675DegC << "C" << endl;
+    adProbeDegF[wProbe]= _aoProbes[wProbe].Handle();
    }
   Serial << "BeckProbeSetClass::Handle(): " << endl <<
-      "    Thermo #1= " << adMAX6675DegF[1] << "F, #2= " << adMAX6675DegF[2] << "F, #3=" << adMAX6675DegF[3] << endl;
+      "    Thermo #1= " << adProbeDegF[1] << "F, #2= " << adProbeDegF[2] << "F, #3=" << adProbeDegF[3] << endl;
 
-  Serial << "BeckProbeSetClass::Handle(): return " << bReturn << endl;
-  return bReturn;
+  Serial << "BeckProbeSetClass::Handle(): return " << endl;
+  return;
 } //Handle
-
-
-/*
-bool BeckProbeSetClass::ReadProbeTemp() {
-  //TempAndHumidity   newValues= dht.getTempAndHumidity();
-  //float CurrentDegF= ((newValues.temperature) * 1.8) + 32.0;
-  //EnviroData.SetDegF_Value  (CurrentDegF);
-  //EnviroData.SetRH_Value    (newValues.humidity);
-  //Serial.println(" T:" + String(newValues.temperature) + " H:" + String(newValues.humidity) + " I:" + String(heatIndex) + " D:" + String(dewPoint) + " " + comfortStatus);
-
-  Serial << "ReadProbeTemp(): return true" << endl;
-  return true;
-} //ReadProbeTemp
-*/
 //Last line.

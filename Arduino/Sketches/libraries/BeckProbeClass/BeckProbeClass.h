@@ -1,6 +1,7 @@
-// BeckProbeClass.h, 2/22/22b
+// BeckProbeClass.h, 2/22/22d
 #pragma once
 #include <BeckBiotaDefines.h>
+#include <max6675.h>
 
 class BeckProbeClass{
 public:
@@ -8,17 +9,14 @@ public:
   BeckProbeClass(byte cSPI_MISO_Pin, byte cSPI_CLK_Pin, uint8_t ucCS_Pin);
   virtual ~BeckProbeClass();
 
-  void  Setup           (void);
-  void  Handle          (void);
-  //bool  ReadProbeTemp   (void);
+  double  Handle          (void);
 
 protected:
-  uint16_t          DegF_Value        = 0;
-
-  //bool  SetupProbe    		(void);
-  //void  triggerGetTemp		(void);
+  MAX6675     _oMAX6675_Thermocouple;
+  byte        _cSPI_MISO_Pin    = 0;
+  byte        _cSPI_CLK_Pin     = 0;
+  uint8_t     _ucSPI_CS_Pin     = 0;
+  uint16_t    _usDegF_Value     = 0;
 };  //BeckProbeClass
-
-extern BeckProbeClass          ProbeSet;       //This is so every module can use the same object
 
 //Last line.
