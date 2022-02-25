@@ -12,7 +12,8 @@ public:
   double  Handle          (void);
 
 protected:
-  MAX6675     _oMAX6675_Thermocouple;
+//  MAX6675     _oMAX6675_Thermocouple;
+  MAX6675     *_poMAX6675_Thermocouple;
   byte        _cSPI_MISO_Pin    = 0;
   byte        _cSPI_CLK_Pin     = 0;
   uint8_t     _ucSPI_CS_Pin     = 0;

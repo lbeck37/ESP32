@@ -14,7 +14,8 @@ BeckProbeClass::BeckProbeClass(byte cSPI_MISO_Pin, byte cSPI_CLK_Pin, uint8_t uc
   _cSPI_CLK_Pin   = cSPI_CLK_Pin;
   _ucSPI_CS_Pin   = ucSPI_CS_Pin;
 
-  MAX6675   _oMAX6675_Thermocouple(_cSPI_CLK_Pin, _ucSPI_CS_Pin, _cSPI_MISO_Pin);
+  //MAX6675   _oMAX6675_Thermocouple(_cSPI_CLK_Pin, _ucSPI_CS_Pin, _cSPI_MISO_Pin);
+  MAX6675 *_poMAX6675_Thermocouple= new MAX6675(_cSPI_CLK_Pin, _ucSPI_CS_Pin, _cSPI_MISO_Pin);
   Serial << "BeckProbeClass::BeckProbeClass(): " << szSystemFileName << ", " << szSystemFileDate << endl;
 } //constructor
 
@@ -33,7 +34,7 @@ adMAX6675DegF[wThermo]= dfMAX6675DegF;
 double BeckProbeClass::Handle(){
   double dfDegF= 0.00;
 
-  dfDegF= _oMAX6675_Thermocouple.readFahrenheit();
+  //dfDegF= _oMAX6675_Thermocouple.readFahrenheit();
 
   Serial << "BeckProbeClass::Handle(): return " << dfDegF << endl;
   return dfDegF;
