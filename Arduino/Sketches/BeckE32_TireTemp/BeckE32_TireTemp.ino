@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_TireTemp.ino";	//From BeckE32_EnviroDisplay.ino, 6/16/21c
-const char szFileDate[]    = "2/22/22b";
+const char szFileDate[]    = "2/27/22c";
 
 #define DO_OTA          true
 #define DO_ROVER        true
@@ -62,7 +62,22 @@ unsigned long           ulDisplayPeriodMsec = 2000; //mSec between output to dis
 const char* szRouterName  = "Aspot24b";
 const char* szRouterPW    = "Qazqaz11";
 
-extern WROVER_KIT_LCD     RoverLCD;
+//extern WROVER_KIT_LCD     RoverLCD;
+WROVER_KIT_LCD     RoverLCD;
+
+//Protos
+void  setup               (void);
+void  loop                (void);
+void  DisplayBegin        (void);
+void  DisplayClear        (void);
+void  FillScreen          (UINT16 usColor);
+void  DisplayUpdate       (void);
+void  DisplayTemperature  (void);
+void  DisplayLowerBanner  (void);
+void  DisplayText         (UINT16 usCursorX, UINT16 usCursorY, char *pcText,
+                           const GFXfont *pFont, UINT8 ucSize, UINT16 usColor);
+void  ClearTextBackground (INT16 sUpperLeftX, INT16 sUpperLeftY, UINT16 usWidth, UINT16 usHeight);
+
 
 void DisplayTemperature() {
   UINT16          usTextCursorX   =  100;
@@ -111,7 +126,7 @@ void DisplayLowerBanner(){
 } //DisplayLowerBanner
 
 
-void setup()   {
+void setup(){
   Serial.begin(115200);
   Serial << endl<< LOG0 << "setup(): Begin " << szSketchName << ", " << szFileDate << endl;
 
@@ -156,7 +171,7 @@ void DisplayBegin() {
 }  //DisplayBegin
 
 
-void DisplayUpdate(void) {
+  void DisplayUpdate(void) {
   if (millis() > ulNextDisplayMsec){
     ulNextDisplayMsec= millis() + ulDisplayPeriodMsec;
     DisplayTemperature();

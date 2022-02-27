@@ -5,6 +5,7 @@
 
   MIT license, all text above must be included in any redistribution
  ****************************************************/
+#pragma once
 
 #ifndef _WROVER_KIT_LCD_H_
 #define _WROVER_KIT_LCD_H_
