@@ -1,17 +1,16 @@
 const char szSketchName[]  = "BeckE32_TireTemp.ino";	//From BeckE32_EnviroDisplay.ino, 6/16/21c
-const char szFileDate[]    = "2/27/22c";
+const char szFileDate[]    = "2/27/22f";
 
 #define DO_OTA          true
 #define DO_ROVER        true
 
-#include <BeckBiotaDefines.h>         //Set DO_ROVER to true to display to ROVER
+#include <BeckTireTempDefines.h>
 #if DO_OTA
   #include <BeckE32_OTALib.h>
 #endif
 #include <BeckTireTempDataClass.h>
 #include <BeckLogLib.h>
 #include <BeckMiniLib.h>
-#include <BeckProbeClass.h>
 #include <BeckProbeSetClass.h>
 
 #include <Adafruit_GFX.h>
@@ -22,30 +21,8 @@ const char szFileDate[]    = "2/27/22c";
 #include <WiFi.h>
 #include <Streaming.h>
 
-//ESP32
-// https://randomnerdtutorials.com/esp32-pinout-reference-gpios/
-//static const byte    cSPI_MOSI_Pin    = 23;     // MasterOutSlaveIn is not used, chips are read only
-static const byte      cSPI_MISO_Pin    = 19;
-static const byte      cSPI_CLK_Pin     = 18;
-static const int       _wNumProbes      =  3;
-
-uint8_t   acSPI_CS_Pins[] {0, 2, 4, 5};
-
-//BeckProbeClass(byte cSPI_MISO_Pin, byte cSPI_CLK_Pin, uint8_t ucCS_Pin);
-
-/*
-//Create the Probes, with a dummy one for a non existant probe 0.
-BeckProbeClass   oProbe0(cSPI_MISO_Pin, cSPI_CLK_Pin, acSPI_CS_Pins[0]);
-BeckProbeClass   oProbe1(cSPI_MISO_Pin, cSPI_CLK_Pin, acSPI_CS_Pins[1]);
-BeckProbeClass   oProbe2(cSPI_MISO_Pin, cSPI_CLK_Pin, acSPI_CS_Pins[2]);
-BeckProbeClass   oProbe3(cSPI_MISO_Pin, cSPI_CLK_Pin, acSPI_CS_Pins[3]);
-
-//Create array of Probe objects to pass to the ProbeSet constructor
-BeckProbeClass  aoProbes[] {oProbe0, oProbe1, oProbe2, oProbe3};
-*/
-
 //Create ProbeSet object
-BeckProbeSetClass oProbeSet(cSPI_MISO_Pin, cSPI_CLK_Pin, _wNumProbes, acSPI_CS_Pins);
+BeckProbeSetClass oProbeSet();
 
 const char* szWebHostName = "TireTemp";
 
@@ -64,7 +41,6 @@ unsigned long           ulDisplayPeriodMsec = 2000; //mSec between output to dis
 const char* szRouterName  = "Aspot24b";
 const char* szRouterPW    = "Qazqaz11";
 
-//extern WROVER_KIT_LCD     RoverLCD;
 WROVER_KIT_LCD     RoverLCD;
 
 //Protos
@@ -154,7 +130,7 @@ void setup(){
 
 
 void loop() {
-  oProbeSet.Handle();
+  //oProbeSet.Handle();
   DisplayUpdate();
 #if DO_OTA
   HandleOTAWebserver();

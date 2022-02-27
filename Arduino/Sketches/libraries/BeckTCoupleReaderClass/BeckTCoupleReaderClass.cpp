@@ -5,19 +5,15 @@ const char szSystemFileDate[]  = "2/27/22b";  //From 5/31/21e
 #include <Streaming.h>
 
 BeckTCoupleReaderClass::BeckTCoupleReaderClass() {
+  MAX6675 _oMAX6675_Thermocouple(_cSPI_CLK_Pin, 0, _cSPI_MISO_Pin);
+  //_oMAX6675_Thermocouple= new MAX6675(_cSPI_CLK_Pin, 0, _cSPI_MISO_Pin);
   Serial << "BeckTCoupleReaderClass::BeckTCoupleReaderClass(): " << szSystemFileName << ", " << szSystemFileDate << endl;
 } //constructor
 
 
-BeckTCoupleReaderClass::BeckTCoupleReaderClass(uint8_t ucSPI_MISO_Pin, uint8_t ucSPI_CLK_Pin, uint8_t ucSPI_CS_Pin){
-  _ucSPI_MISO_Pin = ucSPI_MISO_Pin;
-  _ucSPI_CLK_Pin  = ucSPI_CLK_Pin;
-  _ucSPI_CS_Pin   = ucSPI_CS_Pin;
-
-  //MAX6675   _oMAX6675_Thermocouple(_cSPI_CLK_Pin, _ucSPI_CS_Pin, _cSPI_MISO_Pin);
-  //MAX6675 *_poMAX6675_Thermocouple= new MAX6675(_cSPI_CLK_Pin, _ucSPI_CS_Pin, _cSPI_MISO_Pin);
-  //*_poMAX6675_Thermocouple= new MAX6675(_cSPI_CLK_Pin, _ucSPI_CS_Pin, _cSPI_MISO_Pin);
-  //MAX6675 _oMAX6675_Thermocouple(_cSPI_CLK_Pin, _ucSPI_CS_Pin, _cSPI_MISO_Pin);
+BeckTCoupleReaderClass::BeckTCoupleReaderClass(int8_t cSPI_CS_Pin){
+  MAX6675 _oMAX6675_Thermocouple(_cSPI_CLK_Pin, cSPI_CS_Pin, _cSPI_MISO_Pin);
+  //_oMAX6675_Thermocouple= new MAX6675(_cSPI_CLK_Pin, cSPI_CS_Pin, _cSPI_MISO_Pin);
   Serial << "BeckTCoupleReaderClass::BeckTCoupleReaderClass(): " << szSystemFileName << ", " << szSystemFileDate << endl;
 } //constructor
 
@@ -38,7 +34,7 @@ double BeckTCoupleReaderClass::Handle(){
 
   Serial << "BeckTCoupleReaderClass::Handle(): Call _poMAX6675_Thermocouple->readFahrenheit()" << dfDegF << endl;
   //dfDegF= _poMAX6675_Thermocouple->readFahrenheit();
-  //dfDegF= _oMAX6675_Thermocouple.readFahrenheit();
+  dfDegF= _oMAX6675_Thermocouple.readFahrenheit();
   Serial << "BeckTCoupleReaderClass::Handle(): dfDegF= " << dfDegF << endl;
   return dfDegF;
 } //Handle

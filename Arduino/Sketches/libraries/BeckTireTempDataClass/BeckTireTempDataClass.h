@@ -1,6 +1,6 @@
-// BeckTireTempDataClass.h, 2/27/22a
+// BeckTireTempDataClass.h, 2/27/22b
 #pragma once
-#include <BeckBiotaDefines.h>
+#include <BeckTireTempDefines.h>
 
 class BeckTireTempDataClass{
 public:
