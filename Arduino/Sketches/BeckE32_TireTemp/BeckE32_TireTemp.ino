@@ -29,21 +29,23 @@ static const byte      cSPI_MISO_Pin    = 19;
 static const byte      cSPI_CLK_Pin     = 18;
 static const int       _wNumProbes      =  3;
 
-uint8_t   acSPI_CS_Pin[] {0, 2, 4, 5};
+uint8_t   acSPI_CS_Pins[] {0, 2, 4, 5};
 
 //BeckProbeClass(byte cSPI_MISO_Pin, byte cSPI_CLK_Pin, uint8_t ucCS_Pin);
 
+/*
 //Create the Probes, with a dummy one for a non existant probe 0.
-BeckProbeClass   oProbe0(cSPI_MISO_Pin, cSPI_CLK_Pin, acSPI_CS_Pin[0]);
-BeckProbeClass   oProbe1(cSPI_MISO_Pin, cSPI_CLK_Pin, acSPI_CS_Pin[1]);
-BeckProbeClass   oProbe2(cSPI_MISO_Pin, cSPI_CLK_Pin, acSPI_CS_Pin[2]);
-BeckProbeClass   oProbe3(cSPI_MISO_Pin, cSPI_CLK_Pin, acSPI_CS_Pin[3]);
+BeckProbeClass   oProbe0(cSPI_MISO_Pin, cSPI_CLK_Pin, acSPI_CS_Pins[0]);
+BeckProbeClass   oProbe1(cSPI_MISO_Pin, cSPI_CLK_Pin, acSPI_CS_Pins[1]);
+BeckProbeClass   oProbe2(cSPI_MISO_Pin, cSPI_CLK_Pin, acSPI_CS_Pins[2]);
+BeckProbeClass   oProbe3(cSPI_MISO_Pin, cSPI_CLK_Pin, acSPI_CS_Pins[3]);
 
 //Create array of Probe objects to pass to the ProbeSet constructor
 BeckProbeClass  aoProbes[] {oProbe0, oProbe1, oProbe2, oProbe3};
+*/
 
 //Create ProbeSet object
-BeckProbeSetClass oProbeSet(_wNumProbes, aoProbes);
+BeckProbeSetClass oProbeSet(cSPI_MISO_Pin, cSPI_CLK_Pin, _wNumProbes, acSPI_CS_Pins);
 
 const char* szWebHostName = "TireTemp";
 

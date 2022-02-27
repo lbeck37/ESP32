@@ -14,17 +14,36 @@ const char szSystemFileDate[]  = "2/22/22b";  //From 5/31/21e
 // https://randomnerdtutorials.com/esp32-pinout-reference-gpios/
 //static const byte    cSPI_MOSI_Pin    = 23;     // MasterOutSlaveIn is not used, chips are read only
 
+/*
+//Create the Probes, with a dummy one for a non existant probe 0.
+BeckProbeClass   oProbe0(cSPI_MISO_Pin, cSPI_CLK_Pin, acSPI_CS_Pin[0]);
+BeckProbeClass   oProbe1(cSPI_MISO_Pin, cSPI_CLK_Pin, acSPI_CS_Pin[1]);
+BeckProbeClass   oProbe2(cSPI_MISO_Pin, cSPI_CLK_Pin, acSPI_CS_Pin[2]);
+BeckProbeClass   oProbe3(cSPI_MISO_Pin, cSPI_CLK_Pin, acSPI_CS_Pin[3]);
+*/
+
+//Create array of Probe objects to pass to the ProbeSet constructor
+//BeckProbeClass  aoProbes[] {oProbe0, oProbe1, oProbe2, oProbe3};
 
 BeckProbeSetClass::BeckProbeSetClass() {
   Serial << "BeckProbeSetClass:: Constructor " << szSystemFileName << ", " << szSystemFileDate << endl;
   return;
 } //constructor
 
-
-BeckProbeSetClass::BeckProbeSetClass(int wNumProbes, BeckProbeClass* aoProbes){
-  _aoProbes   = aoProbes;
+//BeckProbeSetClass::BeckProbeSetClass(int wNumProbes, BeckProbeClass* aoProbes){
+//                   BeckProbeSetClass(byte cSPI_MISO_Pin, byte cSPI_CLK_Pin, int wNumProbes, uint8_t acSPI_CS_Pins[]);
+//BeckProbeSetClass::BeckProbeSetClass(byte cSPI_MISO_Pin, byte cSPI_CLK_Pin, int wNumProbes, BeckProbeClass* aoProbes){
+BeckProbeSetClass::BeckProbeSetClass(byte cSPI_MISO_Pin, byte cSPI_CLK_Pin, int wNumProbes, uint8_t acSPI_CS_Pins[]){
+  //_aoProbes   = aoProbes;
   _wNumProbes = wNumProbes;
-  Serial << "BeckProbeSetClass: Construtor, NumProbes= " << _wNumProbes << endl;
+
+  for (int wProbe= 1; wProbe <= _wNumProbes; wProbe++){
+    //BeckTCoupleClass(byte cSPI_MISO_Pin, byte cSPI_CLK_Pin, uint8_t ucCS_Pin);
+    //adProbeDegF[wProbe]= _aoProbes[wProbe].Handle();
+    BeckTCoupleReaderClass oTCoupleReader(cSPI_MISO_Pin, cSPI_CLK_Pin, acSPI_CS_Pins[wProbe]);
+   }
+
+  //Serial << "BeckProbeSetClass: Construtor, NumProbes= " << _wNumProbes << endl;
   return;
 } //constructor
 

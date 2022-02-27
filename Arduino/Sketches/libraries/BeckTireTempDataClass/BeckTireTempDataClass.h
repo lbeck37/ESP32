@@ -1,11 +1,11 @@
-// BeckTireTempDataClass.h, 2/21/22c
+// BeckTireTempDataClass.h, 2/27/22a
 #pragma once
 #include <BeckBiotaDefines.h>
 
-class TireTempDataClass{
+class BeckTireTempDataClass{
 public:
-  TireTempDataClass();
-  virtual ~TireTempDataClass();
+  BeckTireTempDataClass();
+  virtual ~BeckTireTempDataClass();
 
   void        SetDegF_Value       (float NewDegFValue);
   float       GetDegF_Value       (void);
@@ -16,7 +16,7 @@ protected:
   float       DegF_Value          = 0.0;
   float       LastDegF_Value      = 0.0;
   bool        bDegFFirstTime      = true;
-};  //TireTempDataClass
+};  //BeckTireTempDataClass
 
-extern TireTempDataClass TireTempData;
+extern BeckTireTempDataClass TireTempData;
 //Last line.

@@ -1,21 +1,21 @@
-const char szGasSensorDataClassFileName[]  = "BeckTireTempDataClass.cpp";
-const char szGasSensorDataClassFileDate[]  = "2/21/22b";
+const char szBeckTireTempDataClassFileName[]  = "BeckTireTempDataClass.cpp";
+const char szBeckTireTempDataClassFileDate[]  = "2/27/22b";
 
 #include <BeckTireTempDataClass.h>
 #include <Streaming.h>
 
-TireTempDataClass TireTempData;
+BeckTireTempDataClass TireTempData;
 
-TireTempDataClass::TireTempDataClass() {
+BeckTireTempDataClass::BeckTireTempDataClass() {
 } //constructor
 
 
-TireTempDataClass::~TireTempDataClass() {
+BeckTireTempDataClass::~BeckTireTempDataClass() {
   Serial << "~SystemClass(): Destructing" << endl;
 } //destructor
 
 
-void TireTempDataClass::SetDegF_Value(float NewDegFValue){
+void BeckTireTempDataClass::SetDegF_Value(float NewDegFValue){
   //Round NewDegFValue to (1) decimal place.
   //Display flashes if more decimal places than displayed are stored
   int     wNumDecPlaces= 1;
@@ -25,11 +25,11 @@ void TireTempDataClass::SetDegF_Value(float NewDegFValue){
   return;
 }
 
-float TireTempDataClass::GetDegF_Value(){
+float BeckTireTempDataClass::GetDegF_Value(){
   return DegF_Value;
 }
 
-bool TireTempDataClass::bDegFChanged(void){
+bool BeckTireTempDataClass::bDegFChanged(void){
   bool  bChanged= false;
   if ((GetLastDegF_Value() != GetDegF_Value()) || bDegFFirstTime){
     bChanged       = true;
@@ -38,12 +38,12 @@ bool TireTempDataClass::bDegFChanged(void){
   return bChanged;
 } //bDegFChanged
 
-void TireTempDataClass::SetLastDegF_Value(float LastDegFValue){
+void BeckTireTempDataClass::SetLastDegF_Value(float LastDegFValue){
   LastDegF_Value= LastDegFValue;
   return;
 }
 
-float TireTempDataClass::GetLastDegF_Value(){
+float BeckTireTempDataClass::GetLastDegF_Value(){
   return LastDegF_Value;
 }
 //Last line.
