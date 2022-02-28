@@ -16,6 +16,7 @@ public:
   double  Handle                    (void);
 
 protected:
+  int8_t      _cSPI_CS_Pin;
   MAX6675     _oMAX6675_Thermocouple;
   uint16_t    _usDegF_Value      = 0;
 };  //BeckTCoupleReaderClass

@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckProbeClass.cpp";
-const char szSystemFileDate[]  = "2/28/22c";
+const char szSystemFileDate[]  = "2/28/22d";
 
 #include <BeckProbeClass.h>
 #include <Streaming.h>
@@ -25,9 +25,9 @@ BeckProbeClass::~BeckProbeClass() {
 double BeckProbeClass::Handle(){
   double dfDegF= 0.00;
 
-  Serial << "BeckProbeClass::Handle(): Call _poMAX6675_Thermocouple->readFahrenheit()" << dfDegF << endl;
+  Serial << "BeckProbeClass::Handle(): Call _poMAX6675_Thermocouple->readFahrenheit()" << endl;
   dfDegF= _oTCoupleReader.Handle();
-  Serial << "BeckProbeClass::Handle(): dfDegF= " << dfDegF << endl;
+  Serial << "BeckProbeClass::Handle(): _ucCS_Pin= " << _ucCS_Pin << ", dfDegF= " << dfDegF << endl;
   return dfDegF;
 } //Handle
 //Last line.
