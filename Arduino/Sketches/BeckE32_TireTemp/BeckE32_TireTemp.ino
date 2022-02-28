@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_TireTemp.ino";
-const char szFileDate[]    = "2/28/22q";
+const char szFileDate[]    = "2/28/22s";
 
 #define DO_OTA          true
 #define DO_ROVER        true

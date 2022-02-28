@@ -1,19 +1,20 @@
 const char szSystemFileName[]  = "BeckTCoupleReaderClass.cpp";
-const char szSystemFileDate[]  = "2/28/22g";
+const char szSystemFileDate[]  = "2/28/22j";
 
 #include <BeckTCoupleReaderClass.h>
 #include <Streaming.h>
 
-BeckTCoupleReaderClass::BeckTCoupleReaderClass() : _oMAX6675_Thermocouple(_cSPI_CLK_Pin, 2, _cSPI_MISO_Pin)
+//Not sure about what CS to use for default, so I used probe 1's CS pin
+BeckTCoupleReaderClass::BeckTCoupleReaderClass() : _oMAX6675_Thermocouple(_cSPI_CLK_Pin, 2, _cSPI_MISO_Pin), _cSPI_CS_Pin{2}
 {
-  Serial << "BeckTCoupleReaderClass::BeckTCoupleReaderClass(): " << szSystemFileName << ", " << szSystemFileDate << endl;
+  Serial << "BeckTCoupleReaderClass(void) constructor: " << szSystemFileName << ", " << szSystemFileDate << endl;
 } //constructor
 
 
-BeckTCoupleReaderClass::BeckTCoupleReaderClass(int8_t cSPI_CS_Pin) : _oMAX6675_Thermocouple(_cSPI_CLK_Pin, cSPI_CS_Pin, _cSPI_MISO_Pin)
+BeckTCoupleReaderClass::BeckTCoupleReaderClass(int8_t cSPI_CS_Pin) : _oMAX6675_Thermocouple(_cSPI_CLK_Pin, cSPI_CS_Pin, _cSPI_MISO_Pin), _cSPI_CS_Pin{cSPI_CS_Pin}
  {
-  Serial << "BeckTCoupleReaderClass::BeckTCoupleReaderClass(int8_t): " << szSystemFileName << ", " << szSystemFileDate << endl;
-  Serial << "BeckTCoupleReaderClass::BeckTCoupleReaderClass(uint8_t): cSPI_CS_Pin= " << cSPI_CS_Pin << endl;
+  Serial << "BeckTCoupleReaderClass(int8_t) constructor: " << szSystemFileName << ", " << szSystemFileDate << endl;
+  Serial << "BeckTCoupleReaderClass(int8_t) constructor: _cSPI_CS_Pin= " << _cSPI_CS_Pin << endl;
 } //constructor
 
 
