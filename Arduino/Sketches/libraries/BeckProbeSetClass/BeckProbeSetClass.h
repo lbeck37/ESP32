@@ -5,11 +5,12 @@
 class BeckProbeSetClass{
 public:
   BeckProbeSetClass           ();
+  BeckProbeSetClass           (MAX6675 _aoMAX6675[]);
   virtual ~BeckProbeSetClass  ();
 
   void    Handle              (void);
 
 protected:
-  BeckProbeClass          _aoProbes[];
+  static BeckProbeClass          _aoProbes[];
 };  //BeckProbeSetClass
 //Last line.

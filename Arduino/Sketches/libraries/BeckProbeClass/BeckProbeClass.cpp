@@ -9,9 +9,11 @@ BeckProbeClass::BeckProbeClass() {
 } //constructor
 
 
-BeckProbeClass::BeckProbeClass(uint8_t ucSPI_CS_Pin){
+BeckProbeClass::BeckProbeClass(MAX6675 oMAX6675){
+  //MAX6675   oMAX6675()
+  //MAX6675 _oMAX6675_Thermocouple(_cSPI_CLK_Pin, cSPI_CS_Pin, _cSPI_MISO_Pin);
 
-  BeckTCoupleReaderClass _oTCoupleReader(ucSPI_CS_Pin);
+  BeckTCoupleReaderClass _oTCoupleReader(oMAX6675);
 
   Serial << "BeckProbeClass::BeckProbeClass(): " << szSystemFileName << ", " << szSystemFileDate << endl;
 } //constructor

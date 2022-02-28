@@ -7,6 +7,10 @@ class BeckTCoupleReaderClass{
 public:
   BeckTCoupleReaderClass            ();
   BeckTCoupleReaderClass            (int8_t cSPI_CS_Pin);
+  BeckTCoupleReaderClass            (MAX6675 oMAX6675);
+  BeckTCoupleReaderClass& operator=(const BeckTCoupleReaderClass& t){
+    return *this;
+  }
   virtual ~BeckTCoupleReaderClass   ();
 
   double  Handle                    (void);

@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_TireTemp.ino";	//From BeckE32_EnviroDisplay.ino, 6/16/21c
-const char szFileDate[]    = "2/27/22f";
+const char szFileDate[]    = "2/27/22j";
 
 #define DO_OTA          true
 #define DO_ROVER        true
@@ -20,9 +20,6 @@ const char szFileDate[]    = "2/27/22f";
 #include <Fonts/FreeSansOblique18pt7b.h>
 #include <WiFi.h>
 #include <Streaming.h>
-
-//Create ProbeSet object
-BeckProbeSetClass oProbeSet();
 
 const char* szWebHostName = "TireTemp";
 
@@ -55,6 +52,88 @@ void  DisplayLowerBanner  (void);
 void  DisplayText         (UINT16 usCursorX, UINT16 usCursorY, char *pcText,
                            const GFXfont *pFont, UINT8 ucSize, UINT16 usColor);
 void  ClearTextBackground (INT16 sUpperLeftX, INT16 sUpperLeftY, UINT16 usWidth, UINT16 usHeight);
+
+//Create ProbeSet object
+static BeckProbeSetClass _oProbeSet;
+
+MAX6675   oMAX6675_Obj0(_cSPI_CLK_Pin, _acSPI_CS_Pins[0], _cSPI_MISO_Pin);
+MAX6675   oMAX6675_Obj1(_cSPI_CLK_Pin, _acSPI_CS_Pins[1], _cSPI_MISO_Pin);
+MAX6675   oMAX6675_Obj2(_cSPI_CLK_Pin, _acSPI_CS_Pins[2], _cSPI_MISO_Pin);
+MAX6675   oMAX6675_Obj3(_cSPI_CLK_Pin, _acSPI_CS_Pins[3], _cSPI_MISO_Pin);
+
+MAX6675  _aoMAX6675[] {oMAX6675_Obj0, oMAX6675_Obj1, oMAX6675_Obj2, oMAX6675_Obj3};
+
+void setup(){
+  Serial.begin(115200);
+  Serial << endl<< LOG0 << "setup(): Begin " << szSketchName << ", " << szFileDate << endl;
+
+  // Start WiFi and wait for connection to the network
+  WiFi.begin(szRouterName, szRouterPW);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial << endl << "setup(): Connected to " << szRouterName << ", IP address to connect to is " << WiFi.localIP() << endl;
+
+  //oProbeSet= new BeckProbeSetClass();
+  //_aoProbeSet[0]= new BeckProbeSetClass();
+  //_oProbeSet= new BeckProbeSetClass();
+  Serial << LOG0 << "setup(): Call DisplayBegin()" << endl;
+  DisplayBegin();
+
+#if DO_OTA
+  Serial << "setup(): Call SetupWebServer(" << szWebHostName << ")" << endl;
+  SetupWebserver(szWebHostName);
+#endif
+
+  Serial << LOG0 << "setup(): return" << endl;
+  return;
+}  //setup
+
+
+void loop() {
+  _oProbeSet.Handle();
+  DisplayUpdate();
+#if DO_OTA
+  HandleOTAWebserver();
+#endif
+  delay(1000);
+  return;
+}  //loop()
+
+
+void DisplayBegin() {
+  Serial << LOG0 << "DisplayBegin(): Call RoverLCD.begin()" << endl;
+  RoverLCD.begin();
+  RoverLCD.setRotation(1);
+  DisplayClear();
+  return;
+}  //DisplayBegin
+
+
+void DisplayClear() {
+  FillScreen(BackgroundColor);
+  return;
+}  //DisplayClear
+
+
+void FillScreen(UINT16 usColor) {
+#if DO_ROVER
+  RoverLCD.fillScreen(usColor);
+#else
+#endif
+  return;
+}  //FillScreen
+
+
+void DisplayUpdate(void) {
+if (millis() > ulNextDisplayMsec){
+  ulNextDisplayMsec= millis() + ulDisplayPeriodMsec;
+  DisplayTemperature();
+} //if (millis()>ulNextDisplayMsec)
+DisplayLowerBanner();
+return;
+}  //DisplayUpdate
 
 
 void DisplayTemperature() {
@@ -102,76 +181,6 @@ void DisplayLowerBanner(){
   DisplayText( usCursorX, usCursorY, "Tire Degrees F", pFont, ucSize, usColor);
   return;
 } //DisplayLowerBanner
-
-
-void setup(){
-  Serial.begin(115200);
-  Serial << endl<< LOG0 << "setup(): Begin " << szSketchName << ", " << szFileDate << endl;
-
-  // Start WiFi and wait for connection to the network
-  WiFi.begin(szRouterName, szRouterPW);
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");
-  }
-  Serial << endl << "setup(): Connected to " << szRouterName << ", IP address to connect to is " << WiFi.localIP() << endl;
-
-  Serial << LOG0 << "setup(): Call DisplayBegin()" << endl;
-  DisplayBegin();
-
-#if DO_OTA
-  Serial << "setup(): Call SetupWebServer(" << szWebHostName << ")" << endl;
-  SetupWebserver(szWebHostName);
-#endif
-
-  Serial << LOG0 << "setup(): return" << endl;
-  return;
-}  //setup
-
-
-void loop() {
-  //oProbeSet.Handle();
-  DisplayUpdate();
-#if DO_OTA
-  HandleOTAWebserver();
-#endif
-  delay(1000);
-  return;
-}  //loop()
-
-
-void DisplayBegin() {
-  Serial << LOG0 << "DisplayBegin(): Call RoverLCD.begin()" << endl;
-  RoverLCD.begin();
-  RoverLCD.setRotation(1);
-  DisplayClear();
-  return;
-}  //DisplayBegin
-
-
-  void DisplayUpdate(void) {
-  if (millis() > ulNextDisplayMsec){
-    ulNextDisplayMsec= millis() + ulDisplayPeriodMsec;
-    DisplayTemperature();
-  } //if (millis()>ulNextDisplayMsec)
-  DisplayLowerBanner();
-  return;
-}  //DisplayUpdate
-
-
-void DisplayClear() {
-  FillScreen(BackgroundColor);
-  return;
-}  //DisplayClear
-
-
-void FillScreen(UINT16 usColor) {
-#if DO_ROVER
-  RoverLCD.fillScreen(usColor);
-#else
-#endif
-  return;
-}  //FillScreen
 
 
 void DisplayText(UINT16 usCursorX, UINT16 usCursorY, char *pcText,
