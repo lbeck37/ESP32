@@ -1,4 +1,4 @@
-// BeckProbeClass.h, 2/28/22d
+// BeckProbeClass.h, 2/28/22f
 #pragma once
 #include <BeckTireTempDefines.h>
 #include <BeckTCoupleReaderClass.h>
@@ -8,11 +8,6 @@ public:
   BeckProbeClass();
   BeckProbeClass(uint8_t ucCS_Pin);
   virtual ~BeckProbeClass();
-
-  //Copy constructor
-  BeckProbeClass& operator=(const BeckProbeClass& t){
-    return *this;
-  }
 
   double  Handle          (void);
 

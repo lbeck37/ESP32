@@ -1,4 +1,4 @@
-// BeckTCoupleReaderClass.h, 2/28/22d
+// BeckTCoupleReaderClass.h, 2/28/22f
 #pragma once
 #include <BeckTireTempDefines.h>
 #include <max6675.h>
@@ -8,11 +8,6 @@ public:
   BeckTCoupleReaderClass            ();
   BeckTCoupleReaderClass            (int8_t cSPI_CS_Pin);
   virtual ~BeckTCoupleReaderClass   ();
-
-  //Copy constructor
-  BeckTCoupleReaderClass& operator=(const BeckTCoupleReaderClass& t){
-    return *this;
-  }
 
   double  Handle                    (void);
 

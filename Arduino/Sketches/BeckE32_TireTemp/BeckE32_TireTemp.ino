@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_TireTemp.ino";
-const char szFileDate[]    = "2/28/22c";
+const char szFileDate[]    = "2/28/22q";
 
 #define DO_OTA          true
 #define DO_ROVER        true
@@ -76,6 +76,9 @@ void setup(){
   Serial << "setup(): Call SetupWebServer(" << szWebHostName << ")" << endl;
   SetupWebserver(szWebHostName);
 #endif
+
+  Serial << LOG0 << "setup(): Call BuildProbes()" << endl;
+  _oProbeSet.BuildProbes();
 
   Serial << LOG0 << "setup(): return" << endl;
   return;

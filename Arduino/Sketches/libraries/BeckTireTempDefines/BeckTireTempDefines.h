@@ -1,10 +1,11 @@
-// BeckTireTempDefines.h, 2/28/22a
+// BeckTireTempDefines.h, 2/28/22d
 #pragma once
 #include <cstdint>
 
 //Define the code that is built
 #define DO_ROVER                true
 #define DO_OTA                  true
+
 #define DO_ACCESS_POINT         false
 #define DO_FIREBASE             false
 //#define DO_ALEXA                false
