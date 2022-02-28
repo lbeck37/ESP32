@@ -24,7 +24,7 @@ const char szFileDate[]    = "2/28/22b";
 const char* szWebHostName = "TireTemp";
 
 #define min(X, Y)       (((X) < (Y)) ? (X) : (Y))
-const UINT16     usTopText_CursorY       =  35;
+const UINT16       usTopText_CursorY       =  35;
 
 static  UINT16     usTextSpacing           = 20;
 static  UINT16     usDegF_CursorY          = usTopText_CursorY;

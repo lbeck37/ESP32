@@ -1,11 +1,19 @@
 const char szSystemFileName[]  = "BeckProbeClass.cpp";
-const char szSystemFileDate[]  = "2/28/22b";
+const char szSystemFileDate[]  = "2/28/22c";
 
 #include <BeckProbeClass.h>
 #include <Streaming.h>
 
 BeckProbeClass::BeckProbeClass() {
+  _oTCoupleReader= BeckTCoupleReaderClass(0);
   Serial << "BeckProbeClass::BeckProbeClass(): " << szSystemFileName << ", " << szSystemFileDate << endl;
+} //constructor
+
+
+BeckProbeClass::BeckProbeClass(uint8_t ucCS_Pin) : _ucCS_Pin{ucCS_Pin}
+{
+  _oTCoupleReader= BeckTCoupleReaderClass(_ucCS_Pin);
+  Serial << "BeckProbeClass::BeckProbeClass(uint8_t): " << szSystemFileName << ", " << szSystemFileDate << endl;
 } //constructor
 
 
