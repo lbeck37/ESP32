@@ -9,7 +9,7 @@ BeckProbeClass::BeckProbeClass() {
 } //constructor
 
 
-BeckProbeClass::BeckProbeClass(MAX6675 oMAX6675){
+BeckProbeClass::BeckProbeClass(MAX6675& oMAX6675){
   //MAX6675   oMAX6675()
   //MAX6675 _oMAX6675_Thermocouple(_cSPI_CLK_Pin, cSPI_CS_Pin, _cSPI_MISO_Pin);
 

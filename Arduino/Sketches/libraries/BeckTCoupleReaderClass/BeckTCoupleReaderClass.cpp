@@ -11,8 +11,8 @@ BeckTCoupleReaderClass::BeckTCoupleReaderClass() {
 } //constructor
 
 
-BeckTCoupleReaderClass::BeckTCoupleReaderClass(MAX6675 oMAX6675){
-  _oMAX6675_Thermocouple= oMAX6675;
+BeckTCoupleReaderClass::BeckTCoupleReaderClass(MAX6675& oMAX6675){
+  //_oMAX6675_Thermocouple= oMAX6675;
   Serial << "BeckTCoupleReaderClass::BeckTCoupleReaderClass(MAX6675): " << szSystemFileName << ", " << szSystemFileDate << endl;
 } //constructor
 

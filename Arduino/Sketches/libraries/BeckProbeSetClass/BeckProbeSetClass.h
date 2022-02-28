@@ -1,6 +1,7 @@
-// BeckProbeSetClass.h, 2/27/22c
+// BeckProbeSetClass.h, 2/27/22d
 #pragma once
 #include <BeckProbeClass.h>
+#include <BeckTireTempDefines.h>
 
 class BeckProbeSetClass{
 public:
@@ -11,6 +12,7 @@ public:
   void    Handle              (void);
 
 protected:
-  static BeckProbeClass          _aoProbes[];
+  //static BeckProbeClass          _aoProbes[_wNumProbes + 1];
+  BeckProbeClass          _aoProbes[_wNumProbes + 1];
 };  //BeckProbeSetClass
 //Last line.
