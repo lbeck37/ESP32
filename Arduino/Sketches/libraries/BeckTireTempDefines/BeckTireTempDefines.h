@@ -24,5 +24,4 @@ static const int8_t     _cSPI_MISO_Pin    = 19;
 static const int8_t     _cSPI_CLK_Pin     = 18;
 static const int        _wNumProbes       =  3;
 
-//uint8_t   acSPI_CS_Pins[] {0, 2, 4, 5};
 extern uint8_t   _acSPI_CS_Pins[];

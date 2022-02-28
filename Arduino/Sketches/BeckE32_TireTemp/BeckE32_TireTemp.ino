@@ -1,5 +1,5 @@
-const char szSketchName[]  = "BeckE32_TireTemp.ino";	//From BeckE32_EnviroDisplay.ino, 6/16/21c
-const char szFileDate[]    = "2/28/22a";
+const char szSketchName[]  = "BeckE32_TireTemp.ino";
+const char szFileDate[]    = "2/28/22b";
 
 #define DO_OTA          true
 #define DO_ROVER        true
@@ -56,14 +56,6 @@ void  ClearTextBackground (INT16 sUpperLeftX, INT16 sUpperLeftY, UINT16 usWidth,
 //Create ProbeSet object
 static BeckProbeSetClass _oProbeSet;
 
-/*
-MAX6675   oMAX6675_Obj0(_cSPI_CLK_Pin, _acSPI_CS_Pins[0], _cSPI_MISO_Pin);
-MAX6675   oMAX6675_Obj1(_cSPI_CLK_Pin, _acSPI_CS_Pins[1], _cSPI_MISO_Pin);
-MAX6675   oMAX6675_Obj2(_cSPI_CLK_Pin, _acSPI_CS_Pins[2], _cSPI_MISO_Pin);
-MAX6675   oMAX6675_Obj3(_cSPI_CLK_Pin, _acSPI_CS_Pins[3], _cSPI_MISO_Pin);
-
-MAX6675  _aoMAX6675[] {oMAX6675_Obj0, oMAX6675_Obj1, oMAX6675_Obj2, oMAX6675_Obj3};
-*/
 
 void setup(){
   Serial.begin(115200);
@@ -77,9 +69,6 @@ void setup(){
   }
   Serial << endl << "setup(): Connected to " << szRouterName << ", IP address to connect to is " << WiFi.localIP() << endl;
 
-  //oProbeSet= new BeckProbeSetClass();
-  //_aoProbeSet[0]= new BeckProbeSetClass();
-  //_oProbeSet= new BeckProbeSetClass();
   Serial << LOG0 << "setup(): Call DisplayBegin()" << endl;
   DisplayBegin();
 

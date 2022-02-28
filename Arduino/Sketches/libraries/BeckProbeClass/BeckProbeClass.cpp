@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckProbeClass.cpp";
-const char szSystemFileDate[]  = "2/28/22a";  //From 5/31/21e
+const char szSystemFileDate[]  = "2/28/22b";
 
 #include <BeckProbeClass.h>
 #include <Streaming.h>
@@ -7,18 +7,6 @@ const char szSystemFileDate[]  = "2/28/22a";  //From 5/31/21e
 BeckProbeClass::BeckProbeClass() {
   Serial << "BeckProbeClass::BeckProbeClass(): " << szSystemFileName << ", " << szSystemFileDate << endl;
 } //constructor
-
-
-/*
-BeckProbeClass::BeckProbeClass(MAX6675& oMAX6675){
-  //MAX6675   oMAX6675()
-  //MAX6675 _oMAX6675_Thermocouple(_cSPI_CLK_Pin, cSPI_CS_Pin, _cSPI_MISO_Pin);
-
-  BeckTCoupleReaderClass _oTCoupleReader(oMAX6675);
-
-  Serial << "BeckProbeClass::BeckProbeClass(): " << szSystemFileName << ", " << szSystemFileDate << endl;
-} //constructor
-*/
 
 
 BeckProbeClass::~BeckProbeClass() {

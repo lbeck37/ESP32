@@ -1,35 +1,18 @@
 const char szSystemFileName[]  = "BeckProbeSetClass.cpp";
-const char szSystemFileDate[]  = "2/28/22a";  //From 5/31/21e
+const char szSystemFileDate[]  = "2/28/22c";
 
 #include <BeckProbeSetClass.h>
 #include <BeckProbeClass.h>
 #include <BeckTireTempDefines.h>
-//#include <max6675.h>
 #include <Streaming.h>
 
 
-//Create array of Probe objects to pass to the ProbeSet constructor
-//BeckProbeClass  aoProbes[] {oProbe0, oProbe1, oProbe2, oProbe3};
-
-uint8_t   _acSPI_CS_Pins[] {0, 2, 4, 5};
-//uint8_t   _acSPI_CS_Pins[];
+uint8_t   _acSPI_CS_Pins[] {0, 2, 4, 5};    //Declared "extern" in BeckTireTempDefines.h
 
 BeckProbeSetClass::BeckProbeSetClass() {
   Serial << "BeckProbeSetClass:: Constructor " << szSystemFileName << ", " << szSystemFileDate << endl;
   return;
 } //constructor
-
-/*
-BeckProbeSetClass::BeckProbeSetClass(MAX6675 _aoMAX6675[]){
-  for (int wProbe= 1; wProbe <= _wNumProbes; wProbe++){
-    //_aoProbes[wProbe]= new BeckProbeClass(_acSPI_CS_Pins[wProbe]);
-    _aoProbes[wProbe]= BeckProbeClass(_aoMAX6675[wProbe]);
-   }
-  //Serial << "BeckProbeSetClass: Construtor, NumProbes= " << _wNumProbes << endl;
-  return;
-} //constructor
-*/
-
 
 BeckProbeSetClass::~BeckProbeSetClass() {
   Serial << "~BeckProbeSetClass(): Destructing" << endl;

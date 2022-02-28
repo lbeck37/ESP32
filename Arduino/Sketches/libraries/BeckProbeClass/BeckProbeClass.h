@@ -1,4 +1,4 @@
-// BeckProbeClass.h, 2/27/22d
+// BeckProbeClass.h, 2/28/22a
 #pragma once
 #include <BeckTireTempDefines.h>
 #include <BeckTCoupleReaderClass.h>
@@ -7,7 +7,6 @@ class BeckProbeClass{
 public:
   BeckProbeClass();
   //BeckProbeClass(uint8_t ucCS_Pin);
-  //BeckProbeClass(MAX6675& oMAX6675);
   virtual ~BeckProbeClass();
 
   double  Handle          (void);
@@ -15,8 +14,6 @@ public:
 protected:
   uint16_t    _usDegF_Value     = 0;
 
-  //static BeckTCoupleReaderClass _oTCoupleReader;
   BeckTCoupleReaderClass _oTCoupleReader;
 };  //BeckProbeClass
-
 //Last line.
