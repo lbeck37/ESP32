@@ -1,4 +1,4 @@
-// BeckProbeSetClass.h, 2/28/22c
+// BeckProbeSetClass.h, 2/28/22d
 #pragma once
 #include <BeckProbeClass.h>
 #include <BeckTireTempDefines.h>
@@ -8,6 +8,7 @@ public:
   BeckProbeSetClass           ();
   virtual ~BeckProbeSetClass  ();
 
+  //Copy constructor
   BeckProbeSetClass& operator=(const BeckProbeSetClass& t){
     return *this;
   }

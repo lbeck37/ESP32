@@ -9,6 +9,7 @@ public:
   BeckProbeClass(uint8_t ucCS_Pin);
   virtual ~BeckProbeClass();
 
+  //Copy constructor
   BeckProbeClass& operator=(const BeckProbeClass& t){
     return *this;
   }

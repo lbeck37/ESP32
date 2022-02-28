@@ -5,7 +5,7 @@ const char szSystemFileDate[]  = "2/28/22d";
 #include <Streaming.h>
 
 BeckProbeClass::BeckProbeClass() {
-  _oTCoupleReader= BeckTCoupleReaderClass(0);
+  _oTCoupleReader= BeckTCoupleReaderClass(2);
   Serial << "BeckProbeClass::BeckProbeClass(): " << szSystemFileName << ", " << szSystemFileDate << endl;
 } //constructor
 
