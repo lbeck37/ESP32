@@ -1,10 +1,10 @@
 const char szSystemFileName[]  = "BeckProbeSetClass.cpp";
-const char szSystemFileDate[]  = "2/27/22c";  //From 5/31/21e
+const char szSystemFileDate[]  = "2/28/22a";  //From 5/31/21e
 
 #include <BeckProbeSetClass.h>
 #include <BeckProbeClass.h>
 #include <BeckTireTempDefines.h>
-#include <max6675.h>
+//#include <max6675.h>
 #include <Streaming.h>
 
 
@@ -19,6 +19,7 @@ BeckProbeSetClass::BeckProbeSetClass() {
   return;
 } //constructor
 
+/*
 BeckProbeSetClass::BeckProbeSetClass(MAX6675 _aoMAX6675[]){
   for (int wProbe= 1; wProbe <= _wNumProbes; wProbe++){
     //_aoProbes[wProbe]= new BeckProbeClass(_acSPI_CS_Pins[wProbe]);
@@ -27,6 +28,7 @@ BeckProbeSetClass::BeckProbeSetClass(MAX6675 _aoMAX6675[]){
   //Serial << "BeckProbeSetClass: Construtor, NumProbes= " << _wNumProbes << endl;
   return;
 } //constructor
+*/
 
 
 BeckProbeSetClass::~BeckProbeSetClass() {

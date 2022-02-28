@@ -1,4 +1,4 @@
-// BeckProbeSetClass.h, 2/27/22d
+// BeckProbeSetClass.h, 2/28/22a
 #pragma once
 #include <BeckProbeClass.h>
 #include <BeckTireTempDefines.h>
@@ -6,7 +6,7 @@
 class BeckProbeSetClass{
 public:
   BeckProbeSetClass           ();
-  BeckProbeSetClass           (MAX6675 _aoMAX6675[]);
+  //BeckProbeSetClass           (MAX6675 _aoMAX6675[]);
   virtual ~BeckProbeSetClass  ();
 
   void    Handle              (void);

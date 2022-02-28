@@ -1,4 +1,4 @@
-// BeckTireTempDefines.h, 2/27/22c
+// BeckTireTempDefines.h, 2/28/22a
 #pragma once
 #include <cstdint>
 
@@ -8,8 +8,6 @@
 #define DO_ACCESS_POINT         false
 #define DO_FIREBASE             false
 //#define DO_ALEXA                false
-
-//If DO_ROVER is not true, then the display is on TTGO instead of the ESP-WROVER-KIT
 
 #if DO_ROVER
   #include <WROVER_KIT_LCD.h>

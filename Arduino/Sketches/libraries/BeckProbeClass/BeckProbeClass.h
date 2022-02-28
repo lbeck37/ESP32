@@ -2,13 +2,12 @@
 #pragma once
 #include <BeckTireTempDefines.h>
 #include <BeckTCoupleReaderClass.h>
-//#include <max6675.h>
 
 class BeckProbeClass{
 public:
   BeckProbeClass();
   //BeckProbeClass(uint8_t ucCS_Pin);
-  BeckProbeClass(MAX6675& oMAX6675);
+  //BeckProbeClass(MAX6675& oMAX6675);
   virtual ~BeckProbeClass();
 
   double  Handle          (void);
