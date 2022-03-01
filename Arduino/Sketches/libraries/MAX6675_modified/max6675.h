@@ -1,6 +1,6 @@
 // this library is public domain. enjoy!
 // www.ladyada.net/learn/sensors/thermocouple
-#pragma once
+#pragma once      //Beck 2/12/22
 #if ARDUINO >= 100
  #include "Arduino.h"
 #else

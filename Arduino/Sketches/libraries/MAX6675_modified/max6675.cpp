@@ -1,3 +1,4 @@
+// Beck: max6675.cpp, 2/28/22c
 // this library is public domain. enjoy!
 // www.ladyada.net/learn/sensors/thermocouple
 
@@ -5,6 +6,7 @@
 //#include <util/delay.h>
 #include <stdlib.h>
 #include "max6675.h"
+#include <Streaming.h>
 
 MAX6675::MAX6675(int8_t SCLK, int8_t CS, int8_t MISO) {
   sclk = SCLK;
@@ -17,9 +19,10 @@ MAX6675::MAX6675(int8_t SCLK, int8_t CS, int8_t MISO) {
   pinMode(miso, INPUT);
 
   digitalWrite(cs, HIGH);
-}
-double MAX6675::readCelsius(void) {
+} //constructor
 
+
+double MAX6675::readCelsius(void) {
   uint16_t v;
 
   digitalWrite(cs, LOW);
@@ -36,15 +39,25 @@ double MAX6675::readCelsius(void) {
     return NAN; 
     //return -100;
   }
-
   v >>= 3;
-
   return v*0.25;
-}
+} //readCelsius
+
 
 double MAX6675::readFahrenheit(void) {
-  return readCelsius() * 9.0/5.0 + 32;
-}
+  double dfDegF;
+  double dfDegC;
+  Serial << "MAX6675::readFahrenheit(): CS= " << cs << ", CLK= " << sclk << ", MISO= " << miso << endl;
+
+  dfDegC= readCelsius();
+  dfDegF= (dfDegC * (9.0/5.0)) + 32.0;
+
+  Serial << "MAX6675::readFahrenheit(): dfDegC= " << dfDegC << endl;
+  Serial << "MAX6675::readFahrenheit(): dfDegF= " << dfDegF << endl;
+  //return readCelsius() * 9.0/5.0 + 32;
+  return dfDegF;
+} //readFahrenheit
+
 
 byte MAX6675::spiread(void) { 
   int i;
