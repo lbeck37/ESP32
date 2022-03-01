@@ -1,4 +1,4 @@
-// Beck: max6675.cpp, 2/28/22b
+// Beck: max6675.cpp, 2/28/22c
 // this library is public domain. enjoy!
 // www.ladyada.net/learn/sensors/thermocouple
 
@@ -46,10 +46,13 @@ double MAX6675::readCelsius(void) {
 
 double MAX6675::readFahrenheit(void) {
   double dfDegF;
-  Serial << "MAX6675::readFahrenheit(): CS pin is " << cs << endl;
+  double dfDegC;
+  Serial << "MAX6675::readFahrenheit(): CS= " << cs << ", CLK= " << sclk << ", MISO= " << miso << endl;
 
-  dfDegF= (readCelsius() * (9.0/5.0)) + 32.0;
+  dfDegC= readCelsius();
+  dfDegF= (dfDegC * (9.0/5.0)) + 32.0;
 
+  Serial << "MAX6675::readFahrenheit(): dfDegC= " << dfDegC << endl;
   Serial << "MAX6675::readFahrenheit(): dfDegF= " << dfDegF << endl;
   //return readCelsius() * 9.0/5.0 + 32;
   return dfDegF;
