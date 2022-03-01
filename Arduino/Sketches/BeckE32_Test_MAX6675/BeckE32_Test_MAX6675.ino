@@ -1,8 +1,12 @@
 // BeckE32_Test_MAX6675.ino, 2/28/22b
+const char szSketchName[]  = "BeckE32_Test_MAX6675.ino";
+const char szFileDate[]    = "3/1/22a";
+
 // this example is public domain. enjoy!
 // www.ladyada.net/learn/sensors/thermocouple
 
 #include "max6675.h"
+#include <Streaming.h>
 
 int8_t    cSPI_CLK    = 18;
 int8_t    cSPI_MISO   = 19;
@@ -13,8 +17,9 @@ MAX6675 oMAX6675_Reader(cSPI_CLK, cSPI_CS, cSPI_MISO);
 
 void setup() {
   Serial.begin(115200);
+  Serial << endl << "setup(): Begin " << szSketchName << ", " << szFileDate << endl;
 
-  Serial.println("MAX6675 test");
+  //Serial.println("MAX6675 test");
   // wait for MAX chip to stabilize
   delay(500);
   return;
@@ -24,8 +29,9 @@ void setup() {
 void loop() {
   // basic readout test, just print the current temp
 
-   Serial.print("F = ");
-   Serial.println(oMAX6675_Reader.readFahrenheit());
+   //Serial.print("F = ");
+   //Serial.println(oMAX6675_Reader.readFahrenheit());
+   Serial << "DegF= " << oMAX6675_Reader.readFahrenheit()  << endl;
 
    delay(1000);
    return;
