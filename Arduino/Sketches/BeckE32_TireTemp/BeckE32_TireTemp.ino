@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_TireTemp.ino";
-const char szFileDate[]    = "2/28/22s";
+const char szFileDate[]    = "3/1/22b";
 
 #define DO_OTA          true
 #define DO_ROVER        true
@@ -56,10 +56,13 @@ void  ClearTextBackground (INT16 sUpperLeftX, INT16 sUpperLeftY, UINT16 usWidth,
 //Create ProbeSet object
 static BeckProbeSetClass _oProbeSet;
 
-
 void setup(){
   Serial.begin(115200);
   Serial << endl<< LOG0 << "setup(): Begin " << szSketchName << ", " << szFileDate << endl;
+
+
+  Serial << LOG0 << "setup(): Call DisplayBegin()" << endl;
+  DisplayBegin();
 
   // Start WiFi and wait for connection to the network
   WiFi.begin(szRouterName, szRouterPW);
@@ -68,9 +71,6 @@ void setup(){
     Serial.print(".");
   }
   Serial << endl << "setup(): Connected to " << szRouterName << ", IP address to connect to is " << WiFi.localIP() << endl;
-
-  Serial << LOG0 << "setup(): Call DisplayBegin()" << endl;
-  DisplayBegin();
 
 #if DO_OTA
   Serial << "setup(): Call SetupWebServer(" << szWebHostName << ")" << endl;
@@ -91,7 +91,7 @@ void loop() {
 #if DO_OTA
   HandleOTAWebserver();
 #endif
-  delay(1000);
+  delay(5000);
   return;
 }  //loop()
 

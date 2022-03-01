@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckTCoupleReaderClass.cpp";
-const char szSystemFileDate[]  = "2/28/22j";
+const char szSystemFileDate[]  = "3/1/22a";
 
 #include <BeckTCoupleReaderClass.h>
 #include <Streaming.h>
@@ -27,7 +27,7 @@ double BeckTCoupleReaderClass::Handle(){
   double dfDegF= 0.00;
 
   Serial << "BeckTCoupleReaderClass::Handle(): _cSPI_CS_Pin= " << _cSPI_CS_Pin << endl;
-  Serial << "BeckTCoupleReaderClass::Handle(): Call _oMAX6675_Thermocouple.readFahrenheit()" << endl;
+  //Serial << "BeckTCoupleReaderClass::Handle(): Call _oMAX6675_Thermocouple.readFahrenheit()" << endl;
 
   dfDegF= _oMAX6675_Thermocouple.readFahrenheit();
 

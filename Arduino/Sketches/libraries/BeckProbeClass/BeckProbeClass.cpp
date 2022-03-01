@@ -35,12 +35,12 @@ BeckProbeClass::~BeckProbeClass() {
 double BeckProbeClass::Handle(){
   double dfDegF= 0.00;
 
-  Serial << "BeckProbeClass::Handle(): _ucCS_Pin= " << _ucCS_Pin << endl;
-  Serial << "BeckProbeClass::Handle(): Call _oTCoupleReader.Handle()" << endl;
+  //Serial << "BeckProbeClass::Handle(): _ucCS_Pin= " << _ucCS_Pin << endl;
+  //Serial << "BeckProbeClass::Handle(): Call _oTCoupleReader.Handle()" << endl;
 
   dfDegF= _oTCoupleReader.Handle();
 
-  Serial << "BeckProbeClass::Handle(): dfDegF= " << dfDegF << endl;
+  //Serial << "BeckProbeClass::Handle(): dfDegF= " << dfDegF << endl;
   return dfDegF;
 } //Handle
 //Last line.
