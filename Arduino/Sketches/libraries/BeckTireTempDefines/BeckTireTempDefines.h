@@ -1,9 +1,9 @@
-// BeckTireTempDefines.h, 3/2/22c
+// BeckTireTempDefines.h, 3/2/22d
 #pragma once
 #include <cstdint>
 
 //Define the code that is built
-#define DO_ROVER                false
+#define DO_ROVER                true
 #define DO_OTA                  true
 
 #define DO_ACCESS_POINT         false
@@ -22,6 +22,14 @@ typedef   uint8_t       FontSize;
 //Pinout using unused camera pins for MISO and CLK
 static const int8_t     _cSPI_MISO_Pin    = 26;
 static const int8_t     _cSPI_CLK_Pin     = 27;
+
+static const int8_t     _cSPI_CS_Pin1     = 12;
+static const int8_t     _cSPI_CS_Pin2     = 13;
+static const int8_t     _cSPI_CS_Pin3     = 14;
+
+static const int8_t     _cRGB_RedPin      =  0;
+static const int8_t     _cRGB_GreenPin    =  2;
+static const int8_t     _cRGB_BluePin     =  4;
 
 /*
 // https://randomnerdtutorials.com/esp32-pinout-reference-gpios/

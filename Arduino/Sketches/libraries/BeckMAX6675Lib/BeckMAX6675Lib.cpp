@@ -6,7 +6,7 @@
 #include <BeckMAX6675Lib.h>
 #include <Streaming.h>
 
-#define DEBUG_MAX6675    false
+#define DEBUG_MAX6675    true
 
 BeckMAX6675Class::BeckMAX6675Class(int8_t CLK, int8_t CS, int8_t MISO) {
   _CLK    = CLK;

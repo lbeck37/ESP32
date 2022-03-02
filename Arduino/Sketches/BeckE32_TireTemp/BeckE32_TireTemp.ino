@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_TireTemp.ino";
-const char szFileDate[]    = "3/2/22g";
+const char szFileDate[]    = "3/2/22k";
 
 #include <BeckTireTempDefines.h>
 #if DO_OTA
@@ -44,8 +44,9 @@ const char* szRouterPW    = "Qazqaz11";
 #endif
 
 //Protos
-void  setup               (void);
-void  loop                (void);
+void  setup                 (void);
+void  loop                  (void);
+void  FlashRGB_LED          (void);
 #if DO_ROVER
   void  DisplayBegin        (void);
   void  DisplayClear        (void);
@@ -70,7 +71,7 @@ void setup(){
   Serial << LOG0 << "setup(): Call DisplayBegin()" << endl;
   DisplayBegin();
 #endif
-
+  FlashRGB_LED();
   // Start WiFi and wait for connection to the network
   WiFi.begin(szRouterName, szRouterPW);
   while (WiFi.status() != WL_CONNECTED) {
@@ -105,6 +106,41 @@ void loop() {
 #endif
   return;
 }  //loop()
+
+
+void FlashRGB_LED() {
+  Serial << LOG0 << "FlashRGB_LED(): Begin" << endl;
+  pinMode(_cRGB_RedPin, OUTPUT);
+  pinMode(_cRGB_GreenPin, OUTPUT);
+  pinMode(_cRGB_BluePin, OUTPUT);
+
+  //Turn them all off
+  digitalWrite(_cRGB_RedPin,    LOW);
+  digitalWrite(_cRGB_GreenPin,  LOW);
+  digitalWrite(_cRGB_BluePin,   LOW);
+  delay(1000);
+  digitalWrite(_cRGB_RedPin,    HIGH);
+  delay(1000);
+  digitalWrite(_cRGB_RedPin,    LOW);
+  digitalWrite(_cRGB_GreenPin,  HIGH);
+  delay(1000);
+  digitalWrite(_cRGB_GreenPin,  LOW);
+  digitalWrite(_cRGB_BluePin,   HIGH);
+  delay(1000);
+  digitalWrite(_cRGB_RedPin,    LOW);
+  digitalWrite(_cRGB_GreenPin,  LOW);
+  digitalWrite(_cRGB_BluePin,   LOW);
+  delay(1000);
+  digitalWrite(_cRGB_RedPin,    HIGH);
+  digitalWrite(_cRGB_GreenPin,  HIGH);
+  digitalWrite(_cRGB_BluePin,   HIGH);
+  delay(1000);
+  digitalWrite(_cRGB_RedPin,    LOW);
+  //digitalWrite(_cRGB_GreenPin,  LOW);
+  digitalWrite(_cRGB_BluePin,   LOW);
+
+  return;
+}  //FlashRGB_LED
 
 
 #if DO_ROVER
