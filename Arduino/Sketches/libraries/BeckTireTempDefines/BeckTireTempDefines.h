@@ -3,7 +3,7 @@
 #include <cstdint>
 
 //Define the code that is built
-#define DO_ROVER                true
+#define DO_ROVER                false
 #define DO_OTA                  true
 
 #define DO_ACCESS_POINT         false

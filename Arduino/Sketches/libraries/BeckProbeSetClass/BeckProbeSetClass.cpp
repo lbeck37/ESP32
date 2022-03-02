@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckProbeSetClass.cpp";
-const char szSystemFileDate[]  = "2/28/22h";
+const char szSystemFileDate[]  = "3/1/22a";
 
 #include <BeckProbeSetClass.h>
 #include <BeckProbeClass.h>
@@ -52,7 +52,7 @@ void BeckProbeSetClass::Handle(){
   Serial << "BeckProbeSetClass::Handle(): " << endl <<
       "    Thermo #1= " << adProbeDegF[1] << "F, #2= " << adProbeDegF[2] << "F, #3=" << adProbeDegF[3] << endl;
 
-  Serial << "BeckProbeSetClass::Handle(): return " << endl;
+  //Serial << "BeckProbeSetClass::Handle(): return " << endl;
   return;
 } //Handle
 //Last line.

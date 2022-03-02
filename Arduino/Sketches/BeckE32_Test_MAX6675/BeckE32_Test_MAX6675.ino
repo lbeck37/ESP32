@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_Test_MAX6675.ino";
-const char szFileDate[]    = "3/1/22f";
+const char szFileDate[]    = "3/1/22p";
 //Beck: This uses a basic test case format which has WiFi and OTA support
 //Program to test MAX6675 Thermocouple reader using SPI
 //Good basis for any simple test
@@ -8,7 +8,8 @@ const char szFileDate[]    = "3/1/22f";
 
 #define DO_OTA          true
 
-#include "max6675.h"
+//#include "max6675.h"
+#include <BeckMAX6675Lib.h>
 #if DO_OTA
   #include <BeckE32_OTALib.h>
   #include <WiFi.h>
@@ -27,9 +28,9 @@ int8_t    cSPI_CS2    =  4;
 int8_t    cSPI_CS3    =  5;
 
 //Create objects to read thermocouples
-MAX6675 oMAX6675_Reader1(cSPI_CLK, cSPI_CS1, cSPI_MISO);
-MAX6675 oMAX6675_Reader2(cSPI_CLK, cSPI_CS2, cSPI_MISO);
-MAX6675 oMAX6675_Reader3(cSPI_CLK, cSPI_CS3, cSPI_MISO);
+BeckMAX6675Class    oMAX6675_Reader1(cSPI_CLK, cSPI_CS1, cSPI_MISO);
+BeckMAX6675Class    oMAX6675_Reader2(cSPI_CLK, cSPI_CS2, cSPI_MISO);
+BeckMAX6675Class    oMAX6675_Reader3(cSPI_CLK, cSPI_CS3, cSPI_MISO);
 
 //Protos
 void setup      ();
@@ -52,7 +53,7 @@ void setup() {
   Serial << "setup(): Call SetupWebServer(" << szWebHostName << ")" << endl;
   SetupWebserver(szWebHostName);
 #endif
-  SetupCode()
+  SetupCode();
   return;
 } //setup
 
@@ -73,10 +74,16 @@ void SetupCode() {
 
 
 void LoopCode() {
-  //Put code here to do everytime loop is called.
-  Serial << "DegF1= " << oMAX6675_Reader1.readFahrenheit() <<
-          ", Deg2F= " << oMAX6675_Reader2.readFahrenheit() <<
-          ", Deg3F= " << oMAX6675_Reader3.readFahrenheit() << endl;
+  //Put code here to do every time loop is called.
+  static   double dfDegF1;
+  static   double dfDegF2;
+  static   double dfDegF3;
+
+  dfDegF1= oMAX6675_Reader1.ReadDegF();
+  dfDegF2= oMAX6675_Reader2.ReadDegF();
+  dfDegF3= oMAX6675_Reader3.ReadDegF();
+
+  Serial << "LoopCode(): DegF1= " << dfDegF1 << ", DegF2= " << dfDegF2 << ", DegF3= " << dfDegF3 << endl;
   delay(3000);
   return;
 } //LoopCode

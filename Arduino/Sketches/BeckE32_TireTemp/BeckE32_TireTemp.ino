@@ -1,8 +1,5 @@
 const char szSketchName[]  = "BeckE32_TireTemp.ino";
-const char szFileDate[]    = "3/1/22b";
-
-#define DO_OTA          true
-#define DO_ROVER        true
+const char szFileDate[]    = "3/1/22e";
 
 #include <BeckTireTempDefines.h>
 #if DO_OTA
@@ -28,7 +25,6 @@ const UINT16       usTopText_CursorY       =  35;
 
 static  UINT16     usTextSpacing           = 20;
 static  UINT16     usDegF_CursorY          = usTopText_CursorY;
-const   ColorType  BackgroundColor         = WROVER_BLACK;
 
 static char             sz100CharString[101];
 
@@ -38,20 +34,26 @@ unsigned long           ulDisplayPeriodMsec = 2000; //mSec between output to dis
 const char* szRouterName  = "Aspot24b";
 const char* szRouterPW    = "Qazqaz11";
 
-WROVER_KIT_LCD     RoverLCD;
+#if DO_ROVER
+  WROVER_KIT_LCD     RoverLCD;
+
+  const   ColorType  BackgroundColor         = WROVER_BLACK;
+#endif
 
 //Protos
 void  setup               (void);
 void  loop                (void);
-void  DisplayBegin        (void);
-void  DisplayClear        (void);
-void  FillScreen          (UINT16 usColor);
-void  DisplayUpdate       (void);
-void  DisplayTemperature  (void);
-void  DisplayLowerBanner  (void);
-void  DisplayText         (UINT16 usCursorX, UINT16 usCursorY, char *pcText,
-                           const GFXfont *pFont, UINT8 ucSize, UINT16 usColor);
-void  ClearTextBackground (INT16 sUpperLeftX, INT16 sUpperLeftY, UINT16 usWidth, UINT16 usHeight);
+#if DO_ROVER
+  void  DisplayBegin        (void);
+  void  DisplayClear        (void);
+  void  FillScreen          (UINT16 usColor);
+  void  DisplayUpdate       (void);
+  void  DisplayTemperature  (void);
+  void  DisplayLowerBanner  (void);
+  void  DisplayText         (UINT16 usCursorX, UINT16 usCursorY, char *pcText,
+                             const GFXfont *pFont, UINT8 ucSize, UINT16 usColor);
+  void  ClearTextBackground (INT16 sUpperLeftX, INT16 sUpperLeftY, UINT16 usWidth, UINT16 usHeight);
+#endif
 
 //Create ProbeSet object
 static BeckProbeSetClass _oProbeSet;
@@ -61,8 +63,10 @@ void setup(){
   Serial << endl<< LOG0 << "setup(): Begin " << szSketchName << ", " << szFileDate << endl;
 
 
+#if DO_ROVER
   Serial << LOG0 << "setup(): Call DisplayBegin()" << endl;
   DisplayBegin();
+#endif
 
   // Start WiFi and wait for connection to the network
   WiFi.begin(szRouterName, szRouterPW);
@@ -87,7 +91,9 @@ void setup(){
 
 void loop() {
   _oProbeSet.Handle();
+#if DO_ROVER
   DisplayUpdate();
+#endif
 #if DO_OTA
   HandleOTAWebserver();
 #endif
@@ -96,6 +102,7 @@ void loop() {
 }  //loop()
 
 
+#if DO_ROVER
 void DisplayBegin() {
   Serial << LOG0 << "DisplayBegin(): Call RoverLCD.begin()" << endl;
   RoverLCD.begin();
@@ -197,4 +204,5 @@ void ClearTextBackground(INT16 sUpperLeftX, INT16 sUpperLeftY, UINT16 usWidth, U
   RoverLCD.fillRect(sUpperLeftX, sUpperLeftY, usWidth, usHeight, BackgroundColor);
   return;
 } //ClearTextBackground
+#endif
 //Last line

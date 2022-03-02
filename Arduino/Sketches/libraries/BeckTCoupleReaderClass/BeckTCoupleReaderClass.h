@@ -1,7 +1,7 @@
-// BeckTCoupleReaderClass.h, 2/28/22f
+// BeckTCoupleReaderClass.h, 3/1/22b
 #pragma once
 #include <BeckTireTempDefines.h>
-#include <max6675.h>
+#include <BeckMAX6675Lib.h>
 
 class BeckTCoupleReaderClass{
 public:
@@ -12,8 +12,8 @@ public:
   double  Handle                    (void);
 
 protected:
-  int8_t      _cSPI_CS_Pin;
-  MAX6675     _oMAX6675_Thermocouple;
-  uint16_t    _usDegF_Value      = 0;
+  int8_t            _cSPI_CS_Pin;
+  BeckMAX6675Class  _oMAX6675_Thermocouple;
+  uint16_t          _usDegF_Value      = 0;
 };  //BeckTCoupleReaderClass
 //Last line.

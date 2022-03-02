@@ -26,12 +26,12 @@ BeckTCoupleReaderClass::~BeckTCoupleReaderClass() {
 double BeckTCoupleReaderClass::Handle(){
   double dfDegF= 0.00;
 
-  Serial << "BeckTCoupleReaderClass::Handle(): _cSPI_CS_Pin= " << _cSPI_CS_Pin << endl;
-  //Serial << "BeckTCoupleReaderClass::Handle(): Call _oMAX6675_Thermocouple.readFahrenheit()" << endl;
+  //Serial << "BeckTCoupleReaderClass::Handle(): _cSPI_CS_Pin= " << _cSPI_CS_Pin << endl;
+  //Serial << "BeckTCoupleReaderClass::Handle(): Call _oMAX6675_Thermocouple.ReadDegF()" << endl;
 
-  dfDegF= _oMAX6675_Thermocouple.readFahrenheit();
+  dfDegF= _oMAX6675_Thermocouple.ReadDegF();
 
-  Serial << "BeckTCoupleReaderClass::Handle(): dfDegF= " << dfDegF << endl;
+  //Serial << "BeckTCoupleReaderClass::Handle(): dfDegF= " << dfDegF << endl;
   return dfDegF;
 } //Handle
 //Last line.
