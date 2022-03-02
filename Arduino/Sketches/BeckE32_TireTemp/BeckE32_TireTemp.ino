@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_TireTemp.ino";
-const char szFileDate[]    = "3/1/22g";
+const char szFileDate[]    = "3/2/22g";
 
 #include <BeckTireTempDefines.h>
 #if DO_OTA
@@ -21,15 +21,18 @@ const char szFileDate[]    = "3/1/22g";
 const char* szWebHostName = "TireTemp";
 
 #define min(X, Y)       (((X) < (Y)) ? (X) : (Y))
-const UINT16       usTopText_CursorY       =  35;
+const UINT16       usTopText_CursorY              =  35;
 
-static  UINT16     usTextSpacing           = 20;
-static  UINT16     usDegF_CursorY          = usTopText_CursorY;
+static  UINT16     usTextSpacing                  = 20;
+static  UINT16     usDegF_CursorY                 = usTopText_CursorY;
 
 static char             sz100CharString[101];
 
-unsigned long           ulNextDisplayMsec   =    0;
-unsigned long           ulDisplayPeriodMsec = 2000; //mSec between output to display
+unsigned long           ulNextDisplayMsec         =    0;
+unsigned long           ulDisplayPeriodMsec       = 2000; //mSec between output to display
+
+unsigned long           ulNextHandleProbesMsec    =    0;
+unsigned long           ulHandleProbesPeriodMsec  = 3000; //mSec between handling probes
 
 const char* szRouterName  = "Aspot24b";
 const char* szRouterPW    = "Qazqaz11";
@@ -90,14 +93,16 @@ void setup(){
 
 
 void loop() {
-  _oProbeSet.Handle();
+  if (millis() > ulNextHandleProbesMsec){
+    ulNextHandleProbesMsec= millis() + ulHandleProbesPeriodMsec;
+    _oProbeSet.Handle();
+  } //if (millis()>ulNextDisplayMsec)
 #if DO_ROVER
   DisplayUpdate();
 #endif
 #if DO_OTA
   HandleOTAWebserver();
 #endif
-  delay(5000);
   return;
 }  //loop()
 

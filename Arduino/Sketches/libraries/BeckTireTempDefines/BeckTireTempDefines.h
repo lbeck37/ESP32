@@ -1,4 +1,4 @@
-// BeckTireTempDefines.h, 3/1/22a
+// BeckTireTempDefines.h, 3/2/22c
 #pragma once
 #include <cstdint>
 
@@ -19,10 +19,24 @@ typedef   int16_t       PUnit;          //Pixel Unit
 typedef   uint8_t       FontSize;
 
 //ESP32
+//Pinout using unused camera pins for MISO and CLK
+static const int8_t     _cSPI_MISO_Pin    = 26;
+static const int8_t     _cSPI_CLK_Pin     = 27;
+
+/*
 // https://randomnerdtutorials.com/esp32-pinout-reference-gpios/
+#if true
+//Pinout for V-SPI
 //static const int8_t   _cSPI_MOSI_Pin    = 23;     // MasterOutSlaveIn is not used, chips are read only
 static const int8_t     _cSPI_MISO_Pin    = 19;
 static const int8_t     _cSPI_CLK_Pin     = 18;
+#else
+//Pinout for H-SPI
+//static const int8_t   _cSPI_MOSI_Pin    = 13;     // MasterOutSlaveIn is not used, chips are read only
+static const int8_t     _cSPI_MISO_Pin    = 12;
+static const int8_t     _cSPI_CLK_Pin     = 14;
+#endif
+*/
 static const int        _wNumProbes       =  3;
 
 extern uint8_t   _acSPI_CS_Pins[];

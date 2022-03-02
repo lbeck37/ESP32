@@ -1,4 +1,4 @@
-// BeckMAX6675Lib.cpp, 3/1/22f
+// BeckMAX6675Lib.cpp, 3/2/22b
 
 // www.ladyada.net/learn/sensors/thermocouple
 
