@@ -1,4 +1,4 @@
-// BeckTireTempDefines.h, 2/28/22d
+// BeckTireTempDefines.h, 3/1/22a
 #pragma once
 #include <cstdint>
 
