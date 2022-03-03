@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_TireTemp.ino";
-const char szFileDate[]    = "3/2/22k";
+const char szFileDate[]    = "3/3/22a";
 
 #include <BeckTireTempDefines.h>
 #if DO_OTA
@@ -15,6 +15,7 @@ const char szFileDate[]    = "3/2/22k";
 #include <Fonts/FreeMonoBold24pt7b.h>
 #include <Fonts/FreeSans9pt7b.h>
 #include <Fonts/FreeSansOblique18pt7b.h>
+#include <EasyButtonTouch.h>
 #include <WiFi.h>
 #include <Streaming.h>
 
@@ -46,7 +47,6 @@ const char* szRouterPW    = "Qazqaz11";
 //Protos
 void  setup                 (void);
 void  loop                  (void);
-void  FlashRGB_LED          (void);
 #if DO_ROVER
   void  DisplayBegin        (void);
   void  DisplayClear        (void);
@@ -58,9 +58,24 @@ void  FlashRGB_LED          (void);
                              const GFXfont *pFont, UINT8 ucSize, UINT16 usColor);
   void  ClearTextBackground (INT16 sUpperLeftX, INT16 sUpperLeftY, UINT16 usWidth, UINT16 usHeight);
 #endif
+void  FlashRGB_LED          (void);
 
 //Create ProbeSet object
 static BeckProbeSetClass _oProbeSet;
+
+#if true
+//EasyButtonTouch RF_Button(_cRF_Button);
+
+#include <EasyButton.h>
+uint8_t   ucButtonPin = 15;
+
+EasyButton TestButton(ucButtonPin);    //Defaults: 35msec debounce, Pullup enabled, Returns true on button press
+
+void onPressed(){
+  Serial << "onPressed(): You pressed the test button." << endl;
+  return;
+} //onPressed
+#endif
 
 void setup(){
   Serial.begin(115200);
@@ -71,7 +86,8 @@ void setup(){
   Serial << LOG0 << "setup(): Call DisplayBegin()" << endl;
   DisplayBegin();
 #endif
-  FlashRGB_LED();
+  //FlashRGB_LED();
+
   // Start WiFi and wait for connection to the network
   WiFi.begin(szRouterName, szRouterPW);
   while (WiFi.status() != WL_CONNECTED) {
@@ -88,12 +104,19 @@ void setup(){
   Serial << LOG0 << "setup(): Call BuildProbes()" << endl;
   _oProbeSet.BuildProbes();
 
+  Serial << "setup(): Call TestButton.begin()" << endl;
+  TestButton.begin();
+
+  Serial << "setup(): Setup Callback, call TestButton.onPressed(onPressed)" << endl;
+  TestButton.onPressed(onPressed);
+
   Serial << LOG0 << "setup(): return" << endl;
   return;
 }  //setup
 
 
 void loop() {
+  TestButton.read();   //This has to get called for onPressed() to get called back
   if (millis() > ulNextHandleProbesMsec){
     ulNextHandleProbesMsec= millis() + ulHandleProbesPeriodMsec;
     _oProbeSet.Handle();
@@ -106,41 +129,6 @@ void loop() {
 #endif
   return;
 }  //loop()
-
-
-void FlashRGB_LED() {
-  Serial << LOG0 << "FlashRGB_LED(): Begin" << endl;
-  pinMode(_cRGB_RedPin, OUTPUT);
-  pinMode(_cRGB_GreenPin, OUTPUT);
-  pinMode(_cRGB_BluePin, OUTPUT);
-
-  //Turn them all off
-  digitalWrite(_cRGB_RedPin,    LOW);
-  digitalWrite(_cRGB_GreenPin,  LOW);
-  digitalWrite(_cRGB_BluePin,   LOW);
-  delay(1000);
-  digitalWrite(_cRGB_RedPin,    HIGH);
-  delay(1000);
-  digitalWrite(_cRGB_RedPin,    LOW);
-  digitalWrite(_cRGB_GreenPin,  HIGH);
-  delay(1000);
-  digitalWrite(_cRGB_GreenPin,  LOW);
-  digitalWrite(_cRGB_BluePin,   HIGH);
-  delay(1000);
-  digitalWrite(_cRGB_RedPin,    LOW);
-  digitalWrite(_cRGB_GreenPin,  LOW);
-  digitalWrite(_cRGB_BluePin,   LOW);
-  delay(1000);
-  digitalWrite(_cRGB_RedPin,    HIGH);
-  digitalWrite(_cRGB_GreenPin,  HIGH);
-  digitalWrite(_cRGB_BluePin,   HIGH);
-  delay(1000);
-  digitalWrite(_cRGB_RedPin,    LOW);
-  //digitalWrite(_cRGB_GreenPin,  LOW);
-  digitalWrite(_cRGB_BluePin,   LOW);
-
-  return;
-}  //FlashRGB_LED
 
 
 #if DO_ROVER
@@ -246,4 +234,48 @@ void ClearTextBackground(INT16 sUpperLeftX, INT16 sUpperLeftY, UINT16 usWidth, U
   return;
 } //ClearTextBackground
 #endif
+
+
+void FlashRGB_LED() {
+  Serial << LOG0 << "FlashRGB_LED(): Begin" << endl;
+  pinMode(_cRGB_RedPin, OUTPUT);
+  pinMode(_cRGB_GreenPin, OUTPUT);
+  pinMode(_cRGB_BluePin, OUTPUT);
+
+  //Turn them all off
+  digitalWrite(_cRGB_RedPin,    LOW);
+  digitalWrite(_cRGB_GreenPin,  LOW);
+  digitalWrite(_cRGB_BluePin,   LOW);
+  delay(1000);
+  //Red on
+  digitalWrite(_cRGB_RedPin,    HIGH);
+  delay(1000);
+  //Green on
+  digitalWrite(_cRGB_RedPin,    LOW);
+  digitalWrite(_cRGB_GreenPin,  HIGH);
+  delay(1000);
+  //Blue on
+  digitalWrite(_cRGB_GreenPin,  LOW);
+  digitalWrite(_cRGB_BluePin,   HIGH);
+  delay(1000);
+  //All off
+  digitalWrite(_cRGB_RedPin,    LOW);
+  digitalWrite(_cRGB_GreenPin,  LOW);
+  digitalWrite(_cRGB_BluePin,   LOW);
+  delay(1000);
+  //All on (white)
+  digitalWrite(_cRGB_RedPin,    HIGH);
+  digitalWrite(_cRGB_GreenPin,  HIGH);
+  digitalWrite(_cRGB_BluePin,   HIGH);
+  delay(1000);
+  //All off
+  digitalWrite(_cRGB_RedPin,    LOW);
+  digitalWrite(_cRGB_GreenPin,  LOW);
+  digitalWrite(_cRGB_BluePin,   LOW);
+  delay(1000);
+  //Green on
+  digitalWrite(_cRGB_GreenPin,  HIGH);
+
+  return;
+}  //FlashRGB_LED
 //Last line

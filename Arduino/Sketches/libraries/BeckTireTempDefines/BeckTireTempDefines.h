@@ -1,4 +1,4 @@
-// BeckTireTempDefines.h, 3/2/22d
+// BeckTireTempDefines.h, 3/2/22g
 #pragma once
 #include <cstdint>
 
@@ -31,20 +31,10 @@ static const int8_t     _cRGB_RedPin      =  0;
 static const int8_t     _cRGB_GreenPin    =  2;
 static const int8_t     _cRGB_BluePin     =  4;
 
-/*
-// https://randomnerdtutorials.com/esp32-pinout-reference-gpios/
-#if true
-//Pinout for V-SPI
-//static const int8_t   _cSPI_MOSI_Pin    = 23;     // MasterOutSlaveIn is not used, chips are read only
-static const int8_t     _cSPI_MISO_Pin    = 19;
-static const int8_t     _cSPI_CLK_Pin     = 18;
-#else
-//Pinout for H-SPI
-//static const int8_t   _cSPI_MOSI_Pin    = 13;     // MasterOutSlaveIn is not used, chips are read only
-static const int8_t     _cSPI_MISO_Pin    = 12;
-static const int8_t     _cSPI_CLK_Pin     = 14;
-#endif
-*/
+//static const int8_t     _cRF_Button       =  15;
+//static const int8_t     _cRF_Button       =  32;
+
 static const int        _wNumProbes       =  3;
 
 extern uint8_t   _acSPI_CS_Pins[];
+//Last line
