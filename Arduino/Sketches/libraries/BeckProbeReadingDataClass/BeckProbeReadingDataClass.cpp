@@ -16,8 +16,10 @@ using namespace std::chrono;
 using r1= ratio<1, 60>;
 
 //More testing
-duration<long long, milli> d2;
-duration<long, ratio<60>> d1 {123};
+duration    <long long, milli>  d2;
+duration    <long, ratio<60>>   d1 {123};
+time_point  <steady_clock>      oSteadyClock;   //time_pont never decreases
+time_point  <system_clock>      oSystemClock;   //Wall clock time
 
 BeckProbeReadingDataClass ProbeReadingData;
 
@@ -50,6 +52,20 @@ void BeckProbeReadingDataClass::SetDegF_Value(int16_t NewDegFValue){
   fRoundedNewDegFValue= ceil((NewDegFValue * pow(10, wNumDecPlaces)) - 0.49) / pow(10, wNumDecPlaces);
   DegF_Value= fRoundedNewDegFValue;
 */
+/*
+  //Get current time (Pro C++ pg 801)
+  system_clock::time_point  oCurentTime{system_clock::now()};
+
+  //Convert to a time_t
+  time_t  oCurrentTime_time_t{system_clock::to_time_t(oCurentTime)};
+
+  //Convert to local time
+  tm*   pLocalTime{localtime(&oCurrentTime_time_t)};
+
+  //Print the current time
+  cout << "SetDegF_Value(): Current time is " << put_time(pLocalTime, "%H:%M:&S") << "\n";
+*/
+
   return;
 }
 

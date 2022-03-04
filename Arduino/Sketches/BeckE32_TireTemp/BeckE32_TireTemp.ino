@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_TireTemp.ino";
-const char szFileDate[]    = "3/4/22c";
+const char szFileDate[]    = "3/4/22g";
 
 #include <BeckTireTempDefines.h>
 #if DO_OTA
@@ -62,6 +62,7 @@ const char*       szRouterPW                = "Qazqaz11";
 //Protos
 void  setup                 (void);
 void  loop                  (void);
+void  PrintCurrentTime      (void);
 #if DO_ROVER
   void  DisplayBegin        (void);
   void  DisplayClear        (void);
@@ -119,6 +120,10 @@ void setup(){
   SetupWebserver(szWebHostName);
 #endif
 
+  PrintCurrentTime();
+  delay(2000);
+  PrintCurrentTime();
+
   Serial << LOG0 << "setup(): Call BuildProbes()\n";
   _oProbeSet.BuildProbes();
 
@@ -131,6 +136,25 @@ void setup(){
   Serial << LOG0 << "setup(): return\n";
   return;
 }  //setup
+
+
+void PrintCurrentTime(void){
+  //Print the current time (Pro C++ pg 801)
+  Serial << "setup(): Get a time_point for the current time\n";
+  system_clock::time_point  oCurentTime{system_clock::now()};
+
+  Serial << "setup(): Convert the time_point to a time_t\n";
+  time_t  oCurrentTime_time_t{system_clock::to_time_t(oCurentTime)};
+
+  //Convert to local time
+  Serial << "setup(): Convert to local time\n";
+  tm*   pLocalTime{localtime(&oCurrentTime_time_t)};
+
+  //Print the current time
+  Serial << "setup(): Stream put_time() to cout\n";
+  cout << "setup(): cout Current time is " << put_time(pLocalTime, "%H:%M:%S") << "\n";
+  return;
+}   //PrintCurrentTime
 
 
 void loop() {
