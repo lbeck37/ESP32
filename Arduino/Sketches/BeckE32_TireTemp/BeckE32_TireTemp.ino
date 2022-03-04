@@ -10,6 +10,10 @@ const char szFileDate[]    = "3/3/22a";
 #include <BeckMiniLib.h>
 #include <BeckProbeSetClass.h>
 
+#if DO_ROVER
+  #include <WROVER_KIT_LCD.h>
+#endif
+
 #include <Adafruit_GFX.h>
 #include <Fonts/FreeMonoBold12pt7b.h>
 #include <Fonts/FreeMonoBold24pt7b.h>
@@ -175,16 +179,22 @@ void DisplayTemperature() {
   ColorType       usColor         = WROVER_WHITE;
   float           fDegFValue      = 0.0;
 
-  if(true || TireTempData.bDegFChanged()) {
+  //if(true || TireTempData.bDegFChanged()) {
+  if(true) {
     //Erase the currently displayed value by overwriting it with the background color
+/*
     float fLastDegFValue= TireTempData.GetLastDegF_Value();
     sprintf(sz100CharString, "%6.1f", fLastDegFValue);
+*/
+    sprintf(sz100CharString, "%6.1f", 37.37);
     DisplayText( usTempCursorX, usTempCursorY, sz100CharString, &FreeMonoBold24pt7b, ucSize, BackgroundColor);
 
     //Display the new value
+/*
     fDegFValue= TireTempData.GetDegF_Value();
     sprintf(sz100CharString, "%6.1f", fDegFValue);
     DisplayText( usTempCursorX, usTempCursorY, sz100CharString, &FreeMonoBold24pt7b, ucSize, usColor);
+*/
 
     sprintf(sz100CharString, "Front Tires");
     DisplayText( usTextCursorX, usTextCursorY, sz100CharString, &FreeSans9pt7b, ucSize, usColor);
@@ -195,7 +205,7 @@ void DisplayTemperature() {
     DisplayText( usTextCursorX, usTextCursorY, sz100CharString, &FreeSans9pt7b, ucSize, usColor);
 
     //Set the last value to be the displayed value
-    TireTempData.SetLastDegF_Value(fDegFValue);
+    //TireTempData.SetLastDegF_Value(fDegFValue);
   } //if(TireTempData.bDegFChanged())
   return;
 }  //DisplayTemperature

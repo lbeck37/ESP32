@@ -15,6 +15,7 @@ BeckTireTempDataClass::~BeckTireTempDataClass() {
 } //destructor
 
 
+/*
 void BeckTireTempDataClass::SetDegF_Value(float NewDegFValue){
   //Round NewDegFValue to (1) decimal place.
   //Display flashes if more decimal places than displayed are stored
@@ -46,4 +47,5 @@ void BeckTireTempDataClass::SetLastDegF_Value(float LastDegFValue){
 float BeckTireTempDataClass::GetLastDegF_Value(){
   return LastDegF_Value;
 }
+*/
 //Last line.

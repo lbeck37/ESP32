@@ -1,11 +1,15 @@
 const char szSystemFileName[]  = "BeckProbeSetClass.cpp";
-const char szSystemFileDate[]  = "3/2/22a";
+const char szSystemFileDate[]  = "3/3/22a";
 
 #include <BeckProbeSetClass.h>
 #include <BeckProbeClass.h>
 #include <BeckTireTempDefines.h>
-#include <Streaming.h> _cSPI_CS_Pin1
+#include <Streaming.h>
 
+//import <iostream>;
+//#include <iostream>
+
+//using namespace std;
 
 //uint8_t   _acSPI_CS_Pins[] {0, 2, 4, 5};    //Declared "extern" in BeckTireTempDefines.h
 uint8_t   _acSPI_CS_Pins[] {0, _cSPI_CS_Pin1, _cSPI_CS_Pin2, _cSPI_CS_Pin3};    //Declared "extern" in BeckTireTempDefines.h
@@ -17,6 +21,7 @@ BeckProbeSetClass::BeckProbeSetClass(){
    }
   Serial << "BeckProbeSetClass:: Constructor " << szSystemFileName << ", " << szSystemFileDate << endl;
 */
+  //std::cout << "BeckProbeSetClass:: Constructor " << szSystemFileName << ", " << szSystemFileDate << endl;
   return;
 } //constructor
 
