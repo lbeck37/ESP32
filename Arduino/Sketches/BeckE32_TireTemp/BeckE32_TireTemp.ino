@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_TireTemp.ino";
-const char szFileDate[]    = "3/4/22b";
+const char szFileDate[]    = "3/4/22c";
 
 #include <BeckTireTempDefines.h>
 #if DO_OTA
@@ -23,24 +23,35 @@ const char szFileDate[]    = "3/4/22b";
 #include <WiFi.h>
 #include <Streaming.h>
 
+#include <ctime>
+#include <iostream>
+#include <chrono>
+#include <iomanip>
+
+using namespace std;
+using namespace std::chrono;
+
+//Define a "rational real-time constant" representing 1/60 of a second
+using r1= ratio<1, 60>;
+
 const char* szWebHostName = "TireTemp";
 
 #define min(X, Y)       (((X) < (Y)) ? (X) : (Y))
 const UINT16       usTopText_CursorY              =  35;
 
-static  UINT16     usTextSpacing                  = 20;
-static  UINT16     usDegF_CursorY                 = usTopText_CursorY;
+UINT16            usTextSpacing                  = 20;
+UINT16            usDegF_CursorY                 = usTopText_CursorY;
 
-static char             sz100CharString[101];
+char              sz100CharString[101];
 
-unsigned long           ulNextDisplayMsec         =    0;
-unsigned long           ulDisplayPeriodMsec       = 2000; //mSec between output to display
+unsigned long     ulNextDisplayMsec         =    0;
+unsigned long     ulDisplayPeriodMsec       = 2000; //mSec between output to display
 
-unsigned long           ulNextHandleProbesMsec    =    0;
-unsigned long           ulHandleProbesPeriodMsec  = 3000; //mSec between handling probes
+unsigned long     ulNextHandleProbesMsec    =    0;
+unsigned long     ulHandleProbesPeriodMsec  = 3000; //mSec between handling probes
 
-const char* szRouterName  = "Aspot24b";
-const char* szRouterPW    = "Qazqaz11";
+const char*       szRouterName              = "Aspot24b";
+const char*       szRouterPW                = "Qazqaz11";
 
 #if DO_ROVER
   WROVER_KIT_LCD     RoverLCD;
@@ -65,7 +76,7 @@ void  loop                  (void);
 void  FlashRGB_LED          (void);
 
 //Create ProbeSet object
-static BeckProbeSetClass _oProbeSet;
+BeckProbeSetClass _oProbeSet;
 
 #if true
 //EasyButtonTouch RF_Button(_cRF_Button);
@@ -76,18 +87,19 @@ uint8_t   ucButtonPin = 15;
 EasyButton TestButton(ucButtonPin);    //Defaults: 35msec debounce, Pullup enabled, Returns true on button press
 
 void onPressed(){
-  Serial << "onPressed(): You pressed the test button." << endl;
+  cout << "onPressed(): You pressed the test button.\n";
+  Serial << "onPressed(): You pressed the test button.\n";
   return;
 } //onPressed
 #endif
 
 void setup(){
   Serial.begin(115200);
-  Serial << endl<< LOG0 << "setup(): Begin " << szSketchName << ", " << szFileDate << endl;
+  Serial << "\n" << LOG0 << "setup(): Begin " << szSketchName << ", " << szFileDate << "\n";
 
 
 #if DO_ROVER
-  Serial << LOG0 << "setup(): Call DisplayBegin()" << endl;
+  Serial << LOG0 << "setup(): Call DisplayBegin()\n";
   DisplayBegin();
 #endif
   //FlashRGB_LED();
@@ -98,23 +110,25 @@ void setup(){
     delay(500);
     Serial.print(".");
   }
-  Serial << endl << "setup(): Connected to " << szRouterName << ", IP address to connect to is " << WiFi.localIP() << endl;
+  //The following cout statement caused the WiFi.localIP() to not print 192.168.0.197 it was a single integer
+  //cout << "\nsetup(): Connected to " << szRouterName << ", IP address to connect to is " << WiFi.localIP() << "\n" << std::endl;
+  Serial << "\nsetup(): Connected to " << szRouterName << ", IP address to connect to is " << WiFi.localIP() << "\n";
 
 #if DO_OTA
-  Serial << "setup(): Call SetupWebServer(" << szWebHostName << ")" << endl;
+  Serial << "setup(): Call SetupWebServer(" << szWebHostName << ")\n";
   SetupWebserver(szWebHostName);
 #endif
 
-  Serial << LOG0 << "setup(): Call BuildProbes()" << endl;
+  Serial << LOG0 << "setup(): Call BuildProbes()\n";
   _oProbeSet.BuildProbes();
 
-  Serial << "setup(): Call TestButton.begin()" << endl;
+  Serial << "setup(): Call TestButton.begin()\n";
   TestButton.begin();
 
-  Serial << "setup(): Setup Callback, call TestButton.onPressed(onPressed)" << endl;
+  Serial << "setup(): Setup Callback, call TestButton.onPressed(onPressed)\n";
   TestButton.onPressed(onPressed);
 
-  Serial << LOG0 << "setup(): return" << endl;
+  Serial << LOG0 << "setup(): return\n";
   return;
 }  //setup
 
@@ -137,7 +151,7 @@ void loop() {
 
 #if DO_ROVER
 void DisplayBegin() {
-  Serial << LOG0 << "DisplayBegin(): Call RoverLCD.begin()" << endl;
+  Serial << LOG0 << "DisplayBegin(): Call RoverLCD.begin()\n";
   RoverLCD.begin();
   RoverLCD.setRotation(1);
   DisplayClear();
@@ -247,7 +261,7 @@ void ClearTextBackground(INT16 sUpperLeftX, INT16 sUpperLeftY, UINT16 usWidth, U
 
 
 void FlashRGB_LED() {
-  Serial << LOG0 << "FlashRGB_LED(): Begin" << endl;
+  Serial << LOG0 << "FlashRGB_LED(): Begin\n";
   pinMode(_cRGB_RedPin, OUTPUT);
   pinMode(_cRGB_GreenPin, OUTPUT);
   pinMode(_cRGB_BluePin, OUTPUT);
