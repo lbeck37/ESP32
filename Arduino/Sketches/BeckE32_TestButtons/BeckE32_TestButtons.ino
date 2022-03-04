@@ -1,8 +1,21 @@
 const char szSketchName[]  = "BeckE32_TestButtons.ino";
-const char szFileDate[]    = "3/3/22x";
+const char szFileDate[]    = "3/4/22b";
 
 #include <EasyButton.h>
 #include <Streaming.h>
+
+#include <ctime>
+/*
+import <iostream>;
+import <chrono>;
+import <iomanip>;
+*/
+#include <iostream>
+#include <chrono>
+#include <iomanip>
+
+using namespace std;
+using namespace std::chrono;
 
 uint8_t   ucButtonPin = 15;
 
@@ -10,6 +23,10 @@ EasyButton RightFront_Button(ucButtonPin);    //Defaults: 35msec debounce, Pullu
 
 void onPressed(){
   Serial << "onPressed(): You pressed my button." << endl;
+  //Testing chrono, Sloeber fails, AIDE doesn't?
+  //chrono::duration<long long, milli> d2;
+  duration<long long, milli> d2;
+  duration<long, ratio(60)>> d1 {123};
   return;
 } //onPressed
 

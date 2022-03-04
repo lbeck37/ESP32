@@ -1,13 +1,29 @@
 const char szBeckTireTempDataClassFileName[]  = "BeckProbeReadingDataClass.cpp";
-const char szBeckTireTempDataClassFileDate[]  = "3/3/22a";
+const char szBeckTireTempDataClassFileDate[]  = "3/4/22a";
 
 #include <BeckProbeReadingDataClass.h>
 #include <Streaming.h>
+
+/*
+#include <ctime>
+
+import <iostream>;
+import <chrono>;
+import <iomanip>;
+
+#include <iostream>
+#include <chrono>
+#include <iomanip>
+
+using namespace std;
+using namespace std::chrono;
+*/
 
 BeckProbeReadingDataClass ProbeReadingData;
 
 BeckProbeReadingDataClass::BeckProbeReadingDataClass() {
   Serial << "BeckProbeReadingDataClass(): Constructor"<< endl;
+  //std::cout << "BeckProbeReadingDataClass(): Constructor"<< endl;
 } //constructor
 
 BeckProbeReadingDataClass::BeckProbeReadingDataClass(ProbePosition ePosition){
@@ -35,6 +51,10 @@ void BeckProbeReadingDataClass::SetDegF_Value(int16_t NewDegFValue){
   fRoundedNewDegFValue= ceil((NewDegFValue * pow(10, wNumDecPlaces)) - 0.49) / pow(10, wNumDecPlaces);
   DegF_Value= fRoundedNewDegFValue;
 */
+  //Testing chrono, Sloeber fails, AIDE doesn't?
+  //chrono::duration<long long, milli> d2;
+  //duration<long long, milli> d2;
+  //duration<long, ratio(60)>> d1 {123};
   return;
 }
 
