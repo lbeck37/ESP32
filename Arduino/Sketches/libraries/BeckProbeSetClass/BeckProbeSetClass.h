@@ -1,7 +1,7 @@
 // BeckProbeSetClass.h, 2/28/22f
 #pragma once
 #include <BeckProbeClass.h>
-#include <BeckTireTempDefines.h>
+#include <BeckE32_Defines.h>
 
 class BeckProbeSetClass{
 public:

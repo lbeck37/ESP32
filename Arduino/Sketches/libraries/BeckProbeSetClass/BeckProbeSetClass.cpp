@@ -1,9 +1,10 @@
 const char szSystemFileName[]  = "BeckProbeSetClass.cpp";
-const char szSystemFileDate[]  = "3/3/22a";
+const char szSystemFileDate[]  = "3/4/22c";
 
 #include <BeckProbeSetClass.h>
 #include <BeckProbeClass.h>
-#include <BeckTireTempDefines.h>
+#include <BeckSampleDataClass.h>
+#include <BeckE32_Defines.h>
 #include <Streaming.h>
 
 //import <iostream>;
@@ -11,17 +12,9 @@ const char szSystemFileDate[]  = "3/3/22a";
 
 //using namespace std;
 
-//uint8_t   _acSPI_CS_Pins[] {0, 2, 4, 5};    //Declared "extern" in BeckTireTempDefines.h
 uint8_t   _acSPI_CS_Pins[] {0, _cSPI_CS_Pin1, _cSPI_CS_Pin2, _cSPI_CS_Pin3};    //Declared "extern" in BeckTireTempDefines.h
 
 BeckProbeSetClass::BeckProbeSetClass(){
-/*
-  for (int wProbe= 1; wProbe <= _wNumProbes; wProbe++){
-    _aoProbes[wProbe]= BeckProbeClass(_acSPI_CS_Pins[wProbe]);
-   }
-  Serial << "BeckProbeSetClass:: Constructor " << szSystemFileName << ", " << szSystemFileDate << endl;
-*/
-  //std::cout << "BeckProbeSetClass:: Constructor " << szSystemFileName << ", " << szSystemFileDate << endl;
   return;
 } //constructor
 
@@ -38,9 +31,10 @@ void BeckProbeSetClass::BuildProbes(){
   for (int wProbe= 1; wProbe <= _wNumProbes; wProbe++){
     byte cCS_Pin= _acSPI_CS_Pins[wProbe];
     //_aoProbes[wProbe]= BeckProbeClass(_acSPI_CS_Pins[wProbe]);
+
     Serial << "BeckProbeSetClass::BuildProbes(): Call BeckProbeClass(" << cCS_Pin << ")" << endl;
     _aoProbes[wProbe]= BeckProbeClass(cCS_Pin);
-    delay(1000);
+    //delay(1000);
     Serial << "BeckProbeSetClass::BuildProbes(): Do next probe in for loop" << endl;
    }
   Serial << "BeckProbeSetClass::BuildProbes(): return after 1 sec delay" << endl;

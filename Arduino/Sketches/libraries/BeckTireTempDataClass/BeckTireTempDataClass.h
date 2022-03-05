@@ -1,6 +1,6 @@
 // BeckTireTempDataClass.h, 3/3/22a
 #pragma once
-#include <BeckTireTempDefines.h>
+#include <BeckE32_Defines.h>
 
 class BeckTireTempDataClass{
 public:

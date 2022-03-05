@@ -1,16 +1,16 @@
-// BeckI2cClass.h, 5/21/21a
+// BeckI2cClass.h, 3/5/22a
 #pragma once
 
-class I2cClass{
+class BeckI2cClass{
 public:
-I2cClass();
-  virtual ~I2cClass();
+BeckI2cClass();
+  virtual ~BeckI2cClass();
 
   void  Setup             ();
   void  ScanForDevices    ();
 protected:
-};  //I2cClass
+};  //BeckI2cClass
 
-extern I2cClass     I2C_Object;
+extern BeckI2cClass     I2C_Object;
 
 //Last line.

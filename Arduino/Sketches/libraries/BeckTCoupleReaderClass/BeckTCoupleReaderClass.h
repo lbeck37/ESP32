@@ -1,7 +1,8 @@
-// BeckTCoupleReaderClass.h, 3/1/22b
+// BeckTCoupleReaderClass.h, 3/5/22b
 #pragma once
-#include <BeckTireTempDefines.h>
-#include <BeckMAX6675Lib.h>
+#include <BeckE32_Defines.h>
+//#include <BeckMAX6675Lib.h>
+#include<Adafruit_MCP9600.h>
 
 class BeckTCoupleReaderClass{
 public:
@@ -13,7 +14,8 @@ public:
 
 protected:
   int8_t            _cSPI_CS_Pin;
-  BeckMAX6675Class  _oMAX6675_Thermocouple;
+  //BeckMAX6675Class  _oMAX6675_Thermocouple;
+  Adafruit_MCP9600  _oMCP9600_TCouple;
   uint16_t          _usDegF_Value      = 0;
 };  //BeckTCoupleReaderClass
 //Last line.

@@ -1,11 +1,12 @@
 const char szSketchName[]  = "BeckE32_TireTemp.ino";
-const char szFileDate[]    = "3/4/22u";
+const char szFileDate[]    = "3/5/22a";
 
-#include <BeckTireTempDefines.h>
+#include <BeckE32_Defines.h>
 #if DO_OTA
   #include <BeckE32_OTALib.h>
 #endif
 #include <BeckTireTempDataClass.h>
+#include <BeckI2cClass.h>
 #include <BeckLogLib.h>
 #include <BeckMiniLib.h>
 #include <BeckProbeSetClass.h>
@@ -141,6 +142,7 @@ void loop() {
     ulNextHandleProbesMsec= millis() + ulHandleProbesPeriodMsec;
     HandleNTP();
     _oProbeSet.Handle();
+    unsigned long ulCurrentEpochSeconds= oNTPClient.getEpochTime();
   } //if (millis()>ulNextDisplayMsec)
 #if DO_ROVER
   DisplayUpdate();
