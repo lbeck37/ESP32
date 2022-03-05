@@ -2,6 +2,7 @@ const char szSystemFileName[]  = "BeckProbeClass.cpp";
 const char szSystemFileDate[]  = "3/4/22a";
 
 #include <BeckProbeClass.h>
+#include <BeckProbeDataClass.h>
 #include <Streaming.h>
 
 /*
@@ -10,7 +11,7 @@ BeckProbeClass::BeckProbeClass() {
   Serial << "BeckProbeClass::BeckProbeClass(): " << szSystemFileName << ", " << szSystemFileDate << endl;
 } //constructor
 */
-
+BeckProbeDataClass    oProbeData{ProbePosition::LeftProbe};
 
 BeckProbeClass::BeckProbeClass(): _oTCoupleReader(2)
 {
