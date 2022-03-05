@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_TireTemp.ino";
-const char szFileDate[]    = "3/4/22g";
+const char szFileDate[]    = "3/4/22u";
 
 #include <BeckTireTempDefines.h>
 #if DO_OTA
@@ -19,8 +19,10 @@ const char szFileDate[]    = "3/4/22g";
 #include <Fonts/FreeMonoBold24pt7b.h>
 #include <Fonts/FreeSans9pt7b.h>
 #include <Fonts/FreeSansOblique18pt7b.h>
-#include <EasyButtonTouch.h>
+#include <EasyButton.h>
+#include <NTPClient.h>
 #include <WiFi.h>
+#include <WiFiUdp.h>
 #include <Streaming.h>
 
 #include <ctime>
@@ -30,9 +32,6 @@ const char szFileDate[]    = "3/4/22g";
 
 using namespace std;
 using namespace std::chrono;
-
-//Define a "rational real-time constant" representing 1/60 of a second
-using r1= ratio<1, 60>;
 
 const char* szWebHostName = "TireTemp";
 
@@ -62,7 +61,11 @@ const char*       szRouterPW                = "Qazqaz11";
 //Protos
 void  setup                 (void);
 void  loop                  (void);
+void  onPressed             (void);
+void  SetupNTP              (void);
+void  HandleNTP             (void);
 void  PrintCurrentTime      (void);
+void  PrintSecondsSinceY2K  (void);
 #if DO_ROVER
   void  DisplayBegin        (void);
   void  DisplayClear        (void);
@@ -74,30 +77,22 @@ void  PrintCurrentTime      (void);
                              const GFXfont *pFont, UINT8 ucSize, UINT16 usColor);
   void  ClearTextBackground (INT16 sUpperLeftX, INT16 sUpperLeftY, UINT16 usWidth, UINT16 usHeight);
 #endif
-void  FlashRGB_LED          (void);
 
 //Create ProbeSet object
 BeckProbeSetClass _oProbeSet;
 
-#if true
-//EasyButtonTouch RF_Button(_cRF_Button);
-
-#include <EasyButton.h>
 uint8_t   ucButtonPin = 15;
 
 EasyButton TestButton(ucButtonPin);    //Defaults: 35msec debounce, Pullup enabled, Returns true on button press
 
-void onPressed(){
-  cout << "onPressed(): You pressed the test button.\n";
-  Serial << "onPressed(): You pressed the test button.\n";
-  return;
-} //onPressed
-#endif
+// Define NTP Client to get time
+WiFiUDP ntpUDP;
+NTPClient oNTPClient(ntpUDP);
+
 
 void setup(){
   Serial.begin(115200);
   Serial << "\n" << LOG0 << "setup(): Begin " << szSketchName << ", " << szFileDate << "\n";
-
 
 #if DO_ROVER
   Serial << LOG0 << "setup(): Call DisplayBegin()\n";
@@ -120,8 +115,10 @@ void setup(){
   SetupWebserver(szWebHostName);
 #endif
 
-  PrintCurrentTime();
-  delay(2000);
+  Serial << LOG0 << "setup(): Call SetupNTP()\n";
+  SetupNTP();
+
+  Serial << LOG0 << "setup(): Call PrintCurrentTime()\n";
   PrintCurrentTime();
 
   Serial << LOG0 << "setup(): Call BuildProbes()\n";
@@ -138,29 +135,11 @@ void setup(){
 }  //setup
 
 
-void PrintCurrentTime(void){
-  //Print the current time (Pro C++ pg 801)
-  Serial << "setup(): Get a time_point for the current time\n";
-  system_clock::time_point  oCurentTime{system_clock::now()};
-
-  Serial << "setup(): Convert the time_point to a time_t\n";
-  time_t  oCurrentTime_time_t{system_clock::to_time_t(oCurentTime)};
-
-  //Convert to local time
-  Serial << "setup(): Convert to local time\n";
-  tm*   pLocalTime{localtime(&oCurrentTime_time_t)};
-
-  //Print the current time
-  Serial << "setup(): Stream put_time() to cout\n";
-  cout << "setup(): cout Current time is " << put_time(pLocalTime, "%H:%M:%S") << "\n";
-  return;
-}   //PrintCurrentTime
-
-
 void loop() {
   TestButton.read();   //This has to get called for onPressed() to get called back
   if (millis() > ulNextHandleProbesMsec){
     ulNextHandleProbesMsec= millis() + ulHandleProbesPeriodMsec;
+    HandleNTP();
     _oProbeSet.Handle();
   } //if (millis()>ulNextDisplayMsec)
 #if DO_ROVER
@@ -171,6 +150,96 @@ void loop() {
 #endif
   return;
 }  //loop()
+
+
+void onPressed(){
+  cout << "onPressed(): You pressed the test button.\n";
+  Serial << "onPressed(): You pressed the test button.\n";
+  return;
+} //onPressed
+
+
+void SetupNTP(){
+// Initialize a NTPClient to get time
+  Serial << "SetupNTP(): Call oNTPClient.begin()\n";
+  oNTPClient.begin();
+
+  Serial << "SetupNTP(): Call oNTPClient.setTimeOffset() with an offset of " << _wOffsetUTC << " hours\n";
+  oNTPClient.setTimeOffset(_wOffsetUTC * 3600);
+
+  return;
+} //SetupNTP
+
+
+void HandleNTP(void){
+  // https://randomnerdtutorials.com/esp32-ntp-client-date-time-arduino-ide/
+  // Variables to save date and time
+  String formattedDate;
+  String dayStamp;
+  String timeStamp;
+
+  Serial << "HandleNTP(): Enter while loop with oNTPClient.update and oNTPClient.forceUpdate()\n";
+  while(!oNTPClient.update()) {
+    oNTPClient.forceUpdate();
+  } //while
+  Serial << "HandleNTP(): Done with while loop\n";
+
+  // The formattedDate comes with the following format:
+  // 2018-05-28T16:00:13Z
+  // We need to extract date and time
+  formattedDate = oNTPClient.getFormattedDate();
+  Serial.println(formattedDate);
+
+  // Extract date
+  int splitT = formattedDate.indexOf("T");
+  dayStamp = formattedDate.substring(0, splitT);
+  Serial.print("DATE: ");
+  Serial.println(dayStamp);
+  // Extract time
+  timeStamp = formattedDate.substring(splitT+1, formattedDate.length()-1);
+  Serial.print("HOUR: ");
+  Serial.println(timeStamp);
+  return;
+}   //HandleNTP
+
+
+void PrintCurrentTime(void){
+  //Print the current time (Pro C++ pg 801)
+  //Serial << "setup(): Get a time_point for the current time\n";
+  system_clock::time_point  oCurentTime{system_clock::now()};
+
+  //Serial << "setup(): Convert the time_point to a time_t\n";
+  time_t  oCurrentTime_time_t{system_clock::to_time_t(oCurentTime)};
+
+  //Convert to local time
+  //Serial << "setup(): Convert to local time\n";
+  tm*   pLocalTime{localtime(&oCurrentTime_time_t)};
+
+  //Print the current time
+  //Serial << "setup(): Stream put_time() to cout\n";
+  cout << "PrintCurrentTime(),(via cout): Current time is " << put_time(pLocalTime, "%H:%M:%S") << "\n";
+  return;
+}   //PrintCurrentTime
+
+
+void PrintSecondsSinceY2K(void)
+{
+  time_t timer;
+  struct tm y2k = {0};
+  double seconds;
+
+  y2k.tm_hour = 0;   y2k.tm_min = 0; y2k.tm_sec = 0;
+  y2k.tm_year = 100; y2k.tm_mon = 0; y2k.tm_mday = 1;
+
+  time(&timer);  /* get current time; same as: timer = time(NULL)  */
+
+  seconds = difftime(timer,mktime(&y2k));
+
+  //printf ("%.f seconds since January 1, 2000 in the current timezone", seconds);
+
+  Serial << "PrintSecondsSinceY2K(): " << seconds << "seconds since January 1, 2000\n";
+  return;
+} //PrintSecondsSinceY2K
 
 
 #if DO_ROVER
@@ -282,48 +351,4 @@ void ClearTextBackground(INT16 sUpperLeftX, INT16 sUpperLeftY, UINT16 usWidth, U
   return;
 } //ClearTextBackground
 #endif
-
-
-void FlashRGB_LED() {
-  Serial << LOG0 << "FlashRGB_LED(): Begin\n";
-  pinMode(_cRGB_RedPin, OUTPUT);
-  pinMode(_cRGB_GreenPin, OUTPUT);
-  pinMode(_cRGB_BluePin, OUTPUT);
-
-  //Turn them all off
-  digitalWrite(_cRGB_RedPin,    LOW);
-  digitalWrite(_cRGB_GreenPin,  LOW);
-  digitalWrite(_cRGB_BluePin,   LOW);
-  delay(1000);
-  //Red on
-  digitalWrite(_cRGB_RedPin,    HIGH);
-  delay(1000);
-  //Green on
-  digitalWrite(_cRGB_RedPin,    LOW);
-  digitalWrite(_cRGB_GreenPin,  HIGH);
-  delay(1000);
-  //Blue on
-  digitalWrite(_cRGB_GreenPin,  LOW);
-  digitalWrite(_cRGB_BluePin,   HIGH);
-  delay(1000);
-  //All off
-  digitalWrite(_cRGB_RedPin,    LOW);
-  digitalWrite(_cRGB_GreenPin,  LOW);
-  digitalWrite(_cRGB_BluePin,   LOW);
-  delay(1000);
-  //All on (white)
-  digitalWrite(_cRGB_RedPin,    HIGH);
-  digitalWrite(_cRGB_GreenPin,  HIGH);
-  digitalWrite(_cRGB_BluePin,   HIGH);
-  delay(1000);
-  //All off
-  digitalWrite(_cRGB_RedPin,    LOW);
-  digitalWrite(_cRGB_GreenPin,  LOW);
-  digitalWrite(_cRGB_BluePin,   LOW);
-  delay(1000);
-  //Green on
-  digitalWrite(_cRGB_GreenPin,  HIGH);
-
-  return;
-}  //FlashRGB_LED
 //Last line

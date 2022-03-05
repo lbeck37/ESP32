@@ -1,4 +1,4 @@
-// BeckTireTempDefines.h, 3/3/22a
+// BeckTireTempDefines.h, 3/4/22a
 #pragma once
 #include <cstdint>
 
@@ -48,6 +48,8 @@ static const int8_t     _cRGB_BluePin     =  4;
 //static const int8_t     _cRF_Button       =  32;
 
 static const int        _wNumProbes       =  3;
+
+static const int        _wOffsetUTC       = -8;       //SLO is 8 time zones after Greenwich
 
 extern uint8_t   _acSPI_CS_Pins[];
 //Last line
