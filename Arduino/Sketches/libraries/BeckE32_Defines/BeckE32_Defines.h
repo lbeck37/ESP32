@@ -41,9 +41,9 @@ typedef   uint8_t       FontSize;
   static const int8_t     _cI2C_SCL_Pin     = 27;
 //#endif
 
-  static const uint8_t   _ucI2CAddress1     = 0x67;
-  static const uint8_t   _ucI2CAddress2     = 0x66;
-  static const uint8_t   _ucI2CAddress3     = 0x60;
+  static const uint8_t   _ucI2CAddress1     = 0x67;     //decimal 103
+  static const uint8_t   _ucI2CAddress2     = 0x66;     //decimal 102
+  static const uint8_t   _ucI2CAddress3     = 0x60;     //decimal  96
 
 static const int8_t     _cRGB_RedPin      =    0;
 static const int8_t     _cRGB_GreenPin    =    2;

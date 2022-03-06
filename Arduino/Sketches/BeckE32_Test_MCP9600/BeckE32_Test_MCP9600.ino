@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_Test_MCP9600.ino";
-const char szFileDate[]    = "3/6/22g";
+const char szFileDate[]    = "3/6/22n";
 //Program to test MCP9600 Thermocouple reader using I2C
 
 #define DO_OTA          true
@@ -97,17 +97,18 @@ void SetupCode() {
   }
 */
   for (int wProbe= 1; wProbe <= (_wNumProbes + 1); wProbe++){
-    _aoMCP9600[wProbe]= _aoMCP9600[wProbe].begin(_aucI2CAdresses[wProbe]);
-    if(_aoMCP9600[wProbe]){
-      _abSensorFound[wProbe]= true;
-      Serial << "SetupCode(): Found MCP9600 at address= " << _aucI2CAdresses[wProbe] << endl
+    _abSensorFound[wProbe]= _aoMCP9600[wProbe].begin(_aucI2CAdresses[wProbe]);
+    if(_abSensorFound[wProbe]){
+      Serial << "SetupCode(): MCP9600 found at address= " << _aucI2CAdresses[wProbe] << endl;
+    }
+    else{
+      Serial << "SetupCode(): MCP9600 NOT found at address= " << _aucI2CAdresses[wProbe] << endl;
     }
   } //for(int wProb=1; wProbe<=(_wNumProbes+1);wProbe++)
 
   for (int wProbe= 1; wProbe <= (_wNumProbes + 1); wProbe++){
     if (_abSensorFound[wProbe]){
-      Serial.println("Found MCP9600!"); _aoMCP9600[wProbe]
-
+      Serial.println("Found MCP9600!"); _aoMCP9600[wProbe];
       _aoMCP9600[wProbe].setADCresolution(MCP9600_ADCRESOLUTION_18);
       Serial.print("ADC resolution set to ");
       switch (_aoMCP9600[wProbe].getADCresolution()) {
@@ -153,27 +154,32 @@ void SetupCode() {
 void LoopCode() {
   float     fTCoupleDegC;
   float     fAmbientDegC;
-  float     fTCoupleDegF;
+  float     afTCoupleDegF[4];
   float     fAmbientDegF;
   int32_t   wADC2;
 
   if (millis() > ulNextSensorReadMsec){
     ulNextSensorReadMsec= millis() + ulSensorReadPeriodMsec;
-    for (int wProbe= 1; wProbe <= (_wNumProbes + 1); wProbe++){
-      if (_abSensorFound[wProbe]){
+    for (int wProbe= 1; wProbe <= _wNumProbes; wProbe++){
+      if (_abSensorFound[wProbe])
+      {
         fTCoupleDegC  = _aoMCP9600[wProbe].readThermocouple();
         fAmbientDegC  = _aoMCP9600[wProbe].readAmbient();
         wADC2         = (_aoMCP9600[wProbe].readADC() * 2);
 
-        fTCoupleDegF= (1.8 * fTCoupleDegC) + 32.0;
+        afTCoupleDegF[wProbe]= (1.8 * fTCoupleDegC) + 32.0;
         fAmbientDegF= (1.8 * fAmbientDegC) + 32.0;
 
-        Serial << "LoopCode(): TCouple DegF: " << fTCoupleDegF << ", Ambient DegF= " << fAmbientDegF << ", ADC * 2= " << wADC2 << endl;
-    } //if(_bSensorFound)
+        //Serial << "LoopCode(): TCouple DegF: " << fTCoupleDegF << ", Ambient DegF= " << fAmbientDegF << ", ADC * 2= " << wADC2 << endl;
+      } //if(_abSensorFound[wProbe])
     else{
-      Serial << "LoopCode(): Sensor was not found, skipped code." << endl;
-    } //if(_bSensorFound)else
+      float   fDegF_SetOnError= 37.37;
+      afTCoupleDegF[wProbe]= fDegF_SetOnError;
+      Serial << "LoopCode(): Sensor at address= " << _aucI2CAdresses[wProbe] << " was not found at setup, set its degF to " << fDegF_SetOnError << endl;
+    } //if(_abSensorFound[wProbe])else
    } //for
+   Serial << "LoopCode(): TCouple DegF: T1= " << afTCoupleDegF[1] << ", T2= " << afTCoupleDegF[2] << ", T3= " << afTCoupleDegF[3] << endl;
+
   } //if (millis()>ulNextDisplayMsec)
   return;
 } //LoopCode
