@@ -6,8 +6,8 @@ const char szSystemFileDate[]  = "3/5/22c";
 #include <NTPClient.h>
 #include <Streaming.h>
 
-extern NTPClient oNTPClient;
-BeckSampleDataClass    oSampleData{};
+extern NTPClient        oNTPClient;
+BeckSampleDataClass     oSampleData{};
 
 #if DO_MAX6675
 BeckProbeClass::BeckProbeClass(): _oTCoupleReader(_cSPI_CS_Pin1)
