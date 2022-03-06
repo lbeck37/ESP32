@@ -1,4 +1,4 @@
-// BeckESP32_Defines.h, 3/5/22b
+// BeckESP32_Defines.h, 3/6/22b
 #pragma once
 #include <cstdint>
 
@@ -25,9 +25,7 @@ typedef   uint8_t       FontSize;
 #define WROVER_MOSI                         23
 #define WROVER_MISO                         25
 #define WROVER_BL                            5   //Backlight
-*/
 
-//#if true || DO_MAX6675
   //Pinout using unused camera pins for bit-banging MISO and CLK
   //SPI was required by the MAX6675 boards
   static const int8_t     _cSPI_MISO_Pin    = 26;       // 3/5/22: Using pins 26 for I2C
@@ -36,14 +34,19 @@ typedef   uint8_t       FontSize;
   static const int8_t     _cSPI_CS_Pin1     = 12;
   static const int8_t     _cSPI_CS_Pin2     = 13;
   static const int8_t     _cSPI_CS_Pin3     = 14;
-//#else
-  static const int8_t     _cI2C_SDA_Pin     = 26;
-  static const int8_t     _cI2C_SCL_Pin     = 27;
-//#endif
+*/
+static const int8_t     _cButton_Pin1     = 12;
+static const int8_t     _cButton_Pin2     = 13;
+static const int8_t     _cButton_Pin3     = 14;
+static const int8_t     _cButton_Pin4     = 15;
 
-  static const uint8_t   _ucI2CAddress1     = 0x67;     //decimal 103
-  static const uint8_t   _ucI2CAddress2     = 0x66;     //decimal 102
-  static const uint8_t   _ucI2CAddress3     = 0x60;     //decimal  96
+static const int8_t     _cI2C_SDA_Pin     = 26;
+static const int8_t     _cI2C_SCL_Pin     = 27;
+
+
+static const uint8_t   _ucI2CAddress1     = 0x67;     //decimal 103
+static const uint8_t   _ucI2CAddress2     = 0x66;     //decimal 102
+static const uint8_t   _ucI2CAddress3     = 0x60;     //decimal  96
 
 static const int8_t     _cRGB_RedPin      =    0;
 static const int8_t     _cRGB_GreenPin    =    2;

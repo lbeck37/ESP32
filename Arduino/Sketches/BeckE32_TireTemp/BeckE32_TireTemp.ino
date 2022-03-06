@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_TireTemp.ino";
-const char szFileDate[]    = "3/5/22g"
+const char szFileDate[]    = "3/6/22c"
     "h";
 
 #include <BeckE32_Defines.h>
@@ -62,7 +62,10 @@ const char*       szRouterPW                = "Qazqaz11";
 //Protos
 void  setup                 (void);
 void  loop                  (void);
-void  onPressed             (void);
+void  onPressed1            (void);
+void  onPressed2            (void);
+void  onPressed3            (void);
+void  onPressed4            (void);
 void  SetupNTP              (void);
 void  HandleNTP             (void);
 void  PrintCurrentTime      (void);
@@ -84,7 +87,10 @@ BeckProbeSetClass _oProbeSet;
 
 uint8_t   ucButtonPin = 15;
 
-EasyButton TestButton(ucButtonPin);    //Defaults: 35msec debounce, Pullup enabled, Returns true on button press
+EasyButton TestButton1(_cButton_Pin1);    //Defaults: 35msec debounce, Pullup enabled, Returns true on button press
+EasyButton TestButton2(_cButton_Pin2);    //Defaults: 35msec debounce, Pullup enabled, Returns true on button press
+EasyButton TestButton3(_cButton_Pin3);    //Defaults: 35msec debounce, Pullup enabled, Returns true on button press
+EasyButton TestButton4(_cButton_Pin4);    //Defaults: 35msec debounce, Pullup enabled, Returns true on button press
 
 // Define NTP Client to get time
 WiFiUDP ntpUDP;
@@ -129,11 +135,17 @@ void setup(){
   Serial << LOG0 << "setup(): Call BuildProbes()\n";
   _oProbeSet.BuildProbes();
 
-  Serial << "setup(): Call TestButton.begin()\n";
-  TestButton.begin();
+  Serial << "setup(): Call TestButton1/2/3/4.begin()\n";
+  TestButton1.begin();
+  TestButton2.begin();
+  TestButton3.begin();
+  TestButton4.begin();
 
-  Serial << "setup(): Setup Callback, call TestButton.onPressed(onPressed)\n";
-  TestButton.onPressed(onPressed);
+  Serial << "setup(): Setup Callback, call TestButton1/2/3/4.onPressed(onPressed1/2/3/4)\n";
+  TestButton1.onPressed(onPressed1);
+  TestButton2.onPressed(onPressed2);
+  TestButton3.onPressed(onPressed3);
+  TestButton4.onPressed(onPressed4);
 
   Serial << LOG0 << "setup(): return\n";
   return;
@@ -141,7 +153,10 @@ void setup(){
 
 
 void loop() {
-  TestButton.read();   //This has to get called for onPressed() to get called back
+  TestButton1.read();   //This has to get called for onPressed() to get called back
+  TestButton2.read();   //This has to get called for onPressed() to get called back
+  TestButton3.read();   //This has to get called for onPressed() to get called back
+  TestButton4.read();   //This has to get called for onPressed() to get called back
   if (millis() > ulNextHandleProbesMsec){
     ulNextHandleProbesMsec= millis() + ulHandleProbesPeriodMsec;
     HandleNTP();
@@ -159,11 +174,28 @@ void loop() {
 }  //loop()
 
 
-void onPressed(){
-  cout << "onPressed(): You pressed the test button.\n";
-  Serial << "onPressed(): You pressed the test button.\n";
+void onPressed1(){
+  Serial << "onPressed1(): You pressed Button 1.\n";
   return;
-} //onPressed
+} //onPressed1
+
+
+void onPressed2(){
+  Serial << "onPressed2(): You pressed Button 2.\n";
+  return;
+} //onPressed2
+
+
+void onPressed3(){
+  Serial << "onPressed3(): You pressed Button 3.\n";
+  return;
+} //onPressed3
+
+
+void onPressed4(){
+  Serial << "onPressed4(): You pressed Button 4.\n";
+  return;
+} //onPressed4
 
 
 void SetupNTP(){
