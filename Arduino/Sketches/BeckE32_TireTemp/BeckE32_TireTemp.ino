@@ -1,5 +1,6 @@
 const char szSketchName[]  = "BeckE32_TireTemp.ino";
-const char szFileDate[]    = "3/5/22f";
+const char szFileDate[]    = "3/5/22g"
+    "h";
 
 #include <BeckE32_Defines.h>
 #if DO_OTA
@@ -122,8 +123,8 @@ void setup(){
   PrintCurrentTime();
 
   //Setup I2C bus to be able to scan for devices
-  _oBeckI2C.Setup();
-  _oBeckI2C.ScanForDevices();
+  //_oBeckI2C.Setup();
+  //_oBeckI2C.ScanForDevices();
 
   Serial << LOG0 << "setup(): Call BuildProbes()\n";
   _oProbeSet.BuildProbes();
@@ -146,7 +147,7 @@ void loop() {
     HandleNTP();
     _oProbeSet.Handle();
     unsigned long ulCurrentEpochSeconds= oNTPClient.getEpochTime();
-    _oBeckI2C.ScanForDevices();
+    //_oBeckI2C.ScanForDevices();
   } //if (millis()>ulNextDisplayMsec)
 #if DO_ROVER
   DisplayUpdate();

@@ -1,5 +1,5 @@
 const char szI2cClassFileName[]  = "BeckI2cClass.cpp";
-const char szI2cClassFileDate[]  = "3/5/22b";    //From 5/29/21b
+const char szI2cClassFileDate[]  = "3/5/22c";    //From 5/29/21b
 
 #include <BeckI2cClass.h>
 #include <BeckE32_Defines.h>
@@ -8,7 +8,7 @@ const char szI2cClassFileDate[]  = "3/5/22b";    //From 5/29/21b
 #include <Streaming.h>
 #include <Wire.h>
 
-BeckI2cClass    _oBeckI2C;
+//BeckI2cClass    _oBeckI2C;
 
 BeckI2cClass::BeckI2cClass() {
 } //constructor

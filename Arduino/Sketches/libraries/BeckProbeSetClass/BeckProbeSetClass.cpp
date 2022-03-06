@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckProbeSetClass.cpp";
-const char szSystemFileDate[]  = "3/5/22b";
+const char szSystemFileDate[]  = "3/5/22c";
 
 #include <BeckProbeSetClass.h>
 #include <BeckProbeClass.h>
@@ -38,6 +38,8 @@ void BeckProbeSetClass::BuildProbes(){
     uint8_t ucI2CAddress= _aucI2CAdresses[wProbe];
     Serial << "BeckProbeSetClass::BuildProbes(): Call BeckProbeClass(" << ucI2CAddress << ")" << endl;
     _aoProbes[wProbe]= BeckProbeClass(ucI2CAddress);
+
+    Serial << "BeckProbeSetClass::BuildProbes(): Call _aoProbes[" << wProbe << "].Begin()" << endl;
     _aoProbes[wProbe].Begin();
 #endif
     //delay(1000);
