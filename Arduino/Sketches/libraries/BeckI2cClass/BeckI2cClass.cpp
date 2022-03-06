@@ -1,5 +1,5 @@
 const char szI2cClassFileName[]  = "BeckI2cClass.cpp";
-const char szI2cClassFileDate[]  = "3/5/22a";    //From 5/29/21b
+const char szI2cClassFileDate[]  = "3/5/22b";    //From 5/29/21b
 
 #include <BeckI2cClass.h>
 #include <BeckE32_Defines.h>
@@ -8,7 +8,7 @@ const char szI2cClassFileDate[]  = "3/5/22a";    //From 5/29/21b
 #include <Streaming.h>
 #include <Wire.h>
 
-BeckI2cClass    I2C_Object;
+BeckI2cClass    _oBeckI2C;
 
 BeckI2cClass::BeckI2cClass() {
 } //constructor
@@ -19,22 +19,6 @@ BeckI2cClass::~BeckI2cClass() {
 } //destructor
 
 
-/*
-void BeckI2cClass::Setup(){
-  Serial << LOG0 << "BeckI2cClass::Setup() File: " << szI2cClassFileName << ", " << szI2cClassFileDate << endl;
-  Serial << LOG0 << "BeckI2cClass::Setup(): Call Wire.begin(sSDA_GPIO= " << sSDA_GPIO <<
-      ", sSCL_GPIO= " << sSCL_GPIO << ")" << endl;
-  Wire.begin(sSDA_GPIO, sSCL_GPIO);
-  bool  bScanForDevices= true;
-  if (bScanForDevices){
-    Serial << LOG0 << "BeckI2cClass::Setup(): Call ScanForDevices()" << endl;
-    ScanForDevices();
-  }
-  return;
-} //Setup
-*/
-
-
 void BeckI2cClass::Setup(){
   Serial << LOG0 << "BeckI2cClass::Setup() File: " << szI2cClassFileName << ", " << szI2cClassFileDate << endl;
 #if !DO_MAX6675
@@ -43,7 +27,7 @@ void BeckI2cClass::Setup(){
   //Wire.begin(sSDA_GPIO, sSCL_GPIO);
   Wire.begin(_cI2C_SDA_Pin, _cI2C_SCL_Pin);
 
-  if (true){
+  if (false){
     Serial << LOG0 << "BeckI2cClass::Setup(): Call ScanForDevices()" << endl;
     ScanForDevices();
   }

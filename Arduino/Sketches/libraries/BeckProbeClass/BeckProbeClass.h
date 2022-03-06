@@ -7,8 +7,8 @@
 class BeckProbeClass{
 public:
   BeckProbeClass();
-  BeckProbeClass(uint8_t ucCS_Pin);
-  BeckProbeClass(uint8_t ucCS_Pin, ProbePosition ePosition);
+  BeckProbeClass(int8_t cCS_Pin);
+  BeckProbeClass(int8_t cCS_Pin, ProbePosition ePosition);
   virtual ~BeckProbeClass();
 
   double  Handle          (void);
@@ -16,7 +16,7 @@ public:
 protected:
   ProbePosition           _eProbePosition{ProbePosition::LeftProbe};
   uint16_t                _usDegF_Value{0};
-  uint8_t                 _ucCS_Pin{};
+  int8_t                  _cCS_Pin{};
   BeckTCoupleReaderClass  _oTCoupleReader{};
 };  //BeckProbeClass
 //Last line.

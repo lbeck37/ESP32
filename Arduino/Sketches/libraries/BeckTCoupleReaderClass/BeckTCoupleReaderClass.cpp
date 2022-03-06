@@ -1,21 +1,36 @@
 const char szSystemFileName[]  = "BeckTCoupleReaderClass.cpp";
-const char szSystemFileDate[]  = "3/1/22a";
+const char szSystemFileDate[]  = "3/5/22b";
 
 #include <BeckTCoupleReaderClass.h>
 #include <Streaming.h>
 
 //Not sure about what CS to use for default, so I used probe 1's CS pin
-//BeckTCoupleReaderClass::BeckTCoupleReaderClass() : _oMAX6675_Thermocouple(_cSPI_CLK_Pin, 2, _cSPI_MISO_Pin), _cSPI_CS_Pin{2}
-BeckTCoupleReaderClass::BeckTCoupleReaderClass() {
+#if DO_MAX6675
+  BeckTCoupleReaderClass::BeckTCoupleReaderClass() : _oMAX6675_Thermocouple(_cSPI_CLK_Pin, 2, _cSPI_MISO_Pin), _cSPI_CS_Pin{2}
+#else
+  BeckTCoupleReaderClass::BeckTCoupleReaderClass()
+#endif
+{
   Serial << "BeckTCoupleReaderClass(void) constructor: " << szSystemFileName << ", " << szSystemFileDate << endl;
 } //constructor
 
 
-BeckTCoupleReaderClass::BeckTCoupleReaderClass(int8_t cSPI_CS_Pin) {
+
+#if DO_MAX6675
+BeckTCoupleReaderClass::BeckTCoupleReaderClass(int8_t cSPI_CS_Pin) : _oMAX6675_Thermocouple(_cSPI_CLK_Pin, cSPI_CS_Pin, _cSPI_MISO_Pin)
+{
+  _cSPI_CS_Pin= cSPI_CS_Pin;
   Serial << "BeckTCoupleReaderClass(int8_t) constructor: " << szSystemFileName << ", " << szSystemFileDate << endl;
   Serial << "BeckTCoupleReaderClass(int8_t) constructor: _cSPI_CS_Pin= " << _cSPI_CS_Pin << endl;
-} //constructor
+} // BeckTCoupleReaderClass(int8_t)
+#else
 
+BeckTCoupleReaderClass::BeckTCoupleReaderClass(uint8_t ucI2CAddress) {
+  _ucI2CAddress= ucI2CAddress;
+  Serial << "BeckTCoupleReaderClass(uint8_t) constructor: " << szSystemFileName << ", " << szSystemFileDate << endl;
+  Serial << "BeckTCoupleReaderClass(uint8_t) constructor: _ucI2CAddress= " << _ucI2CAddress << endl;
+} //BeckTCoupleReaderClass(uint8_t)
+#endif
 
 BeckTCoupleReaderClass::~BeckTCoupleReaderClass() {
   Serial << "~BeckTCoupleReaderClass(): Destructing" << endl;
@@ -25,10 +40,13 @@ BeckTCoupleReaderClass::~BeckTCoupleReaderClass() {
 double BeckTCoupleReaderClass::Handle(){
   double dfDegF= 0.00;
 
+#if DO_MAX6675
   //Serial << "BeckTCoupleReaderClass::Handle(): _cSPI_CS_Pin= " << _cSPI_CS_Pin << endl;
   //Serial << "BeckTCoupleReaderClass::Handle(): Call _oMAX6675_Thermocouple.ReadDegF()" << endl;
-
-  //dfDegF= _oMAX6675_Thermocouple.ReadDegF();
+  dfDegF= _oMAX6675_Thermocouple.ReadDegF();
+#else
+  dfDegF= ;
+#endif
 
   //Serial << "BeckTCoupleReaderClass::Handle(): dfDegF= " << dfDegF << endl;
   return dfDegF;

@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_TireTemp.ino";
-const char szFileDate[]    = "3/5/22a";
+const char szFileDate[]    = "3/5/22e";
 
 #include <BeckE32_Defines.h>
 #if DO_OTA
@@ -48,15 +48,14 @@ unsigned long     ulNextDisplayMsec         =    0;
 unsigned long     ulDisplayPeriodMsec       = 2000; //mSec between output to display
 
 unsigned long     ulNextHandleProbesMsec    =    0;
-unsigned long     ulHandleProbesPeriodMsec  = 3000; //mSec between handling probes
+unsigned long     ulHandleProbesPeriodMsec  = 5000; //mSec between handling probes
 
 const char*       szRouterName              = "Aspot24b";
 const char*       szRouterPW                = "Qazqaz11";
 
 #if DO_ROVER
   WROVER_KIT_LCD     RoverLCD;
-
-  const   ColorType  BackgroundColor         = WROVER_BLACK;
+  const ColorType    BackgroundColor         = WROVER_BLACK;
 #endif
 
 //Protos
@@ -122,6 +121,10 @@ void setup(){
   Serial << LOG0 << "setup(): Call PrintCurrentTime()\n";
   PrintCurrentTime();
 
+  //Setup I2C bus to be able to scan for devices
+  _oBeckI2C.Setup();
+  _oBeckI2C.ScanForDevices();
+
   Serial << LOG0 << "setup(): Call BuildProbes()\n";
   _oProbeSet.BuildProbes();
 
@@ -143,6 +146,7 @@ void loop() {
     HandleNTP();
     _oProbeSet.Handle();
     unsigned long ulCurrentEpochSeconds= oNTPClient.getEpochTime();
+    _oBeckI2C.ScanForDevices();
   } //if (millis()>ulNextDisplayMsec)
 #if DO_ROVER
   DisplayUpdate();

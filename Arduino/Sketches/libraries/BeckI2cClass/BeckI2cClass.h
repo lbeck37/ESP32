@@ -11,6 +11,6 @@ BeckI2cClass();
 protected:
 };  //BeckI2cClass
 
-extern BeckI2cClass     I2C_Object;
+extern BeckI2cClass     _oBeckI2C;
 
 //Last line.
