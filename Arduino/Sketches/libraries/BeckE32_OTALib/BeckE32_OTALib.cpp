@@ -1,6 +1,5 @@
-//BeckE32_OTALib.cpp, 2/16/22a
 const char szSketchName[]  = "BeckE32_OTALib.cpp";
-const char szFileDate[]    = "2/17/22a";
+const char szFileDate[]    = "3/6/22a";
 
 #include <BeckE32_OTALib.h>
 #include <WiFi.h>
@@ -92,12 +91,12 @@ String serverIndex =
 void SetupWebserver(const char* szWebHostName){
   /*use mdns for host name resolution*/
   if (!MDNS.begin(szWebHostName)) { //http://esp32.local
-    Serial.println("Error setting up MDNS responder!");
+    Serial.println("SetupWebserver(): Error setting up MDNS responder!");
     while (1) {
       delay(1000);
     } //while
   }
-  Serial.println("mDNS responder started");
+  Serial.println("SetupWebserver(): mDNS responder started");
 
   /*return index page which is stored in serverIndex */
   server.on("/", HTTP_GET, []() {
@@ -127,7 +126,7 @@ void SetupWebserver(const char* szWebHostName){
       }
     } else if (upload.status == UPLOAD_FILE_END) {
       if (Update.end(true)) { //true to set the size to the current progress
-        Serial.printf("Update Success: %u\nRebooting...\n", upload.totalSize);
+        Serial.printf("SetupWebserver(): Update Success: %u\nRebooting...\n", upload.totalSize);
       } else {
         Update.printError(Serial);
       }

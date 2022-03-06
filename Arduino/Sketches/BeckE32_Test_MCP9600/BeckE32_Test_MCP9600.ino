@@ -1,6 +1,6 @@
 const char szSketchName[]  = "BeckE32_Test_MCP9600.ino";
-const char szFileDate[]    = "3/6/22n";
-//Program to test MCP9600 Thermocouple reader using I2C
+const char szFileDate[]    = "3/6/22v";
+//Program to test I2C MCP9600 Thermocouple reader
 
 #define DO_OTA          true
 #define DO_MAX6675      false
@@ -25,27 +25,18 @@ const char* szRouterName  = "Aspot24b";
 const char* szRouterPW    = "Qazqaz11";
 const char* szWebHostName = "Test_MAX6675";
 
-//Pin numbers on WROVER-Kit
-int8_t    cSPI_CLK    = 18;
-int8_t    cSPI_MISO   = 19;
-int8_t    cSPI_CS1    =  2;
-int8_t    cSPI_CS2    =  4;
-int8_t    cSPI_CS3    =  5;
-
 unsigned long     ulNextSensorReadMsec    =    0;
 unsigned long     ulSensorReadPeriodMsec  = 3000; //mSec between reading tcouple
 
 bool    _abSensorFound[] {false, false, false, false};
 
-//Adafruit_MCP9600 mcp;
-
 Adafruit_MCP9600    oMCP9600_TCouple1;
 Adafruit_MCP9600    oMCP9600_TCouple2;
 Adafruit_MCP9600    oMCP9600_TCouple3;
 
-uint8_t             _aucI2CAdresses[] {0, _ucI2CAddress1, _ucI2CAddress2, _ucI2CAddress3};
-//Adafruit_MCP9600    _aoMCP9600[];
 Adafruit_MCP9600    _aoMCP9600[] {oMCP9600_TCouple1, oMCP9600_TCouple2, oMCP9600_TCouple3};
+
+uint8_t             _aucI2CAdresses[] {0, _ucI2CAddress1, _ucI2CAddress2, _ucI2CAddress3};
 
 //Protos
 void setup      ();
@@ -83,20 +74,9 @@ void loop() {
 
 
 void SetupCode() {
-  //Put code for setting up test here.
-  Serial.println("MCP9600 HW test");
+  Serial.println("SetupCode(): Start test of MCP9600 Thermocouple readers");
 
-  /* Initialise the driver with I2C_ADDRESS and the default I2C bus. */
-/*
-  if (! mcp.begin(I2C_ADDRESS)) {
-      Serial.println("Sensor not found. Check wiring!");
-     //while (1); //Glad I found this, no wonder OTA didn't work.
-  }
-  else{
-    _bSensorFound= true;
-  }
-*/
-  for (int wProbe= 1; wProbe <= (_wNumProbes + 1); wProbe++){
+  for (int wProbe= 1; wProbe <= _wNumProbes; wProbe++){
     _abSensorFound[wProbe]= _aoMCP9600[wProbe].begin(_aucI2CAdresses[wProbe]);
     if(_abSensorFound[wProbe]){
       Serial << "SetupCode(): MCP9600 found at address= " << _aucI2CAdresses[wProbe] << endl;
@@ -106,11 +86,12 @@ void SetupCode() {
     }
   } //for(int wProb=1; wProbe<=(_wNumProbes+1);wProbe++)
 
-  for (int wProbe= 1; wProbe <= (_wNumProbes + 1); wProbe++){
+  Serial.println(F("------------------------------"));
+  for (int wProbe= 1; wProbe <= (_wNumProbes); wProbe++){
     if (_abSensorFound[wProbe]){
-      Serial.println("Found MCP9600!"); _aoMCP9600[wProbe];
+      Serial << "SetupCode(): Testing MCP9600 at decimal address " << _aucI2CAdresses[wProbe] << endl;
       _aoMCP9600[wProbe].setADCresolution(MCP9600_ADCRESOLUTION_18);
-      Serial.print("ADC resolution set to ");
+      Serial.print("SetupCode(): ADC resolution set to ");
       switch (_aoMCP9600[wProbe].getADCresolution()) {
         case MCP9600_ADCRESOLUTION_18:   Serial.print("18"); break;
         case MCP9600_ADCRESOLUTION_16:   Serial.print("16"); break;
@@ -120,7 +101,7 @@ void SetupCode() {
       Serial.println(" bits");
 
       _aoMCP9600[wProbe].setThermocoupleType(MCP9600_TYPE_K);
-      Serial.print("Thermocouple type set to ");
+      Serial.print("SetupCode(): Thermocouple type set to ");
       switch (_aoMCP9600[wProbe].getThermocoupleType()) {
         case MCP9600_TYPE_K:  Serial.print("K"); break;
         case MCP9600_TYPE_J:  Serial.print("J"); break;
@@ -134,11 +115,11 @@ void SetupCode() {
       Serial.println(" type");
 
       _aoMCP9600[wProbe].setFilterCoefficient(3);
-      Serial.print("Filter coefficient value set to: ");
+      Serial.print("SetupCode(): Filter coefficient value set to: ");
       Serial.println(_aoMCP9600[wProbe].getFilterCoefficient());
 
       _aoMCP9600[wProbe].setAlertTemperature(1, 30);
-      Serial.print("Alert #1 temperature set to ");
+      Serial.print("SetupCode(): Alert #1 temperature set to ");
       Serial.println(_aoMCP9600[wProbe].getAlertTemperature(1));
       _aoMCP9600[wProbe].configureAlert(1, true, true);  // alert 1 enabled, rising temp
 
@@ -167,20 +148,17 @@ void LoopCode() {
         fAmbientDegC  = _aoMCP9600[wProbe].readAmbient();
         wADC2         = (_aoMCP9600[wProbe].readADC() * 2);
 
-        afTCoupleDegF[wProbe]= (1.8 * fTCoupleDegC) + 32.0;
-        fAmbientDegF= (1.8 * fAmbientDegC) + 32.0;
-
-        //Serial << "LoopCode(): TCouple DegF: " << fTCoupleDegF << ", Ambient DegF= " << fAmbientDegF << ", ADC * 2= " << wADC2 << endl;
+        afTCoupleDegF[wProbe]	= (1.8 * fTCoupleDegC) + 32.0;
+        fAmbientDegF			    = (1.8 * fAmbientDegC) + 32.0;
       } //if(_abSensorFound[wProbe])
     else{
       float   fDegF_SetOnError= 37.37;
       afTCoupleDegF[wProbe]= fDegF_SetOnError;
-      Serial << "LoopCode(): Sensor at address= " << _aucI2CAdresses[wProbe] << " was not found at setup, set its degF to " << fDegF_SetOnError << endl;
-    } //if(_abSensorFound[wProbe])else
-   } //for
+      //Serial << "LoopCode(): Sensor at address= " << _aucI2CAdresses[wProbe] << " was not found at setup, set its degF to " << fDegF_SetOnError << endl;
+      } //if(_abSensorFound[wProbe])else
+   } //for(int wProbe=1; wProbe<=_wNumProbes;wProbe++)
    Serial << "LoopCode(): TCouple DegF: T1= " << afTCoupleDegF[1] << ", T2= " << afTCoupleDegF[2] << ", T3= " << afTCoupleDegF[3] << endl;
-
-  } //if (millis()>ulNextDisplayMsec)
+  } //if (millis()>ulNextSensorReadMsec)
   return;
 } //LoopCode
 //Last line.
