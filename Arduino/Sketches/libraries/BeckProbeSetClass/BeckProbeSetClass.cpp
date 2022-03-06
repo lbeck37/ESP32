@@ -12,7 +12,7 @@ const char szSystemFileDate[]  = "3/5/22a";
 
 //using namespace std;
 
-#if DO_MAX6675
+#if true || DO_MAX6675
 uint8_t   _acSPI_CS_Pins[] {0, _cSPI_CS_Pin1, _cSPI_CS_Pin2, _cSPI_CS_Pin3};    //Declared "extern" in BeckE32_Defines.h
 #endif
 

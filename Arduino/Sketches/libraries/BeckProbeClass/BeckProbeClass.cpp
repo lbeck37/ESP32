@@ -9,15 +9,14 @@ const char szSystemFileDate[]  = "3/4/22c";
 extern NTPClient oNTPClient;
 BeckSampleDataClass    oSampleData{};
 
+#if DO_MAX6675
 BeckProbeClass::BeckProbeClass(): _oTCoupleReader(_cSPI_CS_Pin1)
 {
-  //_oTCoupleReader= BeckTCoupleReaderClass(2);
   Serial << "BeckProbeClass::BeckProbeClass(): Default constructor, " << szSystemFileName << ", " << szSystemFileDate << endl;
 } //constructor
 
 BeckProbeClass::BeckProbeClass(int8_t cCS_Pin) : _cCS_Pin{cCS_Pin}, _oTCoupleReader{cCS_Pin}
 {
-  //_oTCoupleReader= BeckTCoupleReaderClass(_ucCS_Pin);
   Serial << "BeckProbeClass::BeckProbeClass(uint8_t): " << szSystemFileName << ", " << szSystemFileDate << endl;
   Serial << "BeckProbeClass::BeckProbeClass(uint8_t): cCS_Pin= " << cCS_Pin << endl;
 } //constructor
@@ -25,11 +24,29 @@ BeckProbeClass::BeckProbeClass(int8_t cCS_Pin) : _cCS_Pin{cCS_Pin}, _oTCoupleRea
 
 BeckProbeClass::BeckProbeClass(int8_t cCS_Pin, ProbePosition eProbePosition) : _cCS_Pin{cCS_Pin}, _oTCoupleReader{cCS_Pin}, _eProbePosition{eProbePosition}
 {
-  //_oTCoupleReader= BeckTCoupleReaderClass(_ucCS_Pin);
+  Serial << "BeckProbeClass::BeckProbeClass(int8_t,ProbePosition): " << szSystemFileName << ", " << szSystemFileDate << endl;
+  Serial << "BeckProbeClass::BeckProbeClass(int8_t,ProbePosition): cCS_Pin= " << cCS_Pin << endl;
+} //constructor
+#else
+BeckProbeClass::BeckProbeClass(): _oTCoupleReader()
+{
+  Serial << "BeckProbeClass::BeckProbeClass(): Default constructor, " << szSystemFileName << ", " << szSystemFileDate << endl;
+} //constructor
+
+BeckProbeClass::BeckProbeClass(int8_t cCS_Pin) : _cCS_Pin{cCS_Pin}
+{
   Serial << "BeckProbeClass::BeckProbeClass(uint8_t): " << szSystemFileName << ", " << szSystemFileDate << endl;
   Serial << "BeckProbeClass::BeckProbeClass(uint8_t): cCS_Pin= " << cCS_Pin << endl;
 } //constructor
 
+
+BeckProbeClass::BeckProbeClass(int8_t cCS_Pin, ProbePosition eProbePosition) : _cCS_Pin{cCS_Pin}, _oTCoupleReader{}, _eProbePosition{eProbePosition}
+{
+  Serial << "BeckProbeClass::BeckProbeClass(int8_t,ProbePosition): " << szSystemFileName << ", " << szSystemFileDate << endl;
+  Serial << "BeckProbeClass::BeckProbeClass(int8_t,ProbePosition): cCS_Pin= " << cCS_Pin << endl;
+} //constructor
+
+#endif
 
 BeckProbeClass::~BeckProbeClass() {
   Serial << "~BeckProbeClass(): Destructing" << endl;

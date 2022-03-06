@@ -17,13 +17,13 @@ public:
   double  Handle                    (void);
 
 protected:
-  int8_t            _cSPI_CS_Pin;
 #if DO_MAX6675
-  BeckMAX6675Class  _oMAX6675_Thermocouple;
+  BeckMAX6675Class  _oMAX6675_TCouple;
 #else
   Adafruit_MCP9600  _oMCP9600_TCouple;
-  uint8_t          _ucI2CAddress;
 #endif
-  uint16_t          _usDegF_Value      = 0;
+  int8_t            _cSPI_CS_Pin;
+  uint8_t           _ucI2CAddress;
+  float             _fDegF_Value      = 0.0;
 };  //BeckTCoupleReaderClass
 //Last line.
