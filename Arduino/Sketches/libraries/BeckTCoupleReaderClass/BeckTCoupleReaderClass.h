@@ -1,4 +1,4 @@
-// BeckTCoupleReaderClass.h, 3/5/22c
+// BeckTCoupleReaderClass.h, 3/5/22d
 #pragma once
 #include <BeckE32_Defines.h>
 #if DO_MAX6675
@@ -14,6 +14,7 @@ public:
   BeckTCoupleReaderClass            (uint8_t ucI2CAddress);
   virtual ~BeckTCoupleReaderClass   ();
 
+  bool    begin                     (uint8_t ucI2CAddress);
   double  Handle                    (void);
 
 protected:

@@ -39,18 +39,26 @@ BeckTCoupleReaderClass::~BeckTCoupleReaderClass() {
 } //destructor
 
 
+bool BeckTCoupleReaderClass::begin(uint8_t ucI2CAddress){
+  bool    bReturn= true;
+  bReturn= _oMCP9600_TCouple.begin(ucI2CAddress);
+  return bReturn;
+} //Begin
+
+
 double BeckTCoupleReaderClass::Handle(){
-  double dfDegF= 0.00;
+  float fDegF=  0.00;
 
 #if DO_MAX6675
   //Serial << "BeckTCoupleReaderClass::Handle(): _cSPI_CS_Pin= " << _cSPI_CS_Pin << endl;
   //Serial << "BeckTCoupleReaderClass::Handle(): Call _oMAX6675_TCouple.ReadDegF()" << endl;
   dfDegF= _oMAX6675_TCouple.ReadDegF();
 #else
-  dfDegF= 0.0;
+  Serial << "BeckTCoupleReaderClass::Handle():Call _oMCP9600_TCouple.readThermocouple()" << endl;
+  fDegF= _oMCP9600_TCouple.readThermocouple();
 #endif
 
-  //Serial << "BeckTCoupleReaderClass::Handle(): dfDegF= " << dfDegF << endl;
-  return dfDegF;
+  Serial << "BeckTCoupleReaderClass::Handle(): fDegF= " << fDegF << endl;
+  return fDegF;
 } //Handle
 //Last line.

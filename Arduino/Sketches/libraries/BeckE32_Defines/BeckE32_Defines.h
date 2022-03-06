@@ -1,4 +1,4 @@
-// BeckESP32_Defines.h, 3/5/22a
+// BeckESP32_Defines.h, 3/5/22b
 #pragma once
 #include <cstdint>
 
@@ -41,9 +41,9 @@ typedef   uint8_t       FontSize;
   static const int8_t     _cI2C_SCL_Pin     = 27;
 //#endif
 
-  static const uint8_t   _ucProbeAddress1 = 0x67;
-  static const uint8_t   _ucProbeAddress2 = 0x66;
-  static const uint8_t   _ucProbeAddress3 = 0x60;
+  static const uint8_t   _ucI2CAddress1     = 0x67;
+  static const uint8_t   _ucI2CAddress2     = 0x66;
+  static const uint8_t   _ucI2CAddress3     = 0x60;
 
 static const int8_t     _cRGB_RedPin      =    0;
 static const int8_t     _cRGB_GreenPin    =    2;
@@ -51,7 +51,8 @@ static const int8_t     _cRGB_BluePin     =    4;
 
 static const int        _wNumProbes       =  3;
 
-static const int        _wOffsetUTC       = -8;       //SLO is 8 time zones after Greenwich
+static const int        _wOffsetUTC       = -8;       //SLO is 8 time zones after Greenwich _aucI2CAdresses
 
-extern uint8_t   _acSPI_CS_Pins[];
+extern int8_t     _acSPI_CS_Pins    [];
+extern uint8_t    _aucI2CAdresses   [];
 //Last line

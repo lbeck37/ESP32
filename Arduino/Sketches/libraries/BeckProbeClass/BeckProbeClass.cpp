@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckProbeClass.cpp";
-const char szSystemFileDate[]  = "3/4/22c";
+const char szSystemFileDate[]  = "3/5/22c";
 
 #include <BeckProbeClass.h>
 #include <BeckSampleDataClass.h>
@@ -27,6 +27,20 @@ BeckProbeClass::BeckProbeClass(int8_t cCS_Pin, ProbePosition eProbePosition) : _
   Serial << "BeckProbeClass::BeckProbeClass(int8_t,ProbePosition): " << szSystemFileName << ", " << szSystemFileDate << endl;
   Serial << "BeckProbeClass::BeckProbeClass(int8_t,ProbePosition): cCS_Pin= " << cCS_Pin << endl;
 } //constructor
+
+BeckProbeClass::BeckProbeClass(uint8_t ucI2CAddress) : _ucI2CAddress{ucI2CAddress}
+{
+  Serial << "BeckProbeClass::BeckProbeClass(uint8_t): " << szSystemFileName << ", " << szSystemFileDate << endl;
+  Serial << "BeckProbeClass::BeckProbeClass(uint8_t): ucI2CAddress= " << ucI2CAddress << endl;
+} //constructor
+
+
+BeckProbeClass::BeckProbeClass(uint8_t ucI2CAddress, ProbePosition eProbePosition) : _ucI2CAddress{ucI2CAddress}, _oTCoupleReader{}, _eProbePosition{eProbePosition}
+{
+  Serial << "BeckProbeClass::BeckProbeClass(uint8_t,ProbePosition): " << szSystemFileName << ", " << szSystemFileDate << endl;
+  Serial << "BeckProbeClass::BeckProbeClass(uint8_t,ProbePosition): ucI2CAddress= " << ucI2CAddress << endl;
+} //constructor
+
 #else
 BeckProbeClass::BeckProbeClass(): _oTCoupleReader()
 {
@@ -46,11 +60,30 @@ BeckProbeClass::BeckProbeClass(int8_t cCS_Pin, ProbePosition eProbePosition) : _
   Serial << "BeckProbeClass::BeckProbeClass(int8_t,ProbePosition): cCS_Pin= " << cCS_Pin << endl;
 } //constructor
 
+BeckProbeClass::BeckProbeClass(uint8_t ucI2CAddress) : _ucI2CAddress{ucI2CAddress}
+{
+  Serial << "BeckProbeClass::BeckProbeClass(uint8_t): " << szSystemFileName << ", " << szSystemFileDate << endl;
+  Serial << "BeckProbeClass::BeckProbeClass(uint8_t): ucI2CAddress= " << ucI2CAddress << endl;
+} //constructor
+
+
+BeckProbeClass::BeckProbeClass(uint8_t ucI2CAddress, ProbePosition eProbePosition) : _ucI2CAddress{ucI2CAddress}, _oTCoupleReader{}, _eProbePosition{eProbePosition}
+{
+  Serial << "BeckProbeClass::BeckProbeClass(uint8_t,ProbePosition): " << szSystemFileName << ", " << szSystemFileDate << endl;
+  Serial << "BeckProbeClass::BeckProbeClass(uint8_t,ProbePosition): ucI2CAddress= " << ucI2CAddress << endl;
+} //constructor
 #endif
 
 BeckProbeClass::~BeckProbeClass() {
   Serial << "~BeckProbeClass(): Destructing" << endl;
 } //destructor
+
+
+void BeckProbeClass::Begin(){
+  Serial << "BeckProbeClass::Begin(): Begin" << endl;
+  _oTCoupleReader.begin(_ucI2CAddress);
+  return;
+} //Begin
 
 
 double BeckProbeClass::Handle(){

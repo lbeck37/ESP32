@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckProbeSetClass.cpp";
-const char szSystemFileDate[]  = "3/5/22a";
+const char szSystemFileDate[]  = "3/5/22b";
 
 #include <BeckProbeSetClass.h>
 #include <BeckProbeClass.h>
@@ -12,9 +12,8 @@ const char szSystemFileDate[]  = "3/5/22a";
 
 //using namespace std;
 
-#if true || DO_MAX6675
-uint8_t   _acSPI_CS_Pins[] {0, _cSPI_CS_Pin1, _cSPI_CS_Pin2, _cSPI_CS_Pin3};    //Declared "extern" in BeckE32_Defines.h
-#endif
+int8_t    _acSPI_CS_Pins[]  {0, _cSPI_CS_Pin1, _cSPI_CS_Pin2, _cSPI_CS_Pin3};    //Declared "extern" in BeckE32_Defines.h
+uint8_t   _aucI2CAdresses[] {0, _ucI2CAddress1, _ucI2CAddress2, _ucI2CAddress3};
 
 BeckProbeSetClass::BeckProbeSetClass(){
   return;
@@ -36,7 +35,10 @@ void BeckProbeSetClass::BuildProbes(){
     Serial << "BeckProbeSetClass::BuildProbes(): Call BeckProbeClass(" << cCS_Pin << ")" << endl;
     _aoProbes[wProbe]= BeckProbeClass(cCS_Pin);
 #else
-
+    uint8_t ucI2CAddress= _aucI2CAdresses[wProbe];
+    Serial << "BeckProbeSetClass::BuildProbes(): Call BeckProbeClass(" << ucI2CAddress << ")" << endl;
+    _aoProbes[wProbe]= BeckProbeClass(ucI2CAddress);
+    _aoProbes[wProbe].Begin();
 #endif
     //delay(1000);
     Serial << "BeckProbeSetClass::BuildProbes(): Do next probe in for loop" << endl;
