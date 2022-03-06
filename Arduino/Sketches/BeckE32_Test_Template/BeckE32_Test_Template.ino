@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_Test_Template.ino";
-const char szFileDate[]    = "3/6/22a";
+const char szFileDate[]    = "3/6/22b";
 //Beck: This uses a basic test case format which has WiFi and OTA support
 //Program to test MAX6675 Thermocouple reader using SPI
 //Good basis for any simple test
@@ -25,18 +25,12 @@ int8_t    cSPI_CS1    =  2;
 int8_t    cSPI_CS2    =  4;
 int8_t    cSPI_CS3    =  5;
 
-//Create objects to read thermocouples
-/*
-BeckMAX6675Class    oMAX6675_Reader1(cSPI_CLK, cSPI_CS1, cSPI_MISO);
-BeckMAX6675Class    oMAX6675_Reader2(cSPI_CLK, cSPI_CS2, cSPI_MISO);
-BeckMAX6675Class    oMAX6675_Reader3(cSPI_CLK, cSPI_CS3, cSPI_MISO);
-*/
-
 //Protos
 void setup      ();
 void loop       ();
 void SetupCode  ();
 void LoopCode   ();
+
 
 void setup() {
   Serial.begin(115200);
@@ -69,24 +63,15 @@ void loop() {
 
 void SetupCode() {
   //Put code for setting up test here.
- return;
+
+  return;
 } //SetupCode
 
 
 void LoopCode() {
   //Put code here to do every time loop is called.
-  static   double dfDegF1;
-  static   double dfDegF2;
-  static   double dfDegF3;
 
-/*
-  dfDegF1= oMAX6675_Reader1.ReadDegF();
-  dfDegF2= oMAX6675_Reader2.ReadDegF();
-  dfDegF3= oMAX6675_Reader3.ReadDegF();
-*/
-
-  Serial << "LoopCode(): DegF1= " << dfDegF1 << ", DegF2= " << dfDegF2 << ", DegF3= " << dfDegF3 << endl;
-  delay(3000);
+  delay(1000);
   return;
 } //LoopCode
 //Last line.

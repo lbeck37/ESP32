@@ -8,7 +8,6 @@ const char szFileDate[]    = "3/1/22p";
 
 #define DO_OTA          true
 
-//#include "max6675.h"
 #include <BeckMAX6675Lib.h>
 #if DO_OTA
   #include <BeckE32_OTALib.h>
