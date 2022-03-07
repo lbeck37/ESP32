@@ -1,6 +1,5 @@
 const char szSketchName[]  = "BeckE32_TireTemp.ino";
-const char szFileDate[]    = "3/6/22c"
-    "h";
+const char szFileDate[]    = "3/6/22e";
 
 #include <BeckE32_Defines.h>
 #if DO_OTA
@@ -85,7 +84,7 @@ void  PrintSecondsSinceY2K  (void);
 //Create ProbeSet object
 BeckProbeSetClass _oProbeSet;
 
-uint8_t   ucButtonPin = 15;
+//uint8_t   ucButtonPin = 15;
 
 EasyButton TestButton1(_cButton_Pin1);    //Defaults: 35msec debounce, Pullup enabled, Returns true on button press
 EasyButton TestButton2(_cButton_Pin2);    //Defaults: 35msec debounce, Pullup enabled, Returns true on button press
@@ -93,8 +92,10 @@ EasyButton TestButton3(_cButton_Pin3);    //Defaults: 35msec debounce, Pullup en
 EasyButton TestButton4(_cButton_Pin4);    //Defaults: 35msec debounce, Pullup enabled, Returns true on button press
 
 // Define NTP Client to get time
-WiFiUDP ntpUDP;
-NTPClient oNTPClient(ntpUDP);
+WiFiUDP     ntpUDP;
+NTPClient   _oNTPClient(ntpUDP);
+
+uint32_t    _uwEpochTime;
 
 
 void setup(){
@@ -160,8 +161,10 @@ void loop() {
   if (millis() > ulNextHandleProbesMsec){
     ulNextHandleProbesMsec= millis() + ulHandleProbesPeriodMsec;
     HandleNTP();
-    _oProbeSet.Handle();
-    unsigned long ulCurrentEpochSeconds= oNTPClient.getEpochTime();
+    _uwEpochTime= _oNTPClient.getEpochTime();
+    _oProbeSet.Handle(_uwEpochTime);
+    _oProbeSet.PrintProbeSetData();
+    //unsigned long ulCurrentEpochSeconds= _oNTPClient.getEpochTime();
     //_oBeckI2C.ScanForDevices();
   } //if (millis()>ulNextDisplayMsec)
 #if DO_ROVER
@@ -201,10 +204,10 @@ void onPressed4(){
 void SetupNTP(){
 // Initialize a NTPClient to get time
   Serial << "SetupNTP(): Call oNTPClient.begin()\n";
-  oNTPClient.begin();
+  _oNTPClient.begin();
 
   Serial << "SetupNTP(): Call oNTPClient.setTimeOffset() with an offset of " << _wOffsetUTC << " hours\n";
-  oNTPClient.setTimeOffset(_wOffsetUTC * 3600);
+  _oNTPClient.setTimeOffset(_wOffsetUTC * 3600);
 
   return;
 } //SetupNTP
@@ -218,15 +221,15 @@ void HandleNTP(void){
   String timeStamp;
 
   Serial << "HandleNTP(): Enter while loop with oNTPClient.update and oNTPClient.forceUpdate()\n";
-  while(!oNTPClient.update()) {
-    oNTPClient.forceUpdate();
+  while(!_oNTPClient.update()) {
+    _oNTPClient.forceUpdate();
   } //while
   Serial << "HandleNTP(): Done with while loop\n";
 
   // The formattedDate comes with the following format:
   // 2018-05-28T16:00:13Z
   // We need to extract date and time
-  formattedDate = oNTPClient.getFormattedDate();
+  formattedDate = _oNTPClient.getFormattedDate();
   Serial.println(formattedDate);
 
   // Extract date

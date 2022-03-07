@@ -1,27 +1,41 @@
-// BeckSampleDataClass.h, 3/4/22e
+// BeckSampleDataClass.h, 3/6/22a
 #pragma once
 #include <BeckE32_Defines.h>
 
-enum class  ProbePosition           {LeftProbe=1, CenterProbe, RightProbe};
+//enum class  ProbePosition           {LeftProbe=1, CenterProbe, RightProbe};
 
 class BeckSampleDataClass{
 public:
   BeckSampleDataClass           ();
+  BeckSampleDataClass           (ProbePositionEnum eProbePosition, ProbeSetLocationEnum eProbeSetLocation);
   virtual ~BeckSampleDataClass  ();
 
-  unsigned long   ulGetSampleTime         (void);
-  void            SetSampleTime           (unsigned long ulSampleTime);
+  void                  FillSampleData        (uint32_t uwSampleTime, float fNewDegFValue);
+  uint32_t              uwGetSampleTime       (void);
+  void                  SetSampleTime         (uint32_t uwSampleTime);
 
-  void            SetDegF_Value           (int16_t wNewDegFValue);
-  int16_t         wGetDegF_Value          (void);
-  bool            bDegFChanged            (void);
-  void            SetLastDegF_Value       (int16_t wLastDegFValue);
-  int16_t         wGetLastDegF_Value      (void);
+  void                  SetDegF_Value         (float fNewDegFValue);
+  float                 fGetDegF_Value        (void);
+
+  void                  SetProbePosition      (ProbePositionEnum eNewProbePosition);
+  ProbePositionEnum     eGetProbePosition     (void);
+
+  void                  SetProbeSetLocation   (ProbeSetLocationEnum ProbeSetLocatio);
+  ProbeSetLocationEnum  eGetProbeSetLocation  (void);
+
+  void                  SetLastDegF_Value     (float fLastDegFValue);
+  float                 fGetLastDegF_Value    (void);
+
+  bool                  bDegFChanged          (void);
+
 protected:
-  unsigned long   _ulSampleTime         =   0;    //Also called Epoc time
-  int16_t         _wDegF_Value          = 0.0;
-  int16_t         _wLastDegF_Value      = 0.0;
-  bool            _bDegF_FirstTime      = true;
+  uint32_t              _uwSampleTime         =   0;    //Also called Epoc time
+  float                 _fDegF_Value          = 0.0;
+  float                 _fLastDegF_Value      = 0.0;
+  bool                  _bDegF_FirstTime      = true;
+  bool                  _bDegFChanged         = true;
+  ProbePositionEnum     _eProbePosition;
+  ProbeSetLocationEnum  _eProbeSetLocation;
 };  //BeckSampleDataClass
 
 extern BeckSampleDataClass ProbeReadingData;

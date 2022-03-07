@@ -8,14 +8,14 @@ class BeckProbeClass{
 public:
   BeckProbeClass();
   BeckProbeClass(uint8_t ucI2CAddress);
-  BeckProbeClass(uint8_t ucI2CAddress, ProbePosition ePosition);
+  BeckProbeClass(uint8_t ucI2CAddress, ProbePositionEnum ePosition);
   virtual ~BeckProbeClass();
 
   void    Begin           (void);
   double  Handle          (void);
 
 protected:
-  ProbePosition           _eProbePosition{ProbePosition::LeftProbe};
+  ProbePositionEnum       _eProbePosition{ProbePositionEnum::LeftProbe};
   double                  _dfDegF= 0.00;
   uint8_t                 _ucI2CAddress;
   BeckTCoupleReaderClass  _oTCoupleReader;

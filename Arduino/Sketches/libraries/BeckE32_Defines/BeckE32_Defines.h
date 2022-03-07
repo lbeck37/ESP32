@@ -1,4 +1,4 @@
-// BeckESP32_Defines.h, 3/6/22b
+// BeckESP32_Defines.h, 3/6/22c
 #pragma once
 #include <cstdint>
 
@@ -14,6 +14,9 @@
 typedef   int16_t       ColorType;      //See Adafruit_GFX.h
 typedef   int16_t       PUnit;          //Pixel Unit
 typedef   uint8_t       FontSize;
+
+enum class  ProbePositionEnum           {LeftProbe=1, CenterProbe, RightProbe};
+enum class  ProbeSetLocationEnum        {LeftFrontTire=1, RightFrontTire, LeftRearTire, RightRearTire};
 
 //ESP32
 //Pins used by WROVER-KIT LCD display (ref. WROVER_KIT_LCD.cpp)

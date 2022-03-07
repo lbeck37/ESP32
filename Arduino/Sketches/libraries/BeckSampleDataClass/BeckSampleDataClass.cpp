@@ -1,5 +1,5 @@
 const char szBeckTireTempDataClassFileName[]  = "BeckSampleDataClass.cpp";
-const char szBeckTireTempDataClassFileDate[]  = "3/4/22f";
+const char szBeckTireTempDataClassFileDate[]  = "3/6/22b";
 
 #include <BeckSampleDataClass.h>
 #include <Streaming.h>
@@ -18,45 +18,61 @@ BeckSampleDataClass::BeckSampleDataClass() {
   Serial << "BeckSampleDataClass(): Constructor"<< "\n";
 } //constructor
 
+BeckSampleDataClass::BeckSampleDataClass(ProbePositionEnum eProbePosition, ProbeSetLocationEnum eProbeSetLocation) {
+  Serial << "BeckSampleDataClass(ProbePositionEnum, ProbeSetLocationEnum): Constructor"<< "\n";
+  _eProbePosition     = eProbePosition;
+  _eProbeSetLocation  = eProbeSetLocation;
+  return;
+} //constructor
+
 BeckSampleDataClass::~BeckSampleDataClass() {
   Serial << "~BeckSampleDataClass(): Destructor" << "\n";
 } //destructor
 
-unsigned long BeckSampleDataClass::ulGetSampleTime(void){
-  return _ulSampleTime;
+void BeckSampleDataClass::FillSampleData(uint32_t uwSampleTime, float fNewDegFValue) {
+  SetSampleTime(uwSampleTime);
+  SetDegF_Value(fNewDegFValue);
+  SetLastDegF_Value(fNewDegFValue);
+  _bDegFChanged= !(fGetLastDegF_Value() == fNewDegFValue);
+
+  return;
+}
+
+uint32_t BeckSampleDataClass::uwGetSampleTime(void){
+  return _uwSampleTime;
 } //ulGetSampleTime
 
 
-void BeckSampleDataClass::SetSampleTime(unsigned long ulSampleTime){
-  _ulSampleTime= ulSampleTime;
+void BeckSampleDataClass::SetSampleTime(uint32_t uwSampleTime){
+  _uwSampleTime= uwSampleTime;
   return;
 } //SetSampleTime
 
 
-void BeckSampleDataClass::SetDegF_Value(int16_t NewDegFValue){
-  _wDegF_Value= NewDegFValue;
+void BeckSampleDataClass::SetDegF_Value(float fNewDegFValue){
+  _fDegF_Value= fNewDegFValue;
   return;
 }	//SetDegF_Value
 
-int16_t BeckSampleDataClass::wGetDegF_Value(){
-  return _wDegF_Value;
+float BeckSampleDataClass::fGetDegF_Value(){
+  return _fDegF_Value;
 }	//wGetDegF_Value
 
 bool BeckSampleDataClass::bDegFChanged(void){
   bool  bChanged= false;
-  if ((wGetLastDegF_Value() != wGetDegF_Value()) || _bDegF_FirstTime){
+  if ((fGetLastDegF_Value() != fGetDegF_Value()) || _bDegF_FirstTime){
     bChanged       = true;
     _bDegF_FirstTime = false;
   }
   return bChanged;
 } //bDegFChanged
 
-void BeckSampleDataClass::SetLastDegF_Value(int16_t wLastDegFValue){
-  _wLastDegF_Value= wLastDegFValue;
+void BeckSampleDataClass::SetLastDegF_Value(float fLastDegFValue){
+  _fLastDegF_Value= fLastDegFValue;
   return;
 }
 
-int16_t BeckSampleDataClass::wGetLastDegF_Value(){
-  return _wLastDegF_Value;
+float BeckSampleDataClass::fGetLastDegF_Value(){
+  return _fLastDegF_Value;
 }
 //Last line.
