@@ -1,4 +1,4 @@
-// BeckProbeSetClass.h, 3/6/22d
+// BeckProbeSetClass.h, 3/10/22a
 #pragma once
 #include <BeckProbeClass.h>
 #include <BeckE32_Defines.h>
@@ -6,6 +6,7 @@
 class BeckProbeSetClass{
 public:
   BeckProbeSetClass           (void);
+  BeckProbeSetClass           (ProbeSetLocationEnum eProbeSetLocation);
   virtual ~BeckProbeSetClass  (void);
 
   void  BuildProbes           (void);
@@ -13,7 +14,8 @@ public:
 
   void    Handle              (uint32_t uwSampleTime);
 
-protected:
+private:
+  ProbeSetLocationEnum  _eProbeSetLocation;
   uint32_t              _uwSampleTime;
   BeckProbeClass        _aoProbes       [_wNumProbes + 1];
   BeckSampleDataClass   _aoSampleData   [_wNumProbes + 1];

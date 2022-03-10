@@ -1,3 +1,4 @@
+//Beck, 3/10/22b
 /**************************************************************************/
 /*!
   @file     Adafruit_MCP9600.cpp
@@ -23,13 +24,23 @@
 */
 /**************************************************************************/
 #include "Adafruit_MCP9600.h"
+#include <Streaming.h>
 
 /**************************************************************************/
 /*!
     @brief  Instantiates a new MCP9600 class
 */
 /**************************************************************************/
-Adafruit_MCP9600::Adafruit_MCP9600() { _device_id = 0x40; }
+Adafruit_MCP9600::Adafruit_MCP9600() {
+  _device_id = 0x40;
+  Serial << "Adafruit_MCP9600() constructor: _device_id= " << _device_id << endl;
+return;
+} //Constructor
+
+Adafruit_MCP9600::~Adafruit_MCP9600() {
+  Serial << "~Adafruit_MCP9600(): Destructing" << endl << endl;
+} //destructor
+
 
 /**************************************************************************/
 /*!
@@ -45,16 +56,19 @@ boolean Adafruit_MCP9600::begin(uint8_t i2c_addr, TwoWire *theWire) {
 
   /* Try to instantiate the I2C device. */
   if (!i2c_dev->begin(false)) { // *dont scan!*
+    Serial << "Adafruit_MCP9600::begin(): Return false" << endl;
     return false;
   }
 
   /* Check for MCP9600 device ID and revision register (0x20), high byte should
    * be 0x40. */
+  Serial << "Adafruit_MCP9600::begin(): Call Adafruit_I2CRegister id_reg= Adafruit_I2CRegister(i2c_dev, MCP9600_DEVICEID, 2, MSBFIRST)" << endl;
   Adafruit_I2CRegister id_reg =
       Adafruit_I2CRegister(i2c_dev, MCP9600_DEVICEID, 2, MSBFIRST);
 
   if ((id_reg.read() >> 8) != _device_id) {
-    return false;
+    Serial << "Adafruit_MCP9600::begin(): Return false" << endl;
+   return false;
   }
 
   // define the config register
@@ -62,6 +76,7 @@ boolean Adafruit_MCP9600::begin(uint8_t i2c_addr, TwoWire *theWire) {
   _config_reg->write(0x80);
   enable(true);
 
+  Serial << "Adafruit_MCP9600::begin(): Return true" << endl;
   return true;
 }
 
@@ -72,20 +87,24 @@ boolean Adafruit_MCP9600::begin(uint8_t i2c_addr, TwoWire *theWire) {
 */
 /**************************************************************************/
 float Adafruit_MCP9600::readThermocouple(void) {
+  Serial << "Adafruit_MCP9600::readThermocouple(): Begin" << endl;
   if (!enabled()) {
     return NAN;
   }
 
   // define the register
+  Serial << "Adafruit_MCP9600::readThermocouple(): Call Adafruit_I2CRegister(i2c_dev, MCP9600_HOTJUNCTION, 2, MSBFIRST)" << endl;
   Adafruit_I2CRegister therm_reg =
       Adafruit_I2CRegister(i2c_dev, MCP9600_HOTJUNCTION, 2, MSBFIRST);
 
+  Serial << "Adafruit_MCP9600::readThermocouple(): Call int16_t therm = therm_reg.read()" << endl;
   // read a signed 16 bit value
   int16_t therm = therm_reg.read();
 
   // convert to floating and shift to celsius
   float temp = therm;
   temp *= 0.0625; // 0.0625*C per LSB!
+  Serial << "Adafruit_MCP9600::readThermocouple(): Return temp= " << temp << endl;
   return temp;
 }
 

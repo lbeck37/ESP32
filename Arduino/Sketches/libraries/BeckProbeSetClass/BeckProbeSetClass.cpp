@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckProbeSetClass.cpp";
-const char szSystemFileDate[]  = "3/6/22b";
+const char szSystemFileDate[]  = "3/10/22c";
 
 #include <BeckProbeSetClass.h>
 #include <BeckProbeClass.h>
@@ -8,6 +8,15 @@ const char szSystemFileDate[]  = "3/6/22b";
 #include <Streaming.h>
 
 BeckProbeSetClass::BeckProbeSetClass() : _aucI2CAdresses{0, _ucI2CAddress1, _ucI2CAddress2, _ucI2CAddress3} {
+  Serial << "BeckProbeSetClass::BeckProbeSetClass(): Default constructor, _aucI2CAdresses{} filled with I2CAddresses" << endl;
+  Serial << "BeckProbeSetClass::BeckProbeSetClass(): Default constructor, " << szSystemFileName << ", " << szSystemFileDate << endl;
+  return;
+} //constructor
+
+
+BeckProbeSetClass::BeckProbeSetClass(ProbeSetLocationEnum eProbeSetLocation) : _aucI2CAdresses{0, _ucI2CAddress1, _ucI2CAddress2, _ucI2CAddress3} {
+  Serial << "BeckProbeSetClass::BeckProbeSetClass(ProbeSetLocationEnum): Constructor, _aucI2CAdresses{} filled with I2CAddresses" << endl;
+  _eProbeSetLocation= eProbeSetLocation;
   return;
 } //constructor
 
@@ -24,7 +33,7 @@ void BeckProbeSetClass::BuildProbes(){
   for (int wProbe= 1; wProbe <= _wNumProbes; wProbe++){
     uint8_t ucI2CAddress= _aucI2CAdresses[wProbe];
 
-    Serial << "BeckProbeSetClass::BuildProbes(): Call BeckProbeClass(" << ucI2CAddress << ")" << endl;
+    Serial << "BeckProbeSetClass::BuildProbes(): Call _aoProbes[wProbe]= BeckProbeClass(" << ucI2CAddress << ")\n\n";
     _aoProbes[wProbe]= BeckProbeClass(ucI2CAddress);
 
     Serial << "BeckProbeSetClass::BuildProbes(): Call _aoProbes[" << wProbe << "].Begin()" << endl;
@@ -53,9 +62,9 @@ void BeckProbeSetClass::BuildProbes(){
 void BeckProbeSetClass::PrintProbeSetData(void) {
   for (int wProbe= 1; wProbe <= _wNumProbes; wProbe++){
     _aoSampleData[wProbe].FillSampleData(_uwSampleTime, _afProbeDegF[wProbe]);
-    Serial << "PrintProbeSetData(): Printing data for Probe #" << wProbe << endl;
-    Serial << "PrintProbeSetData(): Sample Time= " << _aoSampleData[wProbe].uwGetSampleTime() << ", DegF= " << _aoSampleData[wProbe].fGetDegF_Value() << endl;
-    //Serial << "PrintProbeSetData(): Probe Position= " << _aoSampleData[wProbe].eGetProbePosition() << ", ProbeSet Location= " << _aoSampleData[wProbe].eGetProbeSetLocation() << endl;
+    Serial << "BeckProbeSetClass::PrintProbeSetData(): Printing data for Probe #" << wProbe << endl;
+    Serial << "BeckProbeSetClass::PrintProbeSetData(): Sample Time= " << _aoSampleData[wProbe].uwGetSampleTime() << ", DegF= " << _aoSampleData[wProbe].fGetDegF_Value() << endl;
+    //Serial << "BeckProbeSetClass::PrintProbeSetData(): Probe Position= " << _aoSampleData[wProbe].eGetProbePosition() << ", ProbeSet Location= " << _aoSampleData[wProbe].eGetProbeSetLocation() << endl;
    }
   return;
 }
@@ -64,7 +73,9 @@ void BeckProbeSetClass::Handle(uint32_t uwSampleTime) {
   _uwSampleTime= uwSampleTime;
   //Have each Probe handle itself, like read the tcouple
   for (int wProbe= 1; wProbe <= _wNumProbes; wProbe++){
+    Serial << "BeckProbeSetClass::Handle(): Call _aoProbes[wProbe].Handle() for probe #" << wProbe << endl;
     _afProbeDegF[wProbe]= _aoProbes[wProbe].Handle();
+    Serial << "BeckProbeSetClass::Handle(): Call _aoProbes[wProbe].FillSampleData() for probe #" << wProbe << endl;
     _aoSampleData[wProbe].FillSampleData(_uwSampleTime, _afProbeDegF[wProbe]);
    }
   Serial << "BeckProbeSetClass::Handle(): " << endl <<

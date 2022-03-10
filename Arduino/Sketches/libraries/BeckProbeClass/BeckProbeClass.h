@@ -1,4 +1,4 @@
-// BeckProbeClass.h, 3/6/22c
+// BeckProbeClass.h, 3/10/22a
 #pragma once
 #include <BeckSampleDataClass.h>
 #include <BeckE32_Defines.h>
@@ -15,9 +15,10 @@ public:
   double  Handle          (void);
 
 protected:
-  ProbePositionEnum       _eProbePosition{ProbePositionEnum::LeftProbe};
-  double                  _dfDegF= 0.00;
-  uint8_t                 _ucI2CAddress;
-  BeckTCoupleReaderClass  _oTCoupleReader;
+  ProbePositionEnum         _eProbePosition {ProbePositionEnum::LeftProbe};
+  double                    _dfDegF         {0.00};
+  uint8_t                   _ucI2CAddress   {0};
+  //BeckTCoupleReaderClass  _oTCoupleReader;
+  BeckTCoupleReaderClass*   _poTCoupleReader;
 };  //BeckProbeClass
 //Last line.

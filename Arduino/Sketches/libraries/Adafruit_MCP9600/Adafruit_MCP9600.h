@@ -71,9 +71,10 @@ typedef enum _resolution {
 /**************************************************************************/
 class Adafruit_MCP9600 {
 public:
-  Adafruit_MCP9600();
-  boolean begin(uint8_t i2c_addr = MCP9600_I2CADDR_DEFAULT,
-                TwoWire *theWire = &Wire);
+  Adafruit_MCP9600            ();
+  virtual ~Adafruit_MCP9600   ();
+
+  boolean begin(uint8_t i2c_addr = MCP9600_I2CADDR_DEFAULT, TwoWire *theWire = &Wire);
 
   float readThermocouple(void);
   float readAmbient(void);

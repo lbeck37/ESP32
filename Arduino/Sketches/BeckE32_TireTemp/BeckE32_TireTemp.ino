@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_TireTemp.ino";
-const char szFileDate[]    = "3/6/22e";
+const char szFileDate[]    = "3/10/22h";
 
 #include <BeckE32_Defines.h>
 #if DO_OTA
@@ -81,15 +81,19 @@ void  PrintSecondsSinceY2K  (void);
   void  ClearTextBackground (INT16 sUpperLeftX, INT16 sUpperLeftY, UINT16 usWidth, UINT16 usHeight);
 #endif
 
-//Create ProbeSet object
+  //Setup buttons, Defaults: 35msec debounce, Pullup enabled, Returns true on button press
+EasyButton TireButton1(_cButton_Pin1);
+EasyButton TireButton2(_cButton_Pin2);
+EasyButton TireButton3(_cButton_Pin3);
+EasyButton TireButton4(_cButton_Pin4);
+
 BeckProbeSetClass _oProbeSet;
 
-//uint8_t   ucButtonPin = 15;
-
-EasyButton TestButton1(_cButton_Pin1);    //Defaults: 35msec debounce, Pullup enabled, Returns true on button press
-EasyButton TestButton2(_cButton_Pin2);    //Defaults: 35msec debounce, Pullup enabled, Returns true on button press
-EasyButton TestButton3(_cButton_Pin3);    //Defaults: 35msec debounce, Pullup enabled, Returns true on button press
-EasyButton TestButton4(_cButton_Pin4);    //Defaults: 35msec debounce, Pullup enabled, Returns true on button press
+/*
+BeckProbeSetClass _aoProbeSet[4];
+_aoProbeSet[1]= BeckProbeSetClass(LeftFrontTire);
+*/
+//BeckProbeSetClass _aoProbeSet[] {BeckProbeSetClass(LeftFrontTire), BeckProbeSetClass(RightFrontTire)};
 
 // Define NTP Client to get time
 WiFiUDP     ntpUDP;
@@ -136,17 +140,17 @@ void setup(){
   Serial << LOG0 << "setup(): Call BuildProbes()\n";
   _oProbeSet.BuildProbes();
 
-  Serial << "setup(): Call TestButton1/2/3/4.begin()\n";
-  TestButton1.begin();
-  TestButton2.begin();
-  TestButton3.begin();
-  TestButton4.begin();
+  Serial << "setup(): Call TireButton1/2/3/4.begin()\n";
+  TireButton1.begin();
+  TireButton2.begin();
+  TireButton3.begin();
+  TireButton4.begin();
 
-  Serial << "setup(): Setup Callback, call TestButton1/2/3/4.onPressed(onPressed1/2/3/4)\n";
-  TestButton1.onPressed(onPressed1);
-  TestButton2.onPressed(onPressed2);
-  TestButton3.onPressed(onPressed3);
-  TestButton4.onPressed(onPressed4);
+  Serial << "setup(): Setup Callback, call TireButton1/2/3/4.onPressed(onPressed1/2/3/4)\n";
+  TireButton1.onPressed(onPressed1);
+  TireButton2.onPressed(onPressed2);
+  TireButton3.onPressed(onPressed3);
+  TireButton4.onPressed(onPressed4);
 
   Serial << LOG0 << "setup(): return\n";
   return;
@@ -154,15 +158,17 @@ void setup(){
 
 
 void loop() {
-  TestButton1.read();   //This has to get called for onPressed() to get called back
-  TestButton2.read();   //This has to get called for onPressed() to get called back
-  TestButton3.read();   //This has to get called for onPressed() to get called back
-  TestButton4.read();   //This has to get called for onPressed() to get called back
+  TireButton1.read();   //This has to get called for onPressed() to get called back
+  TireButton2.read();   //This has to get called for onPressed() to get called back
+  TireButton3.read();   //This has to get called for onPressed() to get called back
+  TireButton4.read();   //This has to get called for onPressed() to get called back
   if (millis() > ulNextHandleProbesMsec){
     ulNextHandleProbesMsec= millis() + ulHandleProbesPeriodMsec;
     HandleNTP();
     _uwEpochTime= _oNTPClient.getEpochTime();
+    Serial << LOG0 << "loop(): Call _oProbeSet.Handle(_uwEpochTime)\n";
     _oProbeSet.Handle(_uwEpochTime);
+    Serial << LOG0 << "loop(): Call _oProbeSet.PrintProbeSetData()\n";
     _oProbeSet.PrintProbeSetData();
     //unsigned long ulCurrentEpochSeconds= _oNTPClient.getEpochTime();
     //_oBeckI2C.ScanForDevices();
@@ -247,18 +253,18 @@ void HandleNTP(void){
 
 void PrintCurrentTime(void){
   //Print the current time (Pro C++ pg 801)
-  //Serial << "setup(): Get a time_point for the current time\n";
+  //Serial << "PrintCurrentTime(): Get a time_point for the current time\n";
   system_clock::time_point  oCurentTime{system_clock::now()};
 
-  //Serial << "setup(): Convert the time_point to a time_t\n";
+  //Serial << "PrintCurrentTime(): Convert the time_point to a time_t\n";
   time_t  oCurrentTime_time_t{system_clock::to_time_t(oCurentTime)};
 
   //Convert to local time
-  //Serial << "setup(): Convert to local time\n";
+  //Serial << "PrintCurrentTime(): Convert to local time\n";
   tm*   pLocalTime{localtime(&oCurrentTime_time_t)};
 
   //Print the current time
-  //Serial << "setup(): Stream put_time() to cout\n";
+  //Serial << "PrintCurrentTime(): Stream put_time() to cout\n";
   cout << "PrintCurrentTime(),(via cout): Current time is " << put_time(pLocalTime, "%H:%M:%S") << "\n";
   return;
 }   //PrintCurrentTime
