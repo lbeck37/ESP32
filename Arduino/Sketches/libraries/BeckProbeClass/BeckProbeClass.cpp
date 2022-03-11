@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckProbeClass.cpp";
-const char szSystemFileDate[]  = "3/10/22d";
+const char szSystemFileDate[]  = "3/11/22a";
 
 #include <BeckProbeClass.h>
 #include <BeckSampleDataClass.h>
@@ -8,7 +8,7 @@ const char szSystemFileDate[]  = "3/10/22d";
 
 extern NTPClient        _oNTPClient;
 //BeckSampleDataClass     oSampleData{};
-BeckSampleDataClass*     _poSampleData;
+//BeckSampleDataClass*     _poSampleData;
 
 //BeckProbeClass::BeckProbeClass(): _oTCoupleReader()
 BeckProbeClass::BeckProbeClass(void) {
@@ -46,7 +46,7 @@ BeckProbeClass::BeckProbeClass(int8_t cProbeID, uint8_t ucI2CAddress) {
   _poTCoupleReader= new BeckTCoupleReaderClass(_ucI2CAddress);
 
   Serial << "BeckProbeClass(cProbeID,ucI2CAddress): Constructor, Call _poSampleData= new BeckSampleDataClass()" << endl;
-  _poSampleData= new BeckSampleDataClass();
+//  _poSampleData= new BeckSampleDataClass();
   return;
 } //constructor
 
@@ -56,9 +56,11 @@ BeckProbeClass::~BeckProbeClass() {
   delete _poTCoupleReader;
   _poTCoupleReader= nullptr;
 
+/*
   Serial << "~BeckProbeClass(): Destructor, deleting _poSampleData" << endl;
   delete _poSampleData;
   _poSampleData= nullptr;
+*/
   return;
 } //destructor
 

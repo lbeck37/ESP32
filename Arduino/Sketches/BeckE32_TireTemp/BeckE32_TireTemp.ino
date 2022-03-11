@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_TireTemp.ino";
-const char szFileDate[]    = "3/10/22q";
+const char szFileDate[]    = "3/10/22f";
 
 #include <BeckE32_Defines.h>
 #if DO_OTA
@@ -370,7 +370,12 @@ void DisplayLowerBanner(){
   UINT8           ucSize          = 1;
   ColorType       usColor         = WROVER_CYAN;
 
+/*
+  sprintf(sz100CharString, "%6.1f", 37.37);
   DisplayText( usCursorX, usCursorY, "Tire Degrees F", pFont, ucSize, usColor);
+*/
+  sprintf(sz100CharString, "%s", "Tire Degrees F");
+  DisplayText( usCursorX, usCursorY, sz100CharString, pFont, ucSize, usColor);
   return;
 } //DisplayLowerBanner
 
