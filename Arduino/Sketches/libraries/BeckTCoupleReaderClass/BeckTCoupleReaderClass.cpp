@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckTCoupleReaderClass.cpp";
-const char szSystemFileDate[]  = "3/10/22d";
+const char szSystemFileDate[]  = "3/10/22e";
 
 #include <BeckTCoupleReaderClass.h>
 #include <Streaming.h>
@@ -34,8 +34,9 @@ bool BeckTCoupleReaderClass::begin(uint8_t ucI2CAddress){
   bool    bReturn= true;
   Serial << endl << "BeckTCoupleReaderClass::begin(" << ucI2CAddress << ")"<< endl;
   Serial << "BeckTCoupleReaderClass::begin(): " << szSystemFileName << ", " << szSystemFileDate << endl;
-  Serial << "BeckTCoupleReaderClass::begin(): Return  _oMCP9600_TCouple.begin(" << _ucI2CAddress << ")" << endl;
+  Serial << "BeckTCoupleReaderClass::begin(): Set bReturn= _poMCP9600_TCouple->begin(" << _ucI2CAddress << ")" << endl;
   bReturn= _poMCP9600_TCouple->begin(ucI2CAddress);
+  Serial << "BeckTCoupleReaderClass::begin(): Return bReturn= " << bReturn << endl;
   return bReturn;
 } //Begin
 
