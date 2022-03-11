@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_TireTemp.ino";
-const char szFileDate[]    = "3/10/22k";
+const char szFileDate[]    = "3/10/22q";
 
 #include <BeckE32_Defines.h>
 #if DO_OTA
@@ -90,12 +90,6 @@ EasyButton TireButton4(_cButton_Pin4);
 //BeckProbeSetClass _oProbeSet;
 BeckProbeSetClass*  _poProbeSet;
 
-/*
-BeckProbeSetClass _aoProbeSet[4];
-_aoProbeSet[1]= BeckProbeSetClass(LeftFrontTire);
-*/
-//BeckProbeSetClass _aoProbeSet[] {BeckProbeSetClass(LeftFrontTire), BeckProbeSetClass(RightFrontTire)};
-
 // Define NTP Client to get time
 WiFiUDP     ntpUDP;
 NTPClient   _oNTPClient(ntpUDP);
@@ -169,10 +163,12 @@ void loop() {
     ulNextHandleProbesMsec= millis() + ulHandleProbesPeriodMsec;
     HandleNTP();
     _uwEpochTime= _oNTPClient.getEpochTime();
-    Serial << LOG0 << "loop(): Call _oProbeSet.Handle(_uwEpochTime)\n";
+    Serial << LOG0 << "loop(): Call _poProbeSet->Handle(" << _uwEpochTime << ")\n";
     _poProbeSet->Handle(_uwEpochTime);
+/*
     Serial << LOG0 << "loop(): Call _oProbeSet.PrintProbeSetData()\n";
-    //_poProbeSet->PrintProbeSetData();
+    _poProbeSet->PrintProbeSetData();
+*/
   } //if (millis()>ulNextDisplayMsec)
 #if DO_ROVER
   DisplayUpdate();

@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckProbeClass.cpp";
-const char szSystemFileDate[]  = "3/10/22c";
+const char szSystemFileDate[]  = "3/10/22d";
 
 #include <BeckProbeClass.h>
 #include <BeckSampleDataClass.h>
@@ -7,7 +7,8 @@ const char szSystemFileDate[]  = "3/10/22c";
 #include <Streaming.h>
 
 extern NTPClient        _oNTPClient;
-BeckSampleDataClass     oSampleData{};
+//BeckSampleDataClass     oSampleData{};
+BeckSampleDataClass*     _poSampleData;
 
 //BeckProbeClass::BeckProbeClass(): _oTCoupleReader()
 BeckProbeClass::BeckProbeClass(void) {
@@ -43,6 +44,9 @@ BeckProbeClass::BeckProbeClass(int8_t cProbeID, uint8_t ucI2CAddress) {
   Serial << "BeckProbeClass(cProbeID,ucI2CAddress): Constructor, _cProbeID= " << _cProbeID << ", ucI2CAddress= " << ucI2CAddress << endl;
   Serial << "BeckProbeClass(cProbeID,ucI2CAddress): Constructor, Call _poTCoupleReader= new BeckTCoupleReaderClass(_ucI2CAddress) " << endl;
   _poTCoupleReader= new BeckTCoupleReaderClass(_ucI2CAddress);
+
+  Serial << "BeckProbeClass(cProbeID,ucI2CAddress): Constructor, Call _poSampleData= new BeckSampleDataClass()" << endl;
+  _poSampleData= new BeckSampleDataClass();
   return;
 } //constructor
 
@@ -51,6 +55,10 @@ BeckProbeClass::~BeckProbeClass() {
   Serial << "~BeckProbeClass(): Destructor, deleting _poTCoupleReader" << endl;
   delete _poTCoupleReader;
   _poTCoupleReader= nullptr;
+
+  Serial << "~BeckProbeClass(): Destructor, deleting _poSampleData" << endl;
+  delete _poSampleData;
+  _poSampleData= nullptr;
   return;
 } //destructor
 
@@ -66,11 +74,13 @@ double BeckProbeClass::Handle(){
   Serial << "BeckProbeClass::Handle(): Call _dfDegF= _poTCoupleReader->Handle()" << endl;
   _dfDegF= _poTCoupleReader->Handle();
 
-  oSampleData.SetDegF_Value(_dfDegF);
+  //oSampleData.SetDegF_Value(_dfDegF);
 
   unsigned long ulCurrentEpochSeconds= _oNTPClient.getEpochTime();
+/*
   Serial << "BeckProbeClass::Handle(): oSampleData.SetSampleTime(" << ulCurrentEpochSeconds << ")" << endl;
   oSampleData.SetSampleTime(ulCurrentEpochSeconds);
+*/
 
   return _dfDegF;
 } //Handle

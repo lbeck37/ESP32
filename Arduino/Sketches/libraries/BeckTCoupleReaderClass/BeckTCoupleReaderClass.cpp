@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckTCoupleReaderClass.cpp";
-const char szSystemFileDate[]  = "3/10/22c";
+const char szSystemFileDate[]  = "3/10/22d";
 
 #include <BeckTCoupleReaderClass.h>
 #include <Streaming.h>
@@ -14,9 +14,10 @@ return;
 BeckTCoupleReaderClass::BeckTCoupleReaderClass(uint8_t ucI2CAddress)
 {
   _ucI2CAddress= ucI2CAddress;
-  _poMCP9600_TCouple= new Adafruit_MCP9600;
   Serial << "BeckTCoupleReaderClass(uint8_t) constructor: _ucI2CAddress= " << _ucI2CAddress << endl;
   Serial << "BeckTCoupleReaderClass(uint8_t) constructor: " << szSystemFileName << ", " << szSystemFileDate << endl << endl;
+  Serial << "BeckTCoupleReaderClass(uint8_t) constructor: Call _poMCP9600_TCouple= new Adafruit_MCP9600" <<endl << endl;
+  _poMCP9600_TCouple= new Adafruit_MCP9600;
   return;
 } //BeckTCoupleReaderClass(uint8_t)
 
@@ -42,7 +43,7 @@ bool BeckTCoupleReaderClass::begin(uint8_t ucI2CAddress){
 double BeckTCoupleReaderClass::Handle(){
   float fDegC=  0.00;
 
-  Serial << "\nBeckTCoupleReaderClass::Handle():Call fDegC= _oMCP9600_TCouple.readThermocouple()" << endl;
+  Serial << "\nBeckTCoupleReaderClass::Handle():Call fDegC= _poMCP9600_TCouple->readThermocouple()" << endl;
   fDegC= _poMCP9600_TCouple->readThermocouple();
 
   _fDegF_Value= (1.8 * fDegC) + 32.00;

@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckProbeSetClass.cpp";
-const char szSystemFileDate[]  = "3/10/22d";
+const char szSystemFileDate[]  = "3/10/22e";
 
 #include <BeckProbeSetClass.h>
 #include <BeckProbeClass.h>
@@ -115,7 +115,7 @@ void BeckProbeSetClass::Handle(uint32_t uwSampleTime) {
   _uwSampleTime= uwSampleTime;
   //Have each Probe handle itself, like read the tcouple
   for (int8_t cProbe= 1; cProbe <= _wNumProbes; cProbe++){
-    Serial << "BeckProbeSetClass::Handle(): Call _apoProbe[cProbe].Handle() for probe #" << cProbe << endl;
+    Serial << "BeckProbeSetClass::Handle(): Call _apoProbe[" << cProbe << "].Handle()" << endl;
     _afProbeDegF[cProbe]= _apoProbe[cProbe]->Handle();
 /*
     Serial << "BeckProbeSetClass::Handle(): Call _aoProbes[cProbe].FillSampleData() for probe #" << cProbe << endl;
