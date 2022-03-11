@@ -1,4 +1,4 @@
-// BeckProbeSetClass.h, 3/10/22a
+// BeckProbeSetClass.h, 3/10/22b
 #pragma once
 #include <BeckProbeClass.h>
 #include <BeckE32_Defines.h>
@@ -17,8 +17,10 @@ public:
 private:
   ProbeSetLocationEnum  _eProbeSetLocation;
   uint32_t              _uwSampleTime;
-  BeckProbeClass        _aoProbes       [_wNumProbes + 1];
-  BeckSampleDataClass   _aoSampleData   [_wNumProbes + 1];
+  BeckProbeClass*        _apoProbe        [_wNumProbes + 1];
+
+  //BeckProbeClass        _aoProbes       [_wNumProbes + 1];
+  //BeckSampleDataClass   _aoSampleData   [_wNumProbes + 1];
   uint8_t               _aucI2CAdresses [_wNumProbes + 1];
   float                 _afProbeDegF    [_wNumProbes + 1];
 
