@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_TireTemp.ino";
-const char szFileDate[]    = "3/10/22j";
+const char szFileDate[]    = "3/10/22k";
 
 #include <BeckE32_Defines.h>
 #if DO_OTA
@@ -87,7 +87,8 @@ EasyButton TireButton2(_cButton_Pin2);
 EasyButton TireButton3(_cButton_Pin3);
 EasyButton TireButton4(_cButton_Pin4);
 
-BeckProbeSetClass _oProbeSet;
+//BeckProbeSetClass _oProbeSet;
+BeckProbeSetClass*  _poProbeSet;
 
 /*
 BeckProbeSetClass _aoProbeSet[4];
@@ -138,7 +139,9 @@ void setup(){
   //_oBeckI2C.ScanForDevices();
 
   Serial << LOG0 << "setup(): Call BuildProbes()\n";
-  _oProbeSet.BuildProbes();
+  _poProbeSet= new BeckProbeSetClass();
+  Serial << LOG0 << "setup(): Call BuildProbes()\n";
+  _poProbeSet->BuildProbes();
 
   Serial << "setup(): Call TireButton1/2/3/4.begin()\n";
   TireButton1.begin();
@@ -167,11 +170,9 @@ void loop() {
     HandleNTP();
     _uwEpochTime= _oNTPClient.getEpochTime();
     Serial << LOG0 << "loop(): Call _oProbeSet.Handle(_uwEpochTime)\n";
-    _oProbeSet.Handle(_uwEpochTime);
+    _poProbeSet->Handle(_uwEpochTime);
     Serial << LOG0 << "loop(): Call _oProbeSet.PrintProbeSetData()\n";
-    _oProbeSet.PrintProbeSetData();
-    //unsigned long ulCurrentEpochSeconds= _oNTPClient.getEpochTime();
-    //_oBeckI2C.ScanForDevices();
+    //_poProbeSet->PrintProbeSetData();
   } //if (millis()>ulNextDisplayMsec)
 #if DO_ROVER
   DisplayUpdate();

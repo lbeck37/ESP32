@@ -6,7 +6,7 @@
 class BeckProbeSetClass{
 public:
   BeckProbeSetClass           (void);
-  BeckProbeSetClass           (ProbeSetLocationEnum eProbeSetLocation);
+  BeckProbeSetClass           (int8_t cProbeSetID);
   virtual ~BeckProbeSetClass  (void);
 
   void  BuildProbes           (void);
@@ -15,9 +15,10 @@ public:
   void    Handle              (uint32_t uwSampleTime);
 
 private:
-  ProbeSetLocationEnum  _eProbeSetLocation;
+  //ProbeSetLocationEnum  _eProbeSetLocation;
+  int8_t                _cProbeSetID;          //1, 2, 3, 4, possibly for RF, LF, LR, RR
   uint32_t              _uwSampleTime;
-  BeckProbeClass*        _apoProbe        [_wNumProbes + 1];
+  BeckProbeClass*       _apoProbe         [_wNumProbes + 1];
 
   //BeckProbeClass        _aoProbes       [_wNumProbes + 1];
   //BeckSampleDataClass   _aoSampleData   [_wNumProbes + 1];

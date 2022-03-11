@@ -1,4 +1,4 @@
-// BeckProbeClass.h, 3/10/22b
+// BeckProbeClass.h, 3/10/22c
 #pragma once
 #include <BeckSampleDataClass.h>
 #include <BeckE32_Defines.h>
