@@ -6,12 +6,7 @@
  */
 
 #include <TimeLib.h>
-#ifdef ESP32
-  #include <WiFi.h>
-#else
-  #include <ESP8266WiFi.h>
-#endif    //ESP32
-
+#include <ESP8266WiFi.h>
 #include <WiFiUdp.h>
 
 const char ssid[] = "*************";  //  your network SSID (name)

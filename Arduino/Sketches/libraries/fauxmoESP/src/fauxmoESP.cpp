@@ -1,4 +1,30 @@
-// Beck, fauxmoESP.cpp 12/16/21a
+/*
+
+FAUXMO ESP
+
+Copyright (C) 2016-2020 by Xose Pérez <xose dot perez at gmail dot com>
+
+The MIT License (MIT)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+*/
 
 #include <Arduino.h>
 #include "fauxmoESP.h"
@@ -6,6 +32,7 @@
 // -----------------------------------------------------------------------------
 // UDP
 // -----------------------------------------------------------------------------
+
 void fauxmoESP::_sendUDPResponse() {
 
 	DEBUG_MSG_FAUXMO("[FAUXMO] Responding to M-SEARCH request\n");
@@ -84,26 +111,64 @@ void fauxmoESP::_sendTCPResponse(AsyncClient *client, const char * code, char * 
 
 }
 
-String fauxmoESP::_deviceJson(unsigned char id) {
+String fauxmoESP::_deviceJson(unsigned char id, bool all = true) {
 
 	if (id >= _devices.size()) return "{}";
 
-	String mac = WiFi.macAddress();
-    mac.replace(":", "");
-    mac.toLowerCase();
-
 	fauxmoesp_device_t device = _devices[id];
-    char buffer[strlen_P(FAUXMO_DEVICE_JSON_TEMPLATE) + 64];
-    snprintf_P(
-        buffer, sizeof(buffer),
-        FAUXMO_DEVICE_JSON_TEMPLATE,
-        device.name, mac.c_str(), id+1,
-        device.state ? "true": "false",
-        device.value
-    );
+
+	DEBUG_MSG_FAUXMO("[FAUXMO] Sending device info for \"%s\", uniqueID = \"%s\"\n", device.name, device.uniqueid);
+	char buffer[strlen_P(FAUXMO_DEVICE_JSON_TEMPLATE) + 64];
+
+	if (all)
+	{
+		snprintf_P(
+			buffer, sizeof(buffer),
+			FAUXMO_DEVICE_JSON_TEMPLATE,
+			device.name, device.uniqueid,
+			device.state ? "true": "false",
+			device.value
+		);
+	}
+	else
+	{
+		snprintf_P(
+			buffer, sizeof(buffer),
+			FAUXMO_DEVICE_JSON_TEMPLATE_SHORT,
+			device.name, device.uniqueid
+		);
+	}
 
 	return String(buffer);
+}
 
+String fauxmoESP::_byte2hex(uint8_t zahl)
+{
+  String hstring = String(zahl, HEX);
+  if (zahl < 16)
+  {
+    hstring = "0" + hstring;
+  }
+
+  return hstring;
+}
+
+String fauxmoESP::_makeMD5(String text)
+{
+  unsigned char bbuf[16];
+  String hash = "";
+  MD5Builder md5;
+  md5.begin();
+  md5.add(text);
+  md5.calculate();
+  
+  md5.getBytes(bbuf);
+  for (uint8_t i = 0; i < 16; i++)
+  {
+    hash += _byte2hex(bbuf[i]);
+  }
+
+  return hash;
 }
 
 bool fauxmoESP::_onTCPDescription(AsyncClient *client, String url, String body) {
@@ -144,7 +209,7 @@ bool fauxmoESP::_onTCPList(AsyncClient *client, String url, String body) {
 	// Get the id
 	unsigned char id = url.substring(pos+7).toInt();
 
-	// This will hold the response string
+	// This will hold the response string	
 	String response;
 
 	// Client is requesting all devices
@@ -153,7 +218,7 @@ bool fauxmoESP::_onTCPList(AsyncClient *client, String url, String body) {
 		response += "{";
 		for (unsigned char i=0; i< _devices.size(); i++) {
 			if (i>0) response += ",";
-			response += "\"" + String(i+1) + "\":" + _deviceJson(i);
+			response += "\"" + String(i+1) + "\":" + _deviceJson(i, false);	// send short template
 		}
 		response += "}";
 
@@ -163,7 +228,7 @@ bool fauxmoESP::_onTCPList(AsyncClient *client, String url, String body) {
 	}
 
 	_sendTCPResponse(client, "200 OK", (char *) response.c_str(), "application/json");
-
+	
 	return true;
 
 }
@@ -224,7 +289,7 @@ bool fauxmoESP::_onTCPControl(AsyncClient *client, String url, String body) {
 	}
 
 	return false;
-
+	
 }
 
 bool fauxmoESP::_onTCPRequest(AsyncClient *client, bool isGet, String url, String body) {
@@ -270,7 +335,7 @@ bool fauxmoESP::_onTCPData(AsyncClient *client, void *data, size_t len) {
 	while (*p != ' ') p++;
 	*p = 0;
 	p++;
-
+	
 	// Split word and flag start of url
 	char * url = p;
 
@@ -311,10 +376,14 @@ void fauxmoESP::_onTCPClient(AsyncClient *client) {
 	            client->onData([this, i](void *s, AsyncClient *c, void *data, size_t len) {
 	                _onTCPData(c, data, len);
 	            }, 0);
-
 	            client->onDisconnect([this, i](void *s, AsyncClient *c) {
-	                _tcpClients[i]->free();
-	                _tcpClients[i] = NULL;
+			if(_tcpClients[i] != NULL) {
+	                    _tcpClients[i]->free();
+	                    _tcpClients[i] = NULL;
+	                }
+			else {
+	                    DEBUG_MSG_FAUXMO("[FAUXMO] Client %d already disconnected\n", i);
+	                }
 	                delete c;
 	                DEBUG_MSG_FAUXMO("[FAUXMO] Client #%d disconnected\n", i);
 	            }, 0);
@@ -356,15 +425,20 @@ void fauxmoESP::_onTCPClient(AsyncClient *client) {
 // -----------------------------------------------------------------------------
 
 fauxmoESP::~fauxmoESP() {
-
+  	
 	// Free the name for each device
 	for (auto& device : _devices) {
 		free(device.name);
   	}
-
-	// Delete devices
+  	
+	// Delete devices  
 	_devices.clear();
 
+}
+
+void fauxmoESP::setDeviceUniqueId(unsigned char id, const char *uniqueid)
+{
+    strncpy(_devices[id].uniqueid, uniqueid, FAUXMO_DEVICE_UNIQUE_ID_LENGTH);
 }
 
 unsigned char fauxmoESP::addDevice(const char * device_name) {
@@ -374,8 +448,13 @@ unsigned char fauxmoESP::addDevice(const char * device_name) {
 
     // init properties
     device.name = strdup(device_name);
-	device.state = false;
-	device.value = 0;
+  	device.state = false;
+	  device.value = 0;
+
+    // create the uniqueid
+    String mac = WiFi.macAddress();
+
+    snprintf(device.uniqueid, 27, "%s:%s-%02X", mac.c_str(), "00:00", device_id);
 
     // Attach
     _devices.push_back(device);
@@ -495,5 +574,5 @@ void fauxmoESP::enable(bool enable) {
         DEBUG_MSG_FAUXMO("[FAUXMO] UDP server started\n");
 
 	}
+
 }
-//Last line.

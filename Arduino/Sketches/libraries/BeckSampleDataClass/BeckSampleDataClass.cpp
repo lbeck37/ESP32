@@ -1,5 +1,5 @@
 const char szBeckTireTempDataClassFileName[]  = "BeckSampleDataClass.cpp";
-const char szBeckTireTempDataClassFileDate[]  = "3/6/22b";
+const char szBeckTireTempDataClassFileDate[]  = "3/11/22b";
 
 #include <BeckSampleDataClass.h>
 #include <Streaming.h>

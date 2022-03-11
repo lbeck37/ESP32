@@ -4,19 +4,30 @@ Amazon Alexa support for ESP8266 and ESP32 devices.
 
 This is a library for ESP8266/ESP32-based devices that emulates Philips Hue lights and thus allows you to control them using this protocol, in particular from Alexa-powered devices like the Amazon Echo or the Dot.
 
-[![version](https://img.shields.io/badge/version-3.1.1-brightgreen.svg)](CHANGELOG.md)
+[![version](https://img.shields.io/badge/version-3.1.2-brightgreen.svg)](CHANGELOG.md)
 [![codacy](https://img.shields.io/codacy/grade/44478ddd58fe4cc6a2bc5598232663b8/master.svg)](https://www.codacy.com/app/xoseperez/fauxmoesp/dashboard)
 [![license](https://img.shields.io/badge/license-MIT-orange.svg)](LICENSE)
 
 [![donate](https://img.shields.io/badge/donate-PayPal-blue.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=xose%2eperez%40gmail%2ecom&lc=US&no_note=0&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHostedGuest)
 [![twitter](https://img.shields.io/twitter/follow/xoseperez.svg?style=social)](https://twitter.com/intent/follow?screen_name=xoseperez)
 
+## NEW! Discussions on Github
+We now have a place for general discussion, ideas, projects etc. - https://github.com/vintlabs/fauxmoESP/discussions/133
+
 ## Notice
 
-**As of October 2020, this project is now being maintained at https://github.com/vintlabs/fauxmoESP**
+**As of October 2020 https://github.com/vintlabs/fauxmoESP is the new home for fauxmoESP!!**
+
+**Many thanks for all of the work that Xose Perez has put into this project!**
+
+*I have migrated all of the issues from the old repo on Bitbucket here to GitHub, and I have closed many stale issues. If I have closed an issue that you feel should still be open, feel free to reopen it or submit a new one.*
 
 
 ## History
+
+2020-12-22 Version 3.2 released. Devices now show properly in the Alexa App as a bulb.
+
+2020-12-08 Version 3.1.2 released. New version available in Arduino Library Manager or at https://github.com/vintlabs/fauxmoESP/releases/tag/3.1.2  PlatformIO is still pending update.
 
 Before version 3.0.0, the library used a different protocol (emulating Belkin Wemo devices). The library was a port of Maker Musings' [Fauxmo Python library][6] to the ESP8266 platform. Support for ESP32 and Gen2 devices was added by Frank Hellmann <frank at vfx dot to> and Bibi Blocksberg respectively.
 
@@ -86,6 +97,11 @@ void loop() {
 
 (Check the examples folder)
 
+## To use with ESP-IDF
+
+Add `#include "Arduino.h"`
+
+
 Then run the "discover devices" option from your Alexa app or web (in the Smart Home section). A new device with the name you have configured should appear. Tell Alexa to switch it on or off and check your terminal ;)
 
 ## Troubleshooting
@@ -122,9 +138,12 @@ Current status of the library:
 [5]:https://github.com/me-no-dev
 [6]:https://github.com/makermusings/fauxmo
 
+## If you enjoy this, please consider supporting us by purchasing a module from us!
+http://www.vintlabs.com
+
 ## License
 
-Copyright (C) 2016-2020 by Xose Pérez <xose dot perez at gmail dot com>
+Copyright (C) 2016-2020 by Xose Pérez <xose dot perez at gmail dot com>, 2020 by Paul Vint <pjvint at gmail dot com>
 
 The MIT License (MIT)
 
