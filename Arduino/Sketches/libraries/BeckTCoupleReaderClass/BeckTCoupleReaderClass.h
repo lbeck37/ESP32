@@ -1,4 +1,4 @@
-// BeckTCoupleReaderClass.h, 3/10/22a
+// BeckTCoupleReaderClass.h, 3/11/22a
 #pragma once
 #include <BeckE32_Defines.h>
 #include<Adafruit_MCP9600.h>
@@ -13,9 +13,9 @@ public:
   double  Handle                    (void);
 
 protected:
-  //Adafruit_MCP9600    _oMCP9600_TCouple;
-  Adafruit_MCP9600*    _poMCP9600_TCouple;
-  uint8_t             _ucI2CAddress;
-  float               _fDegF_Value      = 0.0;
+  Adafruit_MCP9600*     _poMCP9600_TCouple;
+  uint8_t               _ucI2CAddress;
+  float                 _fDegF_Value      = 0.0;
+  bool                  _bTCoupleOK       = true;
 };  //BeckTCoupleReaderClass
 //Last line.

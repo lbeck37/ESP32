@@ -1,5 +1,5 @@
 #include "Adafruit_I2CDevice.h"
-
+#include<Streaming.h>
 //#define DEBUG_SERIAL Serial
 
 /*!
@@ -8,6 +8,7 @@
  *    @param  theWire The I2C bus to use, defaults to &Wire
  */
 Adafruit_I2CDevice::Adafruit_I2CDevice(uint8_t addr, TwoWire *theWire) {
+  Serial << "Adafruit_I2CDevice(uint8_t addr, TwoWire* theWire): Constructor, addr= " << addr << endl;
   _addr = addr;
   _wire = theWire;
   _begun = false;
@@ -26,6 +27,8 @@ Adafruit_I2CDevice::Adafruit_I2CDevice(uint8_t addr, TwoWire *theWire) {
  *    @return True if I2C initialized and a device with the addr found
  */
 bool Adafruit_I2CDevice::begin(bool addr_detect) {
+  Serial << "Adafruit_I2CDevice::begin(): addr_detect= " << addr_detect << endl;
+  Serial << "Adafruit_I2CDevice::begin(): Call _wire->begin() " << endl;
   _wire->begin();
   _begun = true;
 

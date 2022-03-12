@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_TireTemp.ino";
-const char szFileDate[]    = "3/10/22f";
+const char szFileDate[]    = "3/11/22e";
 
 #include <BeckE32_Defines.h>
 #if DO_OTA
@@ -32,10 +32,8 @@ const char szFileDate[]    = "3/10/22f";
 #include <iomanip>
 
 using namespace std;
-/*
 #include <chrono>
 using namespace std::chrono;
-*/
 
 const char* szWebHostName = "TireTemp";
 
@@ -55,11 +53,6 @@ unsigned long     ulHandleProbesPeriodMsec  = 5000; //mSec between handling prob
 
 const char*       szRouterName              = "Aspot24b";
 const char*       szRouterPW                = "Qazqaz11";
-
-#if DO_ROVER
-  WROVER_KIT_LCD     RoverLCD;
-  const ColorType    BackgroundColor         = WROVER_BLACK;
-#endif
 
 //Protos
 void  setup                 (void);
@@ -89,6 +82,11 @@ EasyButton TireButton1(_cButton_Pin1);
 EasyButton TireButton2(_cButton_Pin2);
 EasyButton TireButton3(_cButton_Pin3);
 EasyButton TireButton4(_cButton_Pin4);
+
+#if DO_ROVER
+  WROVER_KIT_LCD     RoverLCD;
+  const ColorType    BackgroundColor         = WROVER_BLACK;
+#endif
 
 //BeckProbeSetClass _oProbeSet;
 BeckProbeSetClass*  _poProbeSet;
@@ -223,6 +221,7 @@ void HandleNTP(void){
   // https://randomnerdtutorials.com/esp32-ntp-client-date-time-arduino-ide/
   // Variables to save date and time
   String formattedDate;
+  String szFormattedTime;
   String dayStamp;
   String timeStamp;
 
@@ -235,8 +234,11 @@ void HandleNTP(void){
   // The formattedDate comes with the following format:
   // 2018-05-28T16:00:13Z
   // We need to extract date and time
-  formattedDate = _oNTPClient.getFormattedDate();
+#if true
+  //formattedDate = _oNTPClient.getFormattedDate();
+  formattedDate = _oNTPClient.getFormattedTime();
   Serial.println(formattedDate);
+
 
   // Extract date
   int splitT = formattedDate.indexOf("T");
@@ -247,6 +249,9 @@ void HandleNTP(void){
   timeStamp = formattedDate.substring(splitT+1, formattedDate.length()-1);
   Serial.print("HOUR: ");
   Serial.println(timeStamp);
+#else
+  szFormattedTime = _oNTPClient.getFormattedTime();
+#endif
   return;
 }   //HandleNTP
 

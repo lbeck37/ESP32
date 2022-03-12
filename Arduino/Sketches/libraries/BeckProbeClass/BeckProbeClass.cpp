@@ -42,7 +42,7 @@ BeckProbeClass::BeckProbeClass(int8_t cProbeID, uint8_t ucI2CAddress) {
   _ucI2CAddress     = ucI2CAddress;
   Serial << "BeckProbeClass(cProbeID,ucI2CAddress): Constructor, " << szSystemFileName << ", " << szSystemFileDate << endl;
   Serial << "BeckProbeClass(cProbeID,ucI2CAddress): Constructor, _cProbeID= " << _cProbeID << ", ucI2CAddress= " << ucI2CAddress << endl;
-  Serial << "BeckProbeClass(cProbeID,ucI2CAddress): Constructor, Call _poTCoupleReader= new BeckTCoupleReaderClass(_ucI2CAddress) " << endl;
+  Serial << "BeckProbeClass(cProbeID,ucI2CAddress): Constructor, new BeckTCoupleReaderClass(_ucI2CAddress) " << endl;
   _poTCoupleReader= new BeckTCoupleReaderClass(_ucI2CAddress);
 
   Serial << "BeckProbeClass(cProbeID,ucI2CAddress): Constructor, Call _poSampleData= new BeckSampleDataClass()" << endl;

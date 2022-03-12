@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckTCoupleReaderClass.cpp";
-const char szSystemFileDate[]  = "3/10/22e";
+const char szSystemFileDate[]  = "3/11/22c";
 
 #include <BeckTCoupleReaderClass.h>
 #include <Streaming.h>
@@ -34,8 +34,16 @@ bool BeckTCoupleReaderClass::begin(uint8_t ucI2CAddress){
   bool    bReturn= true;
   Serial << endl << "BeckTCoupleReaderClass::begin(" << ucI2CAddress << ")"<< endl;
   Serial << "BeckTCoupleReaderClass::begin(): " << szSystemFileName << ", " << szSystemFileDate << endl;
-  Serial << "BeckTCoupleReaderClass::begin(): Set bReturn= _poMCP9600_TCouple->begin(" << _ucI2CAddress << ")" << endl;
+  Serial << "BeckTCoupleReaderClass::begin(): Call _poMCP9600_TCouple->begin(" << _ucI2CAddress << ")" << endl;
   bReturn= _poMCP9600_TCouple->begin(ucI2CAddress);
+  if (bReturn){
+    Serial << "BeckTCoupleReaderClass::begin(): Setting _bTCoupleOK to TRUE" << endl;
+    _bTCoupleOK= true;
+  }
+  else{
+    Serial << "BeckTCoupleReaderClass::begin(): _poMCP9600_TCouple->begin() failed, setting _bTCoupleOK to FALSE" << endl;
+    _bTCoupleOK= false;
+  }
   Serial << "BeckTCoupleReaderClass::begin(): Return bReturn= " << bReturn << endl;
   return bReturn;
 } //Begin
@@ -44,8 +52,15 @@ bool BeckTCoupleReaderClass::begin(uint8_t ucI2CAddress){
 double BeckTCoupleReaderClass::Handle(){
   float fDegC=  0.00;
 
-  Serial << "\nBeckTCoupleReaderClass::Handle():Call fDegC= _poMCP9600_TCouple->readThermocouple()" << endl;
-  fDegC= _poMCP9600_TCouple->readThermocouple();
+  if(_bTCoupleOK){
+    Serial << "BeckTCoupleReaderClass::Handle():Call fDegC= _poMCP9600_TCouple->readThermocouple()" << endl;
+    fDegC= _poMCP9600_TCouple->readThermocouple();
+  }
+  else{
+    fDegC= 40.0;
+    Serial << "\nBeckTCoupleReaderClass::Handle(): Skip readThermocouple() since MCP9600 didn't connect" << endl;
+    Serial << "BeckTCoupleReaderClass::Handle(): Set fDegC to " << fDegC << endl;
+  }
 
   _fDegF_Value= (1.8 * fDegC) + 32.00;
   Serial << "BeckTCoupleReaderClass::Handle(): _fDegF_Value= " << _fDegF_Value << endl;

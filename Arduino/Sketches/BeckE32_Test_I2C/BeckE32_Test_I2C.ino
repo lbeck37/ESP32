@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_Test_I2C.ino";
-const char szFileDate[]    = "3/11/22d";
+const char szFileDate[]    = "3/11/22e";
 //Beck: This uses a basic test case format which has WiFi and OTA support
 //Program to test MAX6675 Thermocouple reader using SPI
 //Good basis for any simple test
