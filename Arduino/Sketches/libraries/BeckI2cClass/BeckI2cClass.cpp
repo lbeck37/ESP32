@@ -1,5 +1,5 @@
 const char szI2cClassFileName[]  = "BeckI2cClass.cpp";
-const char szI2cClassFileDate[]  = "3/5/22c";    //From 5/29/21b
+const char szI2cClassFileDate[]  = "3/12/22a";
 
 #include <BeckI2cClass.h>
 #include <BeckE32_Defines.h>
@@ -24,13 +24,7 @@ void BeckI2cClass::Setup(){
 #if !DO_MAX6675
   Serial << LOG0 << "BeckI2cClass::Setup(): Call Wire.begin(_cI2C_SDA_Pin= " << _cI2C_SDA_Pin <<
       ", _cI2C_SCL_Pin= " << _cI2C_SCL_Pin << ")" << endl;
-  //Wire.begin(sSDA_GPIO, sSCL_GPIO);
   Wire.begin(_cI2C_SDA_Pin, _cI2C_SCL_Pin);
-
-  if (false){
-    Serial << LOG0 << "BeckI2cClass::Setup(): Call ScanForDevices()" << endl;
-    ScanForDevices();
-  }
 #endif
   return;
 } //Setup
@@ -44,6 +38,22 @@ void BeckI2cClass::ScanForDevices(){
   for(ucAddress = 1; ucAddress < 127; ucAddress++ ){
     //The i2c_scanner uses the return value of the Write.endTransmisstion to see if
     //a device did acknowledge to the address.
+    switch (ucAddress) {
+    case 96:
+    case 102:
+    case 103:
+      //Serial << LOG0 << "BeckI2cClass::ScanForDevices(): Call Wire.beginTransmission(" << ucAddress << ")" << endl;
+      Wire.beginTransmission(ucAddress);
+      //Serial << LOG0 << "BeckI2cClass::ScanForDevices(): Call Wire.endTransmission()" << endl;
+      //ucError = Wire.endTransmission();
+      ucError = Wire.endTransmission();
+      //Serial << LOG0 << "BeckI2cClass::ScanForDevices(): Wire.endTransmission() returned " << ucError << endl;
+      break;
+    default:
+      Wire.beginTransmission(ucAddress);
+      ucError = Wire.endTransmission();
+      break;
+    } //switch
     Wire.beginTransmission(ucAddress);
     ucError = Wire.endTransmission();
 

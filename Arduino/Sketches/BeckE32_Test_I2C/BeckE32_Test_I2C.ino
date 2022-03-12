@@ -1,10 +1,6 @@
 const char szSketchName[]  = "BeckE32_Test_I2C.ino";
-const char szFileDate[]    = "3/11/22e";
+const char szFileDate[]    = "3/11/22f";
 //Beck: This uses a basic test case format which has WiFi and OTA support
-//Program to test MAX6675 Thermocouple reader using SPI
-//Good basis for any simple test
-// this example is public domain. enjoy!
-// www.ladyada.net/learn/sensors/thermocouple
 
 #define DO_OTA          true
 
@@ -18,7 +14,7 @@ const char szFileDate[]    = "3/11/22e";
 
 const char* szRouterName  = "Aspot24b";
 const char* szRouterPW    = "Qazqaz11";
-const char* szWebHostName = "Test_MAX6675";
+const char* szWebHostName = "Test_I2C";
 
 //Pin numbers on WROVER-Kit
 int8_t    cSPI_CLK    = 18;
