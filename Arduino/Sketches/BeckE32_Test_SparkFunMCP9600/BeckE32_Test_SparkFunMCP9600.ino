@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_Test_SparkFunMCP9600.ino";
-const char szFileDate[]    = "3/13/22c";
+const char szFileDate[]    = "3/13/22e";
 //Beck: This uses a basic test case format which has WiFi and OTA support
 //Program to test MAX6675 Thermocouple reader using SPI
 //Good basis for any simple test
@@ -39,15 +39,19 @@ const uint8_t     _cNumProbes         = 3;
 MCP9600*    _apoTCoupleReader [_cNumProbes + 1];
 uint8_t     _aucI2CAdresses   [] {0, _ucI2CAddress1, _ucI2CAddress2, _ucI2CAddress3};
 
+bool        _abProbeOK        [] {true};
+
 //static const uint8_t   _ucI2CAddress1     = 0x67;     //decimal 103
 
 void SetupCode() {
-  //Create pointer to fresh objects, zero the [0] element since we don't use lowest member of array
+  //Create pointer to new objects, zero the [0] element since we don't use lowest member of array
   _apoTCoupleReader[0]= nullptr;
 
   for (int8_t cProbeID= 1; cProbeID <= _cNumProbes; cProbeID++){
+    int8_t cI2CAddress= _aucI2CAdresses[cProbeID];
+    Serial << "SetupCode(): Create MCP9600 object and call begin() for MCP9600 at address " << cI2CAddress << endl;
     _apoTCoupleReader[cProbeID]= new MCP9600();
-    _apoTCoupleReader[cProbeID]->begin(_aucI2CAdresses[cProbeID]);
+    _apoTCoupleReader[cProbeID]->begin(cI2CAddress);
   } //for
 
   Wire.begin();
@@ -79,19 +83,22 @@ void SetupCode() {
         Serial.println("Device will acknowledge!");
     } //if(_apoTCoupleReader[cProbeID]->isConnected())
     else {
-        Serial.println("Device did not acknowledge! Freezing.");
-        while(1); //hang forever
+        Serial.println("Device did not acknowledge!");
+        _abProbeOK[cProbeID]= false;
     } //if(_apoTCoupleReader[cProbeID]->isConnected())else
 
-    //check if the Device ID is correct
-    Serial << "SetupCode(): Call checkDeviceID() to test for MCP9600 ID at position #" << cProbeID << endl;
-    if(_apoTCoupleReader[cProbeID]->checkDeviceID()) {
-        Serial.println("Device ID is correct!");
-    } //if(_apoTCoupleReader[cProbeID]->checkDeviceID())
-    else {
-        Serial.println("Device ID is not correct! Freezing.");
-        while(1);
-    } //if(_apoTCoupleReader[cProbeID]->checkDeviceID())else
+    if (_abProbeOK[cProbeID]) {
+      //check if the Device ID is correct
+      Serial << "SetupCode(): Call checkDeviceID() to test for MCP9600 ID at position #" << cProbeID << endl;
+      if(_apoTCoupleReader[cProbeID]->checkDeviceID()) {
+          Serial.println("Device ID is correct!");
+      } //if(_apoTCoupleReader[cProbeID]->checkDeviceID())
+      else {
+          Serial.println("Device ID is not correct!");
+          _abProbeOK[cProbeID]= false;
+          //while(1); //hang forever
+      } //if(_apoTCoupleReader[cProbeID]->checkDeviceID())else
+    } //if(_abProbeOK[cProbeID])
   } //for
 
   return;
