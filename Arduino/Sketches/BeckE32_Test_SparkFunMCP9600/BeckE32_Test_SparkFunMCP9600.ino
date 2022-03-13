@@ -64,19 +64,19 @@ void SetupCode() {
 void BeginMCP9600(int8_t cProbeID){
   int8_t cI2CAddress= _aucI2CAdresses[cProbeID];
 
-  Serial << "SetupCode(): Use new() to create an MCP9600 object at I2C address " << cI2CAddress << endl;
+  Serial << "BeginMCP9600(): Use new() to create an MCP9600 object at I2C address " << cI2CAddress << endl;
 
    _apoTCoupleReader[cProbeID]= new (std::nothrow) MCP9600 {};
   if (_apoTCoupleReader[cProbeID] != nullptr) {
-    Serial << "SetupCode(): Call begin() for MCP9600 at address " << cI2CAddress << endl;
+    Serial << "BeginMCP9600(): Call begin() for MCP9600 at address " << cI2CAddress << endl;
     _apoTCoupleReader[cProbeID]->begin(cI2CAddress);
   } //if(_apoTCoupleReader[cProbeID]!=nullptr)
   else{
-    Serial << "SetupCode(): new() FAILED for MCP9600 object at address " << cI2CAddress << endl;
+    Serial << "BeginMCP9600(): new() FAILED for MCP9600 object at address " << cI2CAddress << endl;
     _abProbeOK[cProbeID]= false;
   } //if(_apoTCoupleReader[cProbeID]!=nullptr)else
 
-  Serial << "SetupCode(): Call isConnected() to test for MCP9600 at position #" << cProbeID << endl;
+  Serial << "BeginMCP9600(): Call isConnected() to test for MCP9600 at position #" << cProbeID << endl;
   if(_abProbeOK[cProbeID]) {
     if (_apoTCoupleReader[cProbeID]->isConnected()) {
       Serial << "BeginMCP9600(" << cProbeID << "): Call to isConnected() PASSED " << endl;
@@ -88,7 +88,7 @@ void BeginMCP9600(int8_t cProbeID){
 
     if (_abProbeOK[cProbeID]) {
       //check if the Device ID is correct
-      Serial << "SetupCode(): Call checkDeviceID() to test for MCP9600 ID at position #" << cProbeID << endl;
+      Serial << "BeginMCP9600(): Call checkDeviceID() to test for MCP9600 ID at position #" << cProbeID << endl;
       if(_apoTCoupleReader[cProbeID]->checkDeviceID()) {
         Serial << "BeginMCP9600(" << cProbeID << "): Call to checkDeviceID() PASSED" << endl;
       } //if(_apoTCoupleReader[cProbeID]->checkDeviceID())

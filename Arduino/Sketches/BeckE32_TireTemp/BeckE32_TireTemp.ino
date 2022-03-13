@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_TireTemp.ino";
-const char szFileDate[]    = "3/11/22e";
+const char szFileDate[]    = "3/13/22a";
 
 #include <BeckE32_Defines.h>
 #if DO_OTA
@@ -55,23 +55,24 @@ const char*       szRouterName              = "Aspot24b";
 const char*       szRouterPW                = "Qazqaz11";
 
 //Protos
-void  setup                 (void);
-void  loop                  (void);
-void  onPressed1            (void);
-void  onPressed2            (void);
-void  onPressed3            (void);
-void  onPressed4            (void);
-void  SetupNTP              (void);
-void  HandleNTP             (void);
-void  PrintCurrentTime      (void);
-void  PrintSecondsSinceY2K  (void);
+void  setup                 ();
+void  loop                  ();
+void  SetupButtons          ();
+void  onPressed1            ();
+void  onPressed2            ();
+void  onPressed3            ();
+void  onPressed4            ();
+void  SetupNTP              ();
+void  HandleNTP             ();
+void  PrintCurrentTime      ();
+void  PrintSecondsSinceY2K  ();
 #if DO_ROVER
-  void  DisplayBegin        (void);
-  void  DisplayClear        (void);
+  void  DisplayBegin        ();
+  void  DisplayClear        ();
   void  FillScreen          (UINT16 usColor);
-  void  DisplayUpdate       (void);
-  void  DisplayTemperature  (void);
-  void  DisplayLowerBanner  (void);
+  void  DisplayUpdate       ();
+  void  DisplayTemperature  ();
+  void  DisplayLowerBanner  ();
   void  DisplayText         (UINT16 usCursorX, UINT16 usCursorY, char *pcText,
                              const GFXfont *pFont, UINT8 ucSize, UINT16 usColor);
   void  ClearTextBackground (INT16 sUpperLeftX, INT16 sUpperLeftY, UINT16 usWidth, UINT16 usHeight);
@@ -92,10 +93,26 @@ EasyButton TireButton4(_cButton_Pin4);
 BeckProbeSetClass*  _poProbeSet;
 
 // Define NTP Client to get time
-WiFiUDP     ntpUDP;
-NTPClient   _oNTPClient(ntpUDP);
+WiFiUDP         ntpUDP;
+NTPClient       _oNTPClient(ntpUDP);
 
-uint32_t    _uwEpochTime;
+const uint32_t  _uwI2CBusFrequency= 100000;
+uint32_t        _uwEpochTime;
+
+void SetupButtons() {
+  Serial << "SetupButtons(): Call TireButton1/2/3/4.begin()\n";
+  TireButton1.begin();
+  TireButton2.begin();
+  TireButton3.begin();
+  TireButton4.begin();
+
+  Serial << "SetupButtons(): Setup Callback, call onPressed(callback) for the 4 buttons\n";
+  TireButton1.onPressed(onPressed1);
+  TireButton2.onPressed(onPressed2);
+  TireButton3.onPressed(onPressed3);
+  TireButton4.onPressed(onPressed4);
+  return;
+} //SetupButtons
 
 
 void setup(){
@@ -114,8 +131,6 @@ void setup(){
     delay(500);
     Serial.print(".");
   }
-  //The following cout statement caused the WiFi.localIP() to not print 192.168.0.197 it was a single integer
-  //cout << "\nsetup(): Connected to " << szRouterName << ", IP address to connect to is " << WiFi.localIP() << "\n" << std::endl;
   Serial << "\nsetup(): Connected to " << szRouterName << ", IP address to connect to is " << WiFi.localIP() << "\n";
 
 #if DO_OTA
@@ -123,32 +138,23 @@ void setup(){
   SetupWebserver(szWebHostName);
 #endif
 
+  Serial << LOG0 << "setup(): Call Wire.begin with bus frequency at " << _uwI2CBusFrequency << "\n";
+  Wire.begin(_cI2C_SDA_Pin, _cI2C_SCL_Pin, _uwI2CBusFrequency);
+
   Serial << LOG0 << "setup(): Call SetupNTP()\n";
   SetupNTP();
 
   Serial << LOG0 << "setup(): Call PrintCurrentTime()\n";
   PrintCurrentTime();
 
-  //Setup I2C bus to be able to scan for devices
-  //_oBeckI2C.Setup();
-  //_oBeckI2C.ScanForDevices();
-
-  Serial << LOG0 << "setup(): Call BuildProbes()\n";
+  Serial << LOG0 << "setup(): Create _poProbeSet using new\n";
   _poProbeSet= new BeckProbeSetClass();
+
   Serial << LOG0 << "setup(): Call BuildProbes()\n";
   _poProbeSet->BuildProbes();
 
-  Serial << "setup(): Call TireButton1/2/3/4.begin()\n";
-  TireButton1.begin();
-  TireButton2.begin();
-  TireButton3.begin();
-  TireButton4.begin();
-
-  Serial << "setup(): Setup Callback, call TireButton1/2/3/4.onPressed(onPressed1/2/3/4)\n";
-  TireButton1.onPressed(onPressed1);
-  TireButton2.onPressed(onPressed2);
-  TireButton3.onPressed(onPressed3);
-  TireButton4.onPressed(onPressed4);
+  Serial << LOG0 << "setup(): Call SetupButtons()\n";
+  SetupButtons();
 
   Serial << LOG0 << "setup(): return\n";
   return;
@@ -217,7 +223,7 @@ void SetupNTP(){
 } //SetupNTP
 
 
-void HandleNTP(void){
+void HandleNTP(){
   // https://randomnerdtutorials.com/esp32-ntp-client-date-time-arduino-ide/
   // Variables to save date and time
   String formattedDate;
@@ -256,7 +262,7 @@ void HandleNTP(void){
 }   //HandleNTP
 
 
-void PrintCurrentTime(void){
+void PrintCurrentTime(){
   //Print the current time (Pro C++ pg 801)
   //Serial << "PrintCurrentTime(): Get a time_point for the current time\n";
   system_clock::time_point  oCurentTime{system_clock::now()};
@@ -275,7 +281,7 @@ void PrintCurrentTime(void){
 }   //PrintCurrentTime
 
 
-void PrintSecondsSinceY2K(void)
+void PrintSecondsSinceY2K()
 {
   time_t timer;
   struct tm y2k = {0};
@@ -320,7 +326,7 @@ void FillScreen(UINT16 usColor) {
 }  //FillScreen
 
 
-void DisplayUpdate(void) {
+void DisplayUpdate() {
 if (millis() > ulNextDisplayMsec){
   ulNextDisplayMsec= millis() + ulDisplayPeriodMsec;
   DisplayTemperature();

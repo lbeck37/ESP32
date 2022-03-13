@@ -1,7 +1,7 @@
-// BeckTCoupleReaderClass.h, 3/13/22b
+// BeckTCoupleReaderClass.h, 3/11/22a
 #pragma once
 #include <BeckE32_Defines.h>
-#include<SparkFun_MCP9600.h>
+#include<Adafruit_MCP9600.h>
 
 class BeckTCoupleReaderClass{
 public:
@@ -10,16 +10,12 @@ public:
   virtual ~BeckTCoupleReaderClass   ();
 
   bool    begin                     (uint8_t ucI2CAddress);
-  //bool    bGetOK                    ();
   double  Handle                    (void);
 
-private:
-  void    SetupMCP9600              (int8_t cI2CAddress);
-  float   fGetDegF                  ();
-
-  MCP9600*      _poMCP9600_TCouple;
-  uint8_t       _ucI2CAddress;
-  float         _fDegF            = 0.0;
-  bool          _bTCoupleOK       = true;
+protected:
+  Adafruit_MCP9600*     _poMCP9600_TCouple;
+  uint8_t               _ucI2CAddress;
+  float                 _fDegF_Value      = 0.0;
+  bool                  _bTCoupleOK       = true;
 };  //BeckTCoupleReaderClass
 //Last line.
