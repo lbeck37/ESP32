@@ -1,11 +1,6 @@
 const char szSketchName[]  = "BeckE32_Test_SparkFunMCP9600.ino";
-const char szFileDate[]    = "3/13/22e";
+const char szFileDate[]    = "3/13/22h";
 //Beck: This uses a basic test case format which has WiFi and OTA support
-//Program to test MAX6675 Thermocouple reader using SPI
-//Good basis for any simple test
-// this example is public domain. enjoy!
-// www.ladyada.net/learn/sensors/thermocouple
-
 #include <BeckE32_Defines.h>
 
 #if !DO_OTA
@@ -35,27 +30,37 @@ void LoopCode   ();
 
 MCP9600 tempSensor;
 
-const uint8_t     _cNumProbes         = 3;
-MCP9600*    _apoTCoupleReader [_cNumProbes + 1];
-uint8_t     _aucI2CAdresses   [] {0, _ucI2CAddress1, _ucI2CAddress2, _ucI2CAddress3};
+const uint8_t     _cNumProbes       = 3;
 
-bool        _abProbeOK        [] {true};
+MCP9600*          _apoTCoupleReader [_cNumProbes + 1];
+uint8_t           _aucI2CAdresses   [] {0, _ucI2CAddress1, _ucI2CAddress2, _ucI2CAddress3};
+bool              _abProbeOK        [4] {true};
 
 //static const uint8_t   _ucI2CAddress1     = 0x67;     //decimal 103
 
 void SetupCode() {
+  Wire.begin();
+  Wire.setClock(100000);
+
   //Create pointer to new objects, zero the [0] element since we don't use lowest member of array
   _apoTCoupleReader[0]= nullptr;
 
   for (int8_t cProbeID= 1; cProbeID <= _cNumProbes; cProbeID++){
     int8_t cI2CAddress= _aucI2CAdresses[cProbeID];
-    Serial << "SetupCode(): Create MCP9600 object and call begin() for MCP9600 at address " << cI2CAddress << endl;
-    _apoTCoupleReader[cProbeID]= new MCP9600();
-    _apoTCoupleReader[cProbeID]->begin(cI2CAddress);
-  } //for
+    Serial << "SetupCode(): Use new() to create an MCP9600 object at I2C address " << cI2CAddress << endl;
 
-  Wire.begin();
-  Wire.setClock(100000);
+    //if (_apoTCoupleReader[cProbeID]= new MCP9600()) {
+    //_apoTCoupleReader[cProbeID]= new MCP9600();
+    _apoTCoupleReader[cProbeID]= new (std::nothrow) MCP9600 {};
+    if (_apoTCoupleReader[cProbeID] != nullptr) {
+      Serial << "SetupCode(): Call begin() for MCP9600 at address " << cI2CAddress << endl;
+      _apoTCoupleReader[cProbeID]->begin(cI2CAddress);
+    }
+    else{
+      Serial << "SetupCode(): new() failed for MCP9600 object at address " << cI2CAddress << endl;
+      _abProbeOK[cProbeID]= false;
+    }
+  } //for
 /*
   tempSensor.begin();       // Uses the default address (0x60) for SparkFun Thermocouple Amplifier
   //tempSensor.begin(0x66); // Default address (0x66) for SparkX Thermocouple Amplifier
@@ -79,7 +84,7 @@ void SetupCode() {
 */
   for (int8_t cProbeID= 1; cProbeID <= _cNumProbes; cProbeID++){
     Serial << "SetupCode(): Call isConnected() to test for MCP9600 at position #" << cProbeID << endl;
-    if(_apoTCoupleReader[cProbeID]->isConnected()) {
+    if(_abProbeOK[cProbeID] &&_apoTCoupleReader[cProbeID]->isConnected()) {
         Serial.println("Device will acknowledge!");
     } //if(_apoTCoupleReader[cProbeID]->isConnected())
     else {
