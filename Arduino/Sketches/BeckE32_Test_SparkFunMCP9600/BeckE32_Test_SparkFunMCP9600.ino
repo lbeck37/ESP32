@@ -1,6 +1,5 @@
 const char szSketchName[]  = "BeckE32_Test_SparkFunMCP9600.ino";
-const char szFileDate[]    = "3/13/22aq";
-#include <BeckE32_Defines.h>
+const char szFileDate[]    = "3/13/22ar";
 
 #if !DO_OTA
   #undef DO_OTA
@@ -31,15 +30,22 @@ float fGetDegF      ();
 float fGetAmbiantF  ();
 float fGetDeltaF    ();
 
+const int8_t    _cI2C_SDA_Pin       = 26;
+const int8_t    _cI2C_SCL_Pin       = 27;
+
+const uint8_t   _ucI2CAddress1      = 0x67;     //decimal 103
+const uint8_t   _ucI2CAddress2      = 0x66;     //decimal 102
+const uint8_t   _ucI2CAddress3      = 0x60;     //decimal  96
+
 const uint32_t  _uwI2CBusFrequency  = 100000;
 const uint8_t   _cNumProbes         = 3;
 
-const uint8_t   _aucI2CAdresses     [] {0, _ucI2CAddress1, _ucI2CAddress2, _ucI2CAddress3};
 MCP9600*        _apoTCoupleReader   [_cNumProbes + 1];
 bool            _abProbeOK          [_cNumProbes + 1] {true, true, true, true};
 float           _afDegF             [_cNumProbes + 1];
 float           _afAmbiantF         [_cNumProbes + 1];
 float           _afDeltaF           [_cNumProbes + 1];
+const uint8_t   _aucI2CAdresses     [] {0, _ucI2CAddress1, _ucI2CAddress2, _ucI2CAddress3};
 
 void SetupCode() {
   Wire.begin(_cI2C_SDA_Pin, _cI2C_SCL_Pin, _uwI2CBusFrequency);
