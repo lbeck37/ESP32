@@ -1,4 +1,4 @@
-// BeckESP32_Defines.h, 3/6/22c
+// BeckESP32_Defines.h, 3/13/22a
 #pragma once
 #include <cstdint>
 
@@ -59,6 +59,6 @@ static const int        _wNumProbes       =  3;
 
 static const int        _wOffsetUTC       = -8;       //SLO is 8 time zones after Greenwich _aucI2CAdresses
 
-extern int8_t     _acSPI_CS_Pins    [];
-extern uint8_t    _aucI2CAdresses   [];
+extern int8_t           _acSPI_CS_Pins    [];
+extern const uint8_t    _aucI2CAdresses   [];
 //Last line

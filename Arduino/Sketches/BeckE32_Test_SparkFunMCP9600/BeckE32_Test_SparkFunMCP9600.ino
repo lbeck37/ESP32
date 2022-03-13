@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_Test_SparkFunMCP9600.ino";
-const char szFileDate[]    = "3/13/22ac";
+const char szFileDate[]    = "3/13/22an";
 #include <BeckE32_Defines.h>
 
 #if !DO_OTA
@@ -18,26 +18,26 @@ const char*     szRouterName            = "Aspot24b";
 const char*     szRouterPW              = "Qazqaz11";
 const char*     szWebHostName           = "Test_SF_MCP9600";
 
-/*
-unsigned long   ulNextHandleLoopMsec    =    0;
-unsigned long   ulHandleLoopPeriodMsec  = 5000; //mSec between handling probes
-*/
 uint32_t          _uwNextHandleLoopMsec     =    0;
 const uint32_t    _ulHandleLoopPeriodMsec   = 5000; //mSec between handling probes
 
-
 //Protos
-void setup      ();
-void loop       ();
-void SetupCode  ();
-void LoopCode   ();
+void  setup         ();
+void  loop          ();
+void  SetupCode     ();
+void  LoopCode      ();
+void  BeginMCP9600  (int8_t cProbeID);
+float fGetDegF      ();
 
 const uint32_t  _uwI2CBusFrequency  = 100000;
 const uint8_t   _cNumProbes         = 3;
 
-uint8_t         _aucI2CAdresses     [] {0, _ucI2CAddress1, _ucI2CAddress2, _ucI2CAddress3};
+const uint8_t   _aucI2CAdresses     [] {0, _ucI2CAddress1, _ucI2CAddress2, _ucI2CAddress3};
 MCP9600*        _apoTCoupleReader   [_cNumProbes + 1];
-bool            _abProbeOK          [4] {true};
+bool            _abProbeOK          [_cNumProbes + 1] {true, true, true, true};
+float           _afDegF             [_cNumProbes + 1];
+float           _afAmbiantF         [_cNumProbes + 1];
+float           _afDeltaF           [_cNumProbes + 1];
 
 void SetupCode() {
   Wire.begin(_cI2C_SDA_Pin, _cI2C_SCL_Pin, _uwI2CBusFrequency);
@@ -46,27 +46,35 @@ void SetupCode() {
   _apoTCoupleReader[0]= nullptr;
 
   for (int8_t cProbeID= 1; cProbeID <= _cNumProbes; cProbeID++){
-    int8_t cI2CAddress= _aucI2CAdresses[cProbeID];
-    Serial << "SetupCode(): Use new() to create an MCP9600 object at I2C address " << cI2CAddress << endl;
-
-     _apoTCoupleReader[cProbeID]= new (std::nothrow) MCP9600 {};
-    if (_apoTCoupleReader[cProbeID] != nullptr) {
-      Serial << "SetupCode(): Call begin() for MCP9600 at address " << cI2CAddress << endl;
-      _apoTCoupleReader[cProbeID]->begin(cI2CAddress);
-    }
-    else{
-      Serial << "SetupCode(): new() failed for MCP9600 object at address " << cI2CAddress << endl;
-      _abProbeOK[cProbeID]= false;
-    }
+     BeginMCP9600(cProbeID);
   } //for
 
-  for (int8_t cProbeID= 1; cProbeID <= _cNumProbes; cProbeID++){
-    Serial << "SetupCode(): Call isConnected() to test for MCP9600 at position #" << cProbeID << endl;
-    if(_abProbeOK[cProbeID] &&_apoTCoupleReader[cProbeID]->isConnected()) {
-        Serial.println("Device will acknowledge!");
+  return;
+} //SetupCode
+
+
+void BeginMCP9600(int8_t cProbeID){
+  int8_t cI2CAddress= _aucI2CAdresses[cProbeID];
+
+  Serial << "SetupCode(): Use new() to create an MCP9600 object at I2C address " << cI2CAddress << endl;
+
+   _apoTCoupleReader[cProbeID]= new (std::nothrow) MCP9600 {};
+  if (_apoTCoupleReader[cProbeID] != nullptr) {
+    Serial << "SetupCode(): Call begin() for MCP9600 at address " << cI2CAddress << endl;
+    _apoTCoupleReader[cProbeID]->begin(cI2CAddress);
+  } //if(_apoTCoupleReader[cProbeID]!=nullptr)
+  else{
+    Serial << "SetupCode(): new() FAILED for MCP9600 object at address " << cI2CAddress << endl;
+    _abProbeOK[cProbeID]= false;
+  } //if(_apoTCoupleReader[cProbeID]!=nullptr)else
+
+  Serial << "SetupCode(): Call isConnected() to test for MCP9600 at position #" << cProbeID << endl;
+  if(_abProbeOK[cProbeID]) {
+    if (_apoTCoupleReader[cProbeID]->isConnected()) {
+      Serial << "BeginMCP9600(" << cProbeID << "): Call to isConnected() PASSED " << endl;
     } //if(_apoTCoupleReader[cProbeID]->isConnected())
     else {
-        Serial.println("Device did not acknowledge!");
+        Serial << "BeginMCP9600(" << cProbeID << "): Call to isConnected() FAILED for cProbeID= " << cProbeID << endl;
         _abProbeOK[cProbeID]= false;
     } //if(_apoTCoupleReader[cProbeID]->isConnected())else
 
@@ -74,38 +82,68 @@ void SetupCode() {
       //check if the Device ID is correct
       Serial << "SetupCode(): Call checkDeviceID() to test for MCP9600 ID at position #" << cProbeID << endl;
       if(_apoTCoupleReader[cProbeID]->checkDeviceID()) {
-          Serial.println("Device ID is correct!");
+        Serial << "BeginMCP9600(" << cProbeID << "): Call to checkDeviceID() PASSED" << endl;
       } //if(_apoTCoupleReader[cProbeID]->checkDeviceID())
       else {
-          Serial.println("Device ID is not correct!");
-          _abProbeOK[cProbeID]= false;
-          //while(1); //hang forever
+        Serial << "BeginMCP9600(" << cProbeID << "): Call to checkDeviceID() FAILED" << endl;
+        _abProbeOK[cProbeID]= false;
       } //if(_apoTCoupleReader[cProbeID]->checkDeviceID())else
     } //if(_abProbeOK[cProbeID])
-  } //for
+  } // if(_abProbeOK[cProbeID])
+  else {
+  } // if(_abProbeOK[cProbeID])else
 
   return;
-} //SetupCode
+} //BeginMCP9600
+
+
+float fGetDegF(int8_t cProbeID) {
+  float fDegC= _apoTCoupleReader[cProbeID]->getThermocoupleTemp();
+  float fDegF= (1.80 * fDegC) + 32.00;
+  return fDegF;
+} //fGetDegF
+
+
+float fGetAmbiantF(int8_t cProbeID) {
+  float fDegC= _apoTCoupleReader[cProbeID]->getAmbientTemp();
+  float fDegF= (1.80 * fDegC) + 32.00;
+  return fDegF;
+} //fGetAmbiantF
+
+
+float fGetDeltaF(int8_t cProbeID) {
+  float fDeltaDegC= _apoTCoupleReader[cProbeID]->getTempDelta();
+  float fDeltaDegF= 1.80 * fDeltaDegC;
+  return fDeltaDegF;
+} //fGetDeltaF
 
 
 void LoopCode() {
   if (millis() > _uwNextHandleLoopMsec){
-    _uwNextHandleLoopMsec= millis() + _ulHandleLoopPeriodMsec;
     Serial << "LoopCode(): HandleLoop timer fired" << endl;
-    //Put code here to do every time the HandleLoop timer fires.
+    _uwNextHandleLoopMsec= millis() + _ulHandleLoopPeriodMsec;
+
+    //Get the values
     for (int8_t cProbeID= 1; cProbeID <= _cNumProbes; cProbeID++){
       Serial << "SetupCode(): Check available() and print value at position #" << cProbeID << endl;
       if (_apoTCoupleReader[cProbeID]->available()) {
-          Serial.print("Thermocouple: ");
-          Serial.print(_apoTCoupleReader[cProbeID]->getThermocoupleTemp());
-          Serial.print(" °C   Ambient: ");
-          Serial.print(_apoTCoupleReader[cProbeID]->getAmbientTemp());
-          Serial.print(" °C   Temperature Delta: ");
-          Serial.print(_apoTCoupleReader[cProbeID]->getTempDelta());
-          Serial.print(" °C");
-          Serial.println();
+        Serial << "Thermocouple: ";
+        _afDegF[cProbeID]     = fGetDegF    (cProbeID);
+        _afAmbiantF[cProbeID] = fGetAmbiantF(cProbeID);
+        _afDeltaF[cProbeID]   = fGetDeltaF  (cProbeID);
       } //if(_apoTCoupleReader[cProbeID]->available())
-    } //for
+      else {
+        Serial << "LoopCode(): Call to available() FAILED" << endl;
+      } //if(_apoTCoupleReader[cProbeID]->available())else
+    } //for(int8_t cProbeID=1;...
+
+    //Print out the values.
+    for (int8_t cProbeID= 1; cProbeID <= _cNumProbes; cProbeID++){
+      Serial << "Thermocouple: ";
+      Serial << _afDegF[cProbeID]      << " °F   Ambient: ";
+      Serial << _afAmbiantF[cProbeID]  << " °F   Temperature Delta: ";
+      Serial << _afDeltaF[cProbeID]    << " °F" << endl;
+    } //for(int8_t cProbeID=1;...
   } //if (millis()>ulNextHandleLoopMsec)
 
   return;
