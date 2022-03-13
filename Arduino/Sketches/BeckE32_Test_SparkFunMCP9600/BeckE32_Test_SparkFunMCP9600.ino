@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_Test_SparkFunMCP9600.ino";
-const char szFileDate[]    = "3/13/22an";
+const char szFileDate[]    = "3/13/22aq";
 #include <BeckE32_Defines.h>
 
 #if !DO_OTA
@@ -14,9 +14,9 @@ const char szFileDate[]    = "3/13/22an";
 #include <Streaming.h>
 #include <SparkFun_MCP9600.h>
 
-const char*     szRouterName            = "Aspot24b";
-const char*     szRouterPW              = "Qazqaz11";
-const char*     szWebHostName           = "Test_SF_MCP9600";
+const char*     szRouterName                = "Aspot24b";
+const char*     szRouterPW                  = "Qazqaz11";
+const char*     szWebHostName               = "Test_SF_MCP9600";
 
 uint32_t          _uwNextHandleLoopMsec     =    0;
 const uint32_t    _ulHandleLoopPeriodMsec   = 5000; //mSec between handling probes
@@ -28,6 +28,8 @@ void  SetupCode     ();
 void  LoopCode      ();
 void  BeginMCP9600  (int8_t cProbeID);
 float fGetDegF      ();
+float fGetAmbiantF  ();
+float fGetDeltaF    ();
 
 const uint32_t  _uwI2CBusFrequency  = 100000;
 const uint8_t   _cNumProbes         = 3;
@@ -97,6 +99,37 @@ void BeginMCP9600(int8_t cProbeID){
 } //BeginMCP9600
 
 
+void LoopCode() {
+  if (millis() > _uwNextHandleLoopMsec){
+    Serial << "\nLoopCode(): HandleLoop timer fired" << endl;
+    _uwNextHandleLoopMsec= millis() + _ulHandleLoopPeriodMsec;
+
+    //Get the values
+    for (int8_t cProbeID= 1; cProbeID <= _cNumProbes; cProbeID++){
+      //Serial << "LoopCode(): Check available() and print value at position #" << cProbeID << endl;
+      if (_apoTCoupleReader[cProbeID]->available()) {
+        _afDegF[cProbeID]     = fGetDegF    (cProbeID);
+        _afAmbiantF[cProbeID] = fGetAmbiantF(cProbeID);
+        _afDeltaF[cProbeID]   = fGetDeltaF  (cProbeID);
+      } //if(_apoTCoupleReader[cProbeID]->available())
+      else {
+        Serial << "LoopCode(): Call to available() FAILED for probe #" << cProbeID << endl;
+      } //if(_apoTCoupleReader[cProbeID]->available())else
+    } //for(int8_t cProbeID=1;...
+
+    //Print out the values.
+    for (int8_t cProbeID= 1; cProbeID <= _cNumProbes; cProbeID++){
+      Serial << "Thermocouple #" << cProbeID << ": " ;
+      Serial << _afDegF[cProbeID]       << " °F   Ambient: ";
+      Serial << _afAmbiantF[cProbeID]   << " °F   Delta: ";
+      Serial << _afDeltaF[cProbeID]     << " °F" << endl;
+    } //for(int8_t cProbeID=1;...
+  } //if (millis()>ulNextHandleLoopMsec)
+
+  return;
+} //LoopCode
+
+
 float fGetDegF(int8_t cProbeID) {
   float fDegC= _apoTCoupleReader[cProbeID]->getThermocoupleTemp();
   float fDegF= (1.80 * fDegC) + 32.00;
@@ -116,38 +149,6 @@ float fGetDeltaF(int8_t cProbeID) {
   float fDeltaDegF= 1.80 * fDeltaDegC;
   return fDeltaDegF;
 } //fGetDeltaF
-
-
-void LoopCode() {
-  if (millis() > _uwNextHandleLoopMsec){
-    Serial << "LoopCode(): HandleLoop timer fired" << endl;
-    _uwNextHandleLoopMsec= millis() + _ulHandleLoopPeriodMsec;
-
-    //Get the values
-    for (int8_t cProbeID= 1; cProbeID <= _cNumProbes; cProbeID++){
-      Serial << "SetupCode(): Check available() and print value at position #" << cProbeID << endl;
-      if (_apoTCoupleReader[cProbeID]->available()) {
-        Serial << "Thermocouple: ";
-        _afDegF[cProbeID]     = fGetDegF    (cProbeID);
-        _afAmbiantF[cProbeID] = fGetAmbiantF(cProbeID);
-        _afDeltaF[cProbeID]   = fGetDeltaF  (cProbeID);
-      } //if(_apoTCoupleReader[cProbeID]->available())
-      else {
-        Serial << "LoopCode(): Call to available() FAILED" << endl;
-      } //if(_apoTCoupleReader[cProbeID]->available())else
-    } //for(int8_t cProbeID=1;...
-
-    //Print out the values.
-    for (int8_t cProbeID= 1; cProbeID <= _cNumProbes; cProbeID++){
-      Serial << "Thermocouple: ";
-      Serial << _afDegF[cProbeID]      << " °F   Ambient: ";
-      Serial << _afAmbiantF[cProbeID]  << " °F   Temperature Delta: ";
-      Serial << _afDeltaF[cProbeID]    << " °F" << endl;
-    } //for(int8_t cProbeID=1;...
-  } //if (millis()>ulNextHandleLoopMsec)
-
-  return;
-} //LoopCode
 
 
 void setup() {
