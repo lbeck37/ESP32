@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_TestSparkFun_MCP9600Example.ino";
-const char szFileDate[]    = "3/11/22m";
+const char szFileDate[]    = "3/11/22p";
 #include <Streaming.h>
 
 /*
@@ -20,21 +20,27 @@ const char szFileDate[]    = "3/11/22m";
 #include <SparkFun_MCP9600.h>
 MCP9600 tempSensor;
 
+static const int8_t     _cI2C_SDA_Pin     = 26;
+static const int8_t     _cI2C_SCL_Pin     = 27;
+
 void setup(){
     Serial.begin(115200);
     Serial << "\nsetup(): Begin " << szSketchName << ", " << szFileDate << endl;
 
-    uint32_t  uwBusFrequency= 20000;
-    Wire.begin();
+    //uint32_t  uwBusFrequency  =  20000;
+    uint32_t  uwBusFrequency    = 100000;
+    //Wire.begin();
     //Wire.setClock(100000);
-    Wire.setClock(uwBusFrequency);
+    Wire.begin(_cI2C_SDA_Pin, _cI2C_SCL_Pin, uwBusFrequency);
+    //Wire.setClock(uwBusFrequency);
+    Serial << "setup(): I2C frequency set to " << uwBusFrequency << endl;
 
-    //uint8_t   ucI2CAddress= 0x60;
-    uint8_t   ucI2CAddress= 0x67;
+    uint8_t   ucI2CAddress= 0x60;
+    //uint8_t   ucI2CAddress= 0x67;
     //uint8_t   ucI2CAddress= 0x66;
     Serial << "setup(): Call tempSensor.begin(" << ucI2CAddress << ")" << endl;
-    tempSensor.begin();       // Uses the default address (0x60) for SparkFun Thermocouple Amplifier
-    //tempSensor.begin(0x60);       // Uses the default address (0x60) for SparkFun Thermocouple Amplifier
+    //tempSensor.begin();       // Uses the default address (0x60) for SparkFun Thermocouple Amplifier
+    tempSensor.begin(ucI2CAddress);       // Uses the default address (0x60) for SparkFun Thermocouple Amplifier
     //tempSensor.begin(0x66); // Default address (0x66) for SparkX Thermocouple Amplifier
 
     //check if the sensor is connected
