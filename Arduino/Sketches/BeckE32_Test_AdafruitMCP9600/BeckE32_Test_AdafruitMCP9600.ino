@@ -1,5 +1,5 @@
-const char szSketchName[]  = "BeckE32_Test_MCP9600.ino";
-const char szFileDate[]    = "3/6/22v";
+const char szSketchName[]  = "BeckE32_Test_AdafruitMCP9600.ino";
+const char szFileDate[]    = "3/6/22v";   //Was BeckE32_Test_MCP9600.ino
 //Program to test I2C MCP9600 Thermocouple reader
 
 #define DO_OTA          true

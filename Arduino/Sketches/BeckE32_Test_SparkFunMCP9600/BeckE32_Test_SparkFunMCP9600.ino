@@ -1,6 +1,5 @@
 const char szSketchName[]  = "BeckE32_Test_SparkFunMCP9600.ino";
-const char szFileDate[]    = "3/13/22j";
-//Beck: This uses a basic test case format which has WiFi and OTA support
+const char szFileDate[]    = "3/13/22ac";
 #include <BeckE32_Defines.h>
 
 #if !DO_OTA
@@ -19,8 +18,13 @@ const char*     szRouterName            = "Aspot24b";
 const char*     szRouterPW              = "Qazqaz11";
 const char*     szWebHostName           = "Test_SF_MCP9600";
 
+/*
 unsigned long   ulNextHandleLoopMsec    =    0;
 unsigned long   ulHandleLoopPeriodMsec  = 5000; //mSec between handling probes
+*/
+uint32_t          _uwNextHandleLoopMsec     =    0;
+const uint32_t    _ulHandleLoopPeriodMsec   = 5000; //mSec between handling probes
+
 
 //Protos
 void setup      ();
@@ -28,24 +32,15 @@ void loop       ();
 void SetupCode  ();
 void LoopCode   ();
 
-MCP9600 tempSensor;
+const uint32_t  _uwI2CBusFrequency  = 100000;
+const uint8_t   _cNumProbes         = 3;
 
-const uint8_t     _cNumProbes       = 3;
-
-MCP9600*          _apoTCoupleReader [_cNumProbes + 1];
-uint8_t           _aucI2CAdresses   [] {0, _ucI2CAddress1, _ucI2CAddress2, _ucI2CAddress3};
-bool              _abProbeOK        [4] {true};
-
-//static const uint8_t   _ucI2CAddress1     = 0x67;     //decimal 103
+uint8_t         _aucI2CAdresses     [] {0, _ucI2CAddress1, _ucI2CAddress2, _ucI2CAddress3};
+MCP9600*        _apoTCoupleReader   [_cNumProbes + 1];
+bool            _abProbeOK          [4] {true};
 
 void SetupCode() {
-  uint32_t  uwBusFrequency    = 100000;
-  //Wire.begin();
-  //Wire.setClock(100000);
-  Wire.begin(_cI2C_SDA_Pin, _cI2C_SCL_Pin, uwBusFrequency);
-
-  //Wire.begin();
-  //Wire.setClock(100000);
+  Wire.begin(_cI2C_SDA_Pin, _cI2C_SCL_Pin, _uwI2CBusFrequency);
 
   //Create pointer to new objects, zero the [0] element since we don't use lowest member of array
   _apoTCoupleReader[0]= nullptr;
@@ -54,9 +49,7 @@ void SetupCode() {
     int8_t cI2CAddress= _aucI2CAdresses[cProbeID];
     Serial << "SetupCode(): Use new() to create an MCP9600 object at I2C address " << cI2CAddress << endl;
 
-    //if (_apoTCoupleReader[cProbeID]= new MCP9600()) {
-    //_apoTCoupleReader[cProbeID]= new MCP9600();
-    _apoTCoupleReader[cProbeID]= new (std::nothrow) MCP9600 {};
+     _apoTCoupleReader[cProbeID]= new (std::nothrow) MCP9600 {};
     if (_apoTCoupleReader[cProbeID] != nullptr) {
       Serial << "SetupCode(): Call begin() for MCP9600 at address " << cI2CAddress << endl;
       _apoTCoupleReader[cProbeID]->begin(cI2CAddress);
@@ -66,27 +59,7 @@ void SetupCode() {
       _abProbeOK[cProbeID]= false;
     }
   } //for
-/*
-  tempSensor.begin();       // Uses the default address (0x60) for SparkFun Thermocouple Amplifier
-  //tempSensor.begin(0x66); // Default address (0x66) for SparkX Thermocouple Amplifier
-  //check if the sensor is connected
-  if(tempSensor.isConnected()) {
-      Serial.println("Device will acknowledge!");
-  } //if(tempSensor.isConnected())
-  else {
-      Serial.println("Device did not acknowledge! Freezing.");
-      while(1); //hang forever
-  } //if(tempSensor.isConnected())else
 
-  //check if the Device ID is correct
-  if(tempSensor.checkDeviceID()) {
-      Serial.println("Device ID is correct!");
-  } //if(tempSensor.checkDeviceID())
-  else {
-      Serial.println("Device ID is not correct! Freezing.");
-      while(1);
-  } //if(tempSensor.checkDeviceID())else
-*/
   for (int8_t cProbeID= 1; cProbeID <= _cNumProbes; cProbeID++){
     Serial << "SetupCode(): Call isConnected() to test for MCP9600 at position #" << cProbeID << endl;
     if(_abProbeOK[cProbeID] &&_apoTCoupleReader[cProbeID]->isConnected()) {
@@ -116,8 +89,8 @@ void SetupCode() {
 
 
 void LoopCode() {
-  if (millis() > ulNextHandleLoopMsec){
-    ulNextHandleLoopMsec= millis() + ulHandleLoopPeriodMsec;
+  if (millis() > _uwNextHandleLoopMsec){
+    _uwNextHandleLoopMsec= millis() + _ulHandleLoopPeriodMsec;
     Serial << "LoopCode(): HandleLoop timer fired" << endl;
     //Put code here to do every time the HandleLoop timer fires.
     for (int8_t cProbeID= 1; cProbeID <= _cNumProbes; cProbeID++){
