@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckProbeClass.cpp";
-const char szSystemFileDate[]  = "3/11/22a";
+const char szSystemFileDate[]  = "3/13/22b";
 
 #include <BeckProbeClass.h>
 #include <BeckSampleDataClass.h>
@@ -52,10 +52,10 @@ void BeckProbeClass::Begin(){
 
 
 double BeckProbeClass::Handle(){
-  Serial << "BeckProbeClass::Handle(): Set  ulCurrentEpochSeconds= _oNTPClient.getEpochTime()" << endl;
+  //Serial << "BeckProbeClass::Handle(): Set  ulCurrentEpochSeconds= _oNTPClient.getEpochTime()" << endl;
   unsigned long ulCurrentEpochSeconds= _oNTPClient.getEpochTime();
 
-  Serial << "BeckProbeClass::Handle(): Call _dfDegF= _poTCoupleReader->Handle()" << endl;
+  //Serial << "BeckProbeClass::Handle(): Call _dfDegF= _poTCoupleReader->Handle()" << endl;
   _dfDegF= _poTCoupleReader->Handle();
 /*
   Serial << "BeckProbeClass::Handle(): oSampleData.SetSampleTime(" << ulCurrentEpochSeconds << ")" << endl;

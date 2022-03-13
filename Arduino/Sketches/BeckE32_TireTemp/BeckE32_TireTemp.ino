@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_TireTemp.ino";
-const char szFileDate[]    = "3/13/22a";
+const char szFileDate[]    = "3/13/22e";
 
 #include <BeckE32_Defines.h>
 #if DO_OTA
@@ -163,14 +163,14 @@ void setup(){
 
 void loop() {
   TireButton1.read();   //This has to get called for onPressed() to get called back
-  TireButton2.read();   //This has to get called for onPressed() to get called back
-  TireButton3.read();   //This has to get called for onPressed() to get called back
-  TireButton4.read();   //This has to get called for onPressed() to get called back
+  TireButton2.read();
+  TireButton3.read();
+  TireButton4.read();
   if (millis() > ulNextHandleProbesMsec){
     ulNextHandleProbesMsec= millis() + ulHandleProbesPeriodMsec;
     HandleNTP();
     _uwEpochTime= _oNTPClient.getEpochTime();
-    Serial << LOG0 << "loop(): Call _poProbeSet->Handle(" << _uwEpochTime << ")\n";
+    //Serial << LOG0 << "loop(): Call _poProbeSet->Handle(" << _uwEpochTime << ")\n";
     _poProbeSet->Handle(_uwEpochTime);
 /*
     Serial << LOG0 << "loop(): Call _oProbeSet.PrintProbeSetData()\n";
@@ -231,16 +231,16 @@ void HandleNTP(){
   String dayStamp;
   String timeStamp;
 
-  Serial << "HandleNTP(): Enter while loop with oNTPClient.update and oNTPClient.forceUpdate()\n";
+  //Serial << "HandleNTP(): Enter while loop with oNTPClient.update and oNTPClient.forceUpdate()\n";
   while(!_oNTPClient.update()) {
     _oNTPClient.forceUpdate();
   } //while
-  Serial << "HandleNTP(): Done with while loop\n";
+  //Serial << "HandleNTP(): Done with while loop\n";
 
   // The formattedDate comes with the following format:
   // 2018-05-28T16:00:13Z
   // We need to extract date and time
-#if true
+#if false
   //formattedDate = _oNTPClient.getFormattedDate();
   formattedDate = _oNTPClient.getFormattedTime();
   Serial.println(formattedDate);
@@ -255,8 +255,6 @@ void HandleNTP(){
   timeStamp = formattedDate.substring(splitT+1, formattedDate.length()-1);
   Serial.print("HOUR: ");
   Serial.println(timeStamp);
-#else
-  szFormattedTime = _oNTPClient.getFormattedTime();
 #endif
   return;
 }   //HandleNTP

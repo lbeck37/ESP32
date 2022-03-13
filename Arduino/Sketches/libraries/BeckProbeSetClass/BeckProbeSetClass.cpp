@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckProbeSetClass.cpp";
-const char szSystemFileDate[]  = "3/11/22a";
+const char szSystemFileDate[]  = "3/13/22c";
 
 #include <BeckProbeSetClass.h>
 #include <BeckProbeClass.h>
@@ -96,8 +96,8 @@ void BeckProbeSetClass::BuildProbes(){
 */
     //Serial << "BeckProbeSetClass::BuildProbes(): Do next probe in for loop" << endl;
    }
-  Serial << "BeckProbeSetClass::BuildProbes(): return after 1 sec delay" << endl;
-  delay(1000);
+  //Serial << "BeckProbeSetClass::BuildProbes(): return after 1 sec delay" << endl;
+  //delay(1000);
   return;
 } //Handle
 
@@ -115,15 +115,15 @@ void BeckProbeSetClass::Handle(uint32_t uwSampleTime) {
   _uwSampleTime= uwSampleTime;
   //Have each Probe handle itself, like read the tcouple
   for (int8_t cProbe= 1; cProbe <= _wNumProbes; cProbe++){
-    Serial << "BeckProbeSetClass::Handle(): Call _apoProbe[" << cProbe << "]->Handle()" << endl;
+    //Serial << "BeckProbeSetClass::Handle(): Call _apoProbe[" << cProbe << "]->Handle()" << endl;
     _afProbeDegF[cProbe]= _apoProbe[cProbe]->Handle();
 /*
     Serial << "BeckProbeSetClass::Handle(): Call _aoProbes[cProbe].FillSampleData() for probe #" << cProbe << endl;
     _aoSampleData[cProbe].FillSampleData(_uwSampleTime, _afProbeDegF[cProbe]);
 */
    }
-  Serial << "BeckProbeSetClass::Handle(): " << endl <<
-      "    Thermo #1= " << _afProbeDegF[1] << "F, #2= " << _afProbeDegF[2] << "F, #3=" << _afProbeDegF[3] << endl;
+  //Serial << "BeckProbeSetClass::Handle(): " << endl <<
+      Serial << "    Thermo #1= " << _afProbeDegF[1] << "F, #2= " << _afProbeDegF[2] << "F, #3=" << _afProbeDegF[3] << endl;
   return;
 } //Handle
 //Last line.
