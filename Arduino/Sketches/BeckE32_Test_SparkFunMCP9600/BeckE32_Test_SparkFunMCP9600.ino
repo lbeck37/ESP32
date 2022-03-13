@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_Test_SparkFunMCP9600.ino";
-const char szFileDate[]    = "3/13/22h";
+const char szFileDate[]    = "3/13/22j";
 //Beck: This uses a basic test case format which has WiFi and OTA support
 #include <BeckE32_Defines.h>
 
@@ -39,8 +39,13 @@ bool              _abProbeOK        [4] {true};
 //static const uint8_t   _ucI2CAddress1     = 0x67;     //decimal 103
 
 void SetupCode() {
-  Wire.begin();
-  Wire.setClock(100000);
+  uint32_t  uwBusFrequency    = 100000;
+  //Wire.begin();
+  //Wire.setClock(100000);
+  Wire.begin(_cI2C_SDA_Pin, _cI2C_SCL_Pin, uwBusFrequency);
+
+  //Wire.begin();
+  //Wire.setClock(100000);
 
   //Create pointer to new objects, zero the [0] element since we don't use lowest member of array
   _apoTCoupleReader[0]= nullptr;
