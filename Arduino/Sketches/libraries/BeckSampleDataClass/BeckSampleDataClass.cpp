@@ -17,11 +17,11 @@ BeckSampleDataClass     ProbeReadingData;
 SampleDataStruct        _astSampleData[_wNumProbes + 1];
 
 BeckSampleDataClass::BeckSampleDataClass() {
-  Serial << "BeckSampleDataClass(): Constructor"<< "\n";
+  //Serial << "BeckSampleDataClass(): CTR"<< "\n";
 } //constructor
 
 BeckSampleDataClass::BeckSampleDataClass(int8_t cProbeID) {
-  Serial << "BeckSampleDataClass(ProbePositionEnum, ProbeSetLocationEnum): Constructor"<< "\n";
+  //Serial << "BeckSampleDataClass(ProbePositionEnum, ProbeSetLocationEnum): CTR"<< "\n";
   _cProbeID     = cProbeID;
   return;
 } //constructor
@@ -30,14 +30,16 @@ BeckSampleDataClass::~BeckSampleDataClass() {
   Serial << "~BeckSampleDataClass(): Destructor" << "\n";
 } //destructor
 
+/*
 void BeckSampleDataClass::FillSampleData(SampleDataStruct& stSampleData) {
   SetSampleTime     (stSampleData.uwSampleTime);
-  SetLastDegF (fGetDegF());
-  SetDegF     (stSampleData.fDegF);
+  SetLastDegF       (fGetDegF());
+  SetDegF           (stSampleData.fDegF);
   _bDegFChanged=    !(fGetLastDegF() == fGetDegF());
   _stSampleData     = stSampleData;
   return;
 } //FillSampleData
+*/
 
 void BeckSampleDataClass::SetSampleTime(uint32_t uwSampleTime){
   _uwSampleTime= uwSampleTime;
@@ -62,7 +64,7 @@ float BeckSampleDataClass::fGetDegF(){
 bool BeckSampleDataClass::bDegFChanged(void){
   bool  bChanged= false;
   if ((fGetLastDegF() != fGetDegF()) || _bDegF_FirstTime){
-    bChanged       = true;
+    bChanged         = true;
     _bDegF_FirstTime = false;
   }
   return bChanged;

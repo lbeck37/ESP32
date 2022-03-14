@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_TireTemp.ino";
-const char szFileDate[]    = "3/14/22c";
+const char szFileDate[]    = "3/14/22j";
 
 #include <BeckE32_Defines.h>
 #if DO_OTA
@@ -52,8 +52,8 @@ unsigned long     ulDisplayPeriodMsec       = 2000; //mSec between output to dis
 unsigned long     ulNextHandleProbesMsec    =    0;
 unsigned long     ulHandleProbesPeriodMsec  = 5000; //mSec between handling probes
 
-const char*       szRouterName              = "Aspot24b";
-const char*       szRouterPW                = "Qazqaz11";
+//const char*       szRouterName              = "Aspot24b";
+//const char*       szRouterPW                = "Qazqaz11";
 
 //Protos
 void  setup                 ();
@@ -90,32 +90,14 @@ EasyButton TireButton4(_cButton_Pin4);
   const ColorType    BackgroundColor         = WROVER_BLACK;
 #endif
 
-//BeckProbeSetClass _oProbeSet;
-  //BeckProbeSetClass*  _poProbeSet;
-  BeckCarSetClass*  _poCarSet;
+BeckCarSetClass*  _poCarSet;
 
 // Define NTP Client to get time
-WiFiUDP         ntpUDP;
-NTPClient       _oNTPClient(ntpUDP);
+WiFiUDP           ntpUDP;
+NTPClient         _oNTPClient(ntpUDP);
 
-const uint32_t  _uwI2CBusFrequency= 100000;
-uint32_t        _uwEpochTime;
-
-void SetupButtons() {
-  Serial << "SetupButtons(): Call TireButton1/2/3/4.begin()\n";
-  TireButton1.begin();
-  TireButton2.begin();
-  TireButton3.begin();
-  TireButton4.begin();
-
-  Serial << "SetupButtons(): Setup Callback, call onPressed(callback) for the 4 buttons\n";
-  TireButton1.onPressed(onPressed1);
-  TireButton2.onPressed(onPressed2);
-  TireButton3.onPressed(onPressed3);
-  TireButton4.onPressed(onPressed4);
-  return;
-} //SetupButtons
-
+const uint32_t    _uwI2CBusFrequency= 100000;
+uint32_t          _uwEpochTime;
 
 void setup(){
   Serial.begin(115200);
@@ -127,13 +109,15 @@ void setup(){
 #endif
   //FlashRGB_LED();
 
+  Serial << "Connect to WiFi router " << _szRouterName << " with " << _szRouterPW << " as the PW\n";
   // Start WiFi and wait for connection to the network
-  WiFi.begin(szRouterName, szRouterPW);
+  WiFi.begin(_szRouterName, _szRouterPW);
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
-    Serial.print(".");
+    //Serial.print(".");
+    Serial << ".";
   }
-  Serial << "\nsetup(): Connected to " << szRouterName << ", IP address to connect to is " << WiFi.localIP() << "\n";
+  Serial << "\n";
 
 #if DO_OTA
   Serial << "setup(): Call SetupWebServer(" << szWebHostName << ")\n";
@@ -149,12 +133,8 @@ void setup(){
   Serial << LOG0 << "setup(): Call PrintCurrentTime()\n";
   PrintCurrentTime();
 
-  Serial << LOG0 << "setup(): Create _poCarSet using new\n";
-  //_poProbeSet= new BeckProbeSetClass();
+  Serial << LOG0 << "setup(): Create _poCarSet using new BeckCarSetClass\n";
   _poCarSet= new BeckCarSetClass();
-
-  Serial << LOG0 << "setup(): Call BuildProbeSets()\n";
-  _poCarSet->BuildProbeSets();
 
   Serial << LOG0 << "setup(): Call SetupButtons()\n";
   SetupButtons();
@@ -191,12 +171,26 @@ void loop() {
 }  //loop()
 
 
+void SetupButtons() {
+  Serial << "SetupButtons(): Call TireButton1/2/3/4.begin()\n";
+  TireButton1.begin();
+  TireButton2.begin();
+  TireButton3.begin();
+  TireButton4.begin();
+
+  Serial << "SetupButtons(): Setup Callback, call onPressed(callback) for the 4 buttons\n";
+  TireButton1.onPressed(onPressed1);
+  TireButton2.onPressed(onPressed2);
+  TireButton3.onPressed(onPressed3);
+  TireButton4.onPressed(onPressed4);
+  return;
+} //SetupButtons
+
 void onPressed1(){
   Serial << "onPressed1(): You pressed Button 1.\n";
   _poCarSet->Handle(_uwEpochTime, 1);
   return;
 } //onPressed1
-
 
 void onPressed2(){
   Serial << "onPressed2(): You pressed Button 2.\n";
@@ -204,13 +198,11 @@ void onPressed2(){
   return;
 } //onPressed2
 
-
 void onPressed3(){
   Serial << "onPressed3(): You pressed Button 3.\n";
   _poCarSet->Handle(_uwEpochTime, 3);
   return;
 } //onPressed3
-
 
 void onPressed4(){
   Serial << "onPressed4(): You pressed Button 4.\n";
@@ -229,7 +221,6 @@ void SetupNTP(){
 
   return;
 } //SetupNTP
-
 
 void HandleNTP(){
   // https://randomnerdtutorials.com/esp32-ntp-client-date-time-arduino-ide/
@@ -267,7 +258,6 @@ void HandleNTP(){
   return;
 }   //HandleNTP
 
-
 void PrintCurrentTime(){
   //Print the current time (Pro C++ pg 801)
   //Serial << "PrintCurrentTime(): Get a time_point for the current time\n";
@@ -285,7 +275,6 @@ void PrintCurrentTime(){
   cout << "PrintCurrentTime(),(via cout): Current time is " << put_time(pLocalTime, "%H:%M:%S") << "\n";
   return;
 }   //PrintCurrentTime
-
 
 void PrintSecondsSinceY2K()
 {

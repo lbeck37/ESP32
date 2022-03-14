@@ -1,25 +1,20 @@
 const char szSystemFileName[]  = "BeckTCoupleReaderClass.cpp";
-const char szSystemFileDate[]  = "3/13/22d";
+const char szSystemFileDate[]  = "3/14/22b";
 
 #include <BeckTCoupleReaderClass.h>
 #include <SparkFun_MCP9600.h>
 #include <Streaming.h>
 
-BeckTCoupleReaderClass::BeckTCoupleReaderClass()
-{
-Serial << "BeckTCoupleReaderClass(void) constructor: " << szSystemFileName << ", " << szSystemFileDate << endl << endl;
-return;
-} //constructor
+BeckTCoupleReaderClass::BeckTCoupleReaderClass() {
+  Serial << "BeckTCoupleReaderClass(void) Default CTR: " << szSystemFileName << ", " << szSystemFileDate << endl << endl;
+  return;
+} //CTR
 
 
-BeckTCoupleReaderClass::BeckTCoupleReaderClass(uint8_t ucI2CAddress)
-{
-  _ucI2CAddress= ucI2CAddress;
-  Serial << "BeckTCoupleReaderClass(uint8_t) constructor: _ucI2CAddress= " << _ucI2CAddress << endl;
-  Serial << "BeckTCoupleReaderClass(uint8_t) constructor: " << szSystemFileName << ", " << szSystemFileDate << endl << endl;
-  Serial << "BeckTCoupleReaderClass(uint8_t) constructor: Call _poMCP9600_TCouple= new Adafruit_MCP9600" <<endl << endl;
-
-  SetupMCP9600(ucI2CAddress);
+BeckTCoupleReaderClass::BeckTCoupleReaderClass(uint8_t ucI2CAddress) {
+//  Serial << "BeckTCoupleReaderClass(uint8_t) CTR: _ucI2CAddress= " << _ucI2CAddress << endl;
+  _ucI2CAddress   = ucI2CAddress;
+  SetupMCP9600    (_ucI2CAddress);
   return;
 } //BeckTCoupleReaderClass(uint8_t)
 
@@ -45,7 +40,7 @@ void BeckTCoupleReaderClass::SetupMCP9600(int8_t cI2CAddress){
     _bTCoupleOK= false;
   } //if(_poMCP9600_TCouple!=nullptr)else
 
-  Serial << "SetupMCP9600(" << cI2CAddress << "): Call isConnected() to test for MCP9600" << endl;
+//  Serial << "SetupMCP9600(" << cI2CAddress << "): Call isConnected() to test for MCP9600" << endl;
   if(_bTCoupleOK) {
     if (_poMCP9600_TCouple->isConnected()) {
       //Serial << "SetupMCP9600(" << cI2CAddress << "): Call to isConnected() PASSED " << endl;
@@ -76,8 +71,7 @@ void BeckTCoupleReaderClass::SetupMCP9600(int8_t cI2CAddress){
 
 bool BeckTCoupleReaderClass::begin(uint8_t ucI2CAddress){
   bool    bReturn= true;
-  //Serial << endl << "BeckTCoupleReaderClass::begin(" << ucI2CAddress << ")"<< endl;
-  Serial << "BeckTCoupleReaderClass::begin(): " << szSystemFileName << ", " << szSystemFileDate << endl;
+  //Serial << "BeckTCoupleReaderClass::begin(): " << szSystemFileName << ", " << szSystemFileDate << endl;
   //Serial << "BeckTCoupleReaderClass::begin(): Call _poMCP9600_TCouple->begin(" << _ucI2CAddress << ")" << endl;
   bReturn= _poMCP9600_TCouple->begin(ucI2CAddress);
   if (bReturn){

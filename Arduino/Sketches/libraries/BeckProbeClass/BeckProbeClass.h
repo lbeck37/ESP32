@@ -1,4 +1,4 @@
-// BeckProbeClass.h, 3/13/22e
+// BeckProbeClass.h, 3/14/22b
 #pragma once
 #include <BeckSampleDataClass.h>
 #include <BeckE32_Defines.h>
@@ -12,7 +12,7 @@ public:
 
   void    Begin           ();
   void    Handle          (uint32_t uwSampleTime, int8_t cProbeID);
-  float   fGetDegF        ();
+  //float   fGetDegF        ();
 
 private:
   int8_t                    _cProbeID;

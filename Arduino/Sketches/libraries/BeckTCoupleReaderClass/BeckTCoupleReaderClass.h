@@ -1,4 +1,4 @@
-// BeckTCoupleReaderClass.h, 3/13/22d
+// BeckTCoupleReaderClass.h, 3/14/22a
 #pragma once
 #include <BeckE32_Defines.h>
 #include<SparkFun_MCP9600.h>

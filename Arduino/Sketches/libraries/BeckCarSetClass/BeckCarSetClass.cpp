@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckCarSetClass.cpp";
-const char szSystemFileDate[]  = "3/13/22b";
+const char szSystemFileDate[]  = "3/14/22d";
 
 #include <BeckCarSetClass.h>
 #include <BeckProbeClass.h>
@@ -8,8 +8,9 @@ const char szSystemFileDate[]  = "3/13/22b";
 #include <Streaming.h>
 
 BeckCarSetClass::BeckCarSetClass()  {
-  Serial << "BeckCarSetClass(): Default constructor" << endl;
-  Serial << "BeckCarSetClass(): Default constructor, " << szSystemFileName << ", " << szSystemFileDate << endl;
+  Serial << "BeckCarSetClass(): Default CTR, " << szSystemFileName << ", " << szSystemFileDate << endl;
+  Serial << "BeckCarSetClass(): Default CTR, call BuildProbeSets()" << endl;
+  BuildProbeSets();
   return;
 } //constructor
 
@@ -25,8 +26,9 @@ BeckCarSetClass::~BeckCarSetClass() {
 } //destructor
 
 void BeckCarSetClass::BuildProbeSets(){
+  Serial << "BuildProbeSets(): Build _apoProbeSet[] using new for each BeckProbeSetClass" << endl;
   for (int8_t cProbeSetID= 0; cProbeSetID <= _wNumProbeSets; cProbeSetID++){
-    _apoProbeSet[cProbeSetID]= new BeckProbeSetClass();
+    _apoProbeSet[cProbeSetID]= new BeckProbeSetClass(cProbeSetID);
    }
   return;
 } //BuildProbeSets
@@ -37,13 +39,6 @@ void BeckCarSetClass::PrintLogData(){
 } //PrintLogData
 
 void BeckCarSetClass::Handle(uint32_t uwSampleTime, int8_t cProbeID) {
-  //_uwSampleTime= uwSampleTime;
-/*
-  for (int8_t cProbe= 1; cProbe <= _wNumProbes; cProbe++){
-    _apoProbe[cProbe]->Handle(uwSampleTime);
-   }
-  //Serial << "    Thermo #1= " << _apoProbe[1]->fGetDegF() << "F, #2= " << _apoProbe[2]->fGetDegF() << "F, #3=" << _apoProbe[3]->fGetDegF() << endl;
-*/
   //Have the ProbeSet handle itself, like have each of its Probes read its TCouple
   _apoProbeSet[cProbeID]->Handle(uwSampleTime, cProbeID);
   return;

@@ -8,16 +8,16 @@ const char szSystemFileDate[]  = "3/14/22a";
 #include <BeckE32_Defines.h>
 #include <Streaming.h>
 
-BeckProbeSetClass::BeckProbeSetClass(void) : _aucI2CAdresses{0, _ucI2CAddress1, _ucI2CAddress2, _ucI2CAddress3} {
-  Serial << "BeckProbeSetClass(): Default constructor, _aucI2CAdresses{} filled with I2CAddresses" << endl;
-  Serial << "BeckProbeSetClass(): Default constructor, " << szSystemFileName << ", " << szSystemFileDate << endl;
+BeckProbeSetClass::BeckProbeSetClass() : _aucI2CAdresses{0, _ucI2CAddress1, _ucI2CAddress2, _ucI2CAddress3} {
+  Serial << "BeckProbeSetClass(): Default CTR, " << szSystemFileName << ", " << szSystemFileDate << endl;
   return;
 } //constructor
 
 
 BeckProbeSetClass::BeckProbeSetClass(int8_t cProbeSetID) : _aucI2CAdresses{0, _ucI2CAddress1, _ucI2CAddress2, _ucI2CAddress3} {
-  Serial << "BeckProbeSetClass(ProbeSetLocationEnum): Constructor, _aucI2CAdresses{} filled with I2CAddresses" << endl;
+  //Serial << "BeckProbeSetClass(cProbeSetID): CTR, _aucI2CAdresses{} filled with I2CAddresses" << endl;
   _cProbeSetID= cProbeSetID;
+  BuildProbes();
   return;
 } //constructor
 
@@ -35,8 +35,10 @@ BeckProbeSetClass::~BeckProbeSetClass() {
 
 void BeckProbeSetClass::BuildProbes(){
   for (int8_t cProbeID= 1; cProbeID <= _wNumProbes; cProbeID++){
-    uint8_t ucI2CAddress= _aucI2CAdresses[cProbeID];
-    _apoProbe[cProbeID]= new BeckProbeClass(cProbeID, ucI2CAddress);
+//    uint8_t ucI2CAddress= _aucI2CAdresses[cProbeID];
+//    _apoProbe[cProbeID]= new BeckProbeClass(cProbeID);
+//    Serial << "BuildProbes(): Call new BeckProbeClass for cProbeID= " << cProbeID << endl;
+    _apoProbe[cProbeID]= new BeckProbeClass(cProbeID, _aucI2CAdresses[cProbeID]);
     _apoProbe[cProbeID]->Begin();
    }
   return;
