@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_TireTemp.ino";
-const char szFileDate[]    = "3/13/22f";
+const char szFileDate[]    = "3/14/22c";
 
 #include <BeckE32_Defines.h>
 #if DO_OTA
@@ -169,16 +169,18 @@ void loop() {
   TireButton2.read();
   TireButton3.read();
   TireButton4.read();
-/*
+
   if (millis() > ulNextHandleProbesMsec){
     ulNextHandleProbesMsec= millis() + ulHandleProbesPeriodMsec;
     HandleNTP();
     _uwEpochTime= _oNTPClient.getEpochTime();
     //Serial << LOG0 << "loop(): Call _poProbeSet->Handle(" << _uwEpochTime << ")\n";
     //_poProbeSet->Handle(_uwEpochTime);
-    _poProbeSet->Handle(_uwEpochTime);
+    //_poCarSet->Handle(_uwEpochTime);
+    _poCarSet->Handle(_uwEpochTime, _cLogProbeSetID);
+    _poCarSet->PrintLogData();
   } //if (millis()>ulNextDisplayMsec)
-*/
+
 #if DO_ROVER
   DisplayUpdate();
 #endif
@@ -191,24 +193,28 @@ void loop() {
 
 void onPressed1(){
   Serial << "onPressed1(): You pressed Button 1.\n";
+  _poCarSet->Handle(_uwEpochTime, 1);
   return;
 } //onPressed1
 
 
 void onPressed2(){
   Serial << "onPressed2(): You pressed Button 2.\n";
+  _poCarSet->Handle(_uwEpochTime, 2);
   return;
 } //onPressed2
 
 
 void onPressed3(){
   Serial << "onPressed3(): You pressed Button 3.\n";
+  _poCarSet->Handle(_uwEpochTime, 3);
   return;
 } //onPressed3
 
 
 void onPressed4(){
   Serial << "onPressed4(): You pressed Button 4.\n";
+  _poCarSet->Handle(_uwEpochTime, 4);
   return;
 } //onPressed4
 

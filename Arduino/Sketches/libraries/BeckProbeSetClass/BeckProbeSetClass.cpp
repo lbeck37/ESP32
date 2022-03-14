@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckProbeSetClass.cpp";
-const char szSystemFileDate[]  = "3/13/22g";
+const char szSystemFileDate[]  = "3/14/22a";
 
 #include <BeckProbeClass.h>
 #include <BeckProbeSetClass.h>
@@ -43,19 +43,26 @@ void BeckProbeSetClass::BuildProbes(){
 } //Handle
 
 void BeckProbeSetClass::PrintProbeSetData(void) {
+/*
   for (int8_t cProbe= 1; cProbe <= _wNumProbes; cProbe++){
     //Serial << "BeckProbeSetClass::PrintProbeSetData(): Printing data for Probe #" << cProbe << endl;
    }
+*/
+  //Serial << "    Thermo #1= " << _apoProbe[1]->fGetDegF() << "F, #2= " << _apoProbe[2]->fGetDegF() << "F, #3=" << _apoProbe[3]->fGetDegF() << endl;
+  Serial << "    Thermo #1= " << _astSampleData[1].fDegF << "F, #2= " << _astSampleData[2].fDegF << "F, #3=" << _astSampleData[3].fDegF << endl;
   return;
 }
 
-void BeckProbeSetClass::Handle(uint32_t uwSampleTime) {
-  _uwSampleTime= uwSampleTime;
+void BeckProbeSetClass::Handle(uint32_t uwSampleTime, int8_t cProbeID) {
+  //_uwSampleTime= uwSampleTime;
   //Have each Probe handle itself, like read the tcouple
+/*
   for (int8_t cProbe= 1; cProbe <= _wNumProbes; cProbe++){
     _apoProbe[cProbe]->Handle(uwSampleTime);
    }
   Serial << "    Thermo #1= " << _apoProbe[1]->fGetDegF() << "F, #2= " << _apoProbe[2]->fGetDegF() << "F, #3=" << _apoProbe[3]->fGetDegF() << endl;
+*/
+  _apoProbe[cProbeID]->Handle(uwSampleTime, cProbeID);
   return;
 } //Handle
 //Last line.

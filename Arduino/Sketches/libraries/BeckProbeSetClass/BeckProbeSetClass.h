@@ -1,4 +1,4 @@
-// BeckProbeSetClass.h, 3/13/22e
+// BeckProbeSetClass.h, 3/14/22a
 #pragma once
 #include <BeckProbeClass.h>
 #include <BeckE32_Defines.h>
@@ -11,8 +11,7 @@ public:
 
   void  BuildProbes           ();
   void  PrintProbeSetData     ();
-  //void  Handle                (uint32_t uwSampleTime);
-  void  Handle                (uint32_t uwSampleTime);
+  void  Handle                (uint32_t uwSampleTime, int8_t cProbeID);
 
 private:
   int8_t                _cProbeSetID;          //1, 2, 3, 4, possibly for RF, LF, LR, RR

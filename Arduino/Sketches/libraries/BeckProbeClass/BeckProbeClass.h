@@ -11,12 +11,13 @@ public:
   virtual ~BeckProbeClass();
 
   void    Begin           ();
-  void    Handle          (uint32_t uwSampleTime);
+  void    Handle          (uint32_t uwSampleTime, int8_t cProbeID);
   float   fGetDegF        ();
 
 private:
+  int8_t                    _cProbeID;
   uint8_t                   _ucI2CAddress     {0};
-  SampleDataStruct          _stSampleData;
+  //SampleDataStruct          _stSampleData;
   BeckTCoupleReaderClass*   _poTCoupleReader  {nullptr};
 };  //BeckProbeClass
 //Last line.

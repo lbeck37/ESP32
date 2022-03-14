@@ -15,7 +15,8 @@ BeckProbeClass::BeckProbeClass(void) {
 } //constructor
 
 BeckProbeClass::BeckProbeClass(int8_t cProbeID, uint8_t ucI2CAddress) {
-  _stSampleData.cProbeID  = cProbeID;
+  _cProbeID= cProbeID;
+  _astSampleData[cProbeID].cProbeID  = cProbeID;
   _ucI2CAddress           = ucI2CAddress;
   Serial << "BeckProbeClass(cProbeID,ucI2CAddress): Constructor, " << szSystemFileName << ", " << szSystemFileDate << endl;
   Serial << "BeckProbeClass(cProbeID,ucI2CAddress): Constructor, fGetLastDegF_Value= " << cProbeID << ", ucI2CAddress= " << ucI2CAddress << endl;
@@ -40,15 +41,15 @@ void BeckProbeClass::Begin(){
 } //Begin
 
 
-void BeckProbeClass::Handle(uint32_t uwSampleTime) {
-  _stSampleData.uwSampleTime  = uwSampleTime;
-  _stSampleData.fDegF         = _poTCoupleReader->fHandle();
-  _stSampleData.bProbeOK      = _poTCoupleReader->bGetProbeOK();
+void BeckProbeClass::Handle(uint32_t uwSampleTime, int8_t cProbeID) {
+  _astSampleData[cProbeID].uwSampleTime  = uwSampleTime;
+  _astSampleData[cProbeID].fDegF         = _poTCoupleReader->fHandle();
+  _astSampleData[cProbeID].bProbeOK      = _poTCoupleReader->bGetProbeOK();
   return;
 } //Handle
 
 
 float BeckProbeClass::fGetDegF() {
-  return _stSampleData.fDegF;
+  return _astSampleData[_cProbeID].fDegF;
 } //Handle
 //Last line.
