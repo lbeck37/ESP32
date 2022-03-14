@@ -1,5 +1,5 @@
-const char szSystemFileName[]  = "BeckTCoupleReaderClass.cpp";
-const char szSystemFileDate[]  = "3/14/22b";
+static const char szSystemFileName[]  = "BeckTCoupleReaderClass.cpp";
+static const char szSystemFileDate[]  = "3/14/22b";
 
 #include <BeckTCoupleReaderClass.h>
 #include <SparkFun_MCP9600.h>
@@ -74,6 +74,7 @@ bool BeckTCoupleReaderClass::begin(uint8_t ucI2CAddress){
   //Serial << "BeckTCoupleReaderClass::begin(): " << szSystemFileName << ", " << szSystemFileDate << endl;
   //Serial << "BeckTCoupleReaderClass::begin(): Call _poMCP9600_TCouple->begin(" << _ucI2CAddress << ")" << endl;
   bReturn= _poMCP9600_TCouple->begin(ucI2CAddress);
+
   if (bReturn){
     //Serial << "BeckTCoupleReaderClass::begin(): Setting _bTCoupleOK to TRUE" << endl;
     _bTCoupleOK= true;
@@ -82,31 +83,34 @@ bool BeckTCoupleReaderClass::begin(uint8_t ucI2CAddress){
     Serial << "BeckTCoupleReaderClass::begin(): _poMCP9600_TCouple->begin() failed, setting _bTCoupleOK to FALSE" << endl;
     _bTCoupleOK= false;
   }
-  //Serial << "BeckTCoupleReaderClass::begin(): Return bReturn= " << bReturn << endl;
   return bReturn;
 } //Begin
 
 
-float BeckTCoupleReaderClass::fHandle(){
+void BeckTCoupleReaderClass::Handle(){
   if(_bTCoupleOK){
     _fDegF= fGetDegF();
   }
   else{
-    _fDegF= 37.00;
+    _fDegF= 37.99;
     Serial << "\nBeckTCoupleReaderClass::Handle(): Skip fGetDegF() since MCP9600 didn't connect" << endl;
     Serial << "BeckTCoupleReaderClass::Handle(): Set fDegF to " << _fDegF << endl;
   }
-  return _fDegF;
+  return;
 } //Handle
 
 
 float BeckTCoupleReaderClass::fGetDegF() {
-  float   fDegF= 0.00;
-  float   fDegC= 0.00;
+  float   fDegF= 0.99;
+  float   fDegC= 0.99;
   if (_bTCoupleOK){
-    fDegC=_poMCP9600_TCouple->getThermocoupleTemp();
-    fDegF= (1.80 * fDegC) + 32.00;
+   Serial << "BeckTCoupleReaderClass::fGetDegF(): Call _poMCP9600_TCouple->getThermocoupleTemp()" << endl;
+   fDegC=_poMCP9600_TCouple->getThermocoupleTemp();
+   fDegF= (1.80 * fDegC) + 32.00;
   } //if(_bTCoupleOK)
+  else {
+    Serial << "BeckTCoupleReaderClass::fGetDegF(): Skipped reading tCouple because _bTCoupleOK is false" << endl;
+  }
   return fDegF;
 } //fGetDegF
 

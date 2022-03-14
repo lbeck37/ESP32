@@ -1,5 +1,5 @@
-const char szBeckTireTempDataClassFileName[]  = "BeckSampleDataClass.cpp";
-const char szBeckTireTempDataClassFileDate[]  = "3/14/22a";
+static const char szSystemFileName[]  = "BeckSampleDataClass.cpp";
+static const char szSystemFileDate[]  = "3/14/22c";
 
 #include <BeckSampleDataClass.h>
 #include <BeckE32_Defines.h>
@@ -14,7 +14,7 @@ using namespace std;
 using namespace std::chrono;
 
 BeckSampleDataClass     ProbeReadingData;
-SampleDataStruct        _astSampleData[_wNumProbes + 1];
+SampleDataStruct        _astSampleData[_wNumProbeSets + 1] [_wNumProbes + 1];
 
 BeckSampleDataClass::BeckSampleDataClass() {
   //Serial << "BeckSampleDataClass(): CTR"<< "\n";
@@ -41,41 +41,41 @@ void BeckSampleDataClass::FillSampleData(SampleDataStruct& stSampleData) {
 } //FillSampleData
 */
 
-void BeckSampleDataClass::SetSampleTime(uint32_t uwSampleTime){
+void BeckSampleDataClass::SetSampleTime(int wProbeSetID, int wProbeID, uint32_t uwSampleTime){
   _uwSampleTime= uwSampleTime;
   return;
 } //SetSampleTime
 
 
-uint32_t BeckSampleDataClass::uwGetSampleTime(void){
+uint32_t BeckSampleDataClass::uwGetSampleTime(int wProbeSetID, int wProbeID){
   return _uwSampleTime;
 } //ulGetSampleTime
 
 
-void BeckSampleDataClass::SetDegF(float fNewDegFValue){
+void BeckSampleDataClass::SetDegF(int wProbeSetID, int wProbeID, float fNewDegFValue){
   _fDegF= fNewDegFValue;
   return;
 }	//SetDegF
 
-float BeckSampleDataClass::fGetDegF(){
+float BeckSampleDataClass::fGetDegF(int wProbeSetID, int wProbeID){
   return _fDegF;
 }	//wGetDegF
 
-bool BeckSampleDataClass::bDegFChanged(void){
+bool BeckSampleDataClass::bDegFChanged(int wProbeSetID, int wProbeID){
   bool  bChanged= false;
-  if ((fGetLastDegF() != fGetDegF()) || _bDegF_FirstTime){
+  if ((fGetLastDegF(wProbeSetID, wProbeID) != fGetDegF(wProbeSetID, wProbeID)) || _bDegF_FirstTime){
     bChanged         = true;
     _bDegF_FirstTime = false;
   }
   return bChanged;
 } //bDegFChanged
 
-void BeckSampleDataClass::SetLastDegF(float fLastDegFValue){
+void BeckSampleDataClass::SetLastDegF(int wProbeSetID, int wProbeID, float fLastDegFValue){
   _fLastDegF= fLastDegFValue;
   return;
 }
 
-float BeckSampleDataClass::fGetLastDegF(){
+float BeckSampleDataClass::fGetLastDegF(int wProbeSetID, int wProbeID){
   return _fLastDegF;
 }
 //Last line.

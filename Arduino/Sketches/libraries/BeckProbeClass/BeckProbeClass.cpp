@@ -41,9 +41,15 @@ void BeckProbeClass::Begin(){
 
 
 void BeckProbeClass::Handle(uint32_t uwSampleTime, int8_t cProbeID) {
+  _poTCoupleReader->Handle();
+  bool  bProbeOK= _poTCoupleReader->bGetProbeOK();
+  if (!bProbeOK) {
+    Serial << "BeckProbeClass::Handle(): _poTCoupleReader reports FAIL for cProbeID= " << cProbeID << endl;
+  }
+
+  _astSampleData[cProbeID].fDegF          = _poTCoupleReader->fGetDegF();
   _astSampleData[cProbeID].cProbeID       = cProbeID;
   _astSampleData[cProbeID].uwSampleTime   = uwSampleTime;
-  _astSampleData[cProbeID].fDegF          = _poTCoupleReader->fHandle();
   _astSampleData[cProbeID].bProbeOK       = _poTCoupleReader->bGetProbeOK();
   return;
 } //Handle

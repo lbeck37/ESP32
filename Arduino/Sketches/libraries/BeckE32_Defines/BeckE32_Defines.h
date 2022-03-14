@@ -38,7 +38,9 @@ static const int8_t     _cRGB_BluePin     = 4;
 static const int        _wNumProbes       = 3;
 static const int8_t     _cLogProbeSetID   = 0;
 
-static const int        _wOffsetUTC       = -8;       //SLO is 8 time zones after Greenwich _aucI2CAdresses
+static const int        _wNumProbeSets    =  4;       //A car has 4 tires
+
+static const int        _wOffsetUTC       = -7;       //In winter SLO is 8 time zones after Greenwich, in summer it's 7
 
 extern int8_t           _acSPI_CS_Pins    [];
 extern const uint8_t    _aucI2CAdresses   [];

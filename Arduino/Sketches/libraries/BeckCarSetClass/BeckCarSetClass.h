@@ -3,8 +3,6 @@
 #include <BeckProbeSetClass.h>
 #include <BeckE32_Defines.h>
 
-const int    _wNumProbeSets =  4;    //A car has 4 tires
-
 class BeckCarSetClass{
 public:
   BeckCarSetClass             ();

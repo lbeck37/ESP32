@@ -51,7 +51,7 @@ void BeckProbeSetClass::PrintProbeSetData(void) {
    }
 */
   //Serial << "    Thermo #1= " << _apoProbe[1]->fGetDegF() << "F, #2= " << _apoProbe[2]->fGetDegF() << "F, #3=" << _apoProbe[3]->fGetDegF() << endl;
-  Serial << "    Thermo #1= " << _astSampleData[1].fDegF << "F, #2= " << _astSampleData[2].fDegF << "F, #3=" << _astSampleData[3].fDegF << endl;
+  Serial << "    Thermo #1= " << _astSampleData[1][1].fDegF << "F, #2= " << _astSampleData[1][2].fDegF << "F, #3=" << _astSampleData[1][3].fDegF << endl;
   return;
 }
 

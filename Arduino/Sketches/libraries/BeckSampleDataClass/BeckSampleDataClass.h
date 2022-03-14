@@ -17,22 +17,23 @@ public:
 
   //void                  FillSampleData        (SampleDataStruct& stSampleData);
 
-  uint32_t              uwGetSampleTime       (void);
-  void                  SetSampleTime         (uint32_t uwSampleTime);
+  uint32_t              uwGetSampleTime       (int wProbeSetID, int wProbeID);
+  void                  SetSampleTime         (int wProbeSetID, int wProbeID, uint32_t uwSampleTime);
 
-  void                  SetDegF               (float fNewDegFValue);
-  float                 fGetDegF              (void);
+  void                  SetDegF               (int wProbeSetID, int wProbeID, float fNewDegFValue);
+  float                 fGetDegF              (int wProbeSetID, int wProbeID);
 
-  void                  SetProbeID            (int8_t cProbeID);
-  int8_t                cGetProbeID           (void);
+  //void                  SetProbeID            (int8_t cProbeID);
+  //int8_t                cGetProbeID           (void);
 
-  void                  SetLastDegF           (float fLastDegFValue);
-  float                 fGetLastDegF          (void);
+  void                  SetLastDegF           (int wProbeSetID, int wProbeID, float fLastDegFValue);
+  float                 fGetLastDegF          (int wProbeSetID, int wProbeID);
 
-  bool                  bDegFChanged          (void);
+  bool                  bDegFChanged          (int wProbeSetID, int wProbeID);
 
 private:
-  int8_t                _cProbeID              = 0;
+  int8_t                _cProbeID             = 0;
+  int8_t                _cProbeSetID          = 0;
   uint32_t              _uwSampleTime         = 0;    //Also called Epoc time
   float                 _fDegF                = 0.0;
   float                 _fLastDegF            = 0.0;
@@ -41,5 +42,6 @@ private:
   SampleDataStruct      _stSampleData;
 };  //BeckSampleDataClass
 
-extern SampleDataStruct           _astSampleData[];
+//extern SampleDataStruct           _astSampleData[];
+//extern SampleDataStruct    _astSampleData[_wNumProbeSets + 1] [_wNumProbes + 1];
 //Last line.
