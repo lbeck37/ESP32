@@ -1,4 +1,4 @@
-// BeckProbeClass.h, 3/13/22b
+// BeckProbeClass.h, 3/13/22e
 #pragma once
 #include <BeckSampleDataClass.h>
 #include <BeckE32_Defines.h>
@@ -10,13 +10,13 @@ public:
   BeckProbeClass(int8_t cProbeID, uint8_t ucI2CAddress);
   virtual ~BeckProbeClass();
 
-  void    Begin           (void);
-  double  Handle          (void);
+  void    Begin           ();
+  void    Handle          (uint32_t uwSampleTime);
+  float   fGetDegF        ();
 
-protected:
-  int8_t                    _cProbeID;          //1, 2, 3 for Left, Center, Right
-  uint8_t                   _ucI2CAddress   {0};
-  BeckTCoupleReaderClass*   _poTCoupleReader;
-  double                    _dfDegF         {0.00};
+private:
+  uint8_t                   _ucI2CAddress     {0};
+  SampleDataStruct          _stSampleData;
+  BeckTCoupleReaderClass*   _poTCoupleReader  {nullptr};
 };  //BeckProbeClass
 //Last line.

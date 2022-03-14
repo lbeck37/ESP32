@@ -93,7 +93,7 @@ bool BeckTCoupleReaderClass::begin(uint8_t ucI2CAddress){
 } //Begin
 
 
-double BeckTCoupleReaderClass::Handle(){
+float BeckTCoupleReaderClass::fHandle(){
   if(_bTCoupleOK){
     _fDegF= fGetDegF();
   }
@@ -115,4 +115,9 @@ float BeckTCoupleReaderClass::fGetDegF() {
   } //if(_bTCoupleOK)
   return fDegF;
 } //fGetDegF
+
+
+bool BeckTCoupleReaderClass::bGetProbeOK() {
+  return _bTCoupleOK;
+} //bGetProbeOK
 //Last line.

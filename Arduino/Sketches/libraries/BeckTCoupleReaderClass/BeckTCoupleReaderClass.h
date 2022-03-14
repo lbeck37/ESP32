@@ -1,4 +1,4 @@
-// BeckTCoupleReaderClass.h, 3/13/22c
+// BeckTCoupleReaderClass.h, 3/13/22d
 #pragma once
 #include <BeckE32_Defines.h>
 #include<SparkFun_MCP9600.h>
@@ -10,7 +10,8 @@ public:
   virtual ~BeckTCoupleReaderClass   ();
 
   bool    begin                     (uint8_t ucI2CAddress);
-  double  Handle                    (void);
+  float   fHandle                   ();
+  bool    bGetProbeOK               ();
 
 private:
   void    SetupMCP9600              (int8_t cI2CAddress);

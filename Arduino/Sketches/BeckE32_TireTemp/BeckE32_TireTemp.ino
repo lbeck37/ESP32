@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_TireTemp.ino";
-const char szFileDate[]    = "3/13/22e";
+const char szFileDate[]    = "3/13/22f";
 
 #include <BeckE32_Defines.h>
 #if DO_OTA
@@ -9,7 +9,8 @@ const char szFileDate[]    = "3/13/22e";
 #include <BeckI2cClass.h>
 #include <BeckLogLib.h>
 #include <BeckMiniLib.h>
-#include <BeckProbeSetClass.h>
+//#include <BeckProbeSetClass.h>
+#include <BeckCarSetClass.h>
 
 #if DO_ROVER
   #include <WROVER_KIT_LCD.h>
@@ -90,7 +91,8 @@ EasyButton TireButton4(_cButton_Pin4);
 #endif
 
 //BeckProbeSetClass _oProbeSet;
-BeckProbeSetClass*  _poProbeSet;
+  //BeckProbeSetClass*  _poProbeSet;
+  BeckCarSetClass*  _poCarSet;
 
 // Define NTP Client to get time
 WiFiUDP         ntpUDP;
@@ -147,11 +149,12 @@ void setup(){
   Serial << LOG0 << "setup(): Call PrintCurrentTime()\n";
   PrintCurrentTime();
 
-  Serial << LOG0 << "setup(): Create _poProbeSet using new\n";
-  _poProbeSet= new BeckProbeSetClass();
+  Serial << LOG0 << "setup(): Create _poCarSet using new\n";
+  //_poProbeSet= new BeckProbeSetClass();
+  _poCarSet= new BeckCarSetClass();
 
-  Serial << LOG0 << "setup(): Call BuildProbes()\n";
-  _poProbeSet->BuildProbes();
+  Serial << LOG0 << "setup(): Call BuildProbeSets()\n";
+  _poCarSet->BuildProbeSets();
 
   Serial << LOG0 << "setup(): Call SetupButtons()\n";
   SetupButtons();
@@ -166,17 +169,16 @@ void loop() {
   TireButton2.read();
   TireButton3.read();
   TireButton4.read();
+/*
   if (millis() > ulNextHandleProbesMsec){
     ulNextHandleProbesMsec= millis() + ulHandleProbesPeriodMsec;
     HandleNTP();
     _uwEpochTime= _oNTPClient.getEpochTime();
     //Serial << LOG0 << "loop(): Call _poProbeSet->Handle(" << _uwEpochTime << ")\n";
+    //_poProbeSet->Handle(_uwEpochTime);
     _poProbeSet->Handle(_uwEpochTime);
-/*
-    Serial << LOG0 << "loop(): Call _oProbeSet.PrintProbeSetData()\n";
-    _poProbeSet->PrintProbeSetData();
-*/
   } //if (millis()>ulNextDisplayMsec)
+*/
 #if DO_ROVER
   DisplayUpdate();
 #endif

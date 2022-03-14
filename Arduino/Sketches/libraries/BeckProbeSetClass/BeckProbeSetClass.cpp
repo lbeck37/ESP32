@@ -1,8 +1,9 @@
 const char szSystemFileName[]  = "BeckProbeSetClass.cpp";
-const char szSystemFileDate[]  = "3/13/22d";
+const char szSystemFileDate[]  = "3/13/22g";
 
-#include <BeckProbeSetClass.h>
 #include <BeckProbeClass.h>
+#include <BeckProbeSetClass.h>
+#include <BeckCarSetClass.h>
 #include <BeckSampleDataClass.h>
 #include <BeckE32_Defines.h>
 #include <Streaming.h>
@@ -33,14 +34,9 @@ BeckProbeSetClass::~BeckProbeSetClass() {
 
 
 void BeckProbeSetClass::BuildProbes(){
-  double adProbeDegF[4];
-
-  //Serial << "BeckProbeSetClass::BuildProbes(): Construct probes " << endl;
   for (int8_t cProbeID= 1; cProbeID <= _wNumProbes; cProbeID++){
     uint8_t ucI2CAddress= _aucI2CAdresses[cProbeID];
-    //Serial << "BeckProbeSetClass::BuildProbes(): Call _apoProbe[cProbeID]= new BeckProbeClass(" << ucI2CAddress << ")\n\n";
     _apoProbe[cProbeID]= new BeckProbeClass(cProbeID, ucI2CAddress);
-    //Serial << "BeckProbeSetClass::BuildProbes(): Call _apoProbe[" << cProbeID << "]->Begin()" << endl;
     _apoProbe[cProbeID]->Begin();
    }
   return;
@@ -48,8 +44,7 @@ void BeckProbeSetClass::BuildProbes(){
 
 void BeckProbeSetClass::PrintProbeSetData(void) {
   for (int8_t cProbe= 1; cProbe <= _wNumProbes; cProbe++){
-    //_aoSampleData[cProbe].FillSampleData(_uwSampleTime, _afProbeDegF[cProbe]);
-    Serial << "BeckProbeSetClass::PrintProbeSetData(): Printing data for Probe #" << cProbe << endl;
+    //Serial << "BeckProbeSetClass::PrintProbeSetData(): Printing data for Probe #" << cProbe << endl;
    }
   return;
 }
@@ -58,12 +53,9 @@ void BeckProbeSetClass::Handle(uint32_t uwSampleTime) {
   _uwSampleTime= uwSampleTime;
   //Have each Probe handle itself, like read the tcouple
   for (int8_t cProbe= 1; cProbe <= _wNumProbes; cProbe++){
-    _afProbeDegF[cProbe]= _apoProbe[cProbe]->Handle();
-    //Serial << "BeckProbeSetClass::Handle(): Call _aoProbes[cProbe].FillSampleData() for probe #" << cProbe << endl;
-    //_aoSampleData[cProbe].FillSampleData(_uwSampleTime, _afProbeDegF[cProbe]);
-
+    _apoProbe[cProbe]->Handle(uwSampleTime);
    }
-      Serial << "    Thermo #1= " << _afProbeDegF[1] << "F, #2= " << _afProbeDegF[2] << "F, #3=" << _afProbeDegF[3] << endl;
+  Serial << "    Thermo #1= " << _apoProbe[1]->fGetDegF() << "F, #2= " << _apoProbe[2]->fGetDegF() << "F, #3=" << _apoProbe[3]->fGetDegF() << endl;
   return;
 } //Handle
 //Last line.

@@ -1,5 +1,5 @@
 const char szBeckTireTempDataClassFileName[]  = "BeckSampleDataClass.cpp";
-const char szBeckTireTempDataClassFileDate[]  = "3/11/22b";
+const char szBeckTireTempDataClassFileDate[]  = "3/13/22c";
 
 #include <BeckSampleDataClass.h>
 #include <Streaming.h>
@@ -18,10 +18,9 @@ BeckSampleDataClass::BeckSampleDataClass() {
   Serial << "BeckSampleDataClass(): Constructor"<< "\n";
 } //constructor
 
-BeckSampleDataClass::BeckSampleDataClass(ProbePositionEnum eProbePosition, ProbeSetLocationEnum eProbeSetLocation) {
+BeckSampleDataClass::BeckSampleDataClass(int8_t cProbeID) {
   Serial << "BeckSampleDataClass(ProbePositionEnum, ProbeSetLocationEnum): Constructor"<< "\n";
-  _eProbePosition     = eProbePosition;
-  _eProbeSetLocation  = eProbeSetLocation;
+  _cProbeID     = cProbeID;
   return;
 } //constructor
 
@@ -29,24 +28,24 @@ BeckSampleDataClass::~BeckSampleDataClass() {
   Serial << "~BeckSampleDataClass(): Destructor" << "\n";
 } //destructor
 
-void BeckSampleDataClass::FillSampleData(uint32_t uwSampleTime, float fNewDegFValue) {
-  SetSampleTime(uwSampleTime);
-  SetDegF_Value(fNewDegFValue);
-  SetLastDegF_Value(fNewDegFValue);
-  _bDegFChanged= !(fGetLastDegF_Value() == fNewDegFValue);
-
+void BeckSampleDataClass::FillSampleData(SampleDataStruct& stSampleData) {
+  SetSampleTime     (stSampleData.uwSampleTime);
+  SetLastDegF_Value (fGetDegF_Value());
+  SetDegF_Value     (stSampleData.fDegF);
+  _bDegFChanged=    !(fGetLastDegF_Value() == fGetDegF_Value());
+  _stSampleData     = stSampleData;
   return;
-}
-
-uint32_t BeckSampleDataClass::uwGetSampleTime(void){
-  return _uwSampleTime;
-} //ulGetSampleTime
-
+} //FillSampleData
 
 void BeckSampleDataClass::SetSampleTime(uint32_t uwSampleTime){
   _uwSampleTime= uwSampleTime;
   return;
 } //SetSampleTime
+
+
+uint32_t BeckSampleDataClass::uwGetSampleTime(void){
+  return _uwSampleTime;
+} //ulGetSampleTime
 
 
 void BeckSampleDataClass::SetDegF_Value(float fNewDegFValue){
