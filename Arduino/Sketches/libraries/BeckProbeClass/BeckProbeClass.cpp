@@ -14,13 +14,13 @@ BeckProbeClass::BeckProbeClass(void) {
   return;
 } //constructor
 
-BeckProbeClass::BeckProbeClass(int8_t cProbeID, uint8_t ucI2CAddress) {
+BeckProbeClass::BeckProbeClass(int wProbeID, int wI2CAddress) {
   //Serial << "BeckProbeClass(): CTR, " << szSystemFileName << ", " << szSystemFileDate << endl;
-//  Serial << "BeckProbeClass(): CTR, cProbeID= " << cProbeID << ", ucI2CAddress= " << ucI2CAddress << endl;
-//  Serial << "BeckProbeClass(: CTR, new BeckTCoupleReaderClass(_ucI2CAddress) " << endl;
-  _cProbeID         = cProbeID;
-  _ucI2CAddress     = ucI2CAddress;
-  _poTCoupleReader  = new BeckTCoupleReaderClass(_ucI2CAddress);
+//  Serial << "BeckProbeClass(): CTR, wProbeID= " << wProbeID << ", wI2CAddress= " << wI2CAddress << endl;
+//  Serial << "BeckProbeClass(: CTR, new BeckTCoupleReaderClass(_wI2CAddress) " << endl;
+  _wProbeID         = wProbeID;
+  _wI2CAddress     = wI2CAddress;
+  _poTCoupleReader  = new BeckTCoupleReaderClass(_wI2CAddress);
   return;
 } //constructor
 
@@ -34,28 +34,34 @@ BeckProbeClass::~BeckProbeClass() {
 
 
 void BeckProbeClass::Begin(){
-//  Serial << "BeckProbeClass::Begin(): Call _poTCoupleReader->begin(" << _ucI2CAddress << ")" << endl;
-  _poTCoupleReader->begin(_ucI2CAddress);
+//  Serial << "BeckProbeClass::Begin(): Call _poTCoupleReader->begin(" << _wI2CAddress << ")" << endl;
+  _poTCoupleReader->begin(_wI2CAddress);
   return;
 } //Begin
 
 
-void BeckProbeClass::Handle(uint32_t uwSampleTime, int8_t cProbeID) {
-  _poTCoupleReader->Handle();
-  bool  bProbeOK= _poTCoupleReader->bGetProbeOK();
-  if (!bProbeOK) {
-    Serial << "BeckProbeClass::Handle(): _poTCoupleReader reports FAIL for cProbeID= " << cProbeID << endl;
-  }
+float BeckProbeClass::fReadProbe(uint32_t uwSampleTime, int wProbeID) {
+  bool    bProbeOK;
+  float   fDegF;
 
-  _astSampleData[cProbeID].fDegF          = _poTCoupleReader->fGetDegF();
-  _astSampleData[cProbeID].cProbeID       = cProbeID;
-  _astSampleData[cProbeID].uwSampleTime   = uwSampleTime;
-  _astSampleData[cProbeID].bProbeOK       = _poTCoupleReader->bGetProbeOK();
-  return;
+  fDegF= _poTCoupleReader->fReadProbe();
+  bProbeOK= _poTCoupleReader->bGetProbeOK();
+
+  if (!bProbeOK) {
+    Serial << "BeckProbeClass::ReadProbe(): _poTCoupleReader reports FAIL for wProbeID= " << wProbeID << endl;
+  } //ReadProbe
+
+/*
+  _astSampleData[wProbeID].fDegF          = _poTCoupleReader->fGetDegF();
+  _astSampleData[wProbeID].wProbeID       = wProbeID;
+  _astSampleData[wProbeID].uwSampleTime   = uwSampleTime;
+  _astSampleData[wProbeID].bProbeOK       = _poTCoupleReader->bGetProbeOK();
+*/
+  return fDegF;
 } //Handle
 
 
 //float BeckProbeClass::fGetDegF() {
-//  return _astSampleData[_cProbeID].fDegF;
+//  return _astSampleData[_wProbeID].fDegF;
 //} //Handle
 //Last line.

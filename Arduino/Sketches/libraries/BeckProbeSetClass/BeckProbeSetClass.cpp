@@ -14,9 +14,9 @@ BeckProbeSetClass::BeckProbeSetClass() : _aucI2CAdresses{0, _ucI2CAddress1, _ucI
 } //constructor
 
 
-BeckProbeSetClass::BeckProbeSetClass(int8_t cProbeSetID) : _aucI2CAdresses{0, _ucI2CAddress1, _ucI2CAddress2, _ucI2CAddress3} {
+BeckProbeSetClass::BeckProbeSetClass(int wProbeSetID) : _aucI2CAdresses{0, _ucI2CAddress1, _ucI2CAddress2, _ucI2CAddress3} {
   //Serial << "BeckProbeSetClass(cProbeSetID): CTR, _aucI2CAdresses{} filled with I2CAddresses" << endl;
-  _cProbeSetID= cProbeSetID;
+  _wProbeSetID= wProbeSetID;
   BuildProbes();
   return;
 } //constructor
@@ -24,47 +24,52 @@ BeckProbeSetClass::BeckProbeSetClass(int8_t cProbeSetID) : _aucI2CAdresses{0, _u
 
 BeckProbeSetClass::~BeckProbeSetClass() {
   Serial << "~BeckProbeSetClass(): Destructor, deleting probes" << endl;
-  for (int8_t cProbeID= 1; cProbeID <= _wNumProbes; cProbeID++){
-    Serial << "~BeckProbeSetClass(): Destructor, call delete _apoProbe[" << cProbeID << "]" << endl;
-    delete _apoProbe[cProbeID];
-    _apoProbe[cProbeID]= nullptr;
+  for (int wProbeID= 1; wProbeID <= _wNumProbes; wProbeID++){
+    Serial << "~BeckProbeSetClass(): Destructor, call delete _apoProbe[" << wProbeID << "]" << endl;
+    delete _apoProbe[wProbeID];
+    _apoProbe[wProbeID]= nullptr;
   }   //for
   return;
 } //destructor
 
 
 void BeckProbeSetClass::BuildProbes(){
-  for (int8_t cProbeID= 1; cProbeID <= _wNumProbes; cProbeID++){
-//    uint8_t ucI2CAddress= _aucI2CAdresses[cProbeID];
-//    _apoProbe[cProbeID]= new BeckProbeClass(cProbeID);
-//    Serial << "BuildProbes(): Call new BeckProbeClass for cProbeID= " << cProbeID << endl;
-    _apoProbe[cProbeID]= new BeckProbeClass(cProbeID, _aucI2CAdresses[cProbeID]);
-    _apoProbe[cProbeID]->Begin();
+  for (int wProbeID= 1; wProbeID <= _wNumProbes; wProbeID++){
+//    uint8_t ucI2CAddress= _aucI2CAdresses[wProbeID];
+//    _apoProbe[wProbeID]= new BeckProbeClass(wProbeID);
+//    Serial << "BuildProbes(): Call new BeckProbeClass for wProbeID= " << wProbeID << endl;
+    _apoProbe[wProbeID]= new BeckProbeClass(wProbeID, _aucI2CAdresses[wProbeID]);
+    _apoProbe[wProbeID]->Begin();
    }
   return;
 } //Handle
 
 void BeckProbeSetClass::PrintProbeSetData(void) {
 /*
-  for (int8_t cProbe= 1; cProbe <= _wNumProbes; cProbe++){
+  for (int wProbe= 1; cProbe <= _wNumProbes; cProbe++){
     //Serial << "BeckProbeSetClass::PrintProbeSetData(): Printing data for Probe #" << cProbe << endl;
    }
 */
   //Serial << "    Thermo #1= " << _apoProbe[1]->fGetDegF() << "F, #2= " << _apoProbe[2]->fGetDegF() << "F, #3=" << _apoProbe[3]->fGetDegF() << endl;
+/*
+  float   fDegF1, fDegF2, fDeg3;
+  float   fDeg1= fGetDegF(1, 1);
+
   Serial << "    Thermo #1= " << _astSampleData[1][1].fDegF << "F, #2= " << _astSampleData[1][2].fDegF << "F, #3=" << _astSampleData[1][3].fDegF << endl;
+*/
   return;
 }
 
-void BeckProbeSetClass::Handle(uint32_t uwSampleTime, int8_t cProbeID) {
+void BeckProbeSetClass::ReadProbeSet(uint32_t uwSampleTime, int wProbeID) {
   //_uwSampleTime= uwSampleTime;
   //Have each Probe handle itself, like read the tcouple
 /*
-  for (int8_t cProbe= 1; cProbe <= _wNumProbes; cProbe++){
+  for (int wProbe= 1; cProbe <= _wNumProbes; cProbe++){
     _apoProbe[cProbe]->Handle(uwSampleTime);
    }
   Serial << "    Thermo #1= " << _apoProbe[1]->fGetDegF() << "F, #2= " << _apoProbe[2]->fGetDegF() << "F, #3=" << _apoProbe[3]->fGetDegF() << endl;
 */
-  _apoProbe[cProbeID]->Handle(uwSampleTime, cProbeID);
+  _apoProbe[wProbeID]->fReadProbe(uwSampleTime, wProbeID);
   return;
 } //Handle
 //Last line.

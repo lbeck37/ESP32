@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_TireTemp.ino";
-const char szFileDate[]    = "3/14/22k";
+const char szFileDate[]    = "3/14/22m";
 
 #include <BeckE32_Defines.h>
 #if DO_OTA
@@ -156,8 +156,7 @@ void loop() {
     _uwEpochTime= _oNTPClient.getEpochTime();
     //Serial << LOG0 << "loop(): Call _poProbeSet->Handle(" << _uwEpochTime << ")\n";
     //_poProbeSet->Handle(_uwEpochTime);
-    //_poCarSet->Handle(_uwEpochTime);
-    _poCarSet->Handle(_uwEpochTime, _cLogProbeSetID);
+    _poCarSet->ReadProbeSet(_uwEpochTime, _wLoggingProbeSetID);
     _poCarSet->PrintLogData();
   } //if (millis()>ulNextDisplayMsec)
 
@@ -187,26 +186,30 @@ void SetupButtons() {
 } //SetupButtons
 
 void onPressed1(){
-  Serial << "onPressed1(): You pressed Button 1.\n";
-  _poCarSet->Handle(_uwEpochTime, 1);
+  int   wProbeSet= 1;
+  Serial << "onPressed2(): You pressed Button " << wProbeSet << "\n";
+  _poCarSet->ReadProbeSet(_uwEpochTime, wProbeSet);
   return;
 } //onPressed1
 
 void onPressed2(){
-  Serial << "onPressed2(): You pressed Button 2.\n";
-  _poCarSet->Handle(_uwEpochTime, 2);
+  int   wProbeSet= 2;
+  Serial << "onPressed2(): You pressed Button " << wProbeSet << "\n";
+  _poCarSet->ReadProbeSet(_uwEpochTime, wProbeSet);
   return;
 } //onPressed2
 
 void onPressed3(){
-  Serial << "onPressed3(): You pressed Button 3.\n";
-  _poCarSet->Handle(_uwEpochTime, 3);
+  int   wProbeSet= 1;
+  Serial << "onPressed2(): You pressed Button " << wProbeSet << "\n";
+  _poCarSet->ReadProbeSet(_uwEpochTime, wProbeSet);
   return;
 } //onPressed3
 
 void onPressed4(){
-  Serial << "onPressed4(): You pressed Button 4.\n";
-  _poCarSet->Handle(_uwEpochTime, 4);
+  int   wProbeSet= 1;
+  Serial << "onPressed2(): You pressed Button " << wProbeSet << "\n";
+  _poCarSet->ReadProbeSet(_uwEpochTime, wProbeSet);
   return;
 } //onPressed4
 

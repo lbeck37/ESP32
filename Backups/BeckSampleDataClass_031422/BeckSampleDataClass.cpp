@@ -13,17 +13,16 @@ static const char szSystemFileDate[]  = "3/14/22c";
 using namespace std;
 using namespace std::chrono;
 
-//BeckSampleDataClass     CarSampleSetData;
+BeckSampleDataClass     CarSampleSetData;
 //SampleDataStruct        _astSampleData[_wNumProbeSets + 1] [_wNumProbes + 1];
 
 BeckSampleDataClass::BeckSampleDataClass() {
   //Serial << "BeckSampleDataClass(): CTR"<< "\n";
 } //constructor
 
-BeckSampleDataClass::BeckSampleDataClass(int wProbeSetID, int wProbeID) {
+BeckSampleDataClass::BeckSampleDataClass(int8_t cProbeID) {
   //Serial << "BeckSampleDataClass(ProbePositionEnum, ProbeSetLocationEnum): CTR"<< "\n";
-  _wProbeSetID  = wProbeSetID;
-  _wProbeID     = wProbeID;
+  _cProbeID     = cProbeID;
   return;
 } //constructor
 
@@ -62,16 +61,7 @@ float BeckSampleDataClass::fGetDegF(int wProbeSetID, int wProbeID){
   return _fDegF;
 }	//wGetDegF
 
-void BeckSampleDataClass::SetDegFChanged(int wProbeSetID, int wProbeID){
-  bool  bChanged= false;
-  if ((fGetLastDegF(wProbeSetID, wProbeID) != fGetDegF(wProbeSetID, wProbeID)) || _bDegF_FirstTime){
-    _bDegFChanged     = true;
-    _bDegF_FirstTime  = false;
-  }
-  return;
-} //bDegFChanged
-
-bool BeckSampleDataClass::bGetDegFChanged(int wProbeSetID, int wProbeID){
+bool BeckSampleDataClass::bDegFChanged(int wProbeSetID, int wProbeID){
   bool  bChanged= false;
   if ((fGetLastDegF(wProbeSetID, wProbeID) != fGetDegF(wProbeSetID, wProbeID)) || _bDegF_FirstTime){
     bChanged         = true;

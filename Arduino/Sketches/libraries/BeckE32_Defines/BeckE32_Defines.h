@@ -18,29 +18,29 @@ typedef int16_t         ColorType;      //See Adafruit_GFX.h
 typedef int16_t         PUnit;          //Pixel Unit
 typedef uint8_t         FontSize;
 
-static const int8_t     _cButton_Pin1     = 12;
-static const int8_t     _cButton_Pin2     = 13;
-static const int8_t     _cButton_Pin3     = 14;
-static const int8_t     _cButton_Pin4     = 15;
+static const int8_t     _cButton_Pin1       = 12;
+static const int8_t     _cButton_Pin2       = 13;
+static const int8_t     _cButton_Pin3       = 14;
+static const int8_t     _cButton_Pin4       = 15;
 
-static const int8_t     _cI2C_SDA_Pin     = 26;
-static const int8_t     _cI2C_SCL_Pin     = 27;
+static const int8_t     _cI2C_SDA_Pin       = 26;
+static const int8_t     _cI2C_SCL_Pin       = 27;
 
 
-static const uint8_t   _ucI2CAddress1     = 0x67;     //decimal 103
-static const uint8_t   _ucI2CAddress2     = 0x66;     //decimal 102
-static const uint8_t   _ucI2CAddress3     = 0x60;     //decimal  96
+static const uint8_t   _ucI2CAddress1       = 0x67;     //decimal 103
+static const uint8_t   _ucI2CAddress2       = 0x66;     //decimal 102
+static const uint8_t   _ucI2CAddress3       = 0x60;     //decimal  96
 
-static const int8_t     _cRGB_RedPin      = 0;
-static const int8_t     _cRGB_GreenPin    = 2;
-static const int8_t     _cRGB_BluePin     = 4;
+static const int8_t     _cRGB_RedPin        = 0;
+static const int8_t     _cRGB_GreenPin      = 2;
+static const int8_t     _cRGB_BluePin       = 4;
 
-static const int        _wNumProbes       = 3;
-static const int8_t     _cLogProbeSetID   = 0;
+static const int        _wNumProbes         = 3;
+static const int        _wLoggingProbeSetID = 0;
 
-static const int        _wNumProbeSets    =  4;       //A car has 4 tires
+static const int        _wNumProbeSets      = 4;       //A car has 4 tires
 
-static const int        _wOffsetUTC       = -7;       //In winter SLO is 8 time zones after Greenwich, in summer it's 7
+static const int        _wOffsetUTC         = -7;       //In winter SLO is 8 time zones after Greenwich, in summer it's 7
 
 extern int8_t           _acSPI_CS_Pins    [];
 extern const uint8_t    _aucI2CAdresses   [];
