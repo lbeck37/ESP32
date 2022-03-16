@@ -50,7 +50,7 @@ void BeckCarSetClass::BuildObjectData(){
   int w_apoSensorSetCount= 1;
   for (int wSensorSetID= 0; wSensorSetID <= _wNumSensorSets; wSensorSetID++){
     Serial << "*" << w_apoSensorSetCount++;
-    _apoSensorSet[wSensorSetID]= new BeckSensorSetClass(wSensorSetID);
+    _apoSensorSet[wSensorSetID]= new BeckSensorSetClass(_apoCarSamples, wSensorSetID);
   } //for(int wSensorSetID=0
   Serial << ".*" << endl;
 
@@ -70,9 +70,11 @@ void BeckCarSetClass::PrintLogData(){
 } //PrintLogData
 
 
-void BeckCarSetClass::ReadSensorSet(uint32_t uwSampleTime, int wSensorID) {
+void BeckCarSetClass::ReadSensorSet(uint32_t uwSampleTime, int wSensorSetID) {
   //Have the SensorSet handle itself, like have each of its Sensors read its TCouple
-  _apoSensorSet[wSensorID]->ReadSensorSet(uwSampleTime, wSensorID);
+  //_apoSensorSet[wSensorSetID]->ReadSensorSet(uwSampleTime, wSensorSetID); //
+  //_apoSensorSet[wSensorSetID]->ReadSensorSet(uwSampleTime);
+  _apoSensorSet[wSensorSetID]->ReadSensorSet(uwSampleTime);
   return;
 } //ReadSensorSet
 //Last line.

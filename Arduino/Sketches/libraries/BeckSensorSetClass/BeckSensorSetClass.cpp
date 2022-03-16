@@ -14,8 +14,12 @@ BeckSensorSetClass::BeckSensorSetClass() {
   return;
 } //constructor
 
-BeckSensorSetClass::BeckSensorSetClass(int wSensorSetID){
+//    BeckSensorSetClass       (BeckSampleDataClass* apoCarSamples, int wSensorSetID);
+//BeckSensorSetClass           (BeckSampleDataClass* apoCarSamples[_wNumSensorSets + 1][_wNumSensors + 1], int wSensorSetID);
+//BeckSensorSetClass::BeckSensorSetClass(BeckSampleDataClass* apoCarSamples, int wSensorSetID){
+BeckSensorSetClass::BeckSensorSetClass(BeckSampleDataClass* apoCarSamples[_wNumSensorSets + 1][_wNumSensors + 1], int wSensorSetID){
   //Serial << "BeckSensorSetClass(cSensorSetID): CTR, _aucI2CAdresses{} filled with I2CAddresses" << endl;
+  //_apoCarSamples= apoCarSamples;
   _wSensorSetID= wSensorSetID;
   BuildSensors();
   return;
@@ -53,7 +57,8 @@ bool BeckSensorSetClass::bBegin(){
 } //bBegin
 
 
-void BeckSensorSetClass::ReadSensorSet(uint32_t uwSampleTime, int wSensorID) {
+//void BeckSensorSetClass::ReadSensorSet(uint32_t uwSampleTime, int wSensorID) {
+void BeckSensorSetClass::ReadSensorSet(uint32_t uwSampleTime) {
   //_uwSampleTime= uwSampleTime;
   //Have each Sensor handle itself, like read the tcouple
 /*
@@ -62,9 +67,11 @@ void BeckSensorSetClass::ReadSensorSet(uint32_t uwSampleTime, int wSensorID) {
    }
   Serial << "    Thermo #1= " << _apoSensor[1]->fGetDegF() << "F, #2= " << _apoSensor[2]->fGetDegF() << "F, #3=" << _apoSensor[3]->fGetDegF() << endl;
 */
+  float fDegF= 0.0;
   for (int wSensorID= 1; wSensorID <= _wNumSensors; wSensorID++){
-    _apoSensor[wSensorID]->fReadSensor(uwSampleTime, wSensorID);
-  }
+    //_apoSensor[wSensorID]->fReadSensor(uwSampleTime, wSensorID);
+    fDegF= _apoSensor[wSensorID]->fReadSensor();
+  } //for
   return;
 } //ReadSensorSet
 

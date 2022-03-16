@@ -39,15 +39,17 @@ bool BeckSensorClass::bBegin(){
 } //Begin
 
 
-float BeckSensorClass::fReadSensor(uint32_t uwSampleTime, int wSensorID) {
+//float BeckSensorClass::fReadSensor(uint32_t uwSampleTime, int wSensorID) {
+float BeckSensorClass::fReadSensor() {
   bool    bSensorOK;
   float   fDegF;
 
-  fDegF= _poTCoupleSensor->fReadProbe();
-  bSensorOK= _poTCoupleSensor->bGetProbeOK();
+  fDegF       = _poTCoupleSensor->fReadProbe();
+  bSensorOK   = _poTCoupleSensor->bGetProbeOK();
 
   if (!bSensorOK) {
-    Serial << "BeckSensorClass::ReadSensor(): _poTCoupleSensor reports FAIL for wSensorID= " << wSensorID << endl;
+    _bSensorOK= bSensorOK;
+    Serial << "BeckSensorClass::ReadSensor(): _poTCoupleSensor reports FAIL for wSensorID= " << _wSensorID << endl;
   } //ReadSensor
 
   return fDegF;

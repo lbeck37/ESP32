@@ -10,7 +10,7 @@ public:
   virtual ~BeckCarSetClass    ();
 
   bool  bBegin                ();
-  void  ReadSensorSet         (uint32_t uwSampleTime, int wSensorID);
+  void  ReadSensorSet         (uint32_t uwSampleTime, int wSensorSetID);
   void  PrintLogData          ();
 
 private:
