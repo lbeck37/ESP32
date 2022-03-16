@@ -2,15 +2,15 @@ const char szSystemFileName[]  = "BeckCarSetClass.cpp";
 const char szSystemFileDate[]  = "3/15/22g";
 
 #include <BeckCarSetClass.h>
-#include <BeckProbeClass.h>
+#include <BeckSensorClass.h>
 #include <BeckSampleDataClass.h>
 #include <BeckE32_Defines.h>
 #include <Streaming.h>
 
 BeckCarSetClass::BeckCarSetClass()  {
   Serial << "BeckCarSetClass(): Default CTR, " << szSystemFileName << ", " << szSystemFileDate << endl;
-  Serial << "BeckCarSetClass(): Default CTR, Call BuildProbeSets()" << endl;
-  //BuildProbeSets();
+  Serial << "BeckCarSetClass(): Default CTR, Call BuildSensorSets()" << endl;
+  //BuildSensorSets();
   BuildObjectData();
   Serial << "BeckCarSetClass(): Default CTR, Done" << endl;
   return;
@@ -19,42 +19,42 @@ BeckCarSetClass::BeckCarSetClass()  {
 
 BeckCarSetClass::~BeckCarSetClass() {
   Serial << "~BeckCarSetClass(): Destructor, Deleting probes" << endl;
-  for (int wProbeSetID= 1; wProbeSetID <= _wNumProbeSets; wProbeSetID++){
-    Serial << "~BeckCarSetClass(): Destructor, call delete _apoProbe[" << wProbeSetID << "]" << endl;
-    delete _apoProbeSet[wProbeSetID];
-    _apoProbeSet[wProbeSetID]= nullptr;
+  for (int wSensorSetID= 1; wSensorSetID <= _wNumSensorSets; wSensorSetID++){
+    Serial << "~BeckCarSetClass(): Destructor, call delete _apoSensor[" << wSensorSetID << "]" << endl;
+    delete _apoSensorSet[wSensorSetID];
+    _apoSensorSet[wSensorSetID]= nullptr;
   }   //for
   return;
 } //destructor
 
-//  BeckSampleDataClass*    _apoCarSample [_wNumProbeSets + 1] [_wNumProbes + 1];
+//  BeckSampleDataClass*    _apoCarSample [_wNumSensorSets + 1] [_wNumSensors + 1];
 
 
 void BeckCarSetClass::BuildObjectData(){
 //  Serial << "BeckCarSetClass::BuildObjectData(): Begin\n" <<
 
   int w_apoCarSamplesCount= 1;
-  int wTotalProbeSets = _wNumProbeSets + 1;
-  int wTotalProbes    = _wNumProbes    + 1;
-  int wGrandTotal     = (wTotalProbeSets * wTotalProbes);
-  Serial << "BuildObjectData(): Build " << wTotalProbeSets << " X " << wTotalProbes << " = " << wGrandTotal << " _apoCarSamples[][]" << endl;
+  int wTotalSensorSets = _wNumSensorSets + 1;
+  int wTotalSensors    = _wNumSensors    + 1;
+  int wGrandTotal     = (wTotalSensorSets * wTotalSensors);
+  Serial << "BuildObjectData(): Build " << wTotalSensorSets << " X " << wTotalSensors << " = " << wGrandTotal << " _apoCarSamples[][]" << endl;
   Serial << "    ";
-  for (int wProbeSetID= 0; wProbeSetID <= _wNumProbeSets; wProbeSetID++){
-    for (int wProbeID= 0; wProbeID <= _wNumProbes; wProbeID++){
+  for (int wSensorSetID= 0; wSensorSetID <= _wNumSensorSets; wSensorSetID++){
+    for (int wSensorID= 0; wSensorID <= _wNumSensors; wSensorID++){
       Serial << "." << w_apoCarSamplesCount++;
-      _apoCarSamples[wProbeSetID][wProbeID]= new BeckSampleDataClass(wProbeSetID, wProbeID);
-    } //for(int wProbeID=0...
+      _apoCarSamples[wSensorSetID][wSensorID]= new BeckSampleDataClass(wSensorSetID, wSensorID);
+    } //for(int wSensorID=0...
     Serial << ".*";
-  } //for(int wProbeSetID=0...
+  } //for(int wSensorSetID=0...
   Serial << endl;
 
-  Serial << "BuildObjectData(): Build " << (_wNumProbeSets + 1) << " _apoProbeSet[] objects using new" << endl;
+  Serial << "BuildObjectData(): Build " << (_wNumSensorSets + 1) << " _apoSensorSet[] objects using new" << endl;
   Serial << "    ";
-  int w_apoProbeSetCount= 1;
-  for (int wProbeSetID= 0; wProbeSetID <= _wNumProbeSets; wProbeSetID++){
-    Serial << "*" << w_apoProbeSetCount++;
-    _apoProbeSet[wProbeSetID]= new BeckProbeSetClass(wProbeSetID);
-  } //for(int wProbeSetID=0
+  int w_apoSensorSetCount= 1;
+  for (int wSensorSetID= 0; wSensorSetID <= _wNumSensorSets; wSensorSetID++){
+    Serial << "*" << w_apoSensorSetCount++;
+    _apoSensorSet[wSensorSetID]= new BeckSensorSetClass(wSensorSetID);
+  } //for(int wSensorSetID=0
   Serial << ".*" << endl;
 
   return;
@@ -63,19 +63,19 @@ void BeckCarSetClass::BuildObjectData(){
 
 bool BeckCarSetClass::bBegin(){
   // Call one probe set since all (4) probe-sets use the same (3) probes
-  return _apoProbeSet[1]->bBegin();
+  return _apoSensorSet[1]->bBegin();
 } //bBegin
 
 
 void BeckCarSetClass::PrintLogData(){
-  _apoProbeSet[_wLoggingProbeSetID]->PrintProbeSetData();
+  _apoSensorSet[_wLoggingSensorSetID]->PrintSensorSetData();
   return;
 } //PrintLogData
 
 
-void BeckCarSetClass::ReadProbeSet(uint32_t uwSampleTime, int wProbeID) {
-  //Have the ProbeSet handle itself, like have each of its Probes read its TCouple
-  _apoProbeSet[wProbeID]->ReadProbeSet(uwSampleTime, wProbeID);
+void BeckCarSetClass::ReadSensorSet(uint32_t uwSampleTime, int wSensorID) {
+  //Have the SensorSet handle itself, like have each of its Sensors read its TCouple
+  _apoSensorSet[wSensorID]->ReadSensorSet(uwSampleTime, wSensorID);
   return;
-} //ReadProbeSet
+} //ReadSensorSet
 //Last line.

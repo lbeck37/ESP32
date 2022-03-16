@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_TireTemp.ino";
-const char szFileDate[]    = "3/16/22b";
+const char szFileDate[]    = "3/16/22d";
 
 #include <BeckE32_Defines.h>
 #if DO_OTA
@@ -9,7 +9,7 @@ const char szFileDate[]    = "3/16/22b";
 #include <BeckI2cClass.h>
 #include <BeckLogLib.h>
 #include <BeckMiniLib.h>
-//#include <BeckProbeSetClass.h>
+//#include <BeckSensorSetClass.h>
 #include <BeckCarSetClass.h>
 
 #if DO_ROVER
@@ -24,7 +24,7 @@ const char szFileDate[]    = "3/16/22b";
 
 #include <EasyButton.h>
 #include <NTPClient.h>
-#include <SparkFun_MicroPressure.h>
+//#include <SparkFun_MicroPressure.h>
 #include <WiFi.h>
 #include <WiFiUdp.h>
 #include <Streaming.h>
@@ -51,8 +51,8 @@ char              sz100CharString[101];
 unsigned long     ulNextDisplayMsec         =    0;
 unsigned long     ulDisplayPeriodMsec       = 2000; //mSec between output to display
 
-unsigned long     ulNextHandleProbesMsec    =    0;
-unsigned long     ulHandleProbesPeriodMsec  = 5000; //mSec between handling probes
+unsigned long     ulNextHandleSensorsMsec    =    0;
+unsigned long     ulHandleSensorsPeriodMsec  = 5000; //mSec between handling probes
 
 //const char*       szRouterName              = "Aspot24b";
 //const char*       szRouterPW                = "Qazqaz11";
@@ -155,13 +155,13 @@ void loop() {
   TireButton3.read();
   TireButton4.read();
 
-  if (millis() > ulNextHandleProbesMsec){
-    ulNextHandleProbesMsec= millis() + ulHandleProbesPeriodMsec;
+  if (millis() > ulNextHandleSensorsMsec){
+    ulNextHandleSensorsMsec= millis() + ulHandleSensorsPeriodMsec;
     HandleNTP();
     _uwEpochTime= _oNTPClient.getEpochTime();
-    //Serial << LOG0 << "loop(): Call _poProbeSet->Handle(" << _uwEpochTime << ")\n";
-    //_poProbeSet->Handle(_uwEpochTime);
-    _poCarSet->ReadProbeSet(_uwEpochTime, _wLoggingProbeSetID);
+    //Serial << LOG0 << "loop(): Call _poSensorSet->Handle(" << _uwEpochTime << ")\n";
+    //_poSensorSet->Handle(_uwEpochTime);
+    _poCarSet->ReadSensorSet(_uwEpochTime, _wLoggingSensorSetID);
     _poCarSet->PrintLogData();
   } //if (millis()>ulNextDisplayMsec)
 
@@ -191,30 +191,30 @@ void SetupButtons() {
 } //SetupButtons
 
 void onPressed1(){
-  int   wProbeSet= 1;
-  Serial << "onPressed2(): You pressed Button " << wProbeSet << "\n";
-  _poCarSet->ReadProbeSet(_uwEpochTime, wProbeSet);
+  int   wSensorSet= 1;
+  Serial << "onPressed2(): You pressed Button " << wSensorSet << "\n";
+  _poCarSet->ReadSensorSet(_uwEpochTime, wSensorSet);
   return;
 } //onPressed1
 
 void onPressed2(){
-  int   wProbeSet= 2;
-  Serial << "onPressed2(): You pressed Button " << wProbeSet << "\n";
-  _poCarSet->ReadProbeSet(_uwEpochTime, wProbeSet);
+  int   wSensorSet= 2;
+  Serial << "onPressed2(): You pressed Button " << wSensorSet << "\n";
+  _poCarSet->ReadSensorSet(_uwEpochTime, wSensorSet);
   return;
 } //onPressed2
 
 void onPressed3(){
-  int   wProbeSet= 1;
-  Serial << "onPressed2(): You pressed Button " << wProbeSet << "\n";
-  _poCarSet->ReadProbeSet(_uwEpochTime, wProbeSet);
+  int   wSensorSet= 1;
+  Serial << "onPressed2(): You pressed Button " << wSensorSet << "\n";
+  _poCarSet->ReadSensorSet(_uwEpochTime, wSensorSet);
   return;
 } //onPressed3
 
 void onPressed4(){
-  int   wProbeSet= 1;
-  Serial << "onPressed2(): You pressed Button " << wProbeSet << "\n";
-  _poCarSet->ReadProbeSet(_uwEpochTime, wProbeSet);
+  int   wSensorSet= 1;
+  Serial << "onPressed2(): You pressed Button " << wSensorSet << "\n";
+  _poCarSet->ReadSensorSet(_uwEpochTime, wSensorSet);
   return;
 } //onPressed4
 

@@ -44,9 +44,11 @@ static const int8_t     _cRGB_BluePin       = 4;
 
 static const int        _wNumProbes         = 3;
 static const int        _wNumSensors        = 3;
-static const int        _wLoggingProbeSetID = 0;
-
 static const int        _wNumProbeSets      = 4;       //A car has 4 tires
+static const int        _wNumSensorSets     = 4;       //A car has 4 tires
+static const int        _wLoggingProbeSetID = 0;
+static const int        _wLoggingSensorSetID= 0;
+
 
 static const int        _wOffsetUTC         = -7;       //In winter SLO is 8 time zones after Greenwich, in summer it's 7
 
