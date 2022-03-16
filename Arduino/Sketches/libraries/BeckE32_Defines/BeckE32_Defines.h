@@ -1,4 +1,4 @@
-// BeckESP32_Defines.h, 3/14/22b
+// BeckESP32_Defines.h, 3/15/22b
 #pragma once
 #include <cstdint>
 
@@ -27,9 +27,16 @@ static const int8_t     _cI2C_SDA_Pin       = 26;
 static const int8_t     _cI2C_SCL_Pin       = 27;
 
 
+/*
 static const uint8_t   _ucI2CAddress1       = 0x67;     //decimal 103
 static const uint8_t   _ucI2CAddress2       = 0x66;     //decimal 102
 static const uint8_t   _ucI2CAddress3       = 0x60;     //decimal  96
+*/
+// I2C addresses, (3) temperature probes and a pressure gauge
+static const int       _wI2C_Pressure       = 0x18;     //decimal  24
+static const int       _wI2C_DegF1          = 0x67;     //decimal 103
+static const int       _wI2C_DegF2          = 0x66;     //decimal 102
+static const int       _wI2C_DegF3          = 0x60;     //decimal  96
 
 static const int8_t     _cRGB_RedPin        = 0;
 static const int8_t     _cRGB_GreenPin      = 2;

@@ -1,5 +1,5 @@
 static const char szSystemFileName[]  = "BeckSampleDataClass.cpp";
-static const char szSystemFileDate[]  = "3/14/22c";
+static const char szSystemFileDate[]  = "3/15/22a";
 
 #include <BeckSampleDataClass.h>
 #include <BeckE32_Defines.h>
@@ -17,7 +17,7 @@ using namespace std::chrono;
 //SampleDataStruct        _astSampleData[_wNumProbeSets + 1] [_wNumProbes + 1];
 
 BeckSampleDataClass::BeckSampleDataClass() {
-  //Serial << "BeckSampleDataClass(): CTR"<< "\n";
+  Serial << "BeckSampleDataClass(): Default CTR"<< "\n";
 } //constructor
 
 BeckSampleDataClass::BeckSampleDataClass(int wProbeSetID, int wProbeID) {

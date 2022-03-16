@@ -9,6 +9,7 @@ public:
   BeckCarSetClass             ();
   virtual ~BeckCarSetClass    ();
 
+  bool  bBegin                ();
   void  ReadProbeSet          (uint32_t uwSampleTime, int wProbeID);
   void  PrintLogData          ();
 

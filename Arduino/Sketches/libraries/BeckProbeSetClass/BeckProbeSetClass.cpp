@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckProbeSetClass.cpp";
-const char szSystemFileDate[]  = "3/14/22a";
+const char szSystemFileDate[]  = "3/15/22c";
 
 #include <BeckProbeClass.h>
 #include <BeckProbeSetClass.h>
@@ -8,13 +8,14 @@ const char szSystemFileDate[]  = "3/14/22a";
 #include <BeckE32_Defines.h>
 #include <Streaming.h>
 
-BeckProbeSetClass::BeckProbeSetClass() : _aucI2CAdresses{0, _ucI2CAddress1, _ucI2CAddress2, _ucI2CAddress3} {
+//BeckProbeSetClass::BeckProbeSetClass() : _aucI2CAdresses{0, _ucI2CAddress1, _ucI2CAddress2, _ucI2CAddress3} {
+BeckProbeSetClass::BeckProbeSetClass() {
   Serial << "BeckProbeSetClass(): Default CTR, " << szSystemFileName << ", " << szSystemFileDate << endl;
   return;
 } //constructor
 
 
-BeckProbeSetClass::BeckProbeSetClass(int wProbeSetID) : _aucI2CAdresses{0, _ucI2CAddress1, _ucI2CAddress2, _ucI2CAddress3} {
+BeckProbeSetClass::BeckProbeSetClass(int wProbeSetID){
   //Serial << "BeckProbeSetClass(cProbeSetID): CTR, _aucI2CAdresses{} filled with I2CAddresses" << endl;
   _wProbeSetID= wProbeSetID;
   BuildProbes();
@@ -34,15 +35,24 @@ BeckProbeSetClass::~BeckProbeSetClass() {
 
 
 void BeckProbeSetClass::BuildProbes(){
-  for (int wProbeID= 1; wProbeID <= _wNumProbes; wProbeID++){
-//    uint8_t ucI2CAddress= _aucI2CAdresses[wProbeID];
-//    _apoProbe[wProbeID]= new BeckProbeClass(wProbeID);
-//    Serial << "BuildProbes(): Call new BeckProbeClass for wProbeID= " << wProbeID << endl;
-    _apoProbe[wProbeID]= new BeckProbeClass(wProbeID, _aucI2CAdresses[wProbeID]);
-    _apoProbe[wProbeID]->Begin();
+  for (int wProbeID= 0; wProbeID <= _wNumProbes; wProbeID++){
+    _apoProbe[wProbeID]= new BeckProbeClass(wProbeID, _awI2CAdresses[wProbeID]);
    }
   return;
 } //Handle
+
+
+bool BeckProbeSetClass::bBegin(){
+  bool bReturn= true;
+  // Call bBegin() for each TC probe
+  for (int wProbeID= 0; wProbeID <= _wNumProbes; wProbeID++){
+    if (_apoProbe[wProbeID]->bBegin() != true) {
+      bReturn= false;
+    } //if
+  } //for
+  return bReturn;
+} //bBegin
+
 
 void BeckProbeSetClass::PrintProbeSetData(void) {
 /*
@@ -60,6 +70,7 @@ void BeckProbeSetClass::PrintProbeSetData(void) {
   return;
 }
 
+
 void BeckProbeSetClass::ReadProbeSet(uint32_t uwSampleTime, int wProbeID) {
   //_uwSampleTime= uwSampleTime;
   //Have each Probe handle itself, like read the tcouple
@@ -69,7 +80,9 @@ void BeckProbeSetClass::ReadProbeSet(uint32_t uwSampleTime, int wProbeID) {
    }
   Serial << "    Thermo #1= " << _apoProbe[1]->fGetDegF() << "F, #2= " << _apoProbe[2]->fGetDegF() << "F, #3=" << _apoProbe[3]->fGetDegF() << endl;
 */
-  _apoProbe[wProbeID]->fReadProbe(uwSampleTime, wProbeID);
+  for (int wProbeID= 1; wProbeID <= _wNumProbes; wProbeID++){
+    _apoProbe[wProbeID]->fReadProbe(uwSampleTime, wProbeID);
+  }
   return;
 } //Handle
 //Last line.
