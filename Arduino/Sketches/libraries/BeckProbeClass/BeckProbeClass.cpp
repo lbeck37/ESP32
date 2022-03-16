@@ -2,6 +2,7 @@ const char szSystemFileName[]  = "BeckProbeClass.cpp";
 const char szSystemFileDate[]  = "3/15/22f";
 
 #include <BeckProbeClass.h>
+#include <BeckProbeClass.h>
 #include <BeckSampleDataClass.h>
 #include <NTPClient.h>
 #include <Streaming.h>
@@ -43,6 +44,10 @@ float BeckProbeClass::fReadProbe(uint32_t uwSampleTime, int wProbeID) {
   bool    bProbeOK;
   float   fDegF;
 
+/*
+  fDegF= _poTCoupleReader->fReadProbe();
+  bProbeOK= _poTCoupleReader->bGetProbeOK();
+*/
   fDegF= _poTCoupleReader->fReadProbe();
   bProbeOK= _poTCoupleReader->bGetProbeOK();
 

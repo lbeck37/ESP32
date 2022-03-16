@@ -1,13 +1,13 @@
-// BeckTCoupleReaderClass.h, 3/16/22a
+// BeckTCoupleSensorClass.h, 3/16/22a
 #pragma once
 #include <BeckE32_Defines.h>
 #include<SparkFun_MCP9600.h>
 
-class BeckTCoupleReaderClass{
+class BeckTCoupleSensorClass{
 public:
-  BeckTCoupleReaderClass            ();
-  BeckTCoupleReaderClass            (int wI2CAddress);
-  virtual ~BeckTCoupleReaderClass   ();
+  BeckTCoupleSensorClass            ();
+  BeckTCoupleSensorClass            (int wI2CAddress);
+  virtual ~BeckTCoupleSensorClass   ();
 
   void    SetupMCP9600              ();
   float   fReadProbe                ();
@@ -21,5 +21,5 @@ private:
   int           _wI2CAddress;
   float         _fDegF            = 37.03;
   bool          _bTCoupleOK       = true;
-};  //BeckTCoupleReaderClass
+};  //BeckTCoupleSensorClass
 //Last line.

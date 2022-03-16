@@ -1,4 +1,4 @@
-// BeckESP32_Defines.h, 3/15/22b
+// BeckESP32_Defines.h, 3/16/22a
 #pragma once
 #include <cstdint>
 
@@ -43,6 +43,7 @@ static const int8_t     _cRGB_GreenPin      = 2;
 static const int8_t     _cRGB_BluePin       = 4;
 
 static const int        _wNumProbes         = 3;
+static const int        _wNumSensors        = 3;
 static const int        _wLoggingProbeSetID = 0;
 
 static const int        _wNumProbeSets      = 4;       //A car has 4 tires

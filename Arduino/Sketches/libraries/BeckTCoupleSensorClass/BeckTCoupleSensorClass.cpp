@@ -1,34 +1,34 @@
-static const char szSystemFileName[]  = "BeckTCoupleReaderClass.cpp";
-static const char szSystemFileDate[]  = "3/16/22b";
+static const char szSystemFileName[]  = "BeckTCoupleSensorClass.cpp";
+static const char szSystemFileDate[]  = "3/16/22c";
 
-#include <BeckTCoupleReaderClass.h>
+#include <BeckTCoupleSensorClass.h>
 #include <SparkFun_MCP9600.h>
 #include <Streaming.h>
 
-BeckTCoupleReaderClass::BeckTCoupleReaderClass() {
-  Serial << "BeckTCoupleReaderClass(void) Default CTR: " << szSystemFileName << ", " << szSystemFileDate << endl << endl;
+BeckTCoupleSensorClass::BeckTCoupleSensorClass() {
+  Serial << "BeckTCoupleSensorClass(void) Default CTR: " << szSystemFileName << ", " << szSystemFileDate << endl << endl;
   return;
 } //CTR
 
 
-BeckTCoupleReaderClass::BeckTCoupleReaderClass(int wI2CAddress) {
+BeckTCoupleSensorClass::BeckTCoupleSensorClass(int wI2CAddress) {
   _wI2CAddress= wI2CAddress;
-  //  Serial << "BeckTCoupleReaderClass(uint8_t) CTR: _wI2CAddress= " << _wI2CAddress << endl;
+  //  Serial << "BeckTCoupleSensorClass(uint8_t) CTR: _wI2CAddress= " << _wI2CAddress << endl;
   Serial << ".TCR CTR: " << _wI2CAddress << " ";
   bBegin();
   return;
-} //BeckTCoupleReaderClass(uint8_t)
+} //BeckTCoupleSensorClass(uint8_t)
 
 
-BeckTCoupleReaderClass::~BeckTCoupleReaderClass() {
-  Serial << "~BeckTCoupleReaderClass(): Destructor, deleting _poMCP9600_TCouple" << endl;
+BeckTCoupleSensorClass::~BeckTCoupleSensorClass() {
+  Serial << "~BeckTCoupleSensorClass(): Destructor, deleting _poMCP9600_TCouple" << endl;
   delete _poMCP9600_TCouple;
   _poMCP9600_TCouple= nullptr;
    return;
 } //destructor
 
 
-bool BeckTCoupleReaderClass::bBegin(){
+bool BeckTCoupleSensorClass::bBegin(){
   //Serial << "SetupMCP9600(" << wI2CAddress << "): Use new() to create an MCP9600 object" << endl;
   _poMCP9600_TCouple= new (std::nothrow) MCP9600 {};
 
@@ -44,15 +44,15 @@ bool BeckTCoupleReaderClass::bBegin(){
 } //bBegin
 
 
-//void BeckTCoupleReaderClass::SetupMCP9600(int wI2CAddress){
-void BeckTCoupleReaderClass::SetupMCP9600(){
+//void BeckTCoupleSensorClass::SetupMCP9600(int wI2CAddress){
+void BeckTCoupleSensorClass::SetupMCP9600(){
 //  Serial << "SetupMCP9600(" << _wI2CAddress << "): Call isConnected() to test for MCP9600" << endl;
   if(_bTCoupleOK && (_poMCP9600_TCouple != nullptr)) {
     if (_poMCP9600_TCouple->isConnected()) {
-      Serial << "BeckTCoupleReaderClass::SetupMCP9600(" << _wI2CAddress << "): Call to isConnected() PASSED " << endl;
+      Serial << "BeckTCoupleSensorClass::SetupMCP9600(" << _wI2CAddress << "): Call to isConnected() PASSED " << endl;
     } //if(_poMCP9600_TCouple->isConnected())
     else {
-        Serial << "\nBeckTCoupleReaderClass::SetupMCP9600(" << _wI2CAddress << "): Call to isConnected() FAILED" << endl;
+        Serial << "\nBeckTCoupleSensorClass::SetupMCP9600(" << _wI2CAddress << "): Call to isConnected() FAILED" << endl;
         _bTCoupleOK= false;
     } //if(_poMCP9600_TCouple->isConnected())else
 
@@ -60,10 +60,10 @@ void BeckTCoupleReaderClass::SetupMCP9600(){
       //check if the Device ID is correct
       //Serial << "SetupMCP9600(" << _wI2CAddress << "): Call checkDeviceID() to test for MCP9600 ID" << endl;
       if(_poMCP9600_TCouple->checkDeviceID()) {
-        Serial << "BeckTCoupleReaderClass::SetupMCP9600(" << _wI2CAddress << "): Call to checkDeviceID() PASSED" << endl;
+        Serial << "BeckTCoupleSensorClass::SetupMCP9600(" << _wI2CAddress << "): Call to checkDeviceID() PASSED" << endl;
       } //if(_poMCP9600_TCouple->checkDeviceID())
       else {
-        Serial << "\nBeckTCoupleReaderClass::SetupMCP9600(" << _wI2CAddress << "): Call to checkDeviceID() FAILED" << endl;
+        Serial << "\nBeckTCoupleSensorClass::SetupMCP9600(" << _wI2CAddress << "): Call to checkDeviceID() FAILED" << endl;
         _bTCoupleOK= false;
       } //if(_poMCP9600_TCouple->checkDeviceID())else
     } //if(_bTCoupleOK)
@@ -75,35 +75,35 @@ void BeckTCoupleReaderClass::SetupMCP9600(){
 } //SetupMCP9600
 
 
-float BeckTCoupleReaderClass::fReadProbe(){
+float BeckTCoupleSensorClass::fReadProbe(){
   if(_bTCoupleOK){
     _fDegF= fGetDegF();
-    Serial << "BeckTCoupleReaderClass::ReadProbe(): fGetDegF() returned " << _fDegF << " from Probe _wI2CAddress= " << _wI2CAddress << endl;
+    Serial << "BeckTCoupleSensorClass::ReadProbe(): fGetDegF() returned " << _fDegF << " from Probe _wI2CAddress= " << _wI2CAddress << endl;
   }
   else{
     _fDegF= 37.99;
-    Serial << "\nBeckTCoupleReaderClass::ReadProbe(): Skip fGetDegF() since MCP9600 didn't connect" << endl;
+    Serial << "\nBeckTCoupleSensorClass::ReadProbe(): Skip fGetDegF() since MCP9600 didn't connect" << endl;
   }
   return _fDegF;
 } //ReadProbe
 
 
-float BeckTCoupleReaderClass::fGetDegF() {
+float BeckTCoupleSensorClass::fGetDegF() {
   float   fDegF= 0.99;
   float   fDegC= 0.99;
   if (_bTCoupleOK){
-   //Serial << "BeckTCoupleReaderClass::fGetDegF(): Call _poMCP9600_TCouple->getThermocoupleTemp()" << endl;
+   //Serial << "BeckTCoupleSensorClass::fGetDegF(): Call _poMCP9600_TCouple->getThermocoupleTemp()" << endl;
    fDegC=_poMCP9600_TCouple->getThermocoupleTemp();
    fDegF= (1.80 * fDegC) + 32.00;
   } //if(_bTCoupleOK)
   else {
-    Serial << "BeckTCoupleReaderClass::fGetDegF(): Skipped reading tCouple because _bTCoupleOK is false" << endl;
+    Serial << "BeckTCoupleSensorClass::fGetDegF(): Skipped reading tCouple because _bTCoupleOK is false" << endl;
   }
   return fDegF;
 } //fGetDegF
 
 
-bool BeckTCoupleReaderClass::bGetProbeOK() {
+bool BeckTCoupleSensorClass::bGetProbeOK() {
   return _bTCoupleOK;
 } //bGetProbeOK
 //Last line.
