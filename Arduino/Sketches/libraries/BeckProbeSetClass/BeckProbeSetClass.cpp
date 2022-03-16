@@ -43,14 +43,15 @@ void BeckProbeSetClass::BuildProbes(){
 
 
 bool BeckProbeSetClass::bBegin(){
-  bool bReturn= true;
+  bool bOK= true;
   // Call bBegin() for each TC probe
-  for (int wProbeID= 0; wProbeID <= _wNumProbes; wProbeID++){
+  for (int wProbeID= 1; wProbeID <= _wNumProbes; wProbeID++){
     if (_apoProbe[wProbeID]->bBegin() != true) {
-      bReturn= false;
+      Serial << "BeckProbeSetClass::bBegin(): Failed call to bBegin() for wProbeID= " << wProbeID << endl;
+      bOK= false;
     } //if
   } //for
-  return bReturn;
+  return bOK;
 } //bBegin
 
 

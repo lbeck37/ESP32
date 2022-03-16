@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckProbeClass.cpp";
-const char szSystemFileDate[]  = "3/15/22e";
+const char szSystemFileDate[]  = "3/15/22f";
 
 #include <BeckProbeClass.h>
 #include <BeckSampleDataClass.h>
@@ -33,7 +33,7 @@ BeckProbeClass::~BeckProbeClass() {
 
 
 bool BeckProbeClass::bBegin(){
-  //  Serial << "BeckProbeClass::bBegin(): Return _poTCoupleReader->bBegin()" << endl;
+  Serial << "BeckProbeClass::bBegin(): Call _poTCoupleReader->SetupMCP9600() for _wProbeID= " << _wProbeID << endl;
   _poTCoupleReader->SetupMCP9600();
   return true;
 } //Begin

@@ -31,16 +31,6 @@ BeckSampleDataClass::~BeckSampleDataClass() {
   Serial << "~BeckSampleDataClass(): Destructor" << "\n";
 } //destructor
 
-/*
-void BeckSampleDataClass::FillSampleData(SampleDataStruct& stSampleData) {
-  SetSampleTime     (stSampleData.uwSampleTime);
-  SetLastDegF       (fGetDegF());
-  SetDegF           (stSampleData.fDegF);
-  _bDegFChanged=    !(fGetLastDegF() == fGetDegF());
-  _stSampleData     = stSampleData;
-  return;
-} //FillSampleData
-*/
 
 void BeckSampleDataClass::SetSampleTime(int wProbeSetID, int wProbeID, uint32_t uwSampleTime){
   _uwSampleTime= uwSampleTime;
