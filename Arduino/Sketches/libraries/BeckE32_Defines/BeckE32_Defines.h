@@ -1,4 +1,4 @@
-// BeckESP32_Defines.h, 3/16/22a
+// BeckESP32_Defines.h, 3/16/22b
 #pragma once
 #include <cstdint>
 
@@ -26,12 +26,6 @@ static const int8_t     _cButton_Pin4       = 15;
 static const int8_t     _cI2C_SDA_Pin       = 26;
 static const int8_t     _cI2C_SCL_Pin       = 27;
 
-
-/*
-static const uint8_t   _ucI2CAddress1       = 0x67;     //decimal 103
-static const uint8_t   _ucI2CAddress2       = 0x66;     //decimal 102
-static const uint8_t   _ucI2CAddress3       = 0x60;     //decimal  96
-*/
 // I2C addresses, (3) temperature probes and a pressure gauge
 static const int       _wI2C_Pressure       = 0x18;     //decimal  24
 static const int       _wI2C_DegF1          = 0x67;     //decimal 103
@@ -49,17 +43,11 @@ static const int        _wNumSensorSets     = 4;       //A car has 4 tires
 static const int        _wLoggingProbeSetID = 0;
 static const int        _wLoggingSensorSetID= 0;
 
-
 static const int        _wOffsetUTC         = -7;       //In winter SLO is 8 time zones after Greenwich, in summer it's 7
 
 extern int8_t           _acSPI_CS_Pins    [];
 extern const uint8_t    _aucI2CAdresses   [];
 
-
-//enum class    ProbePositionEnum           {LeftProbe=1, CenterProbe, RightProbe};
-//enum class    ProbeSetLocationEnum        {LeftFrontTire=1, RightFrontTire, LeftRearTire, RightRearTire};
-
-//ESP32
 //Pins used by WROVER-KIT LCD display (ref. WROVER_KIT_LCD.cpp)
 /*
 #define WROVER_RST                          18

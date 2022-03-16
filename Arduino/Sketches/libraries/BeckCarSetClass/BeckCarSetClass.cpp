@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckCarSetClass.cpp";
-const char szSystemFileDate[]  = "3/15/22g";
+const char szSystemFileDate[]  = "3/16/22a";
 
 #include <BeckCarSetClass.h>
 #include <BeckSensorClass.h>
@@ -16,7 +16,6 @@ BeckCarSetClass::BeckCarSetClass()  {
   return;
 } //constructor
 
-
 BeckCarSetClass::~BeckCarSetClass() {
   Serial << "~BeckCarSetClass(): Destructor, Deleting probes" << endl;
   for (int wSensorSetID= 1; wSensorSetID <= _wNumSensorSets; wSensorSetID++){
@@ -26,8 +25,6 @@ BeckCarSetClass::~BeckCarSetClass() {
   }   //for
   return;
 } //destructor
-
-//  BeckSampleDataClass*    _apoCarSample [_wNumSensorSets + 1] [_wNumSensors + 1];
 
 
 void BeckCarSetClass::BuildObjectData(){

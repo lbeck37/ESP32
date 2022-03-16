@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckSensorSetClass.cpp";		//Copied from BeckSensorSetClass.cpp
-const char szSystemFileDate[]  = "3/16/22b";
+const char szSystemFileDate[]  = "3/16/22c";
 
 #include <BeckSensorClass.h>
 #include <BeckSensorSetClass.h>
@@ -14,14 +14,12 @@ BeckSensorSetClass::BeckSensorSetClass() {
   return;
 } //constructor
 
-
 BeckSensorSetClass::BeckSensorSetClass(int wSensorSetID){
   //Serial << "BeckSensorSetClass(cSensorSetID): CTR, _aucI2CAdresses{} filled with I2CAddresses" << endl;
   _wSensorSetID= wSensorSetID;
   BuildSensors();
   return;
 } //constructor
-
 
 BeckSensorSetClass::~BeckSensorSetClass() {
   Serial << "~BeckSensorSetClass(): Destructor, deleting probes" << endl;
@@ -39,7 +37,7 @@ void BeckSensorSetClass::BuildSensors(){
     _apoSensor[wSensorID]= new BeckSensorClass(wSensorID, _awI2CAdresses[wSensorID]);
    }
   return;
-} //Handle
+} //BuildSensors
 
 
 bool BeckSensorSetClass::bBegin(){
@@ -47,12 +45,28 @@ bool BeckSensorSetClass::bBegin(){
   // Call bBegin() for each TC probe
   for (int wSensorID= 1; wSensorID <= _wNumSensors; wSensorID++){
     if (_apoSensor[wSensorID]->bBegin() != true) {
-      Serial << "BeckSensorSetClass::bBegin(): Failed call to bBegin() for wSensorID= " << wSensorID << endl;
+      Serial << "BeckSensorSetClass::bBegin(): Failed bBegin() for wSensorID= " << wSensorID << endl;
       bOK= false;
     } //if
   } //for
   return bOK;
 } //bBegin
+
+
+void BeckSensorSetClass::ReadSensorSet(uint32_t uwSampleTime, int wSensorID) {
+  //_uwSampleTime= uwSampleTime;
+  //Have each Sensor handle itself, like read the tcouple
+/*
+  for (int wSensor= 1; cSensor <= _wNumSensors; cSensor++){
+    _apoSensor[cSensor]->Handle(uwSampleTime);
+   }
+  Serial << "    Thermo #1= " << _apoSensor[1]->fGetDegF() << "F, #2= " << _apoSensor[2]->fGetDegF() << "F, #3=" << _apoSensor[3]->fGetDegF() << endl;
+*/
+  for (int wSensorID= 1; wSensorID <= _wNumSensors; wSensorID++){
+    _apoSensor[wSensorID]->fReadSensor(uwSampleTime, wSensorID);
+  }
+  return;
+} //ReadSensorSet
 
 
 void BeckSensorSetClass::PrintSensorSetData(void) {
@@ -69,21 +83,5 @@ void BeckSensorSetClass::PrintSensorSetData(void) {
   Serial << "    Thermo #1= " << _astSampleData[1][1].fDegF << "F, #2= " << _astSampleData[1][2].fDegF << "F, #3=" << _astSampleData[1][3].fDegF << endl;
 */
   return;
-}
-
-
-void BeckSensorSetClass::ReadSensorSet(uint32_t uwSampleTime, int wSensorID) {
-  //_uwSampleTime= uwSampleTime;
-  //Have each Sensor handle itself, like read the tcouple
-/*
-  for (int wSensor= 1; cSensor <= _wNumSensors; cSensor++){
-    _apoSensor[cSensor]->Handle(uwSampleTime);
-   }
-  Serial << "    Thermo #1= " << _apoSensor[1]->fGetDegF() << "F, #2= " << _apoSensor[2]->fGetDegF() << "F, #3=" << _apoSensor[3]->fGetDegF() << endl;
-*/
-  for (int wSensorID= 1; wSensorID <= _wNumSensors; wSensorID++){
-    _apoSensor[wSensorID]->fReadSensor(uwSampleTime, wSensorID);
-  }
-  return;
-} //Handle
+} //PrintSensorSetData
 //Last line.

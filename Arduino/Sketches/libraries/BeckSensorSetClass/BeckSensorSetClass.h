@@ -1,4 +1,4 @@
-// BeckSensorSetClass.h, copied from BeckProbeSetClass.h, 3/16/22a
+// BeckSensorSetClass.h, copied from BeckProbeSetClass.h, 3/16/22b
 #pragma once
 #include <BeckSensorClass.h>
 #include <BeckE32_Defines.h>
@@ -11,8 +11,8 @@ public:
 
   void  BuildSensors           ();
   bool  bBegin                ();
-  void  PrintSensorSetData     ();
   void  ReadSensorSet          (uint32_t uwSampleTime, int wSensorID);
+  void  PrintSensorSetData     ();
 
 private:
   int                   _wSensorSetID;          //1, 2, 3, 4, possibly for RF, LF, LR, RR
