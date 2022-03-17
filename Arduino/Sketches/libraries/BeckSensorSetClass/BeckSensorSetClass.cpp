@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckSensorSetClass.cpp";		//Copied from BeckSensorSetClass.cpp
-const char szSystemFileDate[]  = "3/16/22c";
+const char szSystemFileDate[]  = "3/16/22e";
 
 #include <BeckSensorClass.h>
 #include <BeckSensorSetClass.h>
@@ -14,13 +14,16 @@ BeckSensorSetClass::BeckSensorSetClass() {
   return;
 } //constructor
 
-//    BeckSensorSetClass       (BeckSampleDataClass* apoCarSamples, int wSensorSetID);
-//BeckSensorSetClass           (BeckSampleDataClass* apoCarSamples[_wNumSensorSets + 1][_wNumSensors + 1], int wSensorSetID);
-//BeckSensorSetClass::BeckSensorSetClass(BeckSampleDataClass* apoCarSamples, int wSensorSetID){
-BeckSensorSetClass::BeckSensorSetClass(BeckSampleDataClass* apoCarSamples[_wNumSensorSets + 1][_wNumSensors + 1], int wSensorSetID){
+BeckSensorSetClass::BeckSensorSetClass(BeckSampleDataClass* apoCarSamples[][_wNumSensors + 1], int wSensorSetID){
   //Serial << "BeckSensorSetClass(cSensorSetID): CTR, _aucI2CAdresses{} filled with I2CAddresses" << endl;
-  //_apoCarSamples= apoCarSamples;
   _wSensorSetID= wSensorSetID;
+
+  for (int wSensorSetID= 0; wSensorSetID <= _wNumSensorSets; wSensorSetID++){
+    for (int wSensorID= 0; wSensorID <= _wNumSensors; wSensorID++){
+      _apoCarSamples[wSensorSetID][wSensorID]= apoCarSamples[wSensorSetID][wSensorID];
+    } //for(int wSensorID=0...
+  } //for(int wSensorSetID=0...
+
   BuildSensors();
   return;
 } //constructor
@@ -57,38 +60,25 @@ bool BeckSensorSetClass::bBegin(){
 } //bBegin
 
 
-//void BeckSensorSetClass::ReadSensorSet(uint32_t uwSampleTime, int wSensorID) {
 void BeckSensorSetClass::ReadSensorSet(uint32_t uwSampleTime) {
-  //_uwSampleTime= uwSampleTime;
-  //Have each Sensor handle itself, like read the tcouple
-/*
-  for (int wSensor= 1; cSensor <= _wNumSensors; cSensor++){
-    _apoSensor[cSensor]->Handle(uwSampleTime);
-   }
-  Serial << "    Thermo #1= " << _apoSensor[1]->fGetDegF() << "F, #2= " << _apoSensor[2]->fGetDegF() << "F, #3=" << _apoSensor[3]->fGetDegF() << endl;
-*/
   float fDegF= 0.0;
+  //Read the DegF at each senson and write that value and the time (passed in) to the data array.
   for (int wSensorID= 1; wSensorID <= _wNumSensors; wSensorID++){
-    //_apoSensor[wSensorID]->fReadSensor(uwSampleTime, wSensorID);
     fDegF= _apoSensor[wSensorID]->fReadSensor();
+
+    _apoCarSamples[_wSensorSetID][wSensorID]->SetDegF       (_wSensorSetID, wSensorID, fDegF);
+    _apoCarSamples[_wSensorSetID][wSensorID]->SetSampleTime (_wSensorSetID, wSensorID, uwSampleTime);
   } //for
   return;
 } //ReadSensorSet
 
 
-void BeckSensorSetClass::PrintSensorSetData(void) {
-/*
-  for (int wSensor= 1; cSensor <= _wNumSensors; cSensor++){
-    //Serial << "BeckSensorSetClass::PrintSensorSetData(): Printing data for Sensor #" << cSensor << endl;
-   }
-*/
-  //Serial << "    Thermo #1= " << _apoSensor[1]->fGetDegF() << "F, #2= " << _apoSensor[2]->fGetDegF() << "F, #3=" << _apoSensor[3]->fGetDegF() << endl;
-/*
-  float   fDegF1, fDegF2, fDeg3;
-  float   fDeg1= fGetDegF(1, 1);
+void BeckSensorSetClass::PrintSensorSetData() {
+  float   fDegF1= _apoCarSamples[_wSensorSetID][1]->fGetDegF(_wSensorSetID, 1);
+  float   fDegF2= _apoCarSamples[_wSensorSetID][2]->fGetDegF(_wSensorSetID, 2);
+  float   fDegF3= _apoCarSamples[_wSensorSetID][3]->fGetDegF(_wSensorSetID, 3);
 
-  Serial << "    Thermo #1= " << _astSampleData[1][1].fDegF << "F, #2= " << _astSampleData[1][2].fDegF << "F, #3=" << _astSampleData[1][3].fDegF << endl;
-*/
+  Serial << "BeckSensorSetClass::PrintSensorSetData(): Thermo #1= " << fDegF1 << "F, #2= " << fDegF2 << "F, #3=" << fDegF3 << endl;
   return;
 } //PrintSensorSetData
 //Last line.

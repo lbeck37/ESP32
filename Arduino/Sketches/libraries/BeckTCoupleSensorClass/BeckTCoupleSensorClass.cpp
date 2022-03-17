@@ -1,5 +1,5 @@
 static const char szSystemFileName[]  = "BeckTCoupleSensorClass.cpp";
-static const char szSystemFileDate[]  = "3/16/22c";
+static const char szSystemFileDate[]  = "3/16/22d";
 
 #include <BeckTCoupleSensorClass.h>
 #include <SparkFun_MCP9600.h>
@@ -78,7 +78,7 @@ void BeckTCoupleSensorClass::SetupMCP9600(){
 float BeckTCoupleSensorClass::fReadProbe(){
   if(_bTCoupleOK){
     _fDegF= fGetDegF();
-    Serial << "BeckTCoupleSensorClass::ReadProbe(): fGetDegF() returned " << _fDegF << " from Probe _wI2CAddress= " << _wI2CAddress << endl;
+    //Serial << "BeckTCoupleSensorClass::ReadProbe(): fGetDegF() returned " << _fDegF << " from Probe _wI2CAddress= " << _wI2CAddress << endl;
   }
   else{
     _fDegF= 37.99;
