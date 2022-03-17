@@ -1,4 +1,4 @@
-// BeckSensorSetClass.h, 3/16/22e
+// BeckSensorSetClass.h, 3/16/22f
 #pragma once
 #include <BeckSensorClass.h>
 #include <BeckE32_Defines.h>
@@ -6,8 +6,6 @@
 class BeckSensorSetClass{
 public:
   BeckSensorSetClass           ();
-  //BeckSensorSetClass           (int wSensorSetID);
-  //BeckSensorSetClass           (BeckSampleDataClass* _apoCarSamples [][_wNumSensors + 1], int wSensorSetID);
   BeckSensorSetClass           (BeckSampleDataClass* apoCarSamples[][_wNumSensors + 1], int wSensorSetID);
   virtual ~BeckSensorSetClass  ();
 

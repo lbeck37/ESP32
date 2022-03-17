@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckCarSetClass.cpp";
-const char szSystemFileDate[]  = "3/16/22a";
+const char szSystemFileDate[]  = "3/16/22b";
 
 #include <BeckCarSetClass.h>
 #include <BeckSensorClass.h>
@@ -71,9 +71,6 @@ void BeckCarSetClass::PrintLogData(){
 
 
 void BeckCarSetClass::ReadSensorSet(uint32_t uwSampleTime, int wSensorSetID) {
-  //Have the SensorSet handle itself, like have each of its Sensors read its TCouple
-  //_apoSensorSet[wSensorSetID]->ReadSensorSet(uwSampleTime, wSensorSetID); //
-  //_apoSensorSet[wSensorSetID]->ReadSensorSet(uwSampleTime);
   _apoSensorSet[wSensorSetID]->ReadSensorSet(uwSampleTime);
   return;
 } //ReadSensorSet

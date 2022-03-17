@@ -1,4 +1,4 @@
-// BeckSampleDataClass.h, 3/16/22a
+// BeckSampleDataClass.h, 3/16/22c
 #pragma once
 #include <BeckE32_Defines.h>
 
@@ -8,19 +8,20 @@ public:
   BeckSampleDataClass           (int wSensorSetID, int wSensorID);
   virtual ~BeckSampleDataClass  ();
 
-  uint32_t              uwGetSampleTime       (int wSensorSetID, int wSensorID);
-  void                  SetSampleTime         (int wSensorSetID, int wSensorID, uint32_t uwSampleTime);
+  uint32_t              uwGetSampleTime       ();
+  void                  SetSampleTime         (uint32_t uwSampleTime);
 
-  void                  SetDegF               (int wSensorSetID, int wSensorID, float fNewDegFValue);
-  float                 fGetDegF              (int wSensorSetID, int wSensorID);
+  void                  SetDegF               (float fNewDegFValue);
+  float                 fGetDegF              ();
 
-  void                  SetLastDegF           (int wSensorSetID, int wSensorID, float fLastDegFValue);
-  float                 fGetLastDegF          (int wSensorSetID, int wSensorID);
+  float                 fGetLastDegF          ();
 
-  void                  SetDegFChanged        (int wSensorSetID, int wSensorID);
-  bool                  bGetDegFChanged       (int wSensorSetID, int wSensorID);
+  void                  SetDegFChanged        ();
+  bool                  bGetDegFChanged       ();
 
 private:
+  void                  SetLastDegF           (float fLastDegFValue);
+
   int                   _wSensorID            = 0;
   int                   _wSensorSetID         = 0;
   uint32_t              _uwSampleTime         = 0;    //Also called Epoc time

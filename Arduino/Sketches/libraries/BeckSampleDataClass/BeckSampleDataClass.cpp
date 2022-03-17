@@ -1,5 +1,5 @@
 static const char szSystemFileName[]  = "BeckSampleDataClass.cpp";
-static const char szSystemFileDate[]  = "3/16/22a";
+static const char szSystemFileDate[]  = "3/16/22b";
 
 #include <BeckSampleDataClass.h>
 #include <BeckE32_Defines.h>
@@ -32,50 +32,51 @@ BeckSampleDataClass::~BeckSampleDataClass() {
 } //destructor
 
 
-void BeckSampleDataClass::SetSampleTime(int wSensorSetID, int wSensorID, uint32_t uwSampleTime){
+void BeckSampleDataClass::SetSampleTime(uint32_t uwSampleTime){
   _uwSampleTime= uwSampleTime;
   return;
 } //SetSampleTime
 
 
-uint32_t BeckSampleDataClass::uwGetSampleTime(int wSensorSetID, int wSensorID){
+uint32_t BeckSampleDataClass::uwGetSampleTime(){
   return _uwSampleTime;
 } //ulGetSampleTime
 
 
-void BeckSampleDataClass::SetDegF(int wSensorSetID, int wSensorID, float fNewDegFValue){
+void BeckSampleDataClass::SetDegF(float fNewDegFValue){
+  SetLastDegF(_fDegF);
   _fDegF= fNewDegFValue;
   return;
 }	//SetDegF
 
-float BeckSampleDataClass::fGetDegF(int wSensorSetID, int wSensorID){
+float BeckSampleDataClass::fGetDegF(){
   return _fDegF;
 }	//wGetDegF
 
-void BeckSampleDataClass::SetDegFChanged(int wSensorSetID, int wSensorID){
+void BeckSampleDataClass::SetDegFChanged(){
   bool  bChanged= false;
-  if ((fGetLastDegF(wSensorSetID, wSensorID) != fGetDegF(wSensorSetID, wSensorID)) || _bDegF_FirstTime){
+  if ((fGetLastDegF() != fGetDegF()) || _bDegF_FirstTime){
     _bDegFChanged     = true;
     _bDegF_FirstTime  = false;
   }
   return;
 } //bDegFChanged
 
-bool BeckSampleDataClass::bGetDegFChanged(int wSensorSetID, int wSensorID){
+bool BeckSampleDataClass::bGetDegFChanged(){
   bool  bChanged= false;
-  if ((fGetLastDegF(wSensorSetID, wSensorID) != fGetDegF(wSensorSetID, wSensorID)) || _bDegF_FirstTime){
+  if ((fGetLastDegF() != fGetDegF()) || _bDegF_FirstTime){
     bChanged         = true;
     _bDegF_FirstTime = false;
   }
   return bChanged;
 } //bDegFChanged
 
-void BeckSampleDataClass::SetLastDegF(int wSensorSetID, int wSensorID, float fLastDegFValue){
+void BeckSampleDataClass::SetLastDegF(float fLastDegFValue){
   _fLastDegF= fLastDegFValue;
   return;
 }
 
-float BeckSampleDataClass::fGetLastDegF(int wSensorSetID, int wSensorID){
+float BeckSampleDataClass::fGetLastDegF(){
   return _fLastDegF;
 }
 //Last line.
