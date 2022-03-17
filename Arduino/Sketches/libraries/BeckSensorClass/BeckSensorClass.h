@@ -1,6 +1,6 @@
-// BeckSensorClass.h, 3/16/22d
+// BeckSensorClass.h, 3/17/22a
 #pragma once
-#include <BeckSampleDataClass.h>
+//#include <BeckSampleDataClass.h>
 #include <BeckE32_Defines.h>
 #include <BeckTCoupleSensorClass.h>
 

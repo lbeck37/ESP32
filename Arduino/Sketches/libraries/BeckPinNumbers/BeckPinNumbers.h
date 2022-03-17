@@ -1,6 +1,6 @@
-// BeckPinNumbers.h 5/26/21b
+// BeckPinNumbers.h 3/17/22a
 #pragma once
-#include <BeckBiotaDefines.h>
+//#include <BeckBiotaDefines.h>
 
 #if ESP32
 #if DO_TTGO

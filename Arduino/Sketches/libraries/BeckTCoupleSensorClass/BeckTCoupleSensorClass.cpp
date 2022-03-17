@@ -1,24 +1,21 @@
 static const char szSystemFileName[]  = "BeckTCoupleSensorClass.cpp";
-static const char szSystemFileDate[]  = "3/16/22d";
+static const char szSystemFileDate[]  = "3/17/22h";
 
 #include <BeckTCoupleSensorClass.h>
 #include <SparkFun_MCP9600.h>
 #include <Streaming.h>
 
-BeckTCoupleSensorClass::BeckTCoupleSensorClass() {
-  Serial << "BeckTCoupleSensorClass(void) Default CTR: " << szSystemFileName << ", " << szSystemFileDate << endl << endl;
-  return;
-} //CTR
-
 
 BeckTCoupleSensorClass::BeckTCoupleSensorClass(int wI2CAddress) {
   _wI2CAddress= wI2CAddress;
-  //  Serial << "BeckTCoupleSensorClass(uint8_t) CTR: _wI2CAddress= " << _wI2CAddress << endl;
-  Serial << ".TCR CTR: " << _wI2CAddress << " ";
+  Serial << "BeckTCoupleSensorClass(" << wI2CAddress << ") CTR" << endl;
+  Serial << ".TCR CTR:" << _wI2CAddress << " ";
+  Serial << "\nTCR::CTR: Do _poMCP9600_TCouple= new MCP9600{}" << endl;
+  _poMCP9600_TCouple= new (std::nothrow)  MCP9600 {};
+  Serial << "\nTCR::CTR: Back from new" << endl;
   bBegin();
   return;
 } //BeckTCoupleSensorClass(uint8_t)
-
 
 BeckTCoupleSensorClass::~BeckTCoupleSensorClass() {
   Serial << "~BeckTCoupleSensorClass(): Destructor, deleting _poMCP9600_TCouple" << endl;
@@ -28,19 +25,48 @@ BeckTCoupleSensorClass::~BeckTCoupleSensorClass() {
 } //destructor
 
 
+/*
 bool BeckTCoupleSensorClass::bBegin(){
-  //Serial << "SetupMCP9600(" << wI2CAddress << "): Use new() to create an MCP9600 object" << endl;
-  _poMCP9600_TCouple= new (std::nothrow) MCP9600 {};
+  static int  wCount= 1;
+  Serial << "BeckTCoupleSensorClass::bBegin(): Do _poMCP9600_TCouple= new MCP9600{}" << endl;
+  _poMCP9600_TCouple= new (std::nothrow)  MCP9600 {};
+  //_poMCP9600_TCouple= new                 MCP9600 {};
+  //_poMCP9600_TCouple= new                 MCP9600   ();
 
+  Serial << "BeckTCoupleSensorClass::bBegin(): Back from new to assign ptr to _poMCP9600_TCouple" << endl;
   if (_poMCP9600_TCouple != nullptr) {
-    //Serial << "SetupMCP9600(): Call begin() for MCP9600 at I2C address " << wI2CAddress << endl;
+    Serial << "BeckTCoupleSensorClass::bBegin(): Call begin(" << _wI2CAddress << ")" << endl;
     _poMCP9600_TCouple->begin(_wI2CAddress);
   } //if(_poMCP9600_TCouple!=nullptr)
-  else{
-    Serial << "\nSetupMCP9600(" << _wI2CAddress << "): new() FAILED for MCP9600 object at I2C address " << _wI2CAddress << endl;
-    _bTCoupleOK= false;
-  } //if(_poMCP9600_TCouple!=nullptr)else
 
+  else{
+    Serial << "BeckTCoupleSensorClass::bBegin(" << _wI2CAddress << "): new() FAILED " << wCount++ << endl;
+    _bTCoupleOK= false;
+    delay(100);
+  } //if(_poMCP9600_TCouple!=nullptr)else
+  return _bTCoupleOK;
+} //bBegin
+*/
+bool BeckTCoupleSensorClass::bBegin(){
+  static int  wCount= 1;
+/*
+  Serial << "BeckTCoupleSensorClass::bBegin(): Do _poMCP9600_TCouple new MCP9600{}" << endl;
+  _poMCP9600_TCouple= new (std::nothrow)  MCP9600 {};
+*/
+
+  //Serial << "BeckTCoupleSensorClass::bBegin(): Back from new to assign ptr to _poMCP9600_TCouple" << endl;
+  Serial << "BeckTCoupleSensorClass::bBegin(): Call _poMCP9600_TCouple->begin(" << _wI2CAddress << "), if non-null" << endl;
+  if (_poMCP9600_TCouple != nullptr) {
+    Serial << "BeckTCoupleSensorClass::bBegin(): Call begin(" << _wI2CAddress << ")" << endl;
+    _poMCP9600_TCouple->begin(_wI2CAddress);
+  } //if(_poMCP9600_TCouple!=nullptr)
+
+  else{
+    Serial << "BeckTCoupleSensorClass::bBegin(" << _wI2CAddress << "): new()  must have FAILED " << wCount++ << endl;
+    _bTCoupleOK= false;
+    delay(100);
+  } //if(_poMCP9600_TCouple!=nullptr)else
+  return _bTCoupleOK;
 } //bBegin
 
 

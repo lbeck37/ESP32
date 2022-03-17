@@ -1,6 +1,5 @@
 const char szSketchName[]  = "BeckE32_TireTemp.ino";
-const char szFileDate[]    = "3/16/22m";
-
+const char szFileDate[]    = "3/17/22r";
 #include <BeckE32_Defines.h>
 #if DO_OTA
   #include <BeckE32_OTALib.h>
@@ -38,18 +37,18 @@ using namespace std::chrono;
 const char* szWebHostName = "TireTemp";
 
 #define min(X, Y)       (((X) < (Y)) ? (X) : (Y))
-const UINT16       usTopText_CursorY              =  35;
+const UINT16       usTopText_CursorY        =  35;
 
-UINT16            usTextSpacing                  = 20;
-UINT16            usDegF_CursorY                 = usTopText_CursorY;
+UINT16            usTextSpacing             = 20;
+UINT16            usDegF_CursorY            = usTopText_CursorY;
 
 char              sz100CharString[101];
 
 unsigned long     ulNextDisplayMsec         =    0;
 unsigned long     ulDisplayPeriodMsec       = 2000; //mSec between output to display
 
-unsigned long     ulNextHandleSensorsMsec    =    0;
-unsigned long     ulHandleSensorsPeriodMsec  = 5000; //mSec between handling probes
+unsigned long     ulNextHandleSensorsMsec   =    0;
+unsigned long     ulHandleSensorsPeriodMsec = 5000; //mSec between handling probes
 
 //const char*       szRouterName              = "Aspot24b";
 //const char*       szRouterPW                = "Qazqaz11";

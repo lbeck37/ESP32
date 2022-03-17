@@ -1,5 +1,5 @@
 static const char szSystemFileName[]  = "BeckSampleDataClass.cpp";
-static const char szSystemFileDate[]  = "3/16/22b";
+static const char szSystemFileDate[]  = "3/17/22a";
 
 #include <BeckSampleDataClass.h>
 #include <BeckE32_Defines.h>
@@ -21,7 +21,7 @@ BeckSampleDataClass::BeckSampleDataClass() {
 } //constructor
 
 BeckSampleDataClass::BeckSampleDataClass(int wSensorSetID, int wSensorID) {
-  //Serial << "BeckSampleDataClass(wSensorSetID, wSensorID): CTR"<< "\n";
+  Serial << "BeckSampleDataClass(wSensorSetID, wSensorID): CTR"<< "\n";
   _wSensorSetID  = wSensorSetID;
   _wSensorID     = wSensorID;
   return;

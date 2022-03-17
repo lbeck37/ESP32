@@ -10,15 +10,6 @@ BeckSensorDataMgrClass::BeckSensorDataMgrClass() {
   Serial << "BeckSensorDataMgrClass(): Default CTR"<< "\n";
 } //constructor
 
-/*
-BeckSensorDataMgrClass::BeckSensorDataMgrClass(int wSensorSetID, int wSensorID) {
-  //Serial << "BeckSensorDataMgrClass(wSensorSetID, wSensorID): CTR"<< "\n";
-  _wSensorSetID  = wSensorSetID;
-  _wSensorID     = wSensorID;
-  return;
-} //constructor
-*/
-
 BeckSensorDataMgrClass::~BeckSensorDataMgrClass() {
   Serial << "~BeckSensorDataMgrClass(): Destructor" << "\n";
 } //destructor
