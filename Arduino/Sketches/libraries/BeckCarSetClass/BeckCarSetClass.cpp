@@ -3,15 +3,15 @@ const char szSystemFileDate[]  = "3/16/22b";
 
 #include <BeckCarSetClass.h>
 #include <BeckSensorClass.h>
-#include <BeckSampleDataClass.h>
+//#include <BeckSampleDataClass.h>
 #include <BeckE32_Defines.h>
 #include <Streaming.h>
 
 BeckCarSetClass::BeckCarSetClass()  {
   Serial << "BeckCarSetClass(): Default CTR, " << szSystemFileName << ", " << szSystemFileDate << endl;
   Serial << "BeckCarSetClass(): Default CTR, Call BuildSensorSets()" << endl;
-  //BuildSensorSets();
-  BuildObjectData();
+  BuildSensorSets();
+  //BuildObjectData();
   Serial << "BeckCarSetClass(): Default CTR, Done" << endl;
   return;
 } //constructor
@@ -27,35 +27,20 @@ BeckCarSetClass::~BeckCarSetClass() {
 } //destructor
 
 
-void BeckCarSetClass::BuildObjectData(){
-//  Serial << "BeckCarSetClass::BuildObjectData(): Begin\n" <<
-
-  int w_apoCarSamplesCount= 1;
-  int wTotalSensorSets = _wNumSensorSets + 1;
-  int wTotalSensors    = _wNumSensors    + 1;
-  int wGrandTotal     = (wTotalSensorSets * wTotalSensors);
-  Serial << "BuildObjectData(): Build " << wTotalSensorSets << " X " << wTotalSensors << " = " << wGrandTotal << " _apoCarSamples[][]" << endl;
-  Serial << "    ";
-  for (int wSensorSetID= 0; wSensorSetID <= _wNumSensorSets; wSensorSetID++){
-    for (int wSensorID= 0; wSensorID <= _wNumSensors; wSensorID++){
-      Serial << "." << w_apoCarSamplesCount++;
-      _apoCarSamples[wSensorSetID][wSensorID]= new BeckSampleDataClass(wSensorSetID, wSensorID);
-    } //for(int wSensorID=0...
-    Serial << ".*";
-  } //for(int wSensorSetID=0...
-  Serial << endl;
-
-  Serial << "BuildObjectData(): Build " << (_wNumSensorSets + 1) << " _apoSensorSet[] objects using new" << endl;
+void BeckCarSetClass::BuildSensorSets(){
+//  Serial << "BeckCarSetClass::BuildSensorSets(): Begin\n" <<
+  Serial << "BuildSensorSets(): Build " << (_wNumSensorSets + 1) << " _apoSensorSet[] objects using new" << endl;
   Serial << "    ";
   int w_apoSensorSetCount= 1;
+
   for (int wSensorSetID= 0; wSensorSetID <= _wNumSensorSets; wSensorSetID++){
     Serial << "*" << w_apoSensorSetCount++;
-    _apoSensorSet[wSensorSetID]= new BeckSensorSetClass(_apoCarSamples, wSensorSetID);
+    _apoSensorSet[wSensorSetID]= new BeckSensorSetClass(wSensorSetID);
   } //for(int wSensorSetID=0
   Serial << ".*" << endl;
 
   return;
-} //BuildObjectData
+} //BuildSensorSets
 
 
 bool BeckCarSetClass::bBegin(){

@@ -1,6 +1,6 @@
-// BeckCarSetClass.h, 3/16/22b
+// BeckCarSetClass.h, 3/16/22c
 #pragma once
-#include <BeckSampleDataClass.h>
+//#include <BeckSampleDataClass.h>
 #include <BeckSensorSetClass.h>
 #include <BeckE32_Defines.h>
 
@@ -9,14 +9,12 @@ public:
   BeckCarSetClass             ();
   virtual ~BeckCarSetClass    ();
 
+  void  BuildSensorSets       ();
   bool  bBegin                ();
   void  ReadSensorSet         (uint32_t uwSampleTime, int wSensorSetID);
   void  PrintLogData          ();
 
 private:
-  void  BuildObjectData       ();
-
-  BeckSensorSetClass*         _apoSensorSet  [_wNumSensorSets + 1];
-  BeckSampleDataClass*        _apoCarSamples[_wNumSensorSets + 1] [_wNumSensors + 1];
+  BeckSensorSetClass*         _apoSensorSet[_wNumSensorSets + 1];
 };  //BeckCarSetClass
 //Last line.

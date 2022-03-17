@@ -21,7 +21,7 @@ BeckSampleDataClass::BeckSampleDataClass() {
 } //constructor
 
 BeckSampleDataClass::BeckSampleDataClass(int wSensorSetID, int wSensorID) {
-  //Serial << "BeckSampleDataClass(SensorPositionEnum, SensorSetLocationEnum): CTR"<< "\n";
+  //Serial << "BeckSampleDataClass(wSensorSetID, wSensorID): CTR"<< "\n";
   _wSensorSetID  = wSensorSetID;
   _wSensorID     = wSensorID;
   return;
