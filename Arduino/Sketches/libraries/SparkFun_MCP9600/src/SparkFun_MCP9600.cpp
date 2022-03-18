@@ -25,6 +25,18 @@ Distributed as-is; no warranty is given.
 #else
 #include "WProgram.h"
 #endif
+#include <Streaming.h>
+
+//Constructors/Destructors Beck 3/17/22
+  MCP9600::MCP9600(){
+    Serial << "MCP9600() CONSTRUCTOR" << endl;
+    return;
+  }
+
+  MCP9600::~MCP9600(){
+    Serial << "MCP9600() DESTRUCTOR" << endl;
+    return;
+  }
 
 /*-------------------------------- Device Status ------------------------*/
 
@@ -52,10 +64,13 @@ bool MCP9600::begin(uint8_t address, TwoWire &wirePort)
   //
   // Long story short, we should not call isConnected here. We should only call checkDeviceID.
 
+  Serial << "MCP9600::begin(" << address << "): Call checkDeviceID()" << endl;
   bool success = checkDeviceID();
+  Serial << "MCP9600::begin(" << address << "): Return value=" << success << endl;
 
   return success;
-}
+} //begin
+
 
 bool MCP9600::available()
 {

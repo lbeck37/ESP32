@@ -1,18 +1,22 @@
 static const char szSystemFileName[]  = "BeckTCoupleSensorClass.cpp";
-static const char szSystemFileDate[]  = "3/17/22h";
+static const char szSystemFileDate[]  = "3/17/22k";
 
 #include <BeckTCoupleSensorClass.h>
 #include <SparkFun_MCP9600.h>
 #include <Streaming.h>
 
-
 BeckTCoupleSensorClass::BeckTCoupleSensorClass(int wI2CAddress) {
   _wI2CAddress= wI2CAddress;
   Serial << "BeckTCoupleSensorClass(" << wI2CAddress << ") CTR" << endl;
   Serial << ".TCR CTR:" << _wI2CAddress << " ";
-  Serial << "\nTCR::CTR: Do _poMCP9600_TCouple= new MCP9600{}" << endl;
+  Serial << "\nTCR::CTR: Do _poMCP9600_TCouple= new MCP9600{}, wI2CAddress=" << wI2CAddress << endl;
   _poMCP9600_TCouple= new (std::nothrow)  MCP9600 {};
-  Serial << "\nTCR::CTR: Back from new" << endl;
+  if (_poMCP9600_TCouple != nullptr) {
+    Serial << "TCR::CTR: Back from new and _poMCP9600_TCouple is NON-NULL" << endl;
+  } //if(_poMCP9600_TCouple!=nullptr)
+  else{
+    Serial << "TCR::CTR: Back from new and _poMCP9600_TCouple is NULL" << endl;
+  } //if(_poMCP9600_TCouple!=nullptr)else
   bBegin();
   return;
 } //BeckTCoupleSensorClass(uint8_t)
@@ -23,7 +27,6 @@ BeckTCoupleSensorClass::~BeckTCoupleSensorClass() {
   _poMCP9600_TCouple= nullptr;
    return;
 } //destructor
-
 
 /*
 bool BeckTCoupleSensorClass::bBegin(){

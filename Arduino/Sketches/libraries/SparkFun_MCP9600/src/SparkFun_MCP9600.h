@@ -95,6 +95,8 @@ enum Shutdown_Mode: uint8_t {
 
 class MCP9600{
   public:
+  MCP9600();
+  virtual ~MCP9600();
 
   //Device status
   bool begin(uint8_t address = DEV_ADDR, TwoWire &wirePort = Wire); //Sets device I2C address to a user-specified address, over whatever port the user specifies. 
