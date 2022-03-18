@@ -1,10 +1,11 @@
-static const char szSystemFileName[]  = "BeckSampleDataClass.cpp";
-static const char szSystemFileDate[]  = "3/17/22b2";
+static const char szSystemFileName[]  = "BeckReadingDataClass.cpp";
+static const char szSystemFileDate[]  = "3/17/22b3";
 
-#include <BeckSampleDataClass.h>
+#include <BeckReadingDataClass.h>
 #include <BeckE32_Defines.h>
 #include <Streaming.h>
 
+/*
 #include <ctime>
 #include <iostream>
 #include <chrono>
@@ -12,27 +13,29 @@ static const char szSystemFileDate[]  = "3/17/22b2";
 
 using namespace std;
 using namespace std::chrono;
+*/
 
 //BeckSampleDataClass     CarSampleSetData;
 //SampleDataStruct        _astSampleData[_wNumSensorSets + 1] [_wNumSensors + 1];
 
-BeckSampleDataClass::BeckSampleDataClass() {
-  Serial << "BeckSampleDataClass(): Default CTR"<< "\n";
+/*
+BeckReadingDataClass::BeckReadingDataClass() {
+  Serial << "BeckReadingDataClass(): Default CTR"<< "\n";
 } //constructor
 
-BeckSampleDataClass::BeckSampleDataClass(int wSensorSetID, int wSensorID) {
-  Serial << "BeckSampleDataClass(wSensorSetID, wSensorID): CTR"<< "\n";
+BeckReadingDataClass::BeckReadingDataClass(int wSensorSetID, int wSensorID) {
+  Serial << "BeckReadingDataClass(wSensorSetID, wSensorID): CTR"<< "\n";
   _wSensorSetID  = wSensorSetID;
   _wSensorID     = wSensorID;
   return;
 } //constructor
 
-BeckSampleDataClass::~BeckSampleDataClass() {
-  Serial << "~BeckSampleDataClass(): Destructor" << "\n";
+BeckReadingDataClass::~BeckReadingDataClass() {
+  Serial << "~BeckReadingDataClass(): Destructor" << "\n";
 } //destructor
 
 
-void BeckSampleDataClass::SetSampleTime(int wSensorSetID, int wSensorID, uint32_t uwSampleTime){
+void BeckReadingDataClass::SetReadingTime(int wSensorSetID, int wSensorID, uint32_t uwSampleTime){
   _uwSampleTime= uwSampleTime;
   return;
 } //SetSampleTime
@@ -79,13 +82,14 @@ void BeckSampleDataClass::SetLastDegF(int wSensorSetID, int wSensorID, float fLa
 float BeckSampleDataClass::fGetLastDegF(int wSensorSetID, int wSensorID){
   return _fLastDegF;
 }
+*/
 
-/*BeckSampleDataClass::BeckSampleDataClass() {
-  Serial << "BeckSampleDataClass(): Default CTR"<< "\n";
+BeckReadingDataClass::BeckReadingDataClass() {
+  Serial << "BeckReadingDataClass(): Default CTR"<< "\n";
 } //constructor
 
-BeckSampleDataClass::BeckSampleDataClass(int wSensorSetID, int wSensorID) {
-  Serial << "BeckSampleDataClass(wSensorSetID, wSensorID): CTR"<< "\n";
+BeckReadingDataClass::BeckReadingDataClass(int wSensorSetID, int wSensorID) {
+  Serial << "BeckReadingDataClass(wSensorSetID, wSensorID): CTR"<< "\n";
 
   _wSensorSetID  = wSensorSetID;
   _wSensorID     = wSensorID;
@@ -93,33 +97,33 @@ BeckSampleDataClass::BeckSampleDataClass(int wSensorSetID, int wSensorID) {
   return;
 } //constructor
 
-BeckSampleDataClass::~BeckSampleDataClass() {
-  Serial << "~BeckSampleDataClass(): Destructor" << "\n";
+BeckReadingDataClass::~BeckReadingDataClass() {
+  Serial << "~BeckReadingDataClass(): Destructor" << "\n";
 } //destructor
 
 
-void BeckSampleDataClass::SetSampleTime(uint32_t uwSampleTime){
-  _uwSampleTime= uwSampleTime;
+void BeckReadingDataClass::SetReadingTime(uint32_t uwReadingTime){
+  _uwReadingTime= uwReadingTime;
   return;
-} //SetSampleTime
+} //SetReadingTime
 
 
-uint32_t BeckSampleDataClass::uwGetSampleTime(){
-  return _uwSampleTime;
-} //ulGetSampleTime
+uint32_t BeckReadingDataClass::uwGetReadingTime(){
+  return _uwReadingTime;
+} //ulGetReadingTime
 
 
-void BeckSampleDataClass::SetDegF(float fNewDegFValue){
+void BeckReadingDataClass::SetDegF(float fNewDegFValue){
   SetLastDegF(_fDegF);
   _fDegF= fNewDegFValue;
   return;
 } //SetDegF
 
-float BeckSampleDataClass::fGetDegF(){
+float BeckReadingDataClass::fGetDegF(){
   return _fDegF;
 } //wGetDegF
 
-void BeckSampleDataClass::SetDegFChanged(){
+void BeckReadingDataClass::SetDegFChanged(){
   bool  bChanged= false;
   if ((fGetLastDegF() != fGetDegF()) || _bDegF_FirstTime){
     _bDegFChanged     = true;
@@ -128,7 +132,7 @@ void BeckSampleDataClass::SetDegFChanged(){
   return;
 } //bDegFChanged
 
-bool BeckSampleDataClass::bGetDegFChanged(){
+bool BeckReadingDataClass::bGetDegFChanged(){
   bool  bChanged= false;
   if ((fGetLastDegF() != fGetDegF()) || _bDegF_FirstTime){
     bChanged         = true;
@@ -137,13 +141,12 @@ bool BeckSampleDataClass::bGetDegFChanged(){
   return bChanged;
 } //bDegFChanged
 
-void BeckSampleDataClass::SetLastDegF(float fLastDegFValue){
+void BeckReadingDataClass::SetLastDegF(float fLastDegFValue){
   _fLastDegF= fLastDegFValue;
   return;
 }
 
-float BeckSampleDataClass::fGetLastDegF(){
+float BeckReadingDataClass::fGetLastDegF(){
   return _fLastDegF;
 }
-*/
 //Last line.

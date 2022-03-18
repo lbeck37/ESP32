@@ -1,4 +1,4 @@
-// BeckSampleDataClass.h, 3/16/22a
+// BeckSampleDataClass.h, 3/18/22a2
 #pragma once
 #include <BeckE32_Defines.h>
 
@@ -19,6 +19,20 @@ public:
 
   void                  SetDegFChanged        (int wSensorSetID, int wSensorID);
   bool                  bGetDegFChanged       (int wSensorSetID, int wSensorID);
+
+/*
+  uint32_t              uwGetSampleTime       ();
+  void                  SetSampleTime         (uint32_t uwSampleTime);
+
+  void                  SetDegF               (float fNewDegFValue);
+  float                 fGetDegF              ();
+
+  void                  SetLastDegF           (float fLastDegFValue);
+  float                 fGetLastDegF          ();
+
+  void                  SetDegFChanged        ();
+  bool                  bGetDegFChanged       ();
+*/
 
 private:
   int                   _wSensorID            = 0;

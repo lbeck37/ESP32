@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_TireTemp.ino";
-const char szFileDate[]    = "3/17/22aa";      //From Commit 42331... "3/16/22k"
+const char szFileDate[]    = "3/18/22_WasWorking_c";      //From Commit 42331... "3/16/22k"
 
 #include <BeckE32_Defines.h>
 #if DO_OTA
@@ -156,7 +156,7 @@ void loop() {
     ulNextHandleSensorsMsec= millis() + ulHandleSensorsPeriodMsec;
     HandleNTP();
     _uwEpochTime= _oNTPClient.getEpochTime();
-    //Serial << LOG0 << "loop(): Call _poSensorSet->Handle(" << _uwEpochTime << ")\n";
+    Serial << LOG0 << "loop(): Timer ulNextHandleSensorsMsec fired\n";
     //_poSensorSet->Handle(_uwEpochTime);
     _poCarSet->ReadSensorSet(_uwEpochTime, _wLoggingSensorSetID);
     _poCarSet->PrintLogData();
