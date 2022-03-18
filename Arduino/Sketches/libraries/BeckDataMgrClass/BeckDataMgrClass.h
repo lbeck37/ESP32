@@ -27,5 +27,5 @@ private:
 
 };  //BeckDataMgrClass
 
-extern BeckDataMgrClass      _oSensorDataMgr;
+extern BeckDataMgrClass*      _poSensorDataMgr;
 //Last line.

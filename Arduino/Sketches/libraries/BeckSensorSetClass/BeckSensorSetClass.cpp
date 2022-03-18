@@ -5,11 +5,10 @@ const char szSystemFileDate[]  = "3/16/22e4";
 #include <BeckSensorSetClass.h>
 #include <BeckCarSetClass.h>
 #include <BeckSampleDataClass.h>
-//#include <BeckDataMgrClass.h>
+#include <BeckDataMgrClass.h>
 #include <BeckE32_Defines.h>
 #include <Streaming.h>
 
-//BeckSensorSetClass::BeckSensorSetClass() : _aucI2CAdresses{0, _ucI2CAddress1, _ucI2CAddress2, _ucI2CAddress3} {
 BeckSensorSetClass::BeckSensorSetClass() {
   Serial << "BeckSensorSetClass(): Default CTR, " << szSystemFileName << ", " << szSystemFileDate << endl;
   return;
@@ -71,8 +70,8 @@ void BeckSensorSetClass::ReadSensorSet(uint32_t uwSampleTime) {
     _apoCarSamples[_wSensorSetID][wSensorID]->SetSampleTime (_wSensorSetID, wSensorID, uwSampleTime);
 
 /*
-    _oSensorDataMgr.SetDegF           (_wSensorSetID, wSensorID, fDegF);
-    _oSensorDataMgr.SetReadingTime    (_wSensorSetID, wSensorID, uwSampleTime);
+    _poSensorDataMgr->SetDegF           (_wSensorSetID, wSensorID, fDegF);
+    _poSensorDataMgr->SetReadingTime    (_wSensorSetID, wSensorID, uwSampleTime);
 */
   } //for
   return;

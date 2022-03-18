@@ -1,13 +1,14 @@
 static const char szSystemFileName[]  = "BeckDataMgrClass.cpp";
-static const char szSystemFileDate[]  = "3/18/22b";
+static const char szSystemFileDate[]  = "3/18/22c";
 
 #include <BeckDataMgrClass.h>
 #include <Streaming.h>
 
-BeckDataMgrClass      _oSensorDataMgr;
+BeckDataMgrClass*      _poSensorDataMgr;
 
 BeckDataMgrClass::BeckDataMgrClass() {
-  Serial << "BeckDataMgrClass(): Default CTR"<< "\n";
+  Serial << "BeckDataMgrClass(): Default CTR, do _poSensorDataMgr= new BeckDataMgrClass()\n";
+  _poSensorDataMgr= new BeckDataMgrClass();
 } //constructor
 
 BeckDataMgrClass::~BeckDataMgrClass() {

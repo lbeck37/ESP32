@@ -6,8 +6,6 @@
 class BeckSensorSetClass{
 public:
   BeckSensorSetClass           ();
-  //BeckSensorSetClass           (int wSensorSetID);
-  //BeckSensorSetClass           (BeckSampleDataClass* _apoCarSamples [][_wNumSensors + 1], int wSensorSetID);
   BeckSensorSetClass           (BeckSampleDataClass* apoCarSamples[][_wNumSensors + 1], int wSensorSetID);
   virtual ~BeckSensorSetClass  ();
 
