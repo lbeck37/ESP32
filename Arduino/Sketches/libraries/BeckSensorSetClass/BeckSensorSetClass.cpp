@@ -1,10 +1,11 @@
 const char szSystemFileName[]  = "BeckSensorSetClass.cpp";		//Copied from BeckSensorSetClass.cpp
-const char szSystemFileDate[]  = "3/16/22e2";
+const char szSystemFileDate[]  = "3/16/22e4";
 
 #include <BeckSensorClass.h>
 #include <BeckSensorSetClass.h>
 #include <BeckCarSetClass.h>
 #include <BeckSampleDataClass.h>
+//#include <BeckDataMgrClass.h>
 #include <BeckE32_Defines.h>
 #include <Streaming.h>
 
@@ -68,17 +69,29 @@ void BeckSensorSetClass::ReadSensorSet(uint32_t uwSampleTime) {
 
     _apoCarSamples[_wSensorSetID][wSensorID]->SetDegF       (_wSensorSetID, wSensorID, fDegF);
     _apoCarSamples[_wSensorSetID][wSensorID]->SetSampleTime (_wSensorSetID, wSensorID, uwSampleTime);
+
+/*
+    _oSensorDataMgr.SetDegF           (_wSensorSetID, wSensorID, fDegF);
+    _oSensorDataMgr.SetReadingTime    (_wSensorSetID, wSensorID, uwSampleTime);
+*/
   } //for
   return;
 } //ReadSensorSet
 
 
 void BeckSensorSetClass::PrintSensorSetData() {
-  float   fDegF1= _apoCarSamples[_wSensorSetID][1]->fGetDegF(_wSensorSetID, 1);
-  float   fDegF2= _apoCarSamples[_wSensorSetID][2]->fGetDegF(_wSensorSetID, 2);
-  float   fDegF3= _apoCarSamples[_wSensorSetID][3]->fGetDegF(_wSensorSetID, 3);
+  float   fDegF1a= _apoCarSamples[_wSensorSetID][1]->fGetDegF(_wSensorSetID, 1);
+  float   fDegF2a= _apoCarSamples[_wSensorSetID][2]->fGetDegF(_wSensorSetID, 2);
+  float   fDegF3a= _apoCarSamples[_wSensorSetID][3]->fGetDegF(_wSensorSetID, 3);
 
-  Serial << "BeckSensorSetClass::PrintSensorSetData(): Thermo #1= " << fDegF1 << "F, #2= " << fDegF2 << "F, #3=" << fDegF3 << endl;
+/*
+  float   fDegF1= _oSensorDataMgr.fGetDegF(_wSensorSetID, 1);
+  float   fDegF2= _oSensorDataMgr.fGetDegF(_wSensorSetID, 2);
+  float   fDegF3= _oSensorDataMgr.fGetDegF(_wSensorSetID, 3);
+*/
+
+  Serial << "PrintSensorSetData()Using _apoCarSamples[][]: Thermo #1= " << fDegF1a << "F, #2= " << fDegF2a << "F, #3=" << fDegF3a << endl;
+  //Serial << "PrintSensorSetData()Using BeckDataMgrClass  : Thermo #1= " << fDegF1  << "F, #2= " << fDegF2  << "F, #3=" << fDegF3  << endl;
   return;
 } //PrintSensorSetData
 //Last line.

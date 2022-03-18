@@ -1,13 +1,11 @@
 // BeckDataMgrClass.h, 3/18/22b
 #pragma once
 #include <BeckE32_Defines.h>
-//#include <BeckSampleDataClass.h>
 #include <BeckReadingDataClass.h>
 
 class BeckDataMgrClass{
 public:
   BeckDataMgrClass           ();
-  //BeckDataMgrClass           (int wSensorSetID, int wSensorID);
   virtual ~BeckDataMgrClass  ();
 
   uint32_t              uwGetReadingTime       (int wSensorSetID, int wSensorID);
