@@ -1,20 +1,24 @@
 const char szSystemFileName[]  = "BeckCarSetClass.cpp";
-const char szSystemFileDate[]  = "3/19/22c";
+const char szSystemFileDate[]  = "3/19/22d";
 
 #include <BeckE32_Defines.h>
 #include <BeckCarSetClass.h>
 #include <BeckDataMgrClass.h>
 #include <BeckSensorClass.h>
+#include <BeckTireTempNTPClass.h>
 #include <Streaming.h>
 
 BeckCarSetClass::BeckCarSetClass()  {
   Serial << "BeckCarSetClass(): Default CTR, " << szSystemFileName << ", " << szSystemFileDate << endl;
 
   Serial << "BeckCarSetClass(): Default CTR, Do _poDataMgr= new BeckDataMgrClass()" << endl;
-  _poDataMgr= new BeckDataMgrClass();
+  _poDataMgr  = new BeckDataMgrClass();
 
-  Serial << "BeckCarSetClass(): Default CTR, Do _poDataMgr= new BeckTireTempDisplayClass()" << endl;
-  _poDisplay= new BeckTireTempDisplayClass();
+  Serial << "BeckCarSetClass(): Default CTR, Do _poDisplay= new BeckTireTempDisplayClass()" << endl;
+  _poDisplay  = new BeckTireTempDisplayClass();
+
+  Serial << "BeckCarSetClass(): Default CTR, Do _poNTP    = new BeckTireTempNTPClass()" << endl;
+  _poNTP      = new BeckTireTempNTPClass();
 
   Serial << "BeckCarSetClass(): Default CTR, Call BuildObjectData()" << endl;
   BuildObjectData();

@@ -1,9 +1,10 @@
-// BeckCarSetClass.h, 3/19/22b
+// BeckCarSetClass.h, 3/19/22c
 #pragma once
 #include <BeckE32_Defines.h>
 #include <BeckDataMgrClass.h>
 #include <BeckSensorSetClass.h>
 #include <BeckTireTempDisplayClass.h>
+#include <BeckTireTempNTPClass.h>
 
 class BeckCarSetClass{
 public:
@@ -21,5 +22,6 @@ private:
   BeckSensorSetClass*         _apoSensorSet   [_wNumSensorSets + 1];
   BeckDataMgrClass*           _poDataMgr      {nullptr};
   BeckTireTempDisplayClass*   _poDisplay      {nullptr};
+  BeckTireTempNTPClass*       _poNTP          {nullptr};
 };  //BeckCarSetClass
 //Last line.
