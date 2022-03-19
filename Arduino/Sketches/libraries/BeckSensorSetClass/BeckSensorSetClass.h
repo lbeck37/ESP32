@@ -1,18 +1,20 @@
-// BeckSensorSetClass.h, 3/18/22b
+// BeckSensorSetClass.h, 3/19/22b
 #pragma once
 #include <BeckSensorClass.h>
 #include <BeckE32_Defines.h>
 #include <BeckDataMgrClass.h>
+#include <BeckTireTempDisplayClass.h>
 
 class BeckSensorSetClass{
 public:
   BeckSensorSetClass           ();
-  BeckSensorSetClass           (BeckDataMgrClass* poDataMgr, int wSensorSetID);
+  BeckSensorSetClass           (BeckTireTempDisplayClass* poDisplay, BeckDataMgrClass* poDataMgr, int wSensorSetID);
   virtual ~BeckSensorSetClass  ();
 
   void  BuildSensors           ();
   bool  bBegin                 ();
   void  ReadSensorSet          (uint32_t uwSampleTime);
+  void  DisplaySensorSetData   ();
   void  PrintSensorSetData     ();
 
 private:

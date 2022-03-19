@@ -1,4 +1,4 @@
-// BeckTireTempDisplayClass.h, 3/19/22a
+// BeckTireTempDisplayClass.h, 3/19/22b
 #pragma once
 #include <BeckE32_Defines.h>
 #include <Adafruit_GFX.h>
@@ -25,15 +25,15 @@ void  DisplayText         (uint16_t usCursorX, uint16_t usCursorY, char *pcText,
 void  ClearTextBackground (int16_t sUpperLeftX, int16_t sUpperLeftY, uint16_t usWidth, uint16_t usHeight);
 
 private:
-WROVER_KIT_LCD     RoverLCD;
-const ColorType    BackgroundColor         = WROVER_BLACK;
+WROVER_KIT_LCD    RoverLCD;
+const ColorType   BackgroundColor           = WROVER_BLACK;
 char              sz100CharString[101];
 
 unsigned long     ulNextDisplayMsec         =    0;
 unsigned long     ulDisplayPeriodMsec       = 2000; //mSec between output to display
 
-unsigned long     ulNextHandleSensorsMsec    =    0;
-unsigned long     ulHandleSensorsPeriodMsec  = 5000; //mSec between handling probes
+unsigned long     ulNextHandleSensorsMsec   =    0;
+unsigned long     ulHandleSensorsPeriodMsec = 5000; //mSec between handling probes
 
 };  //BeckTireTempDisplayClass
 //Last line.

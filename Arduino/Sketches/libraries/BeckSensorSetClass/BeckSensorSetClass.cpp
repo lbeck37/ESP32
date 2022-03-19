@@ -13,13 +13,15 @@ BeckSensorSetClass::BeckSensorSetClass() {
   return;
 } //constructor
 
-  BeckSensorSetClass::BeckSensorSetClass(BeckDataMgrClass* poDataMgr, int wSensorSetID){
+
+  BeckSensorSetClass::BeckSensorSetClass(BeckTireTempDisplayClass* poDisplay, BeckDataMgrClass* poDataMgr, int wSensorSetID){
   _wSensorSetID= wSensorSetID;
   _poDataMgr= poDataMgr;
 
   BuildSensors();
   return;
 } //constructor
+
 
 BeckSensorSetClass::~BeckSensorSetClass() {
   Serial << "~BeckSensorSetClass(): Destructor, deleting probes" << endl;
@@ -71,6 +73,22 @@ void BeckSensorSetClass::ReadSensorSet(uint32_t uwSampleTime) {
   } //for
   return;
 } //ReadSensorSet
+
+
+void BeckSensorSetClass::DisplaySensorSetData() {
+/*
+ if (_poDataMgr != nullptr) {
+    float   fDegF1= _poDataMgr->fGetDegF(_wSensorSetID, 1);
+    float   fDegF2= _poDataMgr->fGetDegF(_wSensorSetID, 2);
+    float   fDegF3= _poDataMgr->fGetDegF(_wSensorSetID, 3);
+    Serial << "PrintSensorSetData()Using BeckDataMgrClass  : Thermo #1= " << fDegF1  << "F, #2= " << fDegF2  << "F, #3=" << fDegF3  << endl;
+  } //if(_poDataMgr!=nullptr)
+  else{
+    Serial << "PrintSensorSetData(): _poDataMgr is NULL, skip calls to fGetDegF" << endl;
+  }
+*/
+  return;
+} //DisplaySensorSetData
 
 
 void BeckSensorSetClass::PrintSensorSetData() {

@@ -1,10 +1,10 @@
 const char szSystemFileName[]  = "BeckTireTempDisplayClass.cpp";
-const char szSystemFileDate[]  = "3/19/22a";
+const char szSystemFileDate[]  = "3/19/22b";
 
 #include <BeckTireTempDisplayClass.h>
 #include <BeckLogLib.h>
 #include <Adafruit_GFX.h>
-#include <WROVER_KIT_LCD.h>
+//#include <WROVER_KIT_LCD.h>
 #include <Streaming.h>
 
 BeckTireTempDisplayClass::BeckTireTempDisplayClass(void) {
@@ -48,8 +48,8 @@ void BeckTireTempDisplayClass::DisplayUpdate() {
 if (millis() > ulNextDisplayMsec){
   ulNextDisplayMsec= millis() + ulDisplayPeriodMsec;
   DisplayTemperature();
+  DisplayLowerBanner();
 } //if (millis()>ulNextDisplayMsec)
-DisplayLowerBanner();
 return;
 }  //DisplayUpdate
 

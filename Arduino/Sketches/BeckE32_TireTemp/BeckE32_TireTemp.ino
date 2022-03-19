@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_TireTemp.ino";
-const char szFileDate[]    = "3/19/22c";      //From Commit 42331... "3/16/22k"
+const char szFileDate[]    = "3/19/22g";      //From Commit 42331... "3/16/22k"
 
 #include <BeckE32_Defines.h>
 #if DO_OTA
@@ -140,7 +140,7 @@ void setup(){
   SetupButtons();
 
   //Check the t-couple hardware
-  _poCarSet->bBegin();
+  _poCarSet->Begin();
 
   Serial << LOG0 << "setup(): return\n";
   return;
@@ -148,24 +148,10 @@ void setup(){
 
 
 void loop(){
-/*
-  TireButton1.read();   //This has to get called for onPressed() to get called back
-  TireButton2.read();
-  TireButton3.read();
-  TireButton4.read();
-*/
   ReadButtons();
-/*
-  if (millis() > ulNextHandleSensorsMsec){
-    ulNextHandleSensorsMsec= millis() + ulHandleSensorsPeriodMsec;
-    HandleNTP();
-    _uwEpochTime= _oNTPClient.getEpochTime();
-    _poCarSet->ReadSensorSet(_uwEpochTime, _wLoggingSensorSetID);
-    _poCarSet->PrintLogData();
-  } //if (millis()>ulNextDisplayMsec)
-*/
   HandleLogging();
-  DisplayUpdate();
+  //DisplayUpdate();
+  _poCarSet->UpdateDisplay();
 
 #if DO_OTA
   HandleOTAWebserver();
@@ -205,6 +191,7 @@ void HandleButton(int wSensorSet){
   return;
 } //HandleButton
 
+
 void onPressed1(){
   int   wSensorSet= 1;
   HandleButton(wSensorSet);
@@ -235,6 +222,7 @@ void HandleLogging(){
     ulNextHandleSensorsMsec= millis() + ulHandleSensorsPeriodMsec;
     HandleNTP();
     _uwEpochTime= _oNTPClient.getEpochTime();
+
     _poCarSet->ReadSensorSet(_uwEpochTime, _wLoggingSensorSetID);
     _poCarSet->PrintLogData();
   } //if (millis()>ulNextDisplayMsec)
