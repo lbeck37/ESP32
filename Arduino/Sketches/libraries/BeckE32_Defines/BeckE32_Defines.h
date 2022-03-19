@@ -1,8 +1,10 @@
-// BeckESP32_Defines.h, 3/16/22b
+// BeckESP32_Defines.h, 3/16/22c
 #pragma once
 #include <cstdint>
 
 //Define the code that is built
+#define USE_OLD_DATA_ARRAY      false
+
 #define DO_ROVER                true
 #define DO_OTA                  true
 #define DO_MAX6675              false

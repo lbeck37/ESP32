@@ -2,7 +2,7 @@ const char szSystemFileName[]  = "BeckSensorClass.cpp";		//Copied from BeckProbe
 const char szSystemFileDate[]  = "3/16/22a";
 
 #include <BeckSensorClass.h>
-#include <BeckSampleDataClass.h>
+//#include <BeckSampleDataClass.h>
 #include <NTPClient.h>
 #include <Streaming.h>
 

@@ -4,7 +4,9 @@ const char szSystemFileDate[]  = "3/18/22d";
 #include <BeckCarSetClass.h>
 #include <BeckE32_Defines.h>
 #include <BeckDataMgrClass.h>
-#include <BeckSampleDataClass.h>
+#if USE_OLD_DATA_ARRAY
+  #include <BeckSampleDataClass.h>
+#endif
 #include <BeckSensorClass.h>
 #include <Streaming.h>
 
@@ -46,6 +48,7 @@ BeckCarSetClass::~BeckCarSetClass() {
 void BeckCarSetClass::BuildObjectData(){
 //  Serial << "BeckCarSetClass::BuildObjectData(): Begin\n" <<
 
+#if USE_OLD_DATA_ARRAY
   int w_apoCarSamplesCount= 1;
   int wTotalSensorSets = _wNumSensorSets + 1;
   int wTotalSensors    = _wNumSensors    + 1;
@@ -60,14 +63,18 @@ void BeckCarSetClass::BuildObjectData(){
     Serial << ".*";
   } //for(int wSensorSetID=0...
   Serial << endl;
-
+#endif
   Serial << "BuildObjectData(): Build " << (_wNumSensorSets + 1) << " _apoSensorSet[] objects using new" << endl;
   Serial << "    ";
   int w_apoSensorSetCount= 1;
   for (int wSensorSetID= 0; wSensorSetID <= _wNumSensorSets; wSensorSetID++){
     Serial << "*" << w_apoSensorSetCount++;
     //_apoSensorSet[wSensorSetID]= new BeckSensorSetClass(_apoCarSamples, wSensorSetID);
+#if USE_OLD_DATA_ARRAY
     _apoSensorSet[wSensorSetID]= new BeckSensorSetClass(_poDataMgr, _apoCarSamples, wSensorSetID);
+#else
+    _apoSensorSet[wSensorSetID]= new BeckSensorSetClass(_poDataMgr, wSensorSetID);
+#endif
   } //for(int wSensorSetID=0
   Serial << ".*" << endl;
 

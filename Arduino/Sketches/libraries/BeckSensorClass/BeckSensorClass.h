@@ -1,7 +1,9 @@
 // BeckSensorClass.h, copied from BeckProbeClass.h, 3/16/22c
 #pragma once
-#include <BeckSampleDataClass.h>
 #include <BeckE32_Defines.h>
+#if USE_OLD_DATA_ARRAY
+  #include <BeckSampleDataClass.h>
+#endif
 #include <BeckTCoupleSensorClass.h>
 
 class BeckSensorClass{

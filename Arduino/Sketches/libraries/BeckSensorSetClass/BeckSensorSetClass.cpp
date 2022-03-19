@@ -6,7 +6,9 @@ const char szSystemFileDate[]  = "3/18/22e7";
 #include <BeckSensorClass.h>
 #include <BeckSensorSetClass.h>
 #include <BeckCarSetClass.h>
-#include <BeckSampleDataClass.h>
+#if USE_OLD_DATA_ARRAY
+  #include <BeckSampleDataClass.h>
+#endif
 #include <BeckDataMgrClass.h>
 #include <BeckE32_Defines.h>
 #include <Streaming.h>
@@ -16,18 +18,22 @@ BeckSensorSetClass::BeckSensorSetClass() {
   return;
 } //constructor
 
-BeckSensorSetClass::BeckSensorSetClass(BeckDataMgrClass* poDataMgr, BeckSampleDataClass* apoCarSamples[][_wNumSensors + 1], int wSensorSetID){
+#if USE_OLD_DATA_ARRAY
+  BeckSensorSetClass::BeckSensorSetClass(BeckDataMgrClass* poDataMgr, BeckSampleDataClass* apoCarSamples[][_wNumSensors + 1], int wSensorSetID){
+#else
+  BeckSensorSetClass::BeckSensorSetClass(BeckDataMgrClass* poDataMgr, int wSensorSetID){
+#endif
   //Serial << "BeckSensorSetClass(cSensorSetID): CTR, _aucI2CAdresses{} filled with I2CAddresses" << endl;
   _wSensorSetID= wSensorSetID;
-
   _poDataMgr= poDataMgr;
 
+#if USE_OLD_DATA_ARRAY
   for (int wSensorSetID= 0; wSensorSetID <= _wNumSensorSets; wSensorSetID++){
     for (int wSensorID= 0; wSensorID <= _wNumSensors; wSensorID++){
       _apoCarSamples[wSensorSetID][wSensorID]= apoCarSamples[wSensorSetID][wSensorID];
     } //for(int wSensorID=0...
   } //for(int wSensorSetID=0...
-
+#endif
   BuildSensors();
   return;
 } //constructor
@@ -71,9 +77,10 @@ void BeckSensorSetClass::ReadSensorSet(uint32_t uwSampleTime) {
   for (int wSensorID= 1; wSensorID <= _wNumSensors; wSensorID++){
     fDegF= _apoSensor[wSensorID]->fReadSensor();
 
+#if USE_OLD_DATA_ARRAY
     _apoCarSamples[_wSensorSetID][wSensorID]->SetDegF       (_wSensorSetID, wSensorID, fDegF);
     _apoCarSamples[_wSensorSetID][wSensorID]->SetSampleTime (_wSensorSetID, wSensorID, uwSampleTime);
-
+#endif
     if (_poDataMgr != nullptr) {
       //Serial << "ReadSensorSet(): Use _poDataMgr->SetDegF and ->uwSampleTime" << endl;
       _poDataMgr->SetDegF           (_wSensorSetID, wSensorID, fDegF);
@@ -88,11 +95,12 @@ void BeckSensorSetClass::ReadSensorSet(uint32_t uwSampleTime) {
 
 
 void BeckSensorSetClass::PrintSensorSetData() {
+#if USE_OLD_DATA_ARRAY
   float   fDegF1a= _apoCarSamples[_wSensorSetID][1]->fGetDegF(_wSensorSetID, 1);
   float   fDegF2a= _apoCarSamples[_wSensorSetID][2]->fGetDegF(_wSensorSetID, 2);
   float   fDegF3a= _apoCarSamples[_wSensorSetID][3]->fGetDegF(_wSensorSetID, 3);
   Serial << "PrintSensorSetData()Using _apoCarSamples[][]: Thermo #1= " << fDegF1a << "F, #2= " << fDegF2a << "F, #3=" << fDegF3a << endl;
-
+#endif
   if (_poDataMgr != nullptr) {
     float   fDegF1= _poDataMgr->fGetDegF(_wSensorSetID, 1);
     float   fDegF2= _poDataMgr->fGetDegF(_wSensorSetID, 2);
