@@ -3,8 +3,6 @@
 #include <cstdint>
 
 //Define the code that is built
-#define USE_OLD_DATA_ARRAY      false
-
 #define DO_ROVER                true
 #define DO_OTA                  true
 #define DO_MAX6675              false

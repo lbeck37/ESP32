@@ -1,8 +1,7 @@
-const char szSystemFileName[]  = "BeckSensorClass.cpp";		//Copied from BeckProbeClass.cpp
+const char szSystemFileName[]  = "BeckSensorClass.cpp";
 const char szSystemFileDate[]  = "3/16/22a";
 
 #include <BeckSensorClass.h>
-//#include <BeckSampleDataClass.h>
 #include <NTPClient.h>
 #include <Streaming.h>
 
@@ -16,8 +15,6 @@ BeckSensorClass::BeckSensorClass(void) {
 
 BeckSensorClass::BeckSensorClass(int wSensorID, int wI2CAddress) {
 // Serial << "BeckSensorClass(): CTR, " << szSystemFileName << ", " << szSystemFileDate << endl;
-// Serial << "BeckSensorClass(): CTR, wSensorID= " << wSensorID << ", wI2CAddress= " << wI2CAddress << endl;
-// Serial << "BeckSensorClass(: CTR, new BeckTCoupleSensorClass(_wI2CAddress) " << endl;
   _wSensorID         = wSensorID;
   _wI2CAddress     = wI2CAddress;
   _poTCoupleSensor  = new BeckTCoupleSensorClass(_wI2CAddress);
@@ -39,7 +36,6 @@ bool BeckSensorClass::bBegin(){
 } //Begin
 
 
-//float BeckSensorClass::fReadSensor(uint32_t uwSampleTime, int wSensorID) {
 float BeckSensorClass::fReadSensor() {
   bool    bSensorOK;
   float   fDegF;

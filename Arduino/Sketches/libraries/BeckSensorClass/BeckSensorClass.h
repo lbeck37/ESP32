@@ -1,9 +1,6 @@
-// BeckSensorClass.h, copied from BeckProbeClass.h, 3/16/22c
+// BeckSensorClass.h, 3/16/22e
 #pragma once
 #include <BeckE32_Defines.h>
-#if USE_OLD_DATA_ARRAY
-  #include <BeckSampleDataClass.h>
-#endif
 #include <BeckTCoupleSensorClass.h>
 
 class BeckSensorClass{
@@ -13,7 +10,6 @@ public:
   virtual ~BeckSensorClass();
 
   bool    bBegin           ();
-  //float   fReadSensor      (uint32_t uwSampleTime, int wSensorID);
   float   fReadSensor      ();
 
 private:

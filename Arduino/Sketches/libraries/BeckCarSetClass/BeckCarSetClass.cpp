@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckCarSetClass.cpp";
-const char szSystemFileDate[]  = "3/18/22e";
+const char szSystemFileDate[]  = "3/18/22g";
 
 #include <BeckE32_Defines.h>
 #include <BeckCarSetClass.h>
@@ -32,7 +32,7 @@ BeckCarSetClass::BeckCarSetClass()  {
 } //constructor
 
 BeckCarSetClass::~BeckCarSetClass() {
-  Serial << "~BeckCarSetClass(): Destructor, Deleting probes" << endl;
+  Serial << "~BeckCarSetClass(): Destructor, Deleting sensors" << endl;
   for (int wSensorSetID= 1; wSensorSetID <= _wNumSensorSets; wSensorSetID++){
     Serial << "~BeckCarSetClass(): Destructor, call delete _apoSensor[" << wSensorSetID << "]" << endl;
     delete _apoSensorSet[wSensorSetID];
@@ -43,8 +43,6 @@ BeckCarSetClass::~BeckCarSetClass() {
 
 
 void BeckCarSetClass::BuildObjectData(){
-//  Serial << "BeckCarSetClass::BuildObjectData(): Begin\n" <<
-
   Serial << "BuildObjectData(): Build " << (_wNumSensorSets + 1) << " _apoSensorSet[] objects using new" << endl;
   Serial << "    ";
   int w_apoSensorSetCount= 1;
@@ -72,8 +70,6 @@ void BeckCarSetClass::PrintLogData(){
 
 void BeckCarSetClass::ReadSensorSet(uint32_t uwSampleTime, int wSensorSetID) {
   //Have the SensorSet handle itself, like have each of its Sensors read its TCouple
-  //_apoSensorSet[wSensorSetID]->ReadSensorSet(uwSampleTime, wSensorSetID); //
-  //_apoSensorSet[wSensorSetID]->ReadSensorSet(uwSampleTime);
   _apoSensorSet[wSensorSetID]->ReadSensorSet(uwSampleTime);
   return;
 } //ReadSensorSet

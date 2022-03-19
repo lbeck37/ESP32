@@ -1,5 +1,5 @@
 static const char szSystemFileName[]  = "BeckDataMgrClass.cpp";
-static const char szSystemFileDate[]  = "3/18/22g";
+static const char szSystemFileDate[]  = "3/18/22h";
 
 #include <BeckDataMgrClass.h>
 #include <Streaming.h>
@@ -10,7 +10,14 @@ BeckDataMgrClass::BeckDataMgrClass() {
 } //constructor
 
 BeckDataMgrClass::~BeckDataMgrClass() {
-  Serial << "~BeckDataMgrClass(): Destructor" << "\n";
+  Serial << "~BeckDataMgrClass(): Destructor, call delete _apoCarReadings[][]" << endl;
+  for (int wSensorSetID= 0; wSensorSetID <= _wNumSensorSets; wSensorSetID++){
+    for (int wSensorID= 0; wSensorID <= _wNumSensors; wSensorID++){
+      delete _apoCarReadings[wSensorSetID][wSensorID];
+      _apoCarReadings[wSensorSetID][wSensorID]= nullptr;
+    } //for(int wSensorID=0...
+    Serial << ".*";
+  } //for(int wSensorSetID=0...
 } //destructor
 
 

@@ -1,7 +1,5 @@
 const char szSystemFileName[]  = "BeckSensorSetClass.cpp";		//Copied from BeckSensorSetClass.cpp
-const char szSystemFileDate[]  = "3/18/22e7";
-
-#define DO_DATAMGR  true
+const char szSystemFileDate[]  = "3/18/22e8";
 
 #include <BeckE32_Defines.h>
 #include <BeckSensorSetClass.h>
