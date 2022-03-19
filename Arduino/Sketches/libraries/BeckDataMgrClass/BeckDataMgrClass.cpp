@@ -52,7 +52,7 @@ void BeckDataMgrClass::SetDegF(int wSensorSetID, int wSensorID, float fNewDegFVa
 }	//SetDegF
 
 float BeckDataMgrClass::fGetDegF(int wSensorSetID, int wSensorID){
-  Serial << "\nBeckDataMgrClass::fGetDegF(" << wSensorID << ", " << wSensorID << ") call fGetDegF()" << endl;
+  //Serial << "\BeckDataMgrClass::fGetDegF(" << wSensorID << ", " << wSensorID << ") call fGetDegF()" << endl;
   float fReturn;
   fReturn= _apoCarReadings[wSensorSetID][wSensorID]->fGetDegF();
   //return (_apoCarReadings[wSensorSetID][wSensorID]->fGetDegF());

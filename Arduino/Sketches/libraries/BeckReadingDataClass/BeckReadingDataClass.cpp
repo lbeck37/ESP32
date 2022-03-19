@@ -11,7 +11,7 @@ BeckReadingDataClass::BeckReadingDataClass() {
 } //constructor
 
 BeckReadingDataClass::BeckReadingDataClass(int wSensorSetID, int wSensorID) {
-  Serial << "BeckReadingDataClass(wSensorSetID, wSensorID): CTR"<< "\n";
+  //Serial << "BeckReadingDataClass(wSensorSetID, wSensorID): CTR"<< "\n";
 
   _wSensorSetID  = wSensorSetID;
   _wSensorID     = wSensorID;
@@ -41,7 +41,7 @@ void BeckReadingDataClass::SetDegF(float fDegF){
 } //SetDegF
 
 float BeckReadingDataClass::fGetDegF(){
-  Serial << "\BeckReadingDataClass::fGetDegF(), _wSensorSetID=" << _wSensorID << ", wSensorID=" << _wSensorID << endl;
+  //Serial << "\BeckReadingDataClass::fGetDegF(), _wSensorSetID=" << _wSensorID << ", wSensorID=" << _wSensorID << endl;
   return _fDegF;
 } //wGetDegF
 

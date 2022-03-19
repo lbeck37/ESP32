@@ -66,7 +66,7 @@ bool BeckSensorSetClass::bBegin(){
 
 void BeckSensorSetClass::ReadSensorSet(uint32_t uwSampleTime) {
   float fDegF= 0.0;
-  Serial << "ReadSensorSet(): Read each sensor and save to _apoCarSamples[][]" << endl;
+  //Serial << "ReadSensorSet(): Read each sensor and save to _apoCarSamples[][]" << endl;
   //Read the DegF at each sensor and write that value and the time (passed in) to the data array.
   for (int wSensorID= 1; wSensorID <= _wNumSensors; wSensorID++){
     fDegF= _apoSensor[wSensorID]->fReadSensor();
@@ -74,16 +74,14 @@ void BeckSensorSetClass::ReadSensorSet(uint32_t uwSampleTime) {
     _apoCarSamples[_wSensorSetID][wSensorID]->SetDegF       (_wSensorSetID, wSensorID, fDegF);
     _apoCarSamples[_wSensorSetID][wSensorID]->SetSampleTime (_wSensorSetID, wSensorID, uwSampleTime);
 
-#if DO_DATAMGR
     if (_poDataMgr != nullptr) {
-      Serial << "ReadSensorSet(): Use _poDataMgr->SetDegF and ->uwSampleTime" << endl;
+      //Serial << "ReadSensorSet(): Use _poDataMgr->SetDegF and ->uwSampleTime" << endl;
       _poDataMgr->SetDegF           (_wSensorSetID, wSensorID, fDegF);
       _poDataMgr->SetReadingTime    (_wSensorSetID, wSensorID, uwSampleTime);
     } //if(_poDataMgr!=nullptr)
     else{
       Serial << "ReadSensorSet(): _poDataMgr is NULL, skip calls to SetDegF and uwSampleTime" << endl;
     }
-#endif
   } //for
   return;
 } //ReadSensorSet
@@ -95,7 +93,6 @@ void BeckSensorSetClass::PrintSensorSetData() {
   float   fDegF3a= _apoCarSamples[_wSensorSetID][3]->fGetDegF(_wSensorSetID, 3);
   Serial << "PrintSensorSetData()Using _apoCarSamples[][]: Thermo #1= " << fDegF1a << "F, #2= " << fDegF2a << "F, #3=" << fDegF3a << endl;
 
-#if DO_DATAMGR
   if (_poDataMgr != nullptr) {
     float   fDegF1= _poDataMgr->fGetDegF(_wSensorSetID, 1);
     float   fDegF2= _poDataMgr->fGetDegF(_wSensorSetID, 2);
@@ -105,7 +102,6 @@ void BeckSensorSetClass::PrintSensorSetData() {
   else{
     Serial << "PrintSensorSetData(): _poDataMgr is NULL, skip calls to fGetDegF" << endl;
   }
-#endif
   return;
 } //PrintSensorSetData
 //Last line.
