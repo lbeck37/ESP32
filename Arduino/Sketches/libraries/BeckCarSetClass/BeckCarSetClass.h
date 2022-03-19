@@ -1,9 +1,6 @@
-// BeckCarSetClass.h, 3/18/22b
+// BeckCarSetClass.h, 3/18/22c
 #pragma once
 #include <BeckDataMgrClass.h>
-#if USE_OLD_DATA_ARRAY
-  #include <BeckSampleDataClass.h>
-#endif
 #include <BeckSensorSetClass.h>
 #include <BeckE32_Defines.h>
 
@@ -21,8 +18,5 @@ private:
 
   BeckSensorSetClass*         _apoSensorSet   [_wNumSensorSets + 1];
   BeckDataMgrClass*           _poDataMgr      {nullptr};
-#if USE_OLD_DATA_ARRAY
-  BeckSampleDataClass*        _apoCarSamples  [_wNumSensorSets + 1] [_wNumSensors + 1];
-#endif
 };  //BeckCarSetClass
 //Last line.
