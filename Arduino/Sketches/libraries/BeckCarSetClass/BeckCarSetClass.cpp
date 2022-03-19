@@ -1,18 +1,34 @@
 const char szSystemFileName[]  = "BeckCarSetClass.cpp";
-const char szSystemFileDate[]  = "3/16/22a";
+const char szSystemFileDate[]  = "3/18/22d";
 
 #include <BeckCarSetClass.h>
-#include <BeckSensorClass.h>
-#include <BeckSampleDataClass.h>
 #include <BeckE32_Defines.h>
+#include <BeckDataMgrClass.h>
+#include <BeckSampleDataClass.h>
+#include <BeckSensorClass.h>
 #include <Streaming.h>
 
 BeckCarSetClass::BeckCarSetClass()  {
   Serial << "BeckCarSetClass(): Default CTR, " << szSystemFileName << ", " << szSystemFileDate << endl;
-  Serial << "BeckCarSetClass(): Default CTR, Call BuildSensorSets()" << endl;
-  //BuildSensorSets();
+
+  //Build the DataMgr and set _poDataMgr to that
+  Serial << "BeckCarSetClass(): Default CTR, Do _poDataMgr= new BeckDataMgrClass()" << endl;
+  _poDataMgr= new BeckDataMgrClass();
+
+  if (_poDataMgr != nullptr) {
+    Serial << "BeckCarSetClass(): Default CTR, _poDataMgr is NON_NULL" << endl;
+    Serial << "BeckCarSetClass(): Default CTR, Call fDegf= _poDataMgr->fGetDegF(0,0)" << endl;
+    float fDegF= _poDataMgr->fGetDegF(0,0);
+    Serial << "BeckCarSetClass(): Default CTR, _poDataMgr->fGetDegF(0,0) returned fDegF=" << fDegF << endl;
+  }
+  else{
+    Serial << "BeckCarSetClass(): Default CTR,new returned a NULL pointer for _poDataMgr" << endl;
+  }
+
+  Serial << "BeckCarSetClass(): Default CTR, Call BuildObjectData()" << endl;
   BuildObjectData();
-  Serial << "BeckCarSetClass(): Default CTR, Done" << endl;
+
+  //Serial << "BeckCarSetClass(): Default CTR, Done" << endl;
   return;
 } //constructor
 
@@ -50,7 +66,8 @@ void BeckCarSetClass::BuildObjectData(){
   int w_apoSensorSetCount= 1;
   for (int wSensorSetID= 0; wSensorSetID <= _wNumSensorSets; wSensorSetID++){
     Serial << "*" << w_apoSensorSetCount++;
-    _apoSensorSet[wSensorSetID]= new BeckSensorSetClass(_apoCarSamples, wSensorSetID);
+    //_apoSensorSet[wSensorSetID]= new BeckSensorSetClass(_apoCarSamples, wSensorSetID);
+    _apoSensorSet[wSensorSetID]= new BeckSensorSetClass(_poDataMgr, _apoCarSamples, wSensorSetID);
   } //for(int wSensorSetID=0
   Serial << ".*" << endl;
 

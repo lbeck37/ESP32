@@ -1,12 +1,14 @@
-// BeckSensorSetClass.h, 3/16/22e
+// BeckSensorSetClass.h, 3/18/22b
 #pragma once
 #include <BeckSensorClass.h>
 #include <BeckE32_Defines.h>
+#include <BeckDataMgrClass.h>
 
 class BeckSensorSetClass{
 public:
   BeckSensorSetClass           ();
-  BeckSensorSetClass           (BeckSampleDataClass* apoCarSamples[][_wNumSensors + 1], int wSensorSetID);
+  //BeckSensorSetClass           (BeckSampleDataClass* apoCarSamples[][_wNumSensors + 1], int wSensorSetID);
+  BeckSensorSetClass           (BeckDataMgrClass* poDataMgr, BeckSampleDataClass* apoCarSamples[][_wNumSensors + 1], int wSensorSetID);
   virtual ~BeckSensorSetClass  ();
 
   void  BuildSensors           ();
@@ -19,6 +21,8 @@ private:
   uint32_t              _uwSampleTime;
   BeckSensorClass*      _apoSensor          [_wNumSensors + 1];
   BeckSampleDataClass*  _apoCarSamples      [_wNumSensorSets + 1] [_wNumSensors + 1];
+
+  BeckDataMgrClass*     _poDataMgr          {};
   const int             _awI2CAdresses      [4] {_wI2C_Pressure, _wI2C_DegF1, _wI2C_DegF2, _wI2C_DegF3};
 };  //BeckSensorSetClass
 //Last line.

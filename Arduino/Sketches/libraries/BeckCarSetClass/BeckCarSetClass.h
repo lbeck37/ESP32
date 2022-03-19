@@ -1,5 +1,6 @@
-// BeckCarSetClass.h, 3/16/22b
+// BeckCarSetClass.h, 3/18/22b
 #pragma once
+#include <BeckDataMgrClass.h>
 #include <BeckSampleDataClass.h>
 #include <BeckSensorSetClass.h>
 #include <BeckE32_Defines.h>
@@ -16,7 +17,8 @@ public:
 private:
   void  BuildObjectData       ();
 
-  BeckSensorSetClass*         _apoSensorSet  [_wNumSensorSets + 1];
-  BeckSampleDataClass*        _apoCarSamples[_wNumSensorSets + 1] [_wNumSensors + 1];
+  BeckSensorSetClass*         _apoSensorSet   [_wNumSensorSets + 1];
+  BeckSampleDataClass*        _apoCarSamples  [_wNumSensorSets + 1] [_wNumSensors + 1];
+  BeckDataMgrClass*           _poDataMgr      {nullptr};
 };  //BeckCarSetClass
 //Last line.

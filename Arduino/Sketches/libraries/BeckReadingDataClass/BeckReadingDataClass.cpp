@@ -1,5 +1,5 @@
 static const char szSystemFileName[]  = "BeckReadingDataClass.cpp";
-static const char szSystemFileDate[]  = "3/17/22b4";
+static const char szSystemFileDate[]  = "3/17/22b5";
 
 #include <BeckReadingDataClass.h>
 #include <BeckE32_Defines.h>
@@ -34,13 +34,14 @@ uint32_t BeckReadingDataClass::uwGetReadingTime(){
 } //ulGetReadingTime
 
 
-void BeckReadingDataClass::SetDegF(float fNewDegFValue){
+void BeckReadingDataClass::SetDegF(float fDegF){
   SetLastDegF(_fDegF);
-  _fDegF= fNewDegFValue;
+  _fDegF= fDegF;
   return;
 } //SetDegF
 
 float BeckReadingDataClass::fGetDegF(){
+  Serial << "\BeckReadingDataClass::fGetDegF(), _wSensorSetID=" << _wSensorID << ", wSensorID=" << _wSensorID << endl;
   return _fDegF;
 } //wGetDegF
 

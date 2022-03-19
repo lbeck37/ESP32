@@ -1,4 +1,4 @@
-// BeckDataMgrClass.h, 3/18/22b
+// BeckDataMgrClass.h, 3/18/22d
 #pragma once
 #include <BeckE32_Defines.h>
 #include <BeckReadingDataClass.h>
@@ -21,11 +21,8 @@ public:
 
 private:
   void                  BuildSensorData       ();
-  //void                  SetLastDegF           (int wSensorSetID, int wSensorID, float fLastDegFValue);
 
   BeckReadingDataClass*  _apoCarReadings[_wNumSensorSets + 1] [_wNumSensors + 1];
 
 };  //BeckDataMgrClass
-
-extern BeckDataMgrClass*      _poSensorDataMgr;
 //Last line.

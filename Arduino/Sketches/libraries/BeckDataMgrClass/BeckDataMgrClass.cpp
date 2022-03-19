@@ -1,14 +1,12 @@
 static const char szSystemFileName[]  = "BeckDataMgrClass.cpp";
-static const char szSystemFileDate[]  = "3/18/22c";
+static const char szSystemFileDate[]  = "3/18/22g";
 
 #include <BeckDataMgrClass.h>
 #include <Streaming.h>
 
-BeckDataMgrClass*      _poSensorDataMgr;
-
 BeckDataMgrClass::BeckDataMgrClass() {
-  Serial << "BeckDataMgrClass(): Default CTR, do _poSensorDataMgr= new BeckDataMgrClass()\n";
-  _poSensorDataMgr= new BeckDataMgrClass();
+  Serial << "BeckDataMgrClass(): Default CTR, Call BuildSensorData()" << endl;
+  BuildSensorData();
 } //constructor
 
 BeckDataMgrClass::~BeckDataMgrClass() {
@@ -47,14 +45,20 @@ uint32_t BeckDataMgrClass::uwGetReadingTime(int wSensorSetID, int wSensorID){
   return (_apoCarReadings[wSensorSetID][wSensorID]->uwGetReadingTime());
 } //ulGetReadingTime
 
+
 void BeckDataMgrClass::SetDegF(int wSensorSetID, int wSensorID, float fNewDegFValue){
   _apoCarReadings[wSensorSetID][wSensorID]->SetDegF(fNewDegFValue);
   return;
 }	//SetDegF
 
 float BeckDataMgrClass::fGetDegF(int wSensorSetID, int wSensorID){
-  return (_apoCarReadings[wSensorSetID][wSensorID]->fGetDegF());
+  Serial << "\nBeckDataMgrClass::fGetDegF(" << wSensorID << ", " << wSensorID << ") call fGetDegF()" << endl;
+  float fReturn;
+  fReturn= _apoCarReadings[wSensorSetID][wSensorID]->fGetDegF();
+  //return (_apoCarReadings[wSensorSetID][wSensorID]->fGetDegF());
+  return fReturn;
 }	//wGetDegF
+
 
 void BeckDataMgrClass::SetDegFChanged(int wSensorSetID, int wSensorID){
   _apoCarReadings[wSensorSetID][wSensorID]->SetDegFChanged();
@@ -64,6 +68,7 @@ void BeckDataMgrClass::SetDegFChanged(int wSensorSetID, int wSensorID){
 bool BeckDataMgrClass::bGetDegFChanged(int wSensorSetID, int wSensorID){
   return (_apoCarReadings[wSensorSetID][wSensorID]->bGetDegFChanged());
 } //bDegFChanged
+
 
 float BeckDataMgrClass::fGetLastDegF(int wSensorSetID, int wSensorID){
   return (_apoCarReadings[wSensorSetID][wSensorID]->fGetLastDegF());

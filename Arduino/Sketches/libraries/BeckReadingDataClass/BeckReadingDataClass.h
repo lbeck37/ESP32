@@ -11,7 +11,7 @@ public:
   uint32_t              uwGetReadingTime      ();
   void                  SetReadingTime        (uint32_t uwReadingTime);
 
-  void                  SetDegF               (float fNewDegFValue);
+  void                  SetDegF               (float fDegF);
   float                 fGetDegF              ();
 
   void                  SetLastDegF           (float fLastDegFValue);
@@ -23,8 +23,8 @@ public:
 private:
   int                   _wSensorID            = 0;
   int                   _wSensorSetID         = 0;
-  uint32_t              _uwReadingTime        = 0;    //Also called Epoc time
-  float                 _fDegF                = 0.0;
+  uint32_t              _uwReadingTime        = 0;    //Also called Epoch time
+  float                 _fDegF                = 37.0;
   float                 _fLastDegF            = 0.0;
   bool                  _bDegF_FirstTime      = true;
   bool                  _bDegFChanged         = true;

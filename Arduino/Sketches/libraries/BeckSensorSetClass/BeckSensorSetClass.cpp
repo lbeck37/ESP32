@@ -1,5 +1,7 @@
 const char szSystemFileName[]  = "BeckSensorSetClass.cpp";		//Copied from BeckSensorSetClass.cpp
-const char szSystemFileDate[]  = "3/16/22e4";
+const char szSystemFileDate[]  = "3/18/22e7";
+
+#define DO_DATAMGR  true
 
 #include <BeckSensorClass.h>
 #include <BeckSensorSetClass.h>
@@ -14,9 +16,11 @@ BeckSensorSetClass::BeckSensorSetClass() {
   return;
 } //constructor
 
-BeckSensorSetClass::BeckSensorSetClass(BeckSampleDataClass* apoCarSamples[][_wNumSensors + 1], int wSensorSetID){
+BeckSensorSetClass::BeckSensorSetClass(BeckDataMgrClass* poDataMgr, BeckSampleDataClass* apoCarSamples[][_wNumSensors + 1], int wSensorSetID){
   //Serial << "BeckSensorSetClass(cSensorSetID): CTR, _aucI2CAdresses{} filled with I2CAddresses" << endl;
   _wSensorSetID= wSensorSetID;
+
+  _poDataMgr= poDataMgr;
 
   for (int wSensorSetID= 0; wSensorSetID <= _wNumSensorSets; wSensorSetID++){
     for (int wSensorID= 0; wSensorID <= _wNumSensors; wSensorID++){
@@ -62,17 +66,24 @@ bool BeckSensorSetClass::bBegin(){
 
 void BeckSensorSetClass::ReadSensorSet(uint32_t uwSampleTime) {
   float fDegF= 0.0;
-  //Read the DegF at each senson and write that value and the time (passed in) to the data array.
+  Serial << "ReadSensorSet(): Read each sensor and save to _apoCarSamples[][]" << endl;
+  //Read the DegF at each sensor and write that value and the time (passed in) to the data array.
   for (int wSensorID= 1; wSensorID <= _wNumSensors; wSensorID++){
     fDegF= _apoSensor[wSensorID]->fReadSensor();
 
     _apoCarSamples[_wSensorSetID][wSensorID]->SetDegF       (_wSensorSetID, wSensorID, fDegF);
     _apoCarSamples[_wSensorSetID][wSensorID]->SetSampleTime (_wSensorSetID, wSensorID, uwSampleTime);
 
-/*
-    _poSensorDataMgr->SetDegF           (_wSensorSetID, wSensorID, fDegF);
-    _poSensorDataMgr->SetReadingTime    (_wSensorSetID, wSensorID, uwSampleTime);
-*/
+#if DO_DATAMGR
+    if (_poDataMgr != nullptr) {
+      Serial << "ReadSensorSet(): Use _poDataMgr->SetDegF and ->uwSampleTime" << endl;
+      _poDataMgr->SetDegF           (_wSensorSetID, wSensorID, fDegF);
+      _poDataMgr->SetReadingTime    (_wSensorSetID, wSensorID, uwSampleTime);
+    } //if(_poDataMgr!=nullptr)
+    else{
+      Serial << "ReadSensorSet(): _poDataMgr is NULL, skip calls to SetDegF and uwSampleTime" << endl;
+    }
+#endif
   } //for
   return;
 } //ReadSensorSet
@@ -82,15 +93,19 @@ void BeckSensorSetClass::PrintSensorSetData() {
   float   fDegF1a= _apoCarSamples[_wSensorSetID][1]->fGetDegF(_wSensorSetID, 1);
   float   fDegF2a= _apoCarSamples[_wSensorSetID][2]->fGetDegF(_wSensorSetID, 2);
   float   fDegF3a= _apoCarSamples[_wSensorSetID][3]->fGetDegF(_wSensorSetID, 3);
-
-/*
-  float   fDegF1= _oSensorDataMgr.fGetDegF(_wSensorSetID, 1);
-  float   fDegF2= _oSensorDataMgr.fGetDegF(_wSensorSetID, 2);
-  float   fDegF3= _oSensorDataMgr.fGetDegF(_wSensorSetID, 3);
-*/
-
   Serial << "PrintSensorSetData()Using _apoCarSamples[][]: Thermo #1= " << fDegF1a << "F, #2= " << fDegF2a << "F, #3=" << fDegF3a << endl;
-  //Serial << "PrintSensorSetData()Using BeckDataMgrClass  : Thermo #1= " << fDegF1  << "F, #2= " << fDegF2  << "F, #3=" << fDegF3  << endl;
+
+#if DO_DATAMGR
+  if (_poDataMgr != nullptr) {
+    float   fDegF1= _poDataMgr->fGetDegF(_wSensorSetID, 1);
+    float   fDegF2= _poDataMgr->fGetDegF(_wSensorSetID, 2);
+    float   fDegF3= _poDataMgr->fGetDegF(_wSensorSetID, 3);
+    Serial << "PrintSensorSetData()Using BeckDataMgrClass  : Thermo #1= " << fDegF1  << "F, #2= " << fDegF2  << "F, #3=" << fDegF3  << endl;
+  } //if(_poDataMgr!=nullptr)
+  else{
+    Serial << "PrintSensorSetData(): _poDataMgr is NULL, skip calls to fGetDegF" << endl;
+  }
+#endif
   return;
 } //PrintSensorSetData
 //Last line.
