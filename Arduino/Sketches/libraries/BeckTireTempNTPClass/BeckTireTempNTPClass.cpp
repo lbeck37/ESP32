@@ -38,6 +38,12 @@ void BeckTireTempNTPClass::SetupNTP(){
   return;
 } //SetupNTP
 
+
+uint32_t BeckTireTempNTPClass::uwGetEpochTime(){
+  return _poNTPClient->getEpochTime();
+} //uwGetEpochTime
+
+
 void BeckTireTempNTPClass::HandleNTP(){
   // https://randomnerdtutorials.com/esp32-ntp-client-date-time-arduino-ide/
   // Variables to save date and time
@@ -92,8 +98,7 @@ void BeckTireTempNTPClass::PrintCurrentTime(){
   return;
 }   //PrintCurrentTime
 
-void BeckTireTempNTPClass::PrintSecondsSinceY2K()
-{
+void BeckTireTempNTPClass::PrintSecondsSinceY2K(){
   time_t timer;
   struct tm y2k = {0};
   double seconds;

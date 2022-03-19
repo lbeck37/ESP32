@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_TireTemp.ino";
-const char szFileDate[]    = "3/19/22k";      //From Commit 42331... "3/16/22k"
+const char szFileDate[]    = "3/19/22p";      //From Commit 42331... "3/16/22k"
 
 #include <BeckE32_Defines.h>
 #if DO_OTA
@@ -23,11 +23,12 @@ const char szFileDate[]    = "3/19/22k";      //From Commit 42331... "3/16/22k"
 #include <Fonts/FreeSansOblique18pt7b.h>
 
 #include <EasyButton.h>
-#include <NTPClient.h>
 #include <WiFi.h>
 #include <WiFiUdp.h>
 #include <Streaming.h>
 
+#if 0
+#include <NTPClient.h>
 #include <ctime>
 #include <iostream>
 
@@ -36,11 +37,12 @@ const char szFileDate[]    = "3/19/22k";      //From Commit 42331... "3/16/22k"
 using namespace std;
 #include <chrono>
 using namespace std::chrono;
+#endif
 
 const char* szWebHostName = "TireTemp";
 
 #define min(X, Y)       (((X) < (Y)) ? (X) : (Y))
-const UINT16       usTopText_CursorY              =  35;
+const UINT16      usTopText_CursorY              =  35;
 
 UINT16            usTextSpacing                  = 20;
 UINT16            usDegF_CursorY                 = usTopText_CursorY;
@@ -50,8 +52,10 @@ char              sz100CharString[101];
 unsigned long     ulNextDisplayMsec         =    0;
 unsigned long     ulDisplayPeriodMsec       = 2000; //mSec between output to display
 
+/*
 unsigned long     ulNextHandleSensorsMsec    =    0;
 unsigned long     ulHandleSensorsPeriodMsec  = 5000; //mSec between handling probes
+*/
 
 //Protos
 void  setup                 ();
@@ -98,7 +102,7 @@ WiFiUDP           ntpUDP;
 NTPClient         _oNTPClient(ntpUDP);
 
 const uint32_t    _uwI2CBusFrequency= 100000;
-uint32_t          _uwEpochTime;
+//uint32_t          _uwEpochTime;
 
 void setup(){
   Serial.begin(115200);
@@ -122,11 +126,13 @@ void setup(){
   Serial << LOG0 << "setup(): Call Wire.begin with bus frequency at " << _uwI2CBusFrequency << "\n";
   Wire.begin(_cI2C_SDA_Pin, _cI2C_SCL_Pin, _uwI2CBusFrequency);
 
+/*
   Serial << LOG0 << "setup(): Call SetupNTP()\n";
   SetupNTP();
 
   Serial << LOG0 << "setup(): Call PrintCurrentTime()\n";
   PrintCurrentTime();
+*/
 
   Serial << LOG0 << "setup(): Create _poCarSet using new BeckCarSetClass\n";
   _poCarSet= new BeckCarSetClass();
@@ -144,7 +150,7 @@ void setup(){
 
 void loop(){
   ReadButtons();
-  HandleLogging();
+  _poCarSet->HandleLogging();
   _poCarSet->UpdateDisplay();
 
 #if DO_OTA
@@ -181,7 +187,7 @@ void ReadButtons(){
 
 void HandleButton(int wSensorSet){
   Serial << "onPressed1(): You pressed Button " << wSensorSet << "\n";
-  _poCarSet->ReadSensorSet(_uwEpochTime, wSensorSet);
+  _poCarSet->ReadSensorSet(wSensorSet);
   return;
 } //HandleButton
 
@@ -211,6 +217,7 @@ void onPressed4(){
 } //onPressed4
 
 
+/*
 void HandleLogging(){
   if (millis() > ulNextHandleSensorsMsec){
     ulNextHandleSensorsMsec= millis() + ulHandleSensorsPeriodMsec;
@@ -222,8 +229,9 @@ void HandleLogging(){
   } //if (millis()>ulNextDisplayMsec)
   return;
 } //HandleLogging
+*/
 
-#if 1
+#if 0
 void SetupNTP(){
 // Initialize a NTPClient to get time
   Serial << "SetupNTP(): Call oNTPClient.begin()\n";

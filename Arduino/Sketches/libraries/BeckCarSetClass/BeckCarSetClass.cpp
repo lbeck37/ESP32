@@ -19,6 +19,8 @@ BeckCarSetClass::BeckCarSetClass()  {
 
   Serial << "BeckCarSetClass(): Default CTR, Do _poNTP    = new BeckTireTempNTPClass()" << endl;
   _poNTP      = new BeckTireTempNTPClass();
+  _poNTP->SetupNTP();
+  _poNTP->PrintCurrentTime();
 
   Serial << "BeckCarSetClass(): Default CTR, Call BuildObjectData()" << endl;
   BuildObjectData();
@@ -60,6 +62,15 @@ void BeckCarSetClass::Begin(){
 } //Begin
 
 
+void BeckCarSetClass::ReadSensorSet(int wSensorSetID) {
+  //Have the SensorSet handle itself, like have each of its Sensors read its TCouple
+  _poNTP->HandleNTP();
+  _uwEpochTime= _poNTP->uwGetEpochTime();
+  _apoSensorSet[wSensorSetID]->ReadSensorSet(_uwEpochTime);
+  return;
+} //ReadSensorSet
+
+
 void BeckCarSetClass::UpdateDisplay(){
   // Call one probe set since all (4) probe-sets use the same type of probe
   //return _apoSensorSet[1]->bBegin();
@@ -68,15 +79,19 @@ void BeckCarSetClass::UpdateDisplay(){
 } //UpdateDisplay
 
 
+void BeckCarSetClass::HandleLogging(){
+  if (millis() > _ulNextHandleSensorsMsec){
+    _ulNextHandleSensorsMsec= millis() + _ulHandleSensorsPeriodMsec;
+    _poNTP->HandleNTP();
+
+    ReadSensorSet(_wLoggingSensorSetID);
+    PrintLogData();
+  } //if (millis()>ulNextDisplayMsec)
+  return;
+} //HandleLogging
+
 void BeckCarSetClass::PrintLogData(){
   _apoSensorSet[_wLoggingSensorSetID]->PrintSensorSetData();
   return;
 } //PrintLogData
-
-
-void BeckCarSetClass::ReadSensorSet(uint32_t uwSampleTime, int wSensorSetID) {
-  //Have the SensorSet handle itself, like have each of its Sensors read its TCouple
-  _apoSensorSet[wSensorSetID]->ReadSensorSet(uwSampleTime);
-  return;
-} //ReadSensorSet
 //Last line.
