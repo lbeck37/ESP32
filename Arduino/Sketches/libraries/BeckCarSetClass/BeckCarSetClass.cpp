@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckCarSetClass.cpp";
-const char szSystemFileDate[]  = "3/18/22g";
+const char szSystemFileDate[]  = "3/19/22a";
 
 #include <BeckE32_Defines.h>
 #include <BeckCarSetClass.h>
@@ -10,24 +10,12 @@ const char szSystemFileDate[]  = "3/18/22g";
 BeckCarSetClass::BeckCarSetClass()  {
   Serial << "BeckCarSetClass(): Default CTR, " << szSystemFileName << ", " << szSystemFileDate << endl;
 
-  //Build the DataMgr and set _poDataMgr to that
   Serial << "BeckCarSetClass(): Default CTR, Do _poDataMgr= new BeckDataMgrClass()" << endl;
   _poDataMgr= new BeckDataMgrClass();
-
-  if (_poDataMgr != nullptr) {
-    Serial << "BeckCarSetClass(): Default CTR, _poDataMgr is NON_NULL" << endl;
-    Serial << "BeckCarSetClass(): Default CTR, Call fDegf= _poDataMgr->fGetDegF(0,0)" << endl;
-    float fDegF= _poDataMgr->fGetDegF(0,0);
-    Serial << "BeckCarSetClass(): Default CTR, _poDataMgr->fGetDegF(0,0) returned fDegF=" << fDegF << endl;
-  }
-  else{
-    Serial << "BeckCarSetClass(): Default CTR,new returned a NULL pointer for _poDataMgr" << endl;
-  }
 
   Serial << "BeckCarSetClass(): Default CTR, Call BuildObjectData()" << endl;
   BuildObjectData();
 
-  //Serial << "BeckCarSetClass(): Default CTR, Done" << endl;
   return;
 } //constructor
 
@@ -57,7 +45,7 @@ void BeckCarSetClass::BuildObjectData(){
 
 
 bool BeckCarSetClass::bBegin(){
-  // Call one probe set since all (4) probe-sets use the same (3) probes
+  // Call one probe set since all (4) probe-sets use the same type of probe
   return _apoSensorSet[1]->bBegin();
 } //bBegin
 

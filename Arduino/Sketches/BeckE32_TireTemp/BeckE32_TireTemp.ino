@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_TireTemp.ino";
-const char szFileDate[]    = "3/18/22_WasWorking_am";      //From Commit 42331... "3/16/22k"
+const char szFileDate[]    = "3/19/22c";      //From Commit 42331... "3/16/22k"
 
 #include <BeckE32_Defines.h>
 #if DO_OTA
@@ -13,6 +13,7 @@ const char szFileDate[]    = "3/18/22_WasWorking_am";      //From Commit 42331..
 #if DO_ROVER
   #include <WROVER_KIT_LCD.h>
 #endif
+#include <BeckTireTempDisplayClass.h>
 
 #include <Adafruit_GFX.h>
 #include <Fonts/FreeMonoBold12pt7b.h>
@@ -51,17 +52,17 @@ unsigned long     ulDisplayPeriodMsec       = 2000; //mSec between output to dis
 unsigned long     ulNextHandleSensorsMsec    =    0;
 unsigned long     ulHandleSensorsPeriodMsec  = 5000; //mSec between handling probes
 
-//const char*       szRouterName              = "Aspot24b";
-//const char*       szRouterPW                = "Qazqaz11";
-
 //Protos
 void  setup                 ();
 void  loop                  ();
 void  SetupButtons          ();
+void  ReadButtons           ();
+void  HandleButton          (int wSensorSet);
 void  onPressed1            ();
 void  onPressed2            ();
 void  onPressed3            ();
 void  onPressed4            ();
+void  HandleLogging         ();
 void  SetupNTP              ();
 void  HandleNTP             ();
 void  PrintCurrentTime      ();
@@ -146,25 +147,26 @@ void setup(){
 }  //setup
 
 
-void loop() {
+void loop(){
+/*
   TireButton1.read();   //This has to get called for onPressed() to get called back
   TireButton2.read();
   TireButton3.read();
   TireButton4.read();
-
+*/
+  ReadButtons();
+/*
   if (millis() > ulNextHandleSensorsMsec){
     ulNextHandleSensorsMsec= millis() + ulHandleSensorsPeriodMsec;
     HandleNTP();
     _uwEpochTime= _oNTPClient.getEpochTime();
-    //Serial << LOG0 << "loop(): Timer ulNextHandleSensorsMsec fired\n";
-    //_poSensorSet->Handle(_uwEpochTime);
     _poCarSet->ReadSensorSet(_uwEpochTime, _wLoggingSensorSetID);
     _poCarSet->PrintLogData();
   } //if (millis()>ulNextDisplayMsec)
-
-#if DO_ROVER
+*/
+  HandleLogging();
   DisplayUpdate();
-#endif
+
 #if DO_OTA
   HandleOTAWebserver();
 #endif
@@ -187,34 +189,57 @@ void SetupButtons() {
   return;
 } //SetupButtons
 
+
+void ReadButtons(){
+  TireButton1.read();   //This has to get called for onPressed() to get called back
+  TireButton2.read();
+  TireButton3.read();
+  TireButton4.read();
+  return;
+} //ReadButtons
+
+
+void HandleButton(int wSensorSet){
+  Serial << "onPressed1(): You pressed Button " << wSensorSet << "\n";
+  _poCarSet->ReadSensorSet(_uwEpochTime, wSensorSet);
+  return;
+} //HandleButton
+
 void onPressed1(){
   int   wSensorSet= 1;
-  Serial << "onPressed2(): You pressed Button " << wSensorSet << "\n";
-  _poCarSet->ReadSensorSet(_uwEpochTime, wSensorSet);
+  HandleButton(wSensorSet);
   return;
 } //onPressed1
 
 void onPressed2(){
   int   wSensorSet= 2;
-  Serial << "onPressed2(): You pressed Button " << wSensorSet << "\n";
-  _poCarSet->ReadSensorSet(_uwEpochTime, wSensorSet);
+  HandleButton(wSensorSet);
   return;
 } //onPressed2
 
 void onPressed3(){
-  int   wSensorSet= 1;
-  Serial << "onPressed2(): You pressed Button " << wSensorSet << "\n";
-  _poCarSet->ReadSensorSet(_uwEpochTime, wSensorSet);
+  int   wSensorSet= 3;
+  HandleButton(wSensorSet);
   return;
 } //onPressed3
 
 void onPressed4(){
-  int   wSensorSet= 1;
-  Serial << "onPressed2(): You pressed Button " << wSensorSet << "\n";
-  _poCarSet->ReadSensorSet(_uwEpochTime, wSensorSet);
+  int   wSensorSet= 4;
+  HandleButton(wSensorSet);
   return;
 } //onPressed4
 
+
+void HandleLogging(){
+  if (millis() > ulNextHandleSensorsMsec){
+    ulNextHandleSensorsMsec= millis() + ulHandleSensorsPeriodMsec;
+    HandleNTP();
+    _uwEpochTime= _oNTPClient.getEpochTime();
+    _poCarSet->ReadSensorSet(_uwEpochTime, _wLoggingSensorSetID);
+    _poCarSet->PrintLogData();
+  } //if (millis()>ulNextDisplayMsec)
+  return;
+} //HandleLogging
 
 void SetupNTP(){
 // Initialize a NTPClient to get time
