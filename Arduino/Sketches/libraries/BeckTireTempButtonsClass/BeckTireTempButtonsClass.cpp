@@ -49,7 +49,7 @@ void BeckTireTempButtonsClass::ReadButtons(){
 
 void BeckTireTempButtonsClass::HandleButton(int wSensorSet){
   Serial << "onPressed1(): You pressed Button " << wSensorSet << "\n";
-  _poCarSet->ReadSensorSet(wSensorSet);
+  //_poCarSet->ReadSensorSet(wSensorSet);
   return;
 } //HandleButton
 

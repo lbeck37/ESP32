@@ -1,10 +1,11 @@
-// BeckTireTempButtonsClass.h, 3/19/22c
+// BeckTireTempButtonsClass.h, 3/20/22a
 #pragma once
 #include <BeckE32_Defines.h>
 #include <BeckCarSetClass.h>
 #include <EasyButton.h>
 #include <BeckDataMgrClass.h>
 
+#include <functional>
 
 class BeckTireTempButtonsClass{
 public:

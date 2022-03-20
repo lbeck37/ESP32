@@ -26,7 +26,7 @@ BeckCarSetClass::BeckCarSetClass()  {
   BuildObjectData();
 
   Serial << "BeckCarSetClass(): Default CTR, Do _poDisplay= new BeckTireTempDisplayClass()" << endl;
-  _poButtons  = new BeckTireTempButtonsClass(this);
+  //_poButtons  = new BeckTireTempButtonsClass(this);
 
   _poDisplay->DisplayBegin();
   return;
@@ -50,8 +50,10 @@ BeckCarSetClass::~BeckCarSetClass() {
   delete _poNTP;
   _poNTP= nullptr;
 
+/*
   delete _poButtons;
   _poButtons= nullptr;
+*/
 
   return;
 } //destructor

@@ -1,3 +1,4 @@
+//Beck, 3/20/22b
 /**
  * EasyButtonBase.h
  * @author Evert Arias
@@ -12,7 +13,11 @@
 #include "Sequence.h"
 
 #ifdef ESP8266
-#define EASYBUTTON_FUNCTIONAL_SUPPORT 1
+  #define EASYBUTTON_FUNCTIONAL_SUPPORT 1
+#endif
+
+#ifdef ESP32
+  #define EASYBUTTON_FUNCTIONAL_SUPPORT 1
 #endif
 
 #ifdef EASYBUTTON_FUNCTIONAL_SUPPORT
