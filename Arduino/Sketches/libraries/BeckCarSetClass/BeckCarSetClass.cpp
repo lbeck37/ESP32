@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckCarSetClass.cpp";
-const char szSystemFileDate[]  = "3/19/22e";
+const char szSystemFileDate[]  = "3/20/22c";
 
 #include <BeckCarSetClass.h>
 #include <BeckE32_Defines.h>
@@ -8,7 +8,7 @@ const char szSystemFileDate[]  = "3/19/22e";
 #include <BeckTireTempNTPClass.h>
 #include <Streaming.h>
 
-BeckCarSetClass::BeckCarSetClass()  {
+BeckCarSetClass::BeckCarSetClass() : _TestButton(_cButton_Pin1) {
   Serial << "BeckCarSetClass(): Default CTR, " << szSystemFileName << ", " << szSystemFileDate << endl;
 
   Serial << "BeckCarSetClass(): Default CTR, Do _poDataMgr= new BeckDataMgrClass()" << endl;
@@ -29,6 +29,10 @@ BeckCarSetClass::BeckCarSetClass()  {
   //_poButtons  = new BeckTireTempButtonsClass(this);
 
   _poDisplay->DisplayBegin();
+
+  _TestButton.begin();
+  _TestButton.onPressed(onPressedTest);
+
   return;
 } //constructor
 //BeckTireTempButtonsClass*   _poButtons                {nullptr};
@@ -57,6 +61,13 @@ BeckCarSetClass::~BeckCarSetClass() {
 
   return;
 } //destructor
+
+
+void BeckCarSetClass::onPressedTest(){
+  int   wSensorSet= 1;
+  Serial << ": You pressed the TEST button" << endl;
+  return;
+} //onPressedTest
 
 
 void BeckCarSetClass::BuildObjectData(){
@@ -91,6 +102,14 @@ void BeckCarSetClass::ReadSensorSet(int wSensorSetID) {
 } //ReadSensorSet
 
 
+void BeckCarSetClass::HandleLoop(){
+  _TestButton.read();
+  UpdateDisplay();
+  HandleLogging();
+  return;
+} //HandleLoop
+
+
 void BeckCarSetClass::UpdateDisplay(){
   // Call one probe set since all (4) probe-sets use the same type of probe
   //return _apoSensorSet[1]->bBegin();
@@ -109,6 +128,7 @@ void BeckCarSetClass::HandleLogging(){
   } //if (millis()>ulNextDisplayMsec)
   return;
 } //HandleLogging
+
 
 void BeckCarSetClass::PrintLogData(){
   _apoSensorSet[_wLoggingSensorSetID]->PrintSensorSetData();

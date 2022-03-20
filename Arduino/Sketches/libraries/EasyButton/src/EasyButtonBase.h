@@ -12,17 +12,13 @@
 #include <Arduino.h>
 #include "Sequence.h"
 
-#ifdef ESP8266
-  #define EASYBUTTON_FUNCTIONAL_SUPPORT 1
-#endif
-
-#ifdef ESP32
-  #define EASYBUTTON_FUNCTIONAL_SUPPORT 1
+#if defined(ESP8266) || defined(ESP32)
+  #define EASYBUTTON_FUNCTIONAL_SUPPORT   1
 #endif
 
 #ifdef EASYBUTTON_FUNCTIONAL_SUPPORT
-#include <functional>
-#include "FunctionalInterrupt.h"
+  #include <functional>
+  #include "FunctionalInterrupt.h"
 #endif
 
 #define MAX_SEQUENCES 5

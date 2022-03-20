@@ -1,7 +1,8 @@
 const char szSketchName[]  = "BeckE32_TireTemp.ino";
-const char szFileDate[]    = "3/20/22b";      //From Commit 42331... "3/16/22k"
+const char szFileDate[]    = "3/20/22h";      //From Commit 42331... "3/16/22k"
 
 #include <BeckE32_Defines.h>
+#define LOCAL_BUTTONS   true
 #if DO_OTA
   #include <BeckE32_OTALib.h>
 #endif
@@ -13,7 +14,6 @@ const char szFileDate[]    = "3/20/22b";      //From Commit 42331... "3/16/22k"
 #include <BeckTireTempDisplayClass.h>
 #include <BeckTireTempNTPClass.h>
 
-#include <EasyButton.h>
 #include <WiFi.h>
 #include <Streaming.h>
 
@@ -24,20 +24,23 @@ const char* szWebHostName = "TireTemp";
 //Protos
 void  setup                 ();
 void  loop                  ();
-void  SetupButtons          ();
-void  ReadButtons           ();
-void  HandleButton          (int wSensorSet);
-void  onPressed1            ();
-void  onPressed2            ();
-void  onPressed3            ();
-void  onPressed4            ();
+#if LOCAL_BUTTONS
+  void  SetupButtons          ();
+  void  ReadButtons           ();
+  void  HandleButton          (int wSensorSet);
+  void  onPressed1            ();
+  void  onPressed2            ();
+  void  onPressed3            ();
+  void  onPressed4            ();
 
-//Setup buttons, Defaults: 35msec debounce, Pullup enabled, Returns true on button press
-EasyButton        TireButton1   (_cButton_Pin1);
-EasyButton        TireButton2   (_cButton_Pin2);
-EasyButton        TireButton3   (_cButton_Pin3);
-EasyButton        TireButton4   (_cButton_Pin4);
+  #include <EasyButton.h>
 
+  //Setup buttons, Defaults: 35msec debounce, Pullup enabled, Returns true on button press
+  //EasyButton        TireButton1   (_cButton_Pin1);
+  EasyButton        TireButton2   (_cButton_Pin2);
+  EasyButton        TireButton3   (_cButton_Pin3);
+  EasyButton        TireButton4   (_cButton_Pin4);
+#endif
 BeckCarSetClass*  _poCarSet;
 const uint32_t    _uwI2CBusFrequency	= 100000;
 
@@ -64,9 +67,10 @@ void setup(){
   Serial << LOG0 << "setup(): Create _poCarSet using new BeckCarSetClass\n";
   _poCarSet= new BeckCarSetClass();
 
+#if LOCAL_BUTTONS
   Serial << LOG0 << "setup(): Call SetupButtons()\n";
   SetupButtons();
-
+#endif
   //Check the t-couple hardware
   _poCarSet->Begin();
 
@@ -76,9 +80,12 @@ void setup(){
 
 
 void loop(){
+#if LOCAL_BUTTONS
   ReadButtons();
-  _poCarSet->HandleLogging();
-  _poCarSet->UpdateDisplay();
+#endif
+  //_poCarSet->HandleLogging();
+  //_poCarSet->UpdateDisplay();
+  _poCarSet->HandleLoop();
 
 #if DO_OTA
   HandleOTAWebserver();
@@ -86,15 +93,16 @@ void loop(){
   return;
 }  //loop()
 
+#if LOCAL_BUTTONS
 void SetupButtons() {
   Serial << "SetupButtons(): Call TireButton1/2/3/4.begin()\n";
-  TireButton1.begin();
+  //TireButton1.begin();
   TireButton2.begin();
   TireButton3.begin();
   TireButton4.begin();
 
   Serial << "SetupButtons(): Setup Callback, call onPressed(callback) for the 4 buttons\n";
-  TireButton1.onPressed(onPressed1);
+  //TireButton1.onPressed(onPressed1);
   TireButton2.onPressed(onPressed2);
   TireButton3.onPressed(onPressed3);
   TireButton4.onPressed(onPressed4);
@@ -102,7 +110,7 @@ void SetupButtons() {
 } //SetupButtons
 
 void ReadButtons(){
-  TireButton1.read();   //This has to get called for onPressed() to get called back
+  //TireButton1.read();   //This has to get called for onPressed() to get called back
   TireButton2.read();
   TireButton3.read();
   TireButton4.read();
@@ -138,4 +146,5 @@ void onPressed4(){
   HandleButton(wSensorSet);
   return;
 } //onPressed4
+#endif
 //Last line
