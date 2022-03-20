@@ -1,4 +1,4 @@
-// BeckTireTempDisplayClass.h, 3/19/22b
+// BeckTireTempDisplayClass.h, 3/19/22c
 #pragma once
 #include <BeckE32_Defines.h>
 #include <Adafruit_GFX.h>
@@ -34,6 +34,10 @@ unsigned long     ulDisplayPeriodMsec       = 2000; //mSec between output to dis
 
 unsigned long     ulNextHandleSensorsMsec   =    0;
 unsigned long     ulHandleSensorsPeriodMsec = 5000; //mSec between handling probes
+
+const uint16_t    usTopText_CursorY         = 35;
+const uint16_t    usTextSpacing             = 20;
+const uint16_t    usDegF_CursorY            = usTopText_CursorY;
 
 };  //BeckTireTempDisplayClass
 //Last line.

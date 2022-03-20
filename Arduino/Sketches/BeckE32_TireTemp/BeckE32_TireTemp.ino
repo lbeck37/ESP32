@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_TireTemp.ino";
-const char szFileDate[]    = "3/19/22p";      //From Commit 42331... "3/16/22k"
+const char szFileDate[]    = "3/19/22r";      //From Commit 42331... "3/16/22k"
 
 #include <BeckE32_Defines.h>
 #if DO_OTA
@@ -10,52 +10,16 @@ const char szFileDate[]    = "3/19/22p";      //From Commit 42331... "3/16/22k"
 #include <BeckLogLib.h>
 #include <BeckMiniLib.h>
 
-#if DO_ROVER
-  #include <WROVER_KIT_LCD.h>
-#endif
 #include <BeckTireTempDisplayClass.h>
 #include <BeckTireTempNTPClass.h>
 
-#include <Adafruit_GFX.h>
-#include <Fonts/FreeMonoBold12pt7b.h>
-#include <Fonts/FreeMonoBold24pt7b.h>
-#include <Fonts/FreeSans9pt7b.h>
-#include <Fonts/FreeSansOblique18pt7b.h>
-
 #include <EasyButton.h>
 #include <WiFi.h>
-#include <WiFiUdp.h>
 #include <Streaming.h>
-
-#if 0
-#include <NTPClient.h>
-#include <ctime>
-#include <iostream>
-
-#include <iomanip>
-
-using namespace std;
-#include <chrono>
-using namespace std::chrono;
-#endif
 
 const char* szWebHostName = "TireTemp";
 
 #define min(X, Y)       (((X) < (Y)) ? (X) : (Y))
-const UINT16      usTopText_CursorY              =  35;
-
-UINT16            usTextSpacing                  = 20;
-UINT16            usDegF_CursorY                 = usTopText_CursorY;
-
-char              sz100CharString[101];
-
-unsigned long     ulNextDisplayMsec         =    0;
-unsigned long     ulDisplayPeriodMsec       = 2000; //mSec between output to display
-
-/*
-unsigned long     ulNextHandleSensorsMsec    =    0;
-unsigned long     ulHandleSensorsPeriodMsec  = 5000; //mSec between handling probes
-*/
 
 //Protos
 void  setup                 ();
@@ -67,53 +31,24 @@ void  onPressed1            ();
 void  onPressed2            ();
 void  onPressed3            ();
 void  onPressed4            ();
-void  HandleLogging         ();
-void  SetupNTP              ();
-void  HandleNTP             ();
-void  PrintCurrentTime      ();
-void  PrintSecondsSinceY2K  ();
-#if DO_ROVER
-  void  DisplayBegin        ();
-  void  DisplayClear        ();
-  void  FillScreen          (UINT16 usColor);
-  void  DisplayUpdate       ();
-  void  DisplayTemperature  ();
-  void  DisplayLowerBanner  ();
-  void  DisplayText         (UINT16 usCursorX, UINT16 usCursorY, char *pcText,
-                             const GFXfont *pFont, UINT8 ucSize, UINT16 usColor);
-  void  ClearTextBackground (INT16 sUpperLeftX, INT16 sUpperLeftY, UINT16 usWidth, UINT16 usHeight);
-#endif
 
 //Setup buttons, Defaults: 35msec debounce, Pullup enabled, Returns true on button press
-EasyButton TireButton1(_cButton_Pin1);
-EasyButton TireButton2(_cButton_Pin2);
-EasyButton TireButton3(_cButton_Pin3);
-EasyButton TireButton4(_cButton_Pin4);
-
-#if DO_ROVER
-  WROVER_KIT_LCD     RoverLCD;
-  const ColorType    BackgroundColor         = WROVER_BLACK;
-#endif
+EasyButton        TireButton1   (_cButton_Pin1);
+EasyButton        TireButton2   (_cButton_Pin2);
+EasyButton        TireButton3   (_cButton_Pin3);
+EasyButton        TireButton4   (_cButton_Pin4);
 
 BeckCarSetClass*  _poCarSet;
-
-// Define NTP Client to get time
-WiFiUDP           ntpUDP;
-NTPClient         _oNTPClient(ntpUDP);
-
-const uint32_t    _uwI2CBusFrequency= 100000;
-//uint32_t          _uwEpochTime;
+const uint32_t    _uwI2CBusFrequency	= 100000;
 
 void setup(){
   Serial.begin(115200);
   Serial << "\n" << LOG0 << "setup(): Begin " << szSketchName << ", " << szFileDate << "\n";
 
   Serial << "Connect to WiFi router " << _szRouterName << " with " << _szRouterPW << " as the PW\n";
-  // Start WiFi and wait for connection to the network
   WiFi.begin(_szRouterName, _szRouterPW);
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
-    //Serial.print(".");
     Serial << ".";
   }
   Serial << "\n";
@@ -123,16 +58,8 @@ void setup(){
   SetupWebserver(szWebHostName);
 #endif
 
-  Serial << LOG0 << "setup(): Call Wire.begin with bus frequency at " << _uwI2CBusFrequency << "\n";
+  Serial << LOG0 << "setup(): Set up I2C, call Wire.begin with bus frequency at " << _uwI2CBusFrequency << "\n";
   Wire.begin(_cI2C_SDA_Pin, _cI2C_SCL_Pin, _uwI2CBusFrequency);
-
-/*
-  Serial << LOG0 << "setup(): Call SetupNTP()\n";
-  SetupNTP();
-
-  Serial << LOG0 << "setup(): Call PrintCurrentTime()\n";
-  PrintCurrentTime();
-*/
 
   Serial << LOG0 << "setup(): Create _poCarSet using new BeckCarSetClass\n";
   _poCarSet= new BeckCarSetClass();
@@ -159,7 +86,6 @@ void loop(){
   return;
 }  //loop()
 
-
 void SetupButtons() {
   Serial << "SetupButtons(): Call TireButton1/2/3/4.begin()\n";
   TireButton1.begin();
@@ -175,7 +101,6 @@ void SetupButtons() {
   return;
 } //SetupButtons
 
-
 void ReadButtons(){
   TireButton1.read();   //This has to get called for onPressed() to get called back
   TireButton2.read();
@@ -184,13 +109,11 @@ void ReadButtons(){
   return;
 } //ReadButtons
 
-
 void HandleButton(int wSensorSet){
   Serial << "onPressed1(): You pressed Button " << wSensorSet << "\n";
   _poCarSet->ReadSensorSet(wSensorSet);
   return;
 } //HandleButton
-
 
 void onPressed1(){
   int   wSensorSet= 1;
@@ -215,105 +138,4 @@ void onPressed4(){
   HandleButton(wSensorSet);
   return;
 } //onPressed4
-
-
-/*
-void HandleLogging(){
-  if (millis() > ulNextHandleSensorsMsec){
-    ulNextHandleSensorsMsec= millis() + ulHandleSensorsPeriodMsec;
-    HandleNTP();
-    _uwEpochTime= _oNTPClient.getEpochTime();
-
-    _poCarSet->ReadSensorSet(_uwEpochTime, _wLoggingSensorSetID);
-    _poCarSet->PrintLogData();
-  } //if (millis()>ulNextDisplayMsec)
-  return;
-} //HandleLogging
-*/
-
-#if 0
-void SetupNTP(){
-// Initialize a NTPClient to get time
-  Serial << "SetupNTP(): Call oNTPClient.begin()\n";
-  _oNTPClient.begin();
-
-  Serial << "SetupNTP(): Call oNTPClient.setTimeOffset() with an offset of " << _wOffsetUTC << " hours\n";
-  _oNTPClient.setTimeOffset(_wOffsetUTC * 3600);
-
-  return;
-} //SetupNTP
-
-void HandleNTP(){
-  // https://randomnerdtutorials.com/esp32-ntp-client-date-time-arduino-ide/
-  // Variables to save date and time
-  String formattedDate;
-  String szFormattedTime;
-  String dayStamp;
-  String timeStamp;
-
-  //Serial << "HandleNTP(): Enter while loop with oNTPClient.update and oNTPClient.forceUpdate()\n";
-  while(!_oNTPClient.update()) {
-    _oNTPClient.forceUpdate();
-  } //while
-  //Serial << "HandleNTP(): Done with while loop\n";
-
-  // The formattedDate comes with the following format:
-  // 2018-05-28T16:00:13Z
-  // We need to extract date and time
-#if false
-  //formattedDate = _oNTPClient.getFormattedDate();
-  formattedDate = _oNTPClient.getFormattedTime();
-  Serial.println(formattedDate);
-
-
-  // Extract date
-  int splitT = formattedDate.indexOf("T");
-  dayStamp = formattedDate.substring(0, splitT);
-  Serial.print("DATE: ");
-  Serial.println(dayStamp);
-  // Extract time
-  timeStamp = formattedDate.substring(splitT+1, formattedDate.length()-1);
-  Serial.print("HOUR: ");
-  Serial.println(timeStamp);
-#endif
-  return;
-}   //HandleNTP
-
-void PrintCurrentTime(){
-  //Print the current time (Pro C++ pg 801)
-  //Serial << "PrintCurrentTime(): Get a time_point for the current time\n";
-  system_clock::time_point  oCurentTime{system_clock::now()};
-
-  //Serial << "PrintCurrentTime(): Convert the time_point to a time_t\n";
-  time_t  oCurrentTime_time_t{system_clock::to_time_t(oCurentTime)};
-
-  //Convert to local time
-  //Serial << "PrintCurrentTime(): Convert to local time\n";
-  tm*   pLocalTime{localtime(&oCurrentTime_time_t)};
-
-  //Print the current time
-  //Serial << "PrintCurrentTime(): Stream put_time() to cout\n";
-  cout << "PrintCurrentTime(),(via cout): Current time is " << put_time(pLocalTime, "%H:%M:%S") << "\n";
-  return;
-}   //PrintCurrentTime
-
-void PrintSecondsSinceY2K()
-{
-  time_t timer;
-  struct tm y2k = {0};
-  double seconds;
-
-  y2k.tm_hour = 0;   y2k.tm_min = 0; y2k.tm_sec = 0;
-  y2k.tm_year = 100; y2k.tm_mon = 0; y2k.tm_mday = 1;
-
-  time(&timer);  /* get current time; same as: timer = time(NULL)  */
-
-  seconds = difftime(timer,mktime(&y2k));
-
-  //printf ("%.f seconds since January 1, 2000 in the current timezone", seconds);
-
-  Serial << "PrintSecondsSinceY2K(): " << seconds << "seconds since January 1, 2000\n";
-  return;
-} //PrintSecondsSinceY2K
-#endif
 //Last line
