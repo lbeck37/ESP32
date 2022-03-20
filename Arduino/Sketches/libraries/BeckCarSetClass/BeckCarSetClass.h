@@ -1,8 +1,9 @@
-// BeckCarSetClass.h, 3/19/22d
+// BeckCarSetClass.h, 3/19/22e
 #pragma once
 #include <BeckE32_Defines.h>
 #include <BeckDataMgrClass.h>
 #include <BeckSensorSetClass.h>
+#include <BeckTireTempButtonsClass.h>
 #include <BeckTireTempDisplayClass.h>
 #include <BeckTireTempNTPClass.h>
 
@@ -24,6 +25,7 @@ private:
   BeckDataMgrClass*           _poDataMgr                {nullptr};
   BeckTireTempDisplayClass*   _poDisplay                {nullptr};
   BeckTireTempNTPClass*       _poNTP                    {nullptr};
+  //BeckTireTempButtonsClass*   _poButtons                {nullptr};
 
   uint32_t                    _uwEpochTime;
   unsigned long               _ulNextHandleSensorsMsec   =    0;

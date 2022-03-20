@@ -1,8 +1,8 @@
 const char szSystemFileName[]  = "BeckCarSetClass.cpp";
-const char szSystemFileDate[]  = "3/19/22d";
+const char szSystemFileDate[]  = "3/19/22e";
 
-#include <BeckE32_Defines.h>
 #include <BeckCarSetClass.h>
+#include <BeckE32_Defines.h>
 #include <BeckDataMgrClass.h>
 #include <BeckSensorClass.h>
 #include <BeckTireTempNTPClass.h>
@@ -24,9 +24,14 @@ BeckCarSetClass::BeckCarSetClass()  {
 
   Serial << "BeckCarSetClass(): Default CTR, Call BuildObjectData()" << endl;
   BuildObjectData();
+
+  Serial << "BeckCarSetClass(): Default CTR, Do _poDisplay= new BeckTireTempDisplayClass()" << endl;
+  _poButtons  = new BeckTireTempButtonsClass(this);
+
   _poDisplay->DisplayBegin();
   return;
 } //constructor
+//BeckTireTempButtonsClass*   _poButtons                {nullptr};
 
 BeckCarSetClass::~BeckCarSetClass() {
   Serial << "~BeckCarSetClass(): Destructor, Deleting sensors" << endl;
@@ -35,6 +40,19 @@ BeckCarSetClass::~BeckCarSetClass() {
     delete _apoSensorSet[wSensorSetID];
     _apoSensorSet[wSensorSetID]= nullptr;
   }   //for
+
+  delete _poDataMgr;
+  _poDataMgr= nullptr;
+
+  delete _poDisplay;
+  _poDisplay= nullptr;
+
+  delete _poNTP;
+  _poNTP= nullptr;
+
+  delete _poButtons;
+  _poButtons= nullptr;
+
   return;
 } //destructor
 
