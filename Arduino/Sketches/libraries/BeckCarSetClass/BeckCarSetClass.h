@@ -22,7 +22,7 @@ public:
   void  PrintLogData            ();
 
 private:
-  //static void   onPressedTest   ();
+  static void   WhenPressedTest ();
   void          BuildObjectData ();
 
   BeckSensorSetClass*         _apoSensorSet             [_wNumSensorSets + 1];
