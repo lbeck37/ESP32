@@ -5,8 +5,14 @@ const char szSystemFileDate[]  = "3/20/22d";
 #include <BeckCarSetClass.h>
 #include <Streaming.h>
 
+//BeckButtonsClass::BeckButtonsClass(void) {
 BeckButtonsClass::BeckButtonsClass(void) : _oTestButton(_cButton_Pin1) {
   Serial << "BeckButtonsClass(void): Default CTR, " << szSystemFileName << ", " << szSystemFileDate << endl;
+/*
+  Serial << "BeckButtonsClass(void): Default CTR, Call _oTestButton= EasyButton(_cButton_Pin1)" << endl;
+  _oTestButton= EasyButton(_cButton_Pin1);
+*/
+
   Serial << "BeckButtonsClass(void): Default CTR, Call _oTestButton.begin()" << endl;
   _oTestButton.begin();
   Serial << "BeckButtonsClass(void): Default CTR, Call _oTestButton.onPressed(OnPressedTest)" << endl;
@@ -28,40 +34,16 @@ BeckButtonsClass::~BeckButtonsClass() {
   return;
 } //destructor
 
-/*
-void BeckButtonsClass::SetupButtons() {
-  Serial << "SetupButtons(): Call TireButton1/2/3/4.begin()\n";
-
-  TireButton1.begin();
-  TireButton2.begin();
-  TireButton3.begin();
-  TireButton4.begin();
-
-
-  Serial << "SetupButtons(): Setup Callback, call onPressed(callback) for the 4 buttons\n";
-
-  TireButton1.onPressed(onPressed1);
-  TireButton2.onPressed(onPressed2);
-  TireButton3.onPressed(onPressed3);
-  TireButton4.onPressed(onPressed4);
-
-  return;
-} //SetupButtons
-*/
 
 void BeckButtonsClass::ReadButtons(){
-/*
-  TireButton1.read();   //This has to get called for onPressed() to get called back
-  TireButton2.read();
-  TireButton3.read();
-  TireButton4.read();
-*/
+  _oTestButton.read();
   return;
 } //ReadButtons
 
 
 void BeckButtonsClass::HandleLoop(){
-  _oTestButton.read();
+  //_oTestButton.read();
+  ReadButtons();
   return;
 } //HandleLoop
 

@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_TireTemp.ino";
-const char szFileDate[]    = "3/20/22k";      //From Commit 42331... "3/16/22k"
+const char szFileDate[]    = "3/20/22m";      //From Commit 42331... "3/16/22k"
 
 #include <BeckE32_Defines.h>
 #define LOCAL_BUTTONS   true
@@ -10,10 +10,8 @@ const char szFileDate[]    = "3/20/22k";      //From Commit 42331... "3/16/22k"
 #include <BeckI2cClass.h>
 #include <BeckLogLib.h>
 #include <BeckMiniLib.h>
-
 #include <BeckTireTempDisplayClass.h>
 #include <BeckTireTempNTPClass.h>
-
 #include <WiFi.h>
 #include <Streaming.h>
 
@@ -34,7 +32,6 @@ void  loop                  ();
   void  onPressed4            ();
 
   #include <EasyButton.h>
-
   //Setup buttons, Defaults: 35msec debounce, Pullup enabled, Returns true on button press
   //EasyButton        TireButton1   (_cButton_Pin1);
   EasyButton        TireButton2   (_cButton_Pin2);
@@ -77,7 +74,6 @@ void setup(){
   Serial << LOG0 << "setup(): return\n";
   return;
 }  //setup
-
 
 void loop(){
 #if LOCAL_BUTTONS
