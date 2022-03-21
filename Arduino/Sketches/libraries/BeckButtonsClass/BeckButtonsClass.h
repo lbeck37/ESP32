@@ -1,31 +1,34 @@
-// BeckTireTempButtonsClass.h, 3/20/22a
+// BeckButtonsClass.h, 3/20/22d
 #pragma once
 #include <BeckE32_Defines.h>
-#include <BeckCarSetClass.h>
 #include <EasyButton.h>
-#include <BeckDataMgrClass.h>
 
 #include <functional>
 
-class BeckTireTempButtonsClass{
+class BeckButtonsClass{
 public:
-  BeckTireTempButtonsClass();
-  //BeckTireTempButtonsClass(BeckCarSetClass* poCarSet);
-  virtual ~BeckTireTempButtonsClass();
+  BeckButtonsClass();
+  virtual ~BeckButtonsClass();
 
-  void  SetupButtons          	();
+  //void  SetupButtons          	();
+  void  HandleLoop              ();
   void  ReadButtons           	();
-  static void  HandleButton     (int wSensorSet);
+  //void  HandleButton            (int wSensorSet);
+  static void  OnPressedTest    ();
+/*
   static void  onPressed1   	  ();
   static void  onPressed2      	();
   static void  onPressed3      	();
   static void  onPressed4      	();
+*/
 private:
-  BeckDataMgrClass*    _poCarSet;
-
+  //BeckDataMgrClass*     _poCarSet;
+  EasyButton            _oTestButton;
+/*
   EasyButton TireButton1= EasyButton(_cButton_Pin1);
   EasyButton TireButton2= EasyButton(_cButton_Pin2);
   EasyButton TireButton3= EasyButton(_cButton_Pin3);
   EasyButton TireButton4= EasyButton(_cButton_Pin4);
-};  //BeckTireTempButtonsClass
+*/
+};  //BeckButtonsClass
 //Last line.

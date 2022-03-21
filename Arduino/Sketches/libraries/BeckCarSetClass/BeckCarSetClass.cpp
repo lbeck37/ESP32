@@ -8,7 +8,8 @@ const char szSystemFileDate[]  = "3/20/22c";
 #include <BeckTireTempNTPClass.h>
 #include <Streaming.h>
 
-BeckCarSetClass::BeckCarSetClass() : _TestButton(_cButton_Pin1) {
+BeckCarSetClass::BeckCarSetClass() // : _TestButton(_cButton_Pin1)
+{
   Serial << "BeckCarSetClass(): Default CTR, " << szSystemFileName << ", " << szSystemFileDate << endl;
 
   Serial << "BeckCarSetClass(): Default CTR, Do _poDataMgr= new BeckDataMgrClass()" << endl;
@@ -26,12 +27,14 @@ BeckCarSetClass::BeckCarSetClass() : _TestButton(_cButton_Pin1) {
   BuildObjectData();
 
   Serial << "BeckCarSetClass(): Default CTR, Do _poDisplay= new BeckTireTempDisplayClass()" << endl;
-  //_poButtons  = new BeckTireTempButtonsClass(this);
+  _poButtons  = new BeckButtonsClass();
 
   _poDisplay->DisplayBegin();
 
+/*
   _TestButton.begin();
   _TestButton.onPressed(onPressedTest);
+*/
 
   return;
 } //constructor
@@ -45,29 +48,32 @@ BeckCarSetClass::~BeckCarSetClass() {
     _apoSensorSet[wSensorSetID]= nullptr;
   }   //for
 
-  delete _poDataMgr;
-  _poDataMgr= nullptr;
+  if (_poDataMgr != nullptr) {
+    Serial << "~BeckCarSetClass(): Destructor, delete _poDataMgr" << endl;
+    delete _poDataMgr;
+    _poDataMgr= nullptr;
+  }
 
-  delete _poDisplay;
-  _poDisplay= nullptr;
+  if (_poDisplay != nullptr) {
+    Serial << "~BeckCarSetClass(): Destructor, delete _poDisplay" << endl;
+    delete _poDisplay;
+    _poDisplay= nullptr;
+  }
 
-  delete _poNTP;
-  _poNTP= nullptr;
+  if (_poNTP != nullptr) {
+    Serial << "~BeckCarSetClass(): Destructor, delete _poNTP" << endl;
+    delete _poNTP;
+    _poNTP= nullptr;
+  }
 
-/*
-  delete _poButtons;
-  _poButtons= nullptr;
-*/
+  if (_poButtons != nullptr) {
+    Serial << "~BeckCarSetClass(): Destructor, delete _poButtons" << endl;
+    delete _poButtons;
+    _poButtons= nullptr;
+  }
 
   return;
 } //destructor
-
-
-void BeckCarSetClass::onPressedTest(){
-  int   wSensorSet= 1;
-  Serial << ": You pressed the TEST button" << endl;
-  return;
-} //onPressedTest
 
 
 void BeckCarSetClass::BuildObjectData(){
@@ -102,8 +108,17 @@ void BeckCarSetClass::ReadSensorSet(int wSensorSetID) {
 } //ReadSensorSet
 
 
+/*
+void BeckCarSetClass::onPressedTest(){
+  int   wSensorSet= 1;
+  Serial << ": You pressed the TEST button" << endl;
+  return;
+} //onPressedTest
+*/
+
+
 void BeckCarSetClass::HandleLoop(){
-  _TestButton.read();
+  _poButtons->HandleLoop();
   UpdateDisplay();
   HandleLogging();
   return;

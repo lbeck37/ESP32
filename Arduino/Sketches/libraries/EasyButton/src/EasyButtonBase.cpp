@@ -1,3 +1,4 @@
+//Beck, 3/20/22a
 /**
  * EasyButtonBase.h
  * @author Evert Arias
@@ -6,9 +7,11 @@
  */
 
 #include "EasyButtonBase.h"
+#include <Streaming.h>
 
 void EasyButtonBase::onPressed(EasyButtonBase::callback_t callback)
 {
+  Serial << "EasyButtonBase::onPressed(EasyButtonBase::callback_t callback)" << endl;
 	_pressed_callback = callback;
 }
 
