@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckCarSetClass.cpp";
-const char szSystemFileDate[]  = "3/20/22e";
+const char szSystemFileDate[]  = "3/21/22a";
 
 #include <BeckCarSetClass.h>
 #include <BeckE32_Defines.h>
@@ -26,9 +26,12 @@ BeckCarSetClass::BeckCarSetClass() // : _TestButton(_cButton_Pin1)
   Serial << "BeckCarSetClass(): Default CTR, Call BuildObjectData()" << endl;
   BuildObjectData();
 
-  Serial << "BeckCarSetClass(): Default CTR, Do _poDisplay= new BeckTireTempDisplayClass()" << endl;
+  Serial << "\nBeckCarSetClass(): Default CTR, Do _poButtons= new BeckButtonsClass()" << endl;
   _poButtons  = new BeckButtonsClass();
-  //_poButtons->WhenPressed(WhenPressedTest);
+
+  sprintf(_sz100Char, "BeckCarSetClass(): CTR, WhenPressedTest address= %p | %x\n", WhenPressedTest, WhenPressedTest);
+  Serial << _sz100Char;
+  _poButtons->WhenPressed(WhenPressedTest);
 
   _poDisplay->DisplayBegin();
 

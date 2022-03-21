@@ -1,4 +1,4 @@
-// BeckESP32_Defines.h, 3/16/22c
+// BeckESP32_Defines.h, 3/21/22a
 #pragma once
 #include <cstdint>
 
@@ -17,6 +17,8 @@ static const  char*     _szRouterPW       = "Qazqaz11";
 typedef int16_t         ColorType;      //See Adafruit_GFX.h
 typedef int16_t         PUnit;          //Pixel Unit
 typedef uint8_t         FontSize;
+
+static char             _sz100Char[101];
 
 static const int8_t     _cButton_Pin1       = 12;
 static const int8_t     _cButton_Pin2       = 13;

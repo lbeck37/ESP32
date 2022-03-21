@@ -11,7 +11,10 @@
 
 void EasyButtonBase::onPressed(EasyButtonBase::callback_t callback)
 {
-  Serial << "EasyButtonBase::onPressed(EasyButtonBase::callback_t callback)" << endl;
+  //Serial << "EasyButtonBase::onPressed(EasyButtonBase::callback_t callback)" << endl;
+  static char   sz100Char[101];
+  sprintf(sz100Char, "EasyButtonBase::onPressed(): callback address= %p | %x\n", callback, callback);
+  Serial << sz100Char;
 	_pressed_callback = callback;
 }
 
