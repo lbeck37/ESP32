@@ -1,21 +1,23 @@
 const char szSystemFileName[]  = "BeckButtonsClass.cpp";
-const char szSystemFileDate[]  = "3/22/22a";
+const char szSystemFileDate[]  = "3/21/22c";
 
 #include <BeckButtonsClass.h>
 #include <BeckCarSetClass.h>
 #include <Streaming.h>
 
-BeckButtonsClass::BeckButtonsClass(void) : _oTestButton(_cButton_Pin1) {
-  Serial << "BeckButtonsClass(void): Default CTR, " << szSystemFileName << ", " << szSystemFileDate << endl;
+BeckButtonsClass::BeckButtonsClass() : _oTestButton(_cButton_Pin1) {
+  Serial << "BeckButtonsClass(): Default CTR, " << szSystemFileName << ", " << szSystemFileDate << endl;
 /*
-  Serial << "BeckButtonsClass(void): Default CTR, Call _oTestButton= EasyButton(_cButton_Pin1)" << endl;
+  Serial << "BeckButtonsClass(): Default CTR, Call _oTestButton= EasyButton(_cButton_Pin1)" << endl;
   _oTestButton= EasyButton(_cButton_Pin1);
 */
 
-  Serial << "\nBeckButtonsClass(void): Default CTR, Call _oTestButton.begin()" << endl;
+  Serial << "BeckButtonsClass(): Default CTR, Call _oTestButton.begin()" << endl;
   _oTestButton.begin();
 
-  Serial << "BeckButtonsClass(void): Default CTR, Call _oTestButton.onPressed(OnPressedTest)" << endl;
+  Serial << "BeckButtonsClass(): Default CTR, Call _oTestButton.onPressed(OnPressedTest)" << endl;
+  sprintf(_sz100Char, "BeckButtonsClass(): Default CTR, OnPressedTest address= %x\n", OnPressedTest);
+  Serial << _sz100Char;
   _oTestButton.onPressed(OnPressedTest);
   return;
 } //constructor
@@ -41,8 +43,8 @@ void BeckButtonsClass::HandleLoop(){
 
 
 void BeckButtonsClass::WhenPressed(EasyButtonBase::callback_t CallbackRoutine){
-  //Serial << "BeckButtonsClass::WhenPressed(): Call _oTestButton.onPressed(CallbackRoutine)" << endl;
-  sprintf(_sz100Char, "BeckButtonsClass::WhenPressed(CallbackRoutine address= %p | %x\n", CallbackRoutine, CallbackRoutine);
+  Serial << "BeckButtonsClass::WhenPressed(): Call EasyButton _oTestButton.onPressed(CallbackRoutine)" << endl;
+  sprintf(_sz100Char, "BeckButtonsClass::WhenPressed(): CallbackRoutine address= %x\n", CallbackRoutine);
   Serial << _sz100Char;
   _oTestButton.onPressed(CallbackRoutine);
   return;

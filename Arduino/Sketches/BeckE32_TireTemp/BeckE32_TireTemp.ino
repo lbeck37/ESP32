@@ -1,8 +1,8 @@
 const char szSketchName[]  = "BeckE32_TireTemp.ino";
-const char szFileDate[]    = "3/21/22c";      //From Commit 42331... "3/16/22k"
+const char szFileDate[]    = "3/21/22k";
 
 #include <BeckE32_Defines.h>
-#define LOCAL_BUTTONS   true
+#define LOCAL_BUTTONS   false
 #if DO_OTA
   #include <BeckE32_OTALib.h>
 #endif
