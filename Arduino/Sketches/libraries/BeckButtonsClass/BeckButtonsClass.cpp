@@ -47,17 +47,32 @@ void BeckButtonsClass::HandleLoop(){
 } //HandleLoop
 
 
-void BeckButtonsClass::SetCallback(EasyButtonBase::callback_t CallbackRoutine){
+void BeckButtonsClass::SetCallback(EasyButtonBase::callback_t CarSetCallback){
   Serial << "BeckButtonsClass::SetCallback(): Call EasyButton _oTestButton.onPressed(CallbackRoutine)" << endl;
+  //_CarSetCallback= CarSetCallback;
   //sprintf(_sz100Char, "BeckButtonsClass::SetCallback(): CallbackRoutine address= %x\n", CallbackRoutine);
   //Serial << _sz100Char;
-  _oTestButton.onPressed(CallbackRoutine);
+  Serial << "BeckButtonsClass::SetCallback(): See if we can call the _CarSetCallback() routine" << endl;
+  CarSetCallback();
+
+  _oTestButton.onPressed(CarSetCallback);
+  //_oTestButton.onPressed(ButtonsCallback);
   return;
 } //SetCallback
 
 
 void BeckButtonsClass::ButtonsCallback(){
   Serial << "BeckButtonsClass::ButtonsCallback: You pressed the TESTy Green button" << endl;
+  //Serial << "BeckButtonsClass::ButtonsCallback: Call DoCallback()" << endl;
   return;
 } //ButtonsCallback
+
+
+/*
+void BeckButtonsClass::DoCallback(){
+  Serial << "BeckButtonsClass::DoCallback: Call _CarSetCallback()" << endl;
+  _CarSetCallback();
+  return;
+} //DoCallback
+*/
 //Last line.
