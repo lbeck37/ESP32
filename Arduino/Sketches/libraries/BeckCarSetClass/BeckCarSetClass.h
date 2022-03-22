@@ -1,4 +1,4 @@
-// BeckCarSetClass.h, 3/21/22a
+// BeckCarSetClass.h, 3/22/22a
 #pragma once
 #include <BeckE32_Defines.h>
 #include <BeckDataMgrClass.h>
@@ -23,7 +23,15 @@ public:
 
 private:
   static void   CarSetCallback  ();
+/*
+  static void   CarSetCallback2 ();
+  static void   CarSetCallback3 ();
+  static void   CarSetCallback4 ();
+*/
+
   void          BuildObjectData ();
+
+//  static int    _wButtonWasPressed;
 
   BeckSensorSetClass*         _apoSensorSet             [_wNumSensorSets + 1];
   BeckDataMgrClass*           _poDataMgr                {nullptr};

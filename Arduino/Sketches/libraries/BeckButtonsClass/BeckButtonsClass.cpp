@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckButtonsClass.cpp";
-const char szSystemFileDate[]  = "3/21/22f"
+const char szSystemFileDate[]  = "3/22/22b"
     ""
     "-";
 
@@ -17,12 +17,11 @@ BeckButtonsClass::BeckButtonsClass() : _oTestButton(_cButton_Pin1) {
   Serial << "BeckButtonsClass(): Default CTR, Call _oTestButton.begin()" << endl;
   _oTestButton.begin();
 
-/*
-  Serial << "BeckButtonsClass(): Default CTR, Call _oTestButton.onPressed(OnPressedTest)" << endl;
-  sprintf(_sz100Char, "BeckButtonsClass(): Default CTR, OnPressedTest address= %x\n", OnPressedTest);
+  Serial << "BeckButtonsClass(): Default CTR, Call _oTestButton.onPressed(ButtonsCallback)" << endl;
+  sprintf(_sz100Char, "BeckButtonsClass(): Default CTR, OnPressedTest address= %x\n", ButtonsCallback);
   Serial << _sz100Char;
-  _oTestButton.onPressed(OnPressedTest);
-*/
+  _oTestButton.onPressed(ButtonsCallback);
+
   Serial << "BeckButtonsClass(): Default CTR, Done" << endl;
   return;
 } //constructor
@@ -47,16 +46,19 @@ void BeckButtonsClass::HandleLoop(){
 } //HandleLoop
 
 
-void BeckButtonsClass::SetCallback(EasyButtonBase::callback_t CarSetCallback){
+//void BeckButtonsClass::SetCallback(EasyButtonBase::callback_t CarSetCallback){
+void BeckButtonsClass::SetCallback(EasyButtonBase::callback_t ButtonsCallback){
   Serial << "BeckButtonsClass::SetCallback(): Call EasyButton _oTestButton.onPressed(CallbackRoutine)" << endl;
   //_CarSetCallback= CarSetCallback;
   //sprintf(_sz100Char, "BeckButtonsClass::SetCallback(): CallbackRoutine address= %x\n", CallbackRoutine);
   //Serial << _sz100Char;
+/*
   Serial << "BeckButtonsClass::SetCallback(): See if we can call the _CarSetCallback() routine" << endl;
   CarSetCallback();
 
   _oTestButton.onPressed(CarSetCallback);
-  //_oTestButton.onPressed(ButtonsCallback);
+*/
+  _oTestButton.onPressed(ButtonsCallback);
   return;
 } //SetCallback
 

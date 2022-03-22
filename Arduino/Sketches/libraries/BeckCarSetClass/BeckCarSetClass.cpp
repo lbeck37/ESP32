@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckCarSetClass.cpp";
-const char szSystemFileDate[]  = "3/21/22d";
+const char szSystemFileDate[]  = "3/22/22b";
 
 #include <BeckCarSetClass.h>
 #include <BeckE32_Defines.h>
@@ -29,10 +29,12 @@ BeckCarSetClass::BeckCarSetClass() // : _TestButton(_cButton_Pin1)
   Serial << "\nBeckCarSetClass(): Default CTR, Do _poButtons= new BeckButtonsClass()" << endl;
   _poButtons  = new BeckButtonsClass();
 
+/*
   Serial << "BeckCarSetClass(): Default CTR, Call _poButtons->SetCallback( CarSetCallback )" << endl;
   //sprintf(_sz100Char, "BeckCarSetClass(): Default CTR, WhenPressedTest address= %x\n", CarSetCallback);
   //Serial << _sz100Char;
   _poButtons->SetCallback(CarSetCallback);
+*/
 
   Serial << "BeckCarSetClass(): Call _poDisplay->DisplayBegin()" << endl;
   _poDisplay->DisplayBegin();
@@ -110,13 +112,41 @@ void BeckCarSetClass::ReadSensorSet(int wSensorSetID) {
 } //ReadSensorSet
 
 
-//void BeckCarSetClass::WhenPressedTest(){
 void BeckCarSetClass::CarSetCallback(){
   int   wSensorSet= 1;
   Serial << "BeckCarSetClass::CarSetCallback(): I feel the need for speed!" << endl;
+/*
+  Serial << ": Set static variable _wButtonWasPressed to 37" << endl;
+  BeckCarSetClass::_wButtonWasPressed= 37;
+*/
   return;
 } //CarSetCallback
 
+/*
+void BeckCarSetClass::CarSetCallback1(){
+  int   wSensorSet= 1;
+  Serial << "BeckCarSetClass::CarSetCallback1(): I feel the need for speed!" << endl;
+  return;
+} //CarSetCallback1
+
+void BeckCarSetClass::CarSetCallback2(){
+  int   wSensorSet= 1;
+  Serial << "BeckCarSetClass::CarSetCallback2(): I feel the need for speed!" << endl;
+  return;
+} //CarSetCallback2
+
+void BeckCarSetClass::CarSetCallback3(){
+  int   wSensorSet= 1;
+  Serial << "BeckCarSetClass::CarSetCallback3(): I feel the need for speed!" << endl;
+  return;
+} //CarSetCallback3
+
+void BeckCarSetClass::CarSetCallback4(){
+  int   wSensorSet= 1;
+  Serial << "BeckCarSetClass::CarSetCallback4(): I feel the need for speed!" << endl;
+  return;
+} //CarSetCallback4
+*/
 
 void BeckCarSetClass::HandleLoop(){
   _poButtons->HandleLoop();
