@@ -1,4 +1,4 @@
-// BeckButtonsClass.h, 3/20/22e
+// BeckButtonsClass.h, 3/21/22b
 #pragma once
 #include <BeckE32_Defines.h>
 #include <EasyButton.h>
@@ -10,12 +10,11 @@ public:
   BeckButtonsClass();
   virtual ~BeckButtonsClass();
 
-  //void  SetupButtons          	();
-  void  HandleLoop              ();
-  void  ReadButtons           	();
-  void  WhenPressed             (EasyButtonBase::callback_t CallbackRoutine);
-  //void  HandleButton            (int wSensorSet);
-  static void   OnPressedTest    ();
+  //void  SetupButtons          ();
+  void          HandleLoop      ();
+  void          ReadButtons     ();
+  void          SetCallback     (EasyButtonBase::callback_t CallbackRoutine);
+  static void   ButtonsCallback ();
 /*
   static void  onPressed1   	  ();
   static void  onPressed2      	();
@@ -23,7 +22,6 @@ public:
   static void  onPressed4      	();
 */
 private:
-  //BeckDataMgrClass*     _poCarSet;
   EasyButton            _oTestButton;
 /*
   EasyButton TireButton1= EasyButton(_cButton_Pin1);

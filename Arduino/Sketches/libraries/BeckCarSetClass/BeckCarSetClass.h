@@ -1,4 +1,4 @@
-// BeckCarSetClass.h, 3/20/22d
+// BeckCarSetClass.h, 3/21/22a
 #pragma once
 #include <BeckE32_Defines.h>
 #include <BeckDataMgrClass.h>
@@ -22,7 +22,7 @@ public:
   void  PrintLogData            ();
 
 private:
-  static void   WhenPressedTest ();
+  static void   CarSetCallback  ();
   void          BuildObjectData ();
 
   BeckSensorSetClass*         _apoSensorSet             [_wNumSensorSets + 1];
