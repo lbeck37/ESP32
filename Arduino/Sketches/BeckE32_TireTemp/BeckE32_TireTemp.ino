@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_TireTemp.ino";
-const char szFileDate[]    = "3/28/22f";
+const char szFileDate[]    = "3/28/22h";
 #include <BeckE32_Defines.h>
 #define LOCAL_BUTTONS   false
 #if DO_OTA
@@ -13,6 +13,9 @@ const char szFileDate[]    = "3/28/22f";
 #include <BeckTireTempNTPClass.h>
 #include <WiFi.h>
 #include <Streaming.h>
+
+using Matcher = bool(*)(int, int);
+Matcher aMatchers[4];
 
 const char* szWebHostName = "TireTemp";
 
