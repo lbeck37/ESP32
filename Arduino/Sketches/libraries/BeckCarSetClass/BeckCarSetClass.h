@@ -31,7 +31,7 @@ private:
 
   void          BuildObjectData ();
 
-//  static int    _wButtonWasPressed;
+  static int    _wButtonWasPressed;
 
   BeckSensorSetClass*         _apoSensorSet             [_wNumSensorSets + 1];
   BeckDataMgrClass*           _poDataMgr                {nullptr};

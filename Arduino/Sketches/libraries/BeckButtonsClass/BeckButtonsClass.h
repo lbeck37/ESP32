@@ -1,9 +1,11 @@
-// BeckButtonsClass.h, 3/24/22a
+// BeckButtonsClass.h, 3/28/22a
 #pragma once
 #include <BeckE32_Defines.h>
 #include <EasyButton.h>
 
 #include <functional>
+
+static int    _wButtonWasPressed;
 
 class BeckButtonsClass{
 public:
@@ -22,7 +24,7 @@ public:
   static void  onPressed3      	();
   static void  onPressed4      	();
 */
-  static int    _wButtonWasPressed;
+  //static int    _wButtonWasPressed;
 private:
   //int           _wButtonWasPressed;
   EasyButton                    _oTestButton;

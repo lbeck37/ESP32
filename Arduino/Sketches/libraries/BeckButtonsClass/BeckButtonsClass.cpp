@@ -66,7 +66,8 @@ void BeckButtonsClass::SetCallback(EasyButtonBase::callback_t ButtonsCallback){
 void BeckButtonsClass::ButtonsCallback(){
   Serial << "BeckButtonsClass::ButtonsCallback: You pressed the TESTy Green button" << endl;
   Serial << "BeckButtonsClass::ButtonsCallback: Set _wButtonWasPressed= 1" << endl;
-  BeckButtonsClass::_wButtonWasPressed= 1;
+  //BeckButtonsClass::_wButtonWasPressed= 1;
+  _wButtonWasPressed= 1;
   return;
 } //ButtonsCallback
 
