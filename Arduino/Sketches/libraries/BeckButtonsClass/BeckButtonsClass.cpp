@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckButtonsClass.cpp";
-const char szSystemFileDate[]  = "3/22/22b"
+const char szSystemFileDate[]  = "3/22/22c"
     ""
     "-";
 
@@ -65,7 +65,8 @@ void BeckButtonsClass::SetCallback(EasyButtonBase::callback_t ButtonsCallback){
 
 void BeckButtonsClass::ButtonsCallback(){
   Serial << "BeckButtonsClass::ButtonsCallback: You pressed the TESTy Green button" << endl;
-  //Serial << "BeckButtonsClass::ButtonsCallback: Call DoCallback()" << endl;
+  Serial << "BeckButtonsClass::ButtonsCallback: Set _wButtonWasPressed= 1" << endl;
+  BeckButtonsClass::_wButtonWasPressed= 1;
   return;
 } //ButtonsCallback
 
