@@ -3,7 +3,7 @@
 #include <BeckE32_Defines.h>
 #include <BeckDataMgrClass.h>
 #include <BeckSensorSetClass.h>
-#include <BeckButtonClass.h>
+#include <BeckButtonsClass.h>
 #include <BeckTireTempDisplayClass.h>
 #include <BeckTireTempNTPClass.h>
 
@@ -37,7 +37,7 @@ private:
   BeckDataMgrClass*           _poDataMgr                {nullptr};
   BeckTireTempDisplayClass*   _poDisplay                {nullptr};
   BeckTireTempNTPClass*       _poNTP                    {nullptr};
-  BeckButtonClass*            _poButton                 {nullptr};
+  BeckButtonsClass*            _poButtons               {nullptr};
   //EasyButton                  _TestButton;
 
   uint32_t                    _uwEpochTime;

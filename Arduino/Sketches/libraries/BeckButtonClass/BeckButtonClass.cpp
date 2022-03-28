@@ -1,26 +1,21 @@
 const char szSystemFileName[]  = "BeckButtonClass.cpp";
-const char szSystemFileDate[]  = "3/22/22c"
-    ""
-    "-";
+const char szSystemFileDate[]  = "3/28/22a";
 
 #include <BeckButtonClass.h>
 #include <BeckCarSetClass.h>
 #include <Streaming.h>
 
-BeckButtonClass::BeckButtonClass() : _oTestButton(_cButton_Pin1) {
+BeckButtonClass::BeckButtonClass() : _oPhysicalButton(_cButton_Pin1) {
   Serial << "BeckButtonClass(): Default CTR, " << szSystemFileName << ", " << szSystemFileDate << endl;
-/*
-  Serial << "BeckButtonClass(): Default CTR, Call _oTestButton= EasyButton(_cButton_Pin1)" << endl;
-  _oTestButton= EasyButton(_cButton_Pin1);
-*/
 
-  Serial << "BeckButtonClass(): Default CTR, Call _oTestButton.begin()" << endl;
-  _oTestButton.begin();
+  Serial << "BeckButtonClass(): Default CTR, Call _oPhysicalButton.begin()" << endl;
+  _oPhysicalButton.begin();
 
   Serial << "BeckButtonClass(): Default CTR, Call _oTestButton.onPressed(ButtonCallback)" << endl;
+
   sprintf(_sz100Char, "BeckButtonClass(): Default CTR, OnPressedTest address= %x\n", ButtonCallback);
   Serial << _sz100Char;
-  _oTestButton.onPressed(ButtonCallback);
+  _oPhysicalButton.onPressed(ButtonCallback);
 
   Serial << "BeckButtonClass(): Default CTR, Done" << endl;
   return;
@@ -34,32 +29,25 @@ BeckButtonClass::~BeckButtonClass() {
 
 
 void BeckButtonClass::ReadButton(){
-  _oTestButton.read();
+  _oPhysicalButton.read();
   return;
 } //ReadButton
 
 
 void BeckButtonClass::HandleLoop(){
-  //_oTestButton.read();
   ReadButton();
   return;
 } //HandleLoop
 
 
+/*
 void BeckButtonClass::SetCallback(EasyButtonBase::callback_t ButtonCallback){
   Serial << "BeckButtonClass::SetCallback(): Call EasyButton _oTestButton.onPressed(CallbackRoutine)" << endl;
-  //_CarSetCallback= CarSetCallback;
-  //sprintf(_sz100Char, "BeckButtonClass::SetCallback(): CallbackRoutine address= %x\n", CallbackRoutine);
-  //Serial << _sz100Char;
-/*
-  Serial << "BeckButtonClass::SetCallback(): See if we can call the _CarSetCallback() routine" << endl;
-  CarSetCallback();
 
-  _oTestButton.onPressed(CarSetCallback);
-*/
-  _oTestButton.onPressed(ButtonCallback);
+  _oPhysicalButton.onPressed(ButtonCallback);
   return;
 } //SetCallback
+*/
 
 
 void BeckButtonClass::ButtonCallback(){
@@ -69,13 +57,4 @@ void BeckButtonClass::ButtonCallback(){
   _wButtonWasPressed= 1;
   return;
 } //ButtonCallback
-
-
-/*
-void BeckButtonClass::DoCallback(){
-  Serial << "BeckButtonClass::DoCallback: Call _CarSetCallback()" << endl;
-  _CarSetCallback();
-  return;
-} //DoCallback
-*/
 //Last line.

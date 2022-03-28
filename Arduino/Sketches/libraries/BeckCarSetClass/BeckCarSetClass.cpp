@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckCarSetClass.cpp";
-const char szSystemFileDate[]  = "3/28/22a";
+const char szSystemFileDate[]  = "3/28/22b";
 
 #include <BeckCarSetClass.h>
 #include <BeckE32_Defines.h>
@@ -26,8 +26,12 @@ BeckCarSetClass::BeckCarSetClass() // : _TestButton(_cButton_Pin1)
   Serial << "BeckCarSetClass(): Default CTR, Call BuildObjectData()" << endl;
   BuildObjectData();
 
+/*
   Serial << "\nBeckCarSetClass(): Default CTR, Do _poButton= new BeckButtonClass()" << endl;
   _poButton  = new BeckButtonClass();
+*/
+  Serial << "\nBeckCarSetClass(): Default CTR, Do _poButton= new BeckButtonClass()" << endl;
+  _poButtons  = new BeckButtonsClass();
 
 /*
   Serial << "BeckCarSetClass(): Default CTR, Call _poButton->SetCallback( CarSetCallback )" << endl;
@@ -70,12 +74,11 @@ BeckCarSetClass::~BeckCarSetClass() {
     _poNTP= nullptr;
   }
 
-  if (_poButton != nullptr) {
-    Serial << "~BeckCarSetClass(): Destructor, delete _poButton" << endl;
-    delete _poButton;
-    _poButton= nullptr;
+  if (_poButtons != nullptr) {
+    Serial << "~BeckCarSetClass(): Destructor, delete _poButtons" << endl;
+    delete _poButtons;
+    _poButtons= nullptr;
   }
-
   return;
 } //destructor
 
@@ -122,34 +125,9 @@ void BeckCarSetClass::CarSetCallback(){
   return;
 } //CarSetCallback
 
-/*
-void BeckCarSetClass::CarSetCallback1(){
-  int   wSensorSet= 1;
-  Serial << "BeckCarSetClass::CarSetCallback1(): I feel the need for speed!" << endl;
-  return;
-} //CarSetCallback1
-
-void BeckCarSetClass::CarSetCallback2(){
-  int   wSensorSet= 1;
-  Serial << "BeckCarSetClass::CarSetCallback2(): I feel the need for speed!" << endl;
-  return;
-} //CarSetCallback2
-
-void BeckCarSetClass::CarSetCallback3(){
-  int   wSensorSet= 1;
-  Serial << "BeckCarSetClass::CarSetCallback3(): I feel the need for speed!" << endl;
-  return;
-} //CarSetCallback3
-
-void BeckCarSetClass::CarSetCallback4(){
-  int   wSensorSet= 1;
-  Serial << "BeckCarSetClass::CarSetCallback4(): I feel the need for speed!" << endl;
-  return;
-} //CarSetCallback4
-*/
 
 void BeckCarSetClass::HandleLoop(){
-  _poButton->HandleLoop();
+  _poButtons->HandleLoop();
   UpdateDisplay();
   HandleLogging();
   return;

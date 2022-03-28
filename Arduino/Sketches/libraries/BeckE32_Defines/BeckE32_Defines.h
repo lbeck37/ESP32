@@ -1,4 +1,4 @@
-// BeckESP32_Defines.h, 3/21/22a
+// BeckESP32_Defines.h, 3/28/22a
 #pragma once
 #include <cstdint>
 
@@ -42,6 +42,7 @@ static const int        _wNumProbes         = 3;
 static const int        _wNumSensors        = 3;
 static const int        _wNumProbeSets      = 4;       //A car has 4 tires
 static const int        _wNumSensorSets     = 4;       //A car has 4 tires
+static const int        _wNumButtons        = 1;       //Testing w/1 button, Green #1
 static const int        _wLoggingProbeSetID = 0;
 static const int        _wLoggingSensorSetID= 0;
 
