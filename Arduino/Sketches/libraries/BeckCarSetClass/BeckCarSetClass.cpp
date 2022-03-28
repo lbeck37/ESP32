@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckCarSetClass.cpp";
-const char szSystemFileDate[]  = "3/28/22b";
+const char szSystemFileDate[]  = "3/28/22c";
 
 #include <BeckCarSetClass.h>
 #include <BeckE32_Defines.h>
@@ -8,8 +8,7 @@ const char szSystemFileDate[]  = "3/28/22b";
 #include <BeckTireTempNTPClass.h>
 #include <Streaming.h>
 
-BeckCarSetClass::BeckCarSetClass() // : _TestButton(_cButton_Pin1)
-{
+BeckCarSetClass::BeckCarSetClass() {
   Serial << "BeckCarSetClass(): Default CTR, " << szSystemFileName << ", " << szSystemFileDate << endl;
 
   Serial << "BeckCarSetClass(): Default CTR, Do _poDataMgr= new BeckDataMgrClass()" << endl;
@@ -20,25 +19,15 @@ BeckCarSetClass::BeckCarSetClass() // : _TestButton(_cButton_Pin1)
 
   Serial << "BeckCarSetClass(): Default CTR, Do _poNTP    = new BeckTireTempNTPClass()" << endl;
   _poNTP      = new BeckTireTempNTPClass();
+
   _poNTP->SetupNTP();
   _poNTP->PrintCurrentTime();
 
   Serial << "BeckCarSetClass(): Default CTR, Call BuildObjectData()" << endl;
   BuildObjectData();
 
-/*
-  Serial << "\nBeckCarSetClass(): Default CTR, Do _poButton= new BeckButtonClass()" << endl;
-  _poButton  = new BeckButtonClass();
-*/
-  Serial << "\nBeckCarSetClass(): Default CTR, Do _poButton= new BeckButtonClass()" << endl;
+  Serial << "\nBeckCarSetClass(): Default CTR, Do _poButtons  = new BeckButtonsClass()" << endl;
   _poButtons  = new BeckButtonsClass();
-
-/*
-  Serial << "BeckCarSetClass(): Default CTR, Call _poButton->SetCallback( CarSetCallback )" << endl;
-  //sprintf(_sz100Char, "BeckCarSetClass(): Default CTR, WhenPressedTest address= %x\n", CarSetCallback);
-  //Serial << _sz100Char;
-  _poButton->SetCallback(CarSetCallback);
-*/
 
   Serial << "BeckCarSetClass(): Call _poDisplay->DisplayBegin()" << endl;
   _poDisplay->DisplayBegin();
@@ -115,17 +104,6 @@ void BeckCarSetClass::ReadSensorSet(int wSensorSetID) {
 } //ReadSensorSet
 
 
-void BeckCarSetClass::CarSetCallback(){
-  int   wSensorSet= 1;
-  Serial << "BeckCarSetClass::CarSetCallback(): I feel the need for speed!" << endl;
-/*
-  Serial << ": Set static variable _wButtonWasPressed to 37" << endl;
-  BeckCarSetClass::_wButtonWasPressed= 37;
-*/
-  return;
-} //CarSetCallback
-
-
 void BeckCarSetClass::HandleLoop(){
   _poButtons->HandleLoop();
   UpdateDisplay();
@@ -135,8 +113,6 @@ void BeckCarSetClass::HandleLoop(){
 
 
 void BeckCarSetClass::UpdateDisplay(){
-  // Call one probe set since all (4) probe-sets use the same type of probe
-  //return _apoSensorSet[1]->bBegin();
   _poDisplay->DisplayUpdate();
   return;
 } //UpdateDisplay

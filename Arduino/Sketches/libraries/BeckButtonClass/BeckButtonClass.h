@@ -1,4 +1,4 @@
-// BeckButtonClass.h, 3/28/22b
+// BeckButtonClass.h, 3/28/22c
 #pragma once
 #include <BeckE32_Defines.h>
 #include <EasyButton.h>
@@ -12,10 +12,8 @@ public:
   BeckButtonClass();
   virtual ~BeckButtonClass();
 
-  //void  SetupButton           ();
   void          HandleLoop      ();
   void          ReadButton      ();
-  //void          SetCallback     (EasyButtonBase::callback_t CallbackRoutine);
   static void   ButtonCallback  ();
 
 private:

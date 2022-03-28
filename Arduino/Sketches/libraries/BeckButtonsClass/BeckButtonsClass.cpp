@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckButtonsClass.cpp";
-const char szSystemFileDate[]  = "3/22/22c";
+const char szSystemFileDate[]  = "3/28/22c";
 
 #include <BeckButtonsClass.h>
 #include <BeckCarSetClass.h>
@@ -8,7 +8,7 @@ const char szSystemFileDate[]  = "3/22/22c";
 BeckButtonsClass::BeckButtonsClass() {
   Serial << "BeckButtonsClass(): Default CTR, " << szSystemFileName << ", " << szSystemFileDate << endl;
 
-  Serial << "\BeckButtonsClass(): Default CTR, Do _poButton= new BeckButtonClass()" << endl;
+  Serial << "\BeckButtonsClass(): Default CTR, Do _poButton= new BeckButtonClass() for " << _wNumButtons << " buttons" << endl;
   for(int wButton= 1; wButton <= _wNumButtons; wButton++){
     _poButtons[wButton]= new BeckButtonClass();
   } //for
@@ -25,8 +25,9 @@ BeckButtonsClass::~BeckButtonsClass() {
 
 
 void BeckButtonsClass::HandleLoop(){
-  //_oTestButton.read();
-  //ReadButtons();
+  for(int wButton= 1; wButton <= _wNumButtons; wButton++){
+    _poButtons[wButton]->HandleLoop();
+  } //for
   return;
 } //HandleLoop
 //Last line.

@@ -1,4 +1,4 @@
-// BeckCarSetClass.h, 3/28/22a
+// BeckCarSetClass.h, 3/28/22b
 #pragma once
 #include <BeckE32_Defines.h>
 #include <BeckDataMgrClass.h>
@@ -6,8 +6,6 @@
 #include <BeckButtonsClass.h>
 #include <BeckTireTempDisplayClass.h>
 #include <BeckTireTempNTPClass.h>
-
-//#include <EasyButton.h>
 
 class BeckCarSetClass{
 public:
@@ -22,13 +20,6 @@ public:
   void  PrintLogData            ();
 
 private:
-  static void   CarSetCallback  ();
-/*
-  static void   CarSetCallback2 ();
-  static void   CarSetCallback3 ();
-  static void   CarSetCallback4 ();
-*/
-
   void          BuildObjectData ();
 
   static int    _wButtonWasPressed;
@@ -37,8 +28,7 @@ private:
   BeckDataMgrClass*           _poDataMgr                {nullptr};
   BeckTireTempDisplayClass*   _poDisplay                {nullptr};
   BeckTireTempNTPClass*       _poNTP                    {nullptr};
-  BeckButtonsClass*            _poButtons               {nullptr};
-  //EasyButton                  _TestButton;
+  BeckButtonsClass*           _poButtons                {nullptr};
 
   uint32_t                    _uwEpochTime;
   unsigned long               _ulNextHandleSensorsMsec   =    0;

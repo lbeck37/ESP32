@@ -1,8 +1,8 @@
-// BeckButtonsClass.h, 3/28/22b
+// BeckButtonsClass.h, 3/28/22c
 #pragma once
 #include <BeckE32_Defines.h>
 #include <BeckButtonClass.h>
-#include <EasyButton.h>
+//#include <EasyButton.h>
 
 #include <functional>
 
@@ -14,7 +14,7 @@ public:
   virtual ~BeckButtonsClass();
 
   void                HandleLoop        ();
-  void                ReadButtons       ();
+  //void                ReadButtons       ();
 private:
   BeckButtonClass*    _poButtons[_wNumButtons + 1];
 };  //BeckButtonsClass
