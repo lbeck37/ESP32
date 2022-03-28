@@ -1,9 +1,9 @@
-// BeckCarSetClass.h, 3/22/22a
+// BeckCarSetClass.h, 3/28/22a
 #pragma once
 #include <BeckE32_Defines.h>
 #include <BeckDataMgrClass.h>
 #include <BeckSensorSetClass.h>
-#include <BeckButtonsClass.h>
+#include <BeckButtonClass.h>
 #include <BeckTireTempDisplayClass.h>
 #include <BeckTireTempNTPClass.h>
 
@@ -37,7 +37,7 @@ private:
   BeckDataMgrClass*           _poDataMgr                {nullptr};
   BeckTireTempDisplayClass*   _poDisplay                {nullptr};
   BeckTireTempNTPClass*       _poNTP                    {nullptr};
-  BeckButtonsClass*           _poButtons                {nullptr};
+  BeckButtonClass*            _poButton                 {nullptr};
   //EasyButton                  _TestButton;
 
   uint32_t                    _uwEpochTime;

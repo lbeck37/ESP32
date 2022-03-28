@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckCarSetClass.cpp";
-const char szSystemFileDate[]  = "3/22/22b";
+const char szSystemFileDate[]  = "3/28/22a";
 
 #include <BeckCarSetClass.h>
 #include <BeckE32_Defines.h>
@@ -26,14 +26,14 @@ BeckCarSetClass::BeckCarSetClass() // : _TestButton(_cButton_Pin1)
   Serial << "BeckCarSetClass(): Default CTR, Call BuildObjectData()" << endl;
   BuildObjectData();
 
-  Serial << "\nBeckCarSetClass(): Default CTR, Do _poButtons= new BeckButtonsClass()" << endl;
-  _poButtons  = new BeckButtonsClass();
+  Serial << "\nBeckCarSetClass(): Default CTR, Do _poButton= new BeckButtonClass()" << endl;
+  _poButton  = new BeckButtonClass();
 
 /*
-  Serial << "BeckCarSetClass(): Default CTR, Call _poButtons->SetCallback( CarSetCallback )" << endl;
+  Serial << "BeckCarSetClass(): Default CTR, Call _poButton->SetCallback( CarSetCallback )" << endl;
   //sprintf(_sz100Char, "BeckCarSetClass(): Default CTR, WhenPressedTest address= %x\n", CarSetCallback);
   //Serial << _sz100Char;
-  _poButtons->SetCallback(CarSetCallback);
+  _poButton->SetCallback(CarSetCallback);
 */
 
   Serial << "BeckCarSetClass(): Call _poDisplay->DisplayBegin()" << endl;
@@ -42,7 +42,7 @@ BeckCarSetClass::BeckCarSetClass() // : _TestButton(_cButton_Pin1)
   Serial << "BeckCarSetClass(): Default CTR, Done" << endl;
   return;
 } //constructor
-//BeckTireTempButtonsClass*   _poButtons                {nullptr};
+
 
 BeckCarSetClass::~BeckCarSetClass() {
   Serial << "~BeckCarSetClass(): Destructor, Deleting sensors" << endl;
@@ -70,10 +70,10 @@ BeckCarSetClass::~BeckCarSetClass() {
     _poNTP= nullptr;
   }
 
-  if (_poButtons != nullptr) {
-    Serial << "~BeckCarSetClass(): Destructor, delete _poButtons" << endl;
-    delete _poButtons;
-    _poButtons= nullptr;
+  if (_poButton != nullptr) {
+    Serial << "~BeckCarSetClass(): Destructor, delete _poButton" << endl;
+    delete _poButton;
+    _poButton= nullptr;
   }
 
   return;
@@ -149,7 +149,7 @@ void BeckCarSetClass::CarSetCallback4(){
 */
 
 void BeckCarSetClass::HandleLoop(){
-  _poButtons->HandleLoop();
+  _poButton->HandleLoop();
   UpdateDisplay();
   HandleLogging();
   return;
