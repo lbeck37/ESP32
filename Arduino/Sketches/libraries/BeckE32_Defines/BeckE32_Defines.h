@@ -1,4 +1,4 @@
-// BeckESP32_Defines.h, 3/28/22a
+// BeckESP32_Defines.h, 3/29/22a
 #pragma once
 #include <cstdint>
 
@@ -40,18 +40,15 @@ static const int8_t     _cRGB_RedPin        = 0;
 static const int8_t     _cRGB_GreenPin      = 2;
 static const int8_t     _cRGB_BluePin       = 4;
 
-static const int        _wNumProbes         = 3;
 static const int        _wNumSensors        = 3;
-static const int        _wNumProbeSets      = 4;       //A car has 4 tires
 static const int        _wNumSensorSets     = 4;       //A car has 4 tires
 static const int        _wNumButtons        = 4;       //Testing w/4 buttons, Green #1, Yellow #2, Red #3, Blue #4
-static const int        _wLoggingProbeSetID = 0;
 static const int        _wLoggingSensorSetID= 0;
 
 static const int        _wOffsetUTC         = -7;       //In winter SLO is 8 time zones after Greenwich, in summer it's 7
 
-extern int8_t           _acSPI_CS_Pins    [];
-extern const uint8_t    _aucI2CAdresses   [];
+extern int8_t           _acSPI_CS_Pins      [];
+extern const uint8_t    _aucI2CAdresses     [];
 
 //Pins used by WROVER-KIT LCD display (ref. WROVER_KIT_LCD.cpp)
 /*

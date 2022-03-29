@@ -27,7 +27,7 @@ void BeckTireTempDisplayClass::DisplayBegin() {
 }  //DisplayBegin
 
 
-void BeckTireTempDisplayClass::DisplayUpdate(int wSensorID) {
+void BeckTireTempDisplayClass::DisplayUpdate(int wSensorSetID) {
 /*
 if (millis() > ulNextDisplayMsec){
   ulNextDisplayMsec= millis() + ulDisplayPeriodMsec;

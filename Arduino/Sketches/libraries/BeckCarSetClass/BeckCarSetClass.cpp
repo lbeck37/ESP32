@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckCarSetClass.cpp";
-const char szSystemFileDate[]  = "3/29/22b";
+const char szSystemFileDate[]  = "3/29/22d";
 
 #include <BeckCarSetClass.h>
 #include <BeckE32_Defines.h>
@@ -15,8 +15,7 @@ BeckCarSetClass::BeckCarSetClass() {
   _poDataMgr  = new BeckDataMgrClass();
 
   Serial << "BeckCarSetClass(): Default CTR, Do _poNTP    = new BeckTireTempNTPClass()" << endl;
-  _poNTP      = new BeckTireTempNTPClass();
-
+  _poNTP= new BeckTireTempNTPClass();
   _poNTP->SetupNTP();
   _poNTP->PrintCurrentTime();
 
@@ -24,33 +23,27 @@ BeckCarSetClass::BeckCarSetClass() {
   BuildObjectData();
 
   Serial << "\nBeckCarSetClass(): Default CTR, Do _poButtons  = new BeckButtonsClass()" << endl;
-  _poButtons  = new BeckButtonsClass();
+  _poButtons= new BeckButtonsClass();
 
   Serial << "BeckCarSetClass(): Default CTR, Do _poDisplay= new BeckTireTempDisplayClass()" << endl;
-  _poDisplay  = new BeckTireTempDisplayClass();
-
-  Serial << "BeckCarSetClass(): Call _poDisplay->DisplayBegin()" << endl;
+  _poDisplay= new BeckTireTempDisplayClass();
   _poDisplay->DisplayBegin();
 
   Serial << "BeckCarSetClass(): Default CTR, Done" << endl;
   return;
 } //constructor
 
-
 void BeckCarSetClass::BuildObjectData(){
   Serial << "BuildObjectData(): Build " << (_wNumSensorSets + 1) << " _apoSensorSet[] objects using new" << endl;
   Serial << "    ";
   int w_apoSensorSetCount= 1;
-
   for (int wSensorSetID= 0; wSensorSetID <= _wNumSensorSets; wSensorSetID++){
     Serial << "*" << w_apoSensorSetCount++;
     _apoSensorSet[wSensorSetID]= new BeckSensorSetClass(_poDisplay, _poDataMgr, wSensorSetID);
   } //for(int wSensorSetID=0
   Serial << ".*" << endl;
-
   return;
 } //BuildObjectData
-
 
 void BeckCarSetClass::Begin(){
   // Call one probe set since all (4) probe-sets use the same type of probe
@@ -58,31 +51,27 @@ void BeckCarSetClass::Begin(){
   return;
 } //Begin
 
-
 void BeckCarSetClass::HandleLoop(){
-  //bool  bDataChanged= false;
-  int wChangedSection=  -1;
-
-  int wPressedButton= _poButtons->wHandleLoop();
+  int wChangedSection =  -1;
+  int wPressedButton  = _poButtons->wHandleLoop();
 
   if (wPressedButton > 0){
     ReadSensorSet(wPressedButton);
     wChangedSection= wPressedButton;
   } //if(wPressedButton>0)
   else{
-    bool bLogChanged= bHandleLogging();
+    bool bLogChanged= bDisplayLog();
     if (bLogChanged){
-      wChangedSection= wPressedButton;
+      wChangedSection= _wLoggingSensorSetID;
     } //if (bLogChanged)
   } //if(wPressedButton>0)else
 
   if (wChangedSection >= 0){
-    DisplayUpdate(wChangedSection);
-  } //if(bDataChanged)
+    _poDisplay->DisplayUpdate(wChangedSection);
+  } //if(wChangedSection>=0)
 
   return;
 } //HandleLoop
-
 
 void BeckCarSetClass::ReadSensorSet(int wSensorSetID) {
   //Have the SensorSet handle itself, like have each of its Sensors read its TCouple
@@ -92,17 +81,10 @@ void BeckCarSetClass::ReadSensorSet(int wSensorSetID) {
   return;
 } //ReadSensorSet
 
-
-void BeckCarSetClass::DisplayUpdate(int wSensorID){
-  _poDisplay->DisplayUpdate(wSensorID);
-  return;
-} //DisplayUpdate
-
-
-bool BeckCarSetClass::bHandleLogging(){
+bool BeckCarSetClass::bDisplayLog(){
   bool  bDataChanged= false;
-  if (millis() > _ulNextHandleLoggingMsec){
-    _ulNextHandleLoggingMsec= millis() + _ulHandleSensorsPeriodMsec;
+  if (millis() > _ulNextDispLogMsec){
+    _ulNextDispLogMsec= millis() + _ulDispLogPeriodMsec;
     bDataChanged= true;
     _poNTP->HandleNTP();
 
@@ -110,14 +92,12 @@ bool BeckCarSetClass::bHandleLogging(){
   } //if (millis()>ulNextDisplayMsec)
 
   return bDataChanged;
-} //bHandleLogging
-
+} //bDisplayLog
 
 void BeckCarSetClass::PrintLogData(){
   _apoSensorSet[_wLoggingSensorSetID]->PrintSensorSetData();
   return;
 } //PrintLogData
-
 
 BeckCarSetClass::~BeckCarSetClass() {
   Serial << "~BeckCarSetClass(): Destructor, Deleting sensors" << endl;
@@ -126,25 +106,21 @@ BeckCarSetClass::~BeckCarSetClass() {
     delete _apoSensorSet[wSensorSetID];
     _apoSensorSet[wSensorSetID]= nullptr;
   }   //for
-
   if (_poDataMgr != nullptr) {
     Serial << "~BeckCarSetClass(): Destructor, delete _poDataMgr" << endl;
     delete _poDataMgr;
     _poDataMgr= nullptr;
   }
-
   if (_poDisplay != nullptr) {
     Serial << "~BeckCarSetClass(): Destructor, delete _poDisplay" << endl;
     delete _poDisplay;
     _poDisplay= nullptr;
   }
-
   if (_poNTP != nullptr) {
     Serial << "~BeckCarSetClass(): Destructor, delete _poNTP" << endl;
     delete _poNTP;
     _poNTP= nullptr;
   }
-
   if (_poButtons != nullptr) {
     Serial << "~BeckCarSetClass(): Destructor, delete _poButtons" << endl;
     delete _poButtons;

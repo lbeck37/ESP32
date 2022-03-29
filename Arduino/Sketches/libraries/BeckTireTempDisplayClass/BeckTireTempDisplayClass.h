@@ -15,7 +15,7 @@ public:
       virtual ~BeckTireTempDisplayClass ();
 
 void  DisplayBegin        ();
-void  DisplayUpdate       (int wSensorID);
+void  DisplayUpdate       (int wSensorSetID);
 
 private:
 void  DisplayClear        ();
@@ -33,8 +33,8 @@ char              sz100CharString[101];
 unsigned long     ulNextDisplayMsec         =    0;
 unsigned long     ulDisplayPeriodMsec       = 2000; //mSec between output to display
 
-unsigned long     ulNextHandleSensorsMsec   =    0;
-unsigned long     ulHandleSensorsPeriodMsec = 5000; //mSec between handling probes
+//unsigned long     ulNextHandleSensorsMsec   =    0;
+//unsigned long     ulHandleSensorsPeriodMsec = 5000; //mSec between handling probes
 
 const uint16_t    usTopText_CursorY         = 35;
 const uint16_t    usTextSpacing             = 20;
