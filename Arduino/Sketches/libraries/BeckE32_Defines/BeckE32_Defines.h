@@ -25,6 +25,8 @@ static const int8_t     _cButton_Pin2       = 13;
 static const int8_t     _cButton_Pin3       = 14;
 static const int8_t     _cButton_Pin4       = 15;
 
+static const int8_t     _acButtonPins[5]    {0, _cButton_Pin1, _cButton_Pin2, _cButton_Pin3, _cButton_Pin4};
+
 static const int8_t     _cI2C_SDA_Pin       = 26;
 static const int8_t     _cI2C_SCL_Pin       = 27;
 
@@ -42,7 +44,7 @@ static const int        _wNumProbes         = 3;
 static const int        _wNumSensors        = 3;
 static const int        _wNumProbeSets      = 4;       //A car has 4 tires
 static const int        _wNumSensorSets     = 4;       //A car has 4 tires
-static const int        _wNumButtons        = 1;       //Testing w/1 button, Green #1
+static const int        _wNumButtons        = 4;       //Testing w/4 buttons, Green #1, Yellow #2, Red #3, Blue #4
 static const int        _wLoggingProbeSetID = 0;
 static const int        _wLoggingSensorSetID= 0;
 

@@ -2,6 +2,7 @@ const char szSystemFileName[]  = "BeckButtonsClass.cpp";
 const char szSystemFileDate[]  = "3/28/22c";
 
 #include <BeckButtonsClass.h>
+#include <BeckButtonClass.h>
 #include <BeckCarSetClass.h>
 #include <Streaming.h>
 
@@ -10,7 +11,7 @@ BeckButtonsClass::BeckButtonsClass() {
 
   Serial << "\BeckButtonsClass(): Default CTR, Do _poButton= new BeckButtonClass() for " << _wNumButtons << " buttons" << endl;
   for(int wButton= 1; wButton <= _wNumButtons; wButton++){
-    _poButtons[wButton]= new BeckButtonClass();
+    _poButtons[wButton]= new BeckButtonClass(wButton);
   } //for
 
   Serial << "BeckButtonsClass(): Default CTR, Done" << endl;
