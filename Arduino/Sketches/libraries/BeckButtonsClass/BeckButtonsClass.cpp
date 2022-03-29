@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckButtonsClass.cpp";
-const char szSystemFileDate[]  = "3/28/22c";
+const char szSystemFileDate[]  = "3/28/22d";
 
 #include <BeckButtonsClass.h>
 #include <BeckButtonClass.h>
@@ -19,16 +19,21 @@ BeckButtonsClass::BeckButtonsClass() {
 } //constructor
 
 
+int BeckButtonsClass::wHandleLoop(){
+  int wReturn= 0;
+
+  for(int wButton= 1; wButton <= _wNumButtons; wButton++){
+    int wButtonPressed= _poButtons[wButton]->wHandleLoop();
+    if (wButtonPressed > 0){
+      wReturn= wButtonPressed;
+    } //if(wButtonPressed>0)
+  } //for
+  return wReturn;
+} //wHandleLoop
+
+
 BeckButtonsClass::~BeckButtonsClass() {
   Serial << "~BeckButtonsClass(): Destructor" << endl;
   return;
 } //destructor
-
-
-void BeckButtonsClass::HandleLoop(){
-  for(int wButton= 1; wButton <= _wNumButtons; wButton++){
-    _poButtons[wButton]->HandleLoop();
-  } //for
-  return;
-} //HandleLoop
 //Last line.

@@ -1,42 +1,29 @@
 const char szSystemFileName[]  = "BeckButtonClass.cpp";
-const char szSystemFileDate[]  = "3/28/22e";
+const char szSystemFileDate[]  = "3/28/22g";
 
 #include <BeckButtonClass.h>
 #include <BeckCarSetClass.h>
 #include <Streaming.h>
 
-/*
-BeckButtonClass::BeckButtonClass() {
+BeckButtonClass::BeckButtonClass() : _oPhysicalButton(_cButton_Pin1) {
   Serial << "BeckButtonClass(void): Default CTR, " << szSystemFileName << ", " << szSystemFileDate << endl;
 
-
-  Serial << "BeckButtonClass(): Default CTR, Call _oPhysicalButton.begin()" << endl;
-  _oPhysicalButton.begin();
-
-  Serial << "BeckButtonClass(): Default CTR, Call _oPhysicalButton.onPressed(ButtonCallback_1)" << endl;
-  //_oPhysicalButton.onPressed(ButtonCallback);
-  //_oPhysicalButton.onPressed(ButtonCallback_1);
-  _oPhysicalButton.onPressed(apfCallbacks[1]);
-
-
+  Serial << "BeckButtonClass(void): Default CTR, ERROR: Not sure how we got here." << endl;
   Serial << "BeckButtonClass(void): Default CTR, Done" << endl;
   return;
 } //BeckButtonClass(void)constructor
-*/
 
 
-//BeckButtonClass::BeckButtonClass(int wButtonNumber) : _oPhysicalButton(_cButton_Pin1) {
 BeckButtonClass::BeckButtonClass(int wButtonNumber) : _oPhysicalButton(_acButtonPins[wButtonNumber]) {
   Serial << "BeckButtonClass(wButtonNumber): CTR, " << szSystemFileName << ", " << szSystemFileDate << endl;
-  Serial << "BeckButtonClass(wButtonNumber): CTR, Building Button #" << wButtonNumber << endl;
+  _wMyButtonNumber= wButtonNumber;
+  Serial << "BeckButtonClass(wButtonNumber): CTR, Building Button #" << _wMyButtonNumber << endl;
 
   Serial << "BeckButtonClass(wButtonNumber): CTR, Call _oPhysicalButton.begin()" << endl;
   _oPhysicalButton.begin();
 
   Serial << "BeckButtonClass(wButtonNumber): CTR, Call _oPhysicalButton.onPressed(apfCallbacks[" << wButtonNumber << "])" << endl;
-  //_oPhysicalButton.onPressed(ButtonCallback);
-  //_oPhysicalButton.onPressed(ButtonCallback_1);
-  _oPhysicalButton.onPressed(apfCallbacks[wButtonNumber]);
+  _oPhysicalButton.onPressed(apfCallbacks[_wMyButtonNumber]);
 
   Serial << "BeckButtonClass(int): CTR, Done" << endl;
   return;
@@ -49,41 +36,44 @@ void BeckButtonClass::ReadButton(){
 } //ReadButton
 
 
-void BeckButtonClass::HandleLoop(){
+int BeckButtonClass::wHandleLoop(){
+  int wReturn= 0;
   ReadButton();
-  return;
-} //HandleLoop
-
-
-/*
-void BeckButtonClass::ButtonCallback(){
-  Serial << "BeckButtonClass::ButtonCallback: You pressed the TESTy Green button" << endl;
-  Serial << "BeckButtonClass::ButtonCallback: Set _wButtonWasPressed= 1" << endl;
-  _wButtonWasPressed= 1;
-  return;
-} //ButtonCallback
-*/
+  if(_wLastButtonPressed == _wMyButtonNumber){
+    wReturn= _wMyButtonNumber;
+    _wLastButtonPressed= 0;
+  }
+  return wReturn;
+} //wHandleLoop
 
 
 void BeckButtonClass::ButtonCallback_1(){
+  int  wMyButtonNumber= 1;
+  _wLastButtonPressed= wMyButtonNumber;
   Serial << "BeckButtonClass::ButtonCallback_1: You pressed the Green button #1" << endl;
   return;
 } //ButtonCallback
 
 
 void BeckButtonClass::ButtonCallback_2(){
+  int  wMyButtonNumber= 2;
+  _wLastButtonPressed= wMyButtonNumber;
   Serial << "BeckButtonClass::ButtonCallback_2: You pressed the Yellow button #2" << endl;
   return;
 } //ButtonCallback_2
 
 
 void BeckButtonClass::ButtonCallback_3(){
+  int  wMyButtonNumber= 3;
+  _wLastButtonPressed= wMyButtonNumber;
   Serial << "BeckButtonClass::ButtonCallback_3: You pressed the Red button #3" << endl;
   return;
 } //ButtonCallback_3
 
 
 void BeckButtonClass::ButtonCallback_4(){
+  int  wMyButtonNumber= 4;
+  _wLastButtonPressed= wMyButtonNumber;
   Serial << "BeckButtonClass::ButtonCallback_4: You pressed the Blue button #4" << endl;
   return;
 } //ButtonCallback_4
