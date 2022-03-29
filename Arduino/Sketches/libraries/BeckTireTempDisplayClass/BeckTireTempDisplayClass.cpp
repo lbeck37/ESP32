@@ -12,11 +12,6 @@ BeckTireTempDisplayClass::BeckTireTempDisplayClass(void) {
   return;
 } //constructor
 
-BeckTireTempDisplayClass::BeckTireTempDisplayClass(int wSensorID, int wI2CAddress) {
-Serial << "BeckTireTempDisplayClass(): CTR, " << szSystemFileName << ", " << szSystemFileDate << endl;
-  return;
-} //CTR
-
 BeckTireTempDisplayClass::~BeckTireTempDisplayClass() {
   Serial << "~BeckTireTempDisplayClass(): Destructor, deleting _poTCoupleSensor" << endl;
   return;
@@ -32,6 +27,18 @@ void BeckTireTempDisplayClass::DisplayBegin() {
 }  //DisplayBegin
 
 
+void BeckTireTempDisplayClass::DisplayUpdate(int wSensorID) {
+/*
+if (millis() > ulNextDisplayMsec){
+  ulNextDisplayMsec= millis() + ulDisplayPeriodMsec;
+  DisplayTemperature();
+  DisplayLowerBanner();
+} //if (millis()>ulNextDisplayMsec)
+*/
+return;
+}  //DisplayUpdate
+
+
 void BeckTireTempDisplayClass::DisplayClear() {
   FillScreen(BackgroundColor);
   return;
@@ -42,16 +49,6 @@ void BeckTireTempDisplayClass::FillScreen(uint16_t usColor) {
   RoverLCD.fillScreen(usColor);
   return;
 }  //FillScreen
-
-
-void BeckTireTempDisplayClass::DisplayUpdate() {
-if (millis() > ulNextDisplayMsec){
-  ulNextDisplayMsec= millis() + ulDisplayPeriodMsec;
-  DisplayTemperature();
-  DisplayLowerBanner();
-} //if (millis()>ulNextDisplayMsec)
-return;
-}  //DisplayUpdate
 
 
 void BeckTireTempDisplayClass::DisplayTemperature() {

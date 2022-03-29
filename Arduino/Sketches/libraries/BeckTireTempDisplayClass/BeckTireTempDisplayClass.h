@@ -1,4 +1,4 @@
-// BeckTireTempDisplayClass.h, 3/19/22c
+// BeckTireTempDisplayClass.h, 3/39/22a
 #pragma once
 #include <BeckE32_Defines.h>
 #include <Adafruit_GFX.h>
@@ -10,21 +10,22 @@
 
 class BeckTireTempDisplayClass{
 public:
-  BeckTireTempDisplayClass();
-  BeckTireTempDisplayClass(int wSensorID, int wI2CAddress);
-  virtual ~BeckTireTempDisplayClass();
+      BeckTireTempDisplayClass          ();
+      //BeckTireTempDisplayClass          (int wSensorID, int wI2CAddress);
+      virtual ~BeckTireTempDisplayClass ();
 
 void  DisplayBegin        ();
+void  DisplayUpdate       (int wSensorID);
+
+private:
 void  DisplayClear        ();
 void  FillScreen          (uint16_t usColor);
-void  DisplayUpdate       ();
 void  DisplayTemperature  ();
 void  DisplayLowerBanner  ();
 void  DisplayText         (uint16_t usCursorX, uint16_t usCursorY, char *pcText,
                            const GFXfont *pFont, uint8_t ucSize, uint16_t usColor);
 void  ClearTextBackground (int16_t sUpperLeftX, int16_t sUpperLeftY, uint16_t usWidth, uint16_t usHeight);
 
-private:
 WROVER_KIT_LCD    RoverLCD;
 const ColorType   BackgroundColor           = WROVER_BLACK;
 char              sz100CharString[101];

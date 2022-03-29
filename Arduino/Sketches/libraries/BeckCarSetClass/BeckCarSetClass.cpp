@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckCarSetClass.cpp";
-const char szSystemFileDate[]  = "3/28/22d";
+const char szSystemFileDate[]  = "3/29/22b";
 
 #include <BeckCarSetClass.h>
 #include <BeckE32_Defines.h>
@@ -14,9 +14,6 @@ BeckCarSetClass::BeckCarSetClass() {
   Serial << "BeckCarSetClass(): Default CTR, Do _poDataMgr= new BeckDataMgrClass()" << endl;
   _poDataMgr  = new BeckDataMgrClass();
 
-  Serial << "BeckCarSetClass(): Default CTR, Do _poDisplay= new BeckTireTempDisplayClass()" << endl;
-  _poDisplay  = new BeckTireTempDisplayClass();
-
   Serial << "BeckCarSetClass(): Default CTR, Do _poNTP    = new BeckTireTempNTPClass()" << endl;
   _poNTP      = new BeckTireTempNTPClass();
 
@@ -28,6 +25,9 @@ BeckCarSetClass::BeckCarSetClass() {
 
   Serial << "\nBeckCarSetClass(): Default CTR, Do _poButtons  = new BeckButtonsClass()" << endl;
   _poButtons  = new BeckButtonsClass();
+
+  Serial << "BeckCarSetClass(): Default CTR, Do _poDisplay= new BeckTireTempDisplayClass()" << endl;
+  _poDisplay  = new BeckTireTempDisplayClass();
 
   Serial << "BeckCarSetClass(): Call _poDisplay->DisplayBegin()" << endl;
   _poDisplay->DisplayBegin();
@@ -59,19 +59,27 @@ void BeckCarSetClass::Begin(){
 } //Begin
 
 
-/*
-int wButtonPressed= _poButtons[wButton]->wHandleLoop();
-if (wButtonPressed > 0){
-  wReturn= wButtonPressed;
-} //if(wButtonPressed>0)
-*/
 void BeckCarSetClass::HandleLoop(){
-  int wButtonPressed= _poButtons->wHandleLoop();
-  if (wButtonPressed > 0){
-    ReadSensorSet(wButtonPressed);
-  } //if(wButtonPressed>0)
-  UpdateDisplay();
-  HandleLogging();
+  //bool  bDataChanged= false;
+  int wChangedSection=  -1;
+
+  int wPressedButton= _poButtons->wHandleLoop();
+
+  if (wPressedButton > 0){
+    ReadSensorSet(wPressedButton);
+    wChangedSection= wPressedButton;
+  } //if(wPressedButton>0)
+  else{
+    bool bLogChanged= bHandleLogging();
+    if (bLogChanged){
+      wChangedSection= wPressedButton;
+    } //if (bLogChanged)
+  } //if(wPressedButton>0)else
+
+  if (wChangedSection >= 0){
+    DisplayUpdate(wChangedSection);
+  } //if(bDataChanged)
+
   return;
 } //HandleLoop
 
@@ -85,22 +93,24 @@ void BeckCarSetClass::ReadSensorSet(int wSensorSetID) {
 } //ReadSensorSet
 
 
-void BeckCarSetClass::UpdateDisplay(){
-  _poDisplay->DisplayUpdate();
+void BeckCarSetClass::DisplayUpdate(int wSensorID){
+  _poDisplay->DisplayUpdate(wSensorID);
   return;
-} //UpdateDisplay
+} //DisplayUpdate
 
 
-void BeckCarSetClass::HandleLogging(){
-  if (millis() > _ulNextHandleSensorsMsec){
-    _ulNextHandleSensorsMsec= millis() + _ulHandleSensorsPeriodMsec;
+bool BeckCarSetClass::bHandleLogging(){
+  bool  bDataChanged= false;
+  if (millis() > _ulNextHandleLoggingMsec){
+    _ulNextHandleLoggingMsec= millis() + _ulHandleSensorsPeriodMsec;
+    bDataChanged= true;
     _poNTP->HandleNTP();
 
     ReadSensorSet(_wLoggingSensorSetID);
-    PrintLogData();
   } //if (millis()>ulNextDisplayMsec)
-  return;
-} //HandleLogging
+
+  return bDataChanged;
+} //bHandleLogging
 
 
 void BeckCarSetClass::PrintLogData(){

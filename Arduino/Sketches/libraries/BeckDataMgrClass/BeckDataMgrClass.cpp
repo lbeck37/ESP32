@@ -1,5 +1,5 @@
 static const char szSystemFileName[]  = "BeckDataMgrClass.cpp";
-static const char szSystemFileDate[]  = "3/18/22h";
+static const char szSystemFileDate[]  = "3/28/22b";
 
 #include <BeckDataMgrClass.h>
 #include <Streaming.h>
@@ -8,17 +8,6 @@ BeckDataMgrClass::BeckDataMgrClass() {
   Serial << "BeckDataMgrClass(): Default CTR, Call BuildSensorData()" << endl;
   BuildSensorData();
 } //constructor
-
-BeckDataMgrClass::~BeckDataMgrClass() {
-  Serial << "~BeckDataMgrClass(): Destructor, call delete _apoCarReadings[][]" << endl;
-  for (int wSensorSetID= 0; wSensorSetID <= _wNumSensorSets; wSensorSetID++){
-    for (int wSensorID= 0; wSensorID <= _wNumSensors; wSensorID++){
-      delete _apoCarReadings[wSensorSetID][wSensorID];
-      _apoCarReadings[wSensorSetID][wSensorID]= nullptr;
-    } //for(int wSensorID=0...
-    Serial << ".*";
-  } //for(int wSensorSetID=0...
-} //destructor
 
 
 void BeckDataMgrClass::BuildSensorData(){
@@ -80,4 +69,18 @@ bool BeckDataMgrClass::bGetDegFChanged(int wSensorSetID, int wSensorID){
 float BeckDataMgrClass::fGetLastDegF(int wSensorSetID, int wSensorID){
   return (_apoCarReadings[wSensorSetID][wSensorID]->fGetLastDegF());
 } //fGetLastDegF
+
+
+BeckDataMgrClass::~BeckDataMgrClass() {
+  Serial << "~BeckDataMgrClass(): Destructor, call delete _apoCarReadings[][]" << endl;
+  for (int wSensorSetID= 0; wSensorSetID <= _wNumSensorSets; wSensorSetID++){
+    for (int wSensorID= 0; wSensorID <= _wNumSensors; wSensorID++){
+      if(_apoCarReadings[wSensorSetID][wSensorID] != nullptr){
+        delete _apoCarReadings[wSensorSetID][wSensorID];
+        _apoCarReadings[wSensorSetID][wSensorID]= nullptr;
+      } //if
+    } //for(int wSensorID=0...
+    Serial << ".*";
+  } //for(int wSensorSetID=0...
+} //destructor
 //Last line.
