@@ -19,13 +19,13 @@ typedef int16_t         PUnit;          //Pixel Unit
 typedef uint8_t         FontSize;
 
 static unsigned long    _ulNextDispLogMsec    =    0;
-static unsigned long    _ulDispLogPeriodMsec  =  200;   //mSec between updating the log on the display
+static unsigned long    _ulDispLogPeriodMsec  = 2000;   //mSec between updating the log on the display
 
 static unsigned long    _ulNextPrintLogMsec   =    0;
 static unsigned long    _ulPrintLogPeriodMsec = 5000;   //mSec between logging to serial port
 
 static unsigned long    _ulNextReadLogMsec    =    0;
-  static unsigned long  _ulReadLogPeriodMsec  =  500;   //mSec between reading and logging to DataMgr as sensor set #0
+static unsigned long    _ulReadLogPeriodMsec  =  500;   //mSec between reading and logging to DataMgr as sensor set #0
 
 //unsigned long     ulNextHandleSensorsMsec   =    0;
 //unsigned long     ulReadSensorsPeriodMsec   = 5000; //mSec between reading sensors for logging

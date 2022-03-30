@@ -28,13 +28,17 @@ void BeckTireTempDisplayClass::DisplayBegin() {
 
 
 void BeckTireTempDisplayClass::DisplaySensorSet(int wSensorSetID) {
+  Serial << "BeckTireTempDisplayClass::DisplaySensorSet(): wSensorSetID= " << wSensorSetID << endl;
   if (wSensorSetID == _wLogSensorSetID){
+    Serial << "BeckTireTempDisplayClass::DisplaySensorSet(): Call DisplayLogTemps()" << endl;
     DisplayLogTemps();
   } //if (wSensorSetID==_wLogSensorSetID)
   else{
+    Serial << "BeckTireTempDisplayClass::DisplaySensorSet(): Call DisplayTemperature()" << endl;
     DisplayTemperature();
   } //if (wSensorSetID==_wLogSensorSetID)else
-return;
+  Serial << "BeckTireTempDisplayClass::DisplaySensorSet(): Done" << endl;
+  return;
 }  //DisplaySensorSet
 
 
@@ -46,11 +50,21 @@ void BeckTireTempDisplayClass::DisplayLogTemps(){
   ColorType       usColor       = WROVER_CYAN;
 
   float afDegF[_wNumSensors + 1] {0.0};
+
+/*
   for(int wSensor= 1; wSensor <= _wNumSensors; wSensor++){
     afDegF[wSensor]= _poDataMgr->fGetDegF(_wLogSensorSetID, wSensor);
   } //for
+*/
+  Serial << "BeckTireTempDisplayClass::DisplayLogTemps():  Call _poDataMgr->fGetDegF(1)" << endl;
+  afDegF[1]= _poDataMgr->fGetDegF(_wLogSensorSetID, 1);
+  Serial << "BeckTireTempDisplayClass::DisplayLogTemps():  Call _poDataMgr->fGetDegF(2)" << endl;
+  afDegF[2]= _poDataMgr->fGetDegF(_wLogSensorSetID, 2);
+  Serial << "BeckTireTempDisplayClass::DisplayLogTemps():  Call _poDataMgr->fGetDegF(3)" << endl;
+  afDegF[3]= _poDataMgr->fGetDegF(_wLogSensorSetID, 3);
 
   sprintf(sz100CharString, "%6.1f   %6.1f   %6.1f", afDegF[1], afDegF[2], afDegF[3]);
+  Serial << "BeckTireTempDisplayClass::DisplayLogTemps(): Call DisplayText() String= " << sz100CharString << endl;
   DisplayText( usCursorX, usCursorY, sz100CharString, pFont, ucSize, usColor);
 
   return;

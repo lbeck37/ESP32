@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckCarSetClass.cpp";
-const char szSystemFileDate[]  = "3/29/22e";
+const char szSystemFileDate[]  = "3/29/22h";
 
 #include <BeckCarSetClass.h>
 #include <BeckE32_Defines.h>
@@ -52,21 +52,21 @@ void BeckCarSetClass::Begin(){
 } //Begin
 
 void BeckCarSetClass::HandleLoop(){
-  int wChangedSection =  -1;
+  //Serial << "BeckCarSetClass::HandleLoop(): Begin" << endl;
   //Read and save log temperatures
   ReadLogTemps();
 
-  //Check the buttons and sample and record the (3) sensor values
+  //Serial << "BeckCarSetClass::HandleLoop(): Back from ReadLogTemps(), check the buttons" << endl;
+  //Check the buttons and sample, record and display the (3) sensor values
   int wPressedButton= _poButtons->wHandleLoop();
   if (wPressedButton > 0){
     ReadSensorSet(wPressedButton);
     _poDisplay->DisplaySensorSet(wPressedButton);
   } //if(wPressedButton>0)
 
-  if (wChangedSection >= 0){
-    _poDisplay->DisplaySensorSet(wChangedSection);
-  } //if(wChangedSection>=0)
-
+  Serial << "BeckCarSetClass::HandleLoop(): Call DisplayLogData()" << endl;
+  DisplayLogData();
+  Serial << "BeckCarSetClass::HandleLoop(): Call PrintLogData()" << endl;
   PrintLogData();
   return;
 } //HandleLoop
@@ -84,6 +84,7 @@ void BeckCarSetClass::ReadSensorSet(int wSensorSetID) {
 void BeckCarSetClass::ReadLogTemps(){
   if (millis() > _ulNextReadLogMsec){
     _ulNextReadLogMsec= millis() + _ulReadLogPeriodMsec;
+
     ReadSensorSet(_wLogSensorSetID);
   } //if (millis()>_ulNextReadLogMsec)
   return;
@@ -91,11 +92,11 @@ void BeckCarSetClass::ReadLogTemps(){
 
 
 void BeckCarSetClass::DisplayLogData(){
-  if (millis() > _ulNextPrintLogMsec){
-    _ulNextPrintLogMsec= millis() + _ulPrintLogPeriodMsec;
-    _apoSensorSet[_wLogSensorSetID]->PrintSensorSetData();
+  if (millis() > _ulNextDispLogMsec){
+    _ulNextDispLogMsec= millis() + _ulDispLogPeriodMsec;
+    Serial << "BeckCarSetClass::DisplayLogData(): Call _poDisplay->DisplaySensorSet()" << endl;
+    _poDisplay->DisplaySensorSet(_wLogSensorSetID);
   } //if (millis()>_ulNextPrintLogMsec)
-
   return;
 } //DisplayLogData
 
@@ -105,7 +106,6 @@ void BeckCarSetClass::PrintLogData(){
     _ulNextPrintLogMsec= millis() + _ulPrintLogPeriodMsec;
     _apoSensorSet[_wLogSensorSetID]->PrintSensorSetData();
   } //if (millis()>_ulNextPrintLogMsec)
-
   return;
 } //PrintLogData
 

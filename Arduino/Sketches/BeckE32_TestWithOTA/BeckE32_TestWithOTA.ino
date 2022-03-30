@@ -38,51 +38,6 @@ void loop       ();
 void SetupCode  ();
 void LoopCode   ();
 
-/*
-template<typename Iter>
-void myPrint(Iter begin, Iter end)
-{
-  for (auto iter{ begin }; iter != end; ++iter) {
-    Serial << *iter << " ";
-  }
-}
-
-void TestIterator() {
-  vector values{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-
-  for (auto iter{ cbegin(values) }; iter != cend(values); ++iter) {
-    Serial << *iter << " ";
-  }
-  Serial << endl;
-
-  myPrint(cbegin(values), cend(values));
-  Serial << endl;
-} //TestIterator
-*/
-
-void TestVector()
-{
-  vector<double> doubleVector(10); // Create a vector of 10 doubles.
-
-  // Initialize max to smallest number
-  double max{ -numeric_limits<double>::infinity() };
-
-  for (size_t i{ 0 }; i < doubleVector.size(); i++) {
-    Serial << format("Enter score {}: ", i + 1);
-    cin >> doubleVector[i];
-    if (doubleVector[i] > max) {
-      max = doubleVector[i];
-    }
-  }
-
-  max /= 100.0;
-  for (auto& element : doubleVector) {
-    element /= max;
-    Serial << element << " ";
-  }
-  Serial << "\n";
-}
-
 
 void SetupCode() {
   //Put code for setting up test here.
