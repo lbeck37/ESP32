@@ -1,5 +1,5 @@
-const char szSystemFileName[]  = "BeckSensorSetClass.cpp";		//Copied from BeckSensorSetClass.cpp
-const char szSystemFileDate[]  = "3/18/22e8";
+const char szSystemFileName[]  = "BeckSensorSetClass.cpp";
+const char szSystemFileDate[]  = "3/30/22b";
 
 #include <BeckE32_Defines.h>
 #include <BeckSensorSetClass.h>
@@ -17,7 +17,7 @@ BeckSensorSetClass::BeckSensorSetClass() {
   BeckSensorSetClass::BeckSensorSetClass(BeckTireTempDisplayClass* poDisplay, BeckDataMgrClass* poDataMgr, int wSensorSetID){
   _wSensorSetID= wSensorSetID;
   _poDataMgr= poDataMgr;
-
+  _poDisplay= poDisplay;
   BuildSensors();
   return;
 } //constructor
@@ -75,7 +75,7 @@ void BeckSensorSetClass::ReadSensorSet(uint32_t uwSampleTime) {
 } //ReadSensorSet
 
 
-void BeckSensorSetClass::DisplaySensorSetData() {
+void BeckSensorSetClass::DisplaySensorSet(int wSensorSetID) {
 /*
  if (_poDataMgr != nullptr) {
     float   fDegF1= _poDataMgr->fGetDegF(_wSensorSetID, 1);
@@ -87,8 +87,9 @@ void BeckSensorSetClass::DisplaySensorSetData() {
     Serial << "PrintSensorSetData(): _poDataMgr is NULL, skip calls to fGetDegF" << endl;
   }
 */
+  _poDisplay->DisplaySensorSet(wSensorSetID);
   return;
-} //DisplaySensorSetData
+} //DisplaySensorSet
 
 
 void BeckSensorSetClass::PrintSensorSetData() {

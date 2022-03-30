@@ -1,4 +1,4 @@
-// BeckCarSetClass.h, 3/29/22e
+// BeckCarSetClass.h, 3/30/22b
 #pragma once
 #include <BeckE32_Defines.h>
 #include <BeckDataMgrClass.h>
@@ -17,7 +17,8 @@ public:
 
 private:
   void  ReadSensorSet           (int wSensorSetID);
-  void  ReadLogTemps            ();
+  void  DisplaySensorSet        (int wSensorSetID);
+  void  ReadLogData             ();
   void  DisplayLogData          ();
   void  PrintLogData            ();
   void  BuildObjectData         ();

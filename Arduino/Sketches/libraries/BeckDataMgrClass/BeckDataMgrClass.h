@@ -1,4 +1,4 @@
-// BeckDataMgrClass.h, 3/18/22d
+// BeckDataMgrClass.h, 3/30/22a
 #pragma once
 #include <BeckE32_Defines.h>
 #include <BeckReadingDataClass.h>
@@ -18,7 +18,7 @@ public:
 
   void                  SetDegFChanged        (int wSensorSetID, int wSensorID);
   bool                  bGetDegFChanged       (int wSensorSetID, int wSensorID);
-
+  void                  TestPtr               ();
 private:
   void                  BuildSensorData       ();
 

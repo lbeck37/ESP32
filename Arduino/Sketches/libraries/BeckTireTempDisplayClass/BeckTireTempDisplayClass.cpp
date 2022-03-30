@@ -1,14 +1,21 @@
 const char szSystemFileName[]  = "BeckTireTempDisplayClass.cpp";
-const char szSystemFileDate[]  = "3/19/22b";
+const char szSystemFileDate[]  = "3/30/22e";
 
 #include <BeckTireTempDisplayClass.h>
 #include <BeckLogLib.h>
 #include <Adafruit_GFX.h>
-//#include <WROVER_KIT_LCD.h>
 #include <Streaming.h>
+#include <exception>
+#include <stdexcept>
 
-BeckTireTempDisplayClass::BeckTireTempDisplayClass(void) {
-  Serial << "BeckTireTempDisplayClass(void): Default CTR, " << szSystemFileName << ", " << szSystemFileDate << endl;
+BeckTireTempDisplayClass::BeckTireTempDisplayClass() {
+  Serial << "BeckTireTempDisplayClass(): Default CTR, " << szSystemFileName << ", " << szSystemFileDate << endl;
+  return;
+} //constructor
+
+BeckTireTempDisplayClass::BeckTireTempDisplayClass(BeckDataMgrClass* poDataMgr) {
+  Serial << "BeckTireTempDisplayClass(poDataMgr): CTR, " << szSystemFileName << ", " << szSystemFileDate << endl;
+  _poDataMgr= poDataMgr;
   return;
 } //constructor
 
@@ -43,12 +50,14 @@ void BeckTireTempDisplayClass::DisplaySensorSet(int wSensorSetID) {
 
 
 void BeckTireTempDisplayClass::DisplayLogTemps(){
+  Serial << "BeckTireTempDisplayClass::DisplayLogTemps():  Begin" << endl;
   const GFXfont   *pFont        = &FreeSansOblique18pt7b;
   uint16_t        usCursorX     = 45;
   uint16_t        usCursorY     = 232;    //Was 72
   uint8_t         ucSize        = 1;
   ColorType       usColor       = WROVER_CYAN;
 
+  Serial << "BeckTireTempDisplayClass::DisplayLogTemps():  Initialize afDegF[]" << endl;
   float afDegF[_wNumSensors + 1] {0.0};
 
 /*
@@ -56,12 +65,32 @@ void BeckTireTempDisplayClass::DisplayLogTemps(){
     afDegF[wSensor]= _poDataMgr->fGetDegF(_wLogSensorSetID, wSensor);
   } //for
 */
-  Serial << "BeckTireTempDisplayClass::DisplayLogTemps():  Call _poDataMgr->fGetDegF(1)" << endl;
-  afDegF[1]= _poDataMgr->fGetDegF(_wLogSensorSetID, 1);
-  Serial << "BeckTireTempDisplayClass::DisplayLogTemps():  Call _poDataMgr->fGetDegF(2)" << endl;
-  afDegF[2]= _poDataMgr->fGetDegF(_wLogSensorSetID, 2);
-  Serial << "BeckTireTempDisplayClass::DisplayLogTemps():  Call _poDataMgr->fGetDegF(3)" << endl;
-  afDegF[3]= _poDataMgr->fGetDegF(_wLogSensorSetID, 3);
+  Serial << "BeckTireTempDisplayClass::DisplayLogTemps():  Call _poDataMgr->TestPtr() iside a try/catch" << endl;
+  try {
+      _poDataMgr->TestPtr();
+
+    //Serial << "BeckTireTempDisplayClass::DisplayLogTemps():  Check _poDataMgr= " << _poDataMgr << ", *_poDataMgr= " << *_poDataMgr << endl;
+    Serial << "BeckTireTempDisplayClass::DisplayLogTemps():  Check _poDataMgr" << endl;
+    if (_poDataMgr != nullptr){
+      Serial << "BeckTireTempDisplayClass::DisplayLogTemps():  Call _poDataMgr->fGetDegF(1)" << endl;
+      afDegF[1]= _poDataMgr->fGetDegF(_wLogSensorSetID, 1);
+      Serial << "BeckTireTempDisplayClass::DisplayLogTemps():  Call _poDataMgr->fGetDegF(2)" << endl;
+      afDegF[2]= _poDataMgr->fGetDegF(_wLogSensorSetID, 2);
+      Serial << "BeckTireTempDisplayClass::DisplayLogTemps():  Call _poDataMgr->fGetDegF(3)" << endl;
+      afDegF[3]= _poDataMgr->fGetDegF(_wLogSensorSetID, 3);
+    } //if (_poDataMgr!=nullptr)
+    else{
+      Serial << "BeckTireTempDisplayClass::DisplayLogTemps(): _poDataMgr is a nullptr" << endl;
+    } //if (_poDataMgr!=nullptr)else
+  } //try
+/*
+  catch (const runtime_error& e) {
+    Serial << "BeckTireTempDisplayClass::DisplayLogTemps():  Call  to _poDataMgr->TestPtr() threw Exception |" << e.what() << endl;
+  }
+*/
+  catch (...) {
+    Serial << "BeckTireTempDisplayClass::DisplayLogTemps():  Call  to _poDataMgr->TestPtr() threw Exception" << endl;
+  } //catch(...)
 
   sprintf(sz100CharString, "%6.1f   %6.1f   %6.1f", afDegF[1], afDegF[2], afDegF[3]);
   Serial << "BeckTireTempDisplayClass::DisplayLogTemps(): Call DisplayText() String= " << sz100CharString << endl;
@@ -75,7 +104,6 @@ void BeckTireTempDisplayClass::DisplayClear() {
   FillScreen(BackgroundColor);
   return;
 }  //DisplayClear
-
 
 void BeckTireTempDisplayClass::FillScreen(uint16_t usColor) {
   RoverLCD.fillScreen(usColor);
@@ -136,10 +164,8 @@ void BeckTireTempDisplayClass::DisplayText(uint16_t usCursorX, uint16_t usCursor
   return;
 }  //DisplayText
 
-
 void BeckTireTempDisplayClass::ClearTextBackground(INT16 sUpperLeftX, INT16 sUpperLeftY, uint16_t usWidth, uint16_t usHeight){
   RoverLCD.fillRect(sUpperLeftX, sUpperLeftY, usWidth, usHeight, BackgroundColor);
   return;
 } //ClearTextBackground
-
 //Last line.

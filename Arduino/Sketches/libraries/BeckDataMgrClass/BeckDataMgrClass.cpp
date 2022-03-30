@@ -1,5 +1,5 @@
 static const char szSystemFileName[]  = "BeckDataMgrClass.cpp";
-static const char szSystemFileDate[]  = "3/28/22b";
+static const char szSystemFileDate[]  = "3/30/22d";
 
 #include <BeckDataMgrClass.h>
 #include <Streaming.h>
@@ -10,8 +10,22 @@ BeckDataMgrClass::BeckDataMgrClass() {
 } //constructor
 
 
+BeckDataMgrClass::~BeckDataMgrClass() {
+  Serial << "~BeckDataMgrClass(): Destructor, call delete _apoCarReadings[][]" << endl;
+  for (int wSensorSetID= 0; wSensorSetID <= _wNumSensorSets; wSensorSetID++){
+    for (int wSensorID= 0; wSensorID <= _wNumSensors; wSensorID++){
+      if(_apoCarReadings[wSensorSetID][wSensorID] != nullptr){
+        delete _apoCarReadings[wSensorSetID][wSensorID];
+        _apoCarReadings[wSensorSetID][wSensorID]= nullptr;
+      } //if
+    } //for(int wSensorID=0...
+    Serial << ".*";
+  } //for(int wSensorSetID=0...
+} //destructor
+
+
 void BeckDataMgrClass::BuildSensorData(){
-//  Serial << "BeckCarSetClass::BuildSensorData(): Begin\n" <<
+//  Serial << "BeckDataMgrClass::BuildSensorData(): Begin\n" <<
   int w_apoCarReadingsCount= 1;
   int wTotalSensorSets = _wNumSensorSets + 1;
   int wTotalSensors    = _wNumSensors    + 1;
@@ -48,7 +62,7 @@ void BeckDataMgrClass::SetDegF(int wSensorSetID, int wSensorID, float fNewDegFVa
 }	//SetDegF
 
 float BeckDataMgrClass::fGetDegF(int wSensorSetID, int wSensorID){
-  Serial << "\BeckDataMgrClass::fGetDegF(" << wSensorID << ", " << wSensorID << ") call fGetDegF()" << endl;
+  Serial << "BeckDataMgrClass::fGetDegF(" << wSensorID << ", " << wSensorID << ") call fGetDegF()" << endl;
   float fReturn;
   fReturn= _apoCarReadings[wSensorSetID][wSensorID]->fGetDegF();
   //return (_apoCarReadings[wSensorSetID][wSensorID]->fGetDegF());
@@ -71,16 +85,10 @@ float BeckDataMgrClass::fGetLastDegF(int wSensorSetID, int wSensorID){
 } //fGetLastDegF
 
 
-BeckDataMgrClass::~BeckDataMgrClass() {
-  Serial << "~BeckDataMgrClass(): Destructor, call delete _apoCarReadings[][]" << endl;
-  for (int wSensorSetID= 0; wSensorSetID <= _wNumSensorSets; wSensorSetID++){
-    for (int wSensorID= 0; wSensorID <= _wNumSensors; wSensorID++){
-      if(_apoCarReadings[wSensorSetID][wSensorID] != nullptr){
-        delete _apoCarReadings[wSensorSetID][wSensorID];
-        _apoCarReadings[wSensorSetID][wSensorID]= nullptr;
-      } //if
-    } //for(int wSensorID=0...
-    Serial << ".*";
-  } //for(int wSensorSetID=0...
-} //destructor
+void BeckDataMgrClass::TestPtr(){
+  Serial << "BeckDataMgrClass::TestPtr(): Just testing\n";
+  return;
+} //fGetLastDegF
+//void                  TestPtr               ();
+
 //Last line.
