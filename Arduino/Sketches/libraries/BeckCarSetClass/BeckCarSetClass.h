@@ -1,4 +1,4 @@
-// BeckCarSetClass.h, 3/29/22d
+// BeckCarSetClass.h, 3/29/22e
 #pragma once
 #include <BeckE32_Defines.h>
 #include <BeckDataMgrClass.h>
@@ -17,7 +17,8 @@ public:
 
 private:
   void  ReadSensorSet           (int wSensorSetID);
-  bool  bDisplayLog             ();
+  void  ReadLogTemps            ();
+  void  DisplayLogData          ();
   void  PrintLogData            ();
   void  BuildObjectData         ();
 
@@ -30,7 +31,5 @@ private:
   BeckButtonsClass*           _poButtons                {nullptr};
 
   uint32_t                    _uwEpochTime;
-  unsigned long               _ulNextDispLogMsec    =    0;
-  unsigned long               _ulDispLogPeriodMsec  = 1000;     //mSec between updating current temp on display
 };  //BeckCarSetClass
 //Last line.

@@ -27,16 +27,34 @@ void BeckTireTempDisplayClass::DisplayBegin() {
 }  //DisplayBegin
 
 
-void BeckTireTempDisplayClass::DisplayUpdate(int wSensorSetID) {
-/*
-if (millis() > ulNextDisplayMsec){
-  ulNextDisplayMsec= millis() + ulDisplayPeriodMsec;
-  DisplayTemperature();
-  DisplayLowerBanner();
-} //if (millis()>ulNextDisplayMsec)
-*/
+void BeckTireTempDisplayClass::DisplaySensorSet(int wSensorSetID) {
+  if (wSensorSetID == _wLogSensorSetID){
+    DisplayLogTemps();
+  } //if (wSensorSetID==_wLogSensorSetID)
+  else{
+    DisplayTemperature();
+  } //if (wSensorSetID==_wLogSensorSetID)else
 return;
-}  //DisplayUpdate
+}  //DisplaySensorSet
+
+
+void BeckTireTempDisplayClass::DisplayLogTemps(){
+  const GFXfont   *pFont        = &FreeSansOblique18pt7b;
+  uint16_t        usCursorX     = 45;
+  uint16_t        usCursorY     = 232;    //Was 72
+  uint8_t         ucSize        = 1;
+  ColorType       usColor       = WROVER_CYAN;
+
+  float afDegF[_wNumSensors + 1] {0.0};
+  for(int wSensor= 1; wSensor <= _wNumSensors; wSensor++){
+    afDegF[wSensor]= _poDataMgr->fGetDegF(_wLogSensorSetID, wSensor);
+  } //for
+
+  sprintf(sz100CharString, "%6.1f   %6.1f   %6.1f", afDegF[1], afDegF[2], afDegF[3]);
+  DisplayText( usCursorX, usCursorY, sz100CharString, pFont, ucSize, usColor);
+
+  return;
+} //DisplayLogTemps
 
 
 void BeckTireTempDisplayClass::DisplayClear() {
@@ -90,23 +108,6 @@ void BeckTireTempDisplayClass::DisplayTemperature() {
   } //if(TireTempData.bDegFChanged())
   return;
 }  //DisplayTemperature
-
-
-void BeckTireTempDisplayClass::DisplayLowerBanner(){
-  const GFXfont   *pFont          = &FreeSansOblique18pt7b;
-  uint16_t          usCursorX       = 45;
-  uint16_t          usCursorY       = 232;    //Was 72
-  uint8_t           ucSize          = 1;
-  ColorType       usColor         = WROVER_CYAN;
-
-/*
-  sprintf(sz100CharString, "%6.1f", 37.37);
-  DisplayText( usCursorX, usCursorY, "Tire Degrees F", pFont, ucSize, usColor);
-*/
-  sprintf(sz100CharString, "%s", "Tire Degrees F");
-  DisplayText( usCursorX, usCursorY, sz100CharString, pFont, ucSize, usColor);
-  return;
-} //DisplayLowerBanner
 
 
 void BeckTireTempDisplayClass::DisplayText(uint16_t usCursorX, uint16_t usCursorY, char *pcText,

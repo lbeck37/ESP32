@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckCarSetClass.cpp";
-const char szSystemFileDate[]  = "3/29/22d";
+const char szSystemFileDate[]  = "3/29/22e";
 
 #include <BeckCarSetClass.h>
 #include <BeckE32_Defines.h>
@@ -53,51 +53,62 @@ void BeckCarSetClass::Begin(){
 
 void BeckCarSetClass::HandleLoop(){
   int wChangedSection =  -1;
-  int wPressedButton  = _poButtons->wHandleLoop();
+  //Read and save log temperatures
+  ReadLogTemps();
 
+  //Check the buttons and sample and record the (3) sensor values
+  int wPressedButton= _poButtons->wHandleLoop();
   if (wPressedButton > 0){
     ReadSensorSet(wPressedButton);
-    wChangedSection= wPressedButton;
+    _poDisplay->DisplaySensorSet(wPressedButton);
   } //if(wPressedButton>0)
-  else{
-    bool bLogChanged= bDisplayLog();
-    if (bLogChanged){
-      wChangedSection= _wLoggingSensorSetID;
-    } //if (bLogChanged)
-  } //if(wPressedButton>0)else
 
   if (wChangedSection >= 0){
-    _poDisplay->DisplayUpdate(wChangedSection);
+    _poDisplay->DisplaySensorSet(wChangedSection);
   } //if(wChangedSection>=0)
 
+  PrintLogData();
   return;
 } //HandleLoop
 
+
 void BeckCarSetClass::ReadSensorSet(int wSensorSetID) {
-  //Have the SensorSet handle itself, like have each of its Sensors read its TCouple
+  //Data is read and written to DataMgr
   _poNTP->HandleNTP();
   _uwEpochTime= _poNTP->uwGetEpochTime();
   _apoSensorSet[wSensorSetID]->ReadSensorSet(_uwEpochTime);
   return;
 } //ReadSensorSet
 
-bool BeckCarSetClass::bDisplayLog(){
-  bool  bDataChanged= false;
-  if (millis() > _ulNextDispLogMsec){
-    _ulNextDispLogMsec= millis() + _ulDispLogPeriodMsec;
-    bDataChanged= true;
-    _poNTP->HandleNTP();
 
-    ReadSensorSet(_wLoggingSensorSetID);
-  } //if (millis()>ulNextDisplayMsec)
+void BeckCarSetClass::ReadLogTemps(){
+  if (millis() > _ulNextReadLogMsec){
+    _ulNextReadLogMsec= millis() + _ulReadLogPeriodMsec;
+    ReadSensorSet(_wLogSensorSetID);
+  } //if (millis()>_ulNextReadLogMsec)
+  return;
+} //ReadLogTemps
 
-  return bDataChanged;
-} //bDisplayLog
+
+void BeckCarSetClass::DisplayLogData(){
+  if (millis() > _ulNextPrintLogMsec){
+    _ulNextPrintLogMsec= millis() + _ulPrintLogPeriodMsec;
+    _apoSensorSet[_wLogSensorSetID]->PrintSensorSetData();
+  } //if (millis()>_ulNextPrintLogMsec)
+
+  return;
+} //DisplayLogData
+
 
 void BeckCarSetClass::PrintLogData(){
-  _apoSensorSet[_wLoggingSensorSetID]->PrintSensorSetData();
+  if (millis() > _ulNextPrintLogMsec){
+    _ulNextPrintLogMsec= millis() + _ulPrintLogPeriodMsec;
+    _apoSensorSet[_wLogSensorSetID]->PrintSensorSetData();
+  } //if (millis()>_ulNextPrintLogMsec)
+
   return;
 } //PrintLogData
+
 
 BeckCarSetClass::~BeckCarSetClass() {
   Serial << "~BeckCarSetClass(): Destructor, Deleting sensors" << endl;
