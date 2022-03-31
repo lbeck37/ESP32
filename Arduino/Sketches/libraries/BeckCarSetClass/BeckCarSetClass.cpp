@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckCarSetClass.cpp";
-const char szSystemFileDate[]  = "3/31/22b";
+const char szSystemFileDate[]  = "3/31/22c";
 
 #include <BeckCarSetClass.h>
 #include <BeckE32_Defines.h>
@@ -65,12 +65,12 @@ void BeckCarSetClass::HandleLoop(){
     DisplaySensorSet  (wPressedButton);
   } //if(wPressedButton>0)
 
-/*
   Serial << "BeckCarSetClass::HandleLoop(): Call DisplayLogData()" << endl;
   DisplayLogData();
-*/
-  //Serial << "BeckCarSetClass::HandleLoop(): Call PrintLogData()" << endl;
+
+  Serial << "BeckCarSetClass::HandleLoop(): Call PrintLogData()" << endl;
   PrintLogData();
+  delay(1000);
   return;
 } //HandleLoop
 

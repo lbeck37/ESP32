@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckDisplayClass.cpp";
-const char szSystemFileDate[]  = "3/31/22a";
+const char szSystemFileDate[]  = "3/31/22c";
 
 #include <BeckDisplayClass.h>
 #include <BeckLogLib.h>
@@ -38,7 +38,8 @@ void BeckDisplayClass::DisplaySensorSet(int wSensorSetID) {
   Serial << "BeckDisplayClass::DisplaySensorSet(): wSensorSetID= " << wSensorSetID << endl;
   if (wSensorSetID == _wLogSensorSetID){
     Serial << "BeckDisplayClass::DisplaySensorSet(): Call DisplayLogTemps()" << endl;
-    DisplayLogTemps(37.0, 38.0, 39.0);
+    //DisplayLogTemps(37.0, 38.0, 39.0);
+    DisplayLogTemps("This is a test");
   } //if (wSensorSetID==_wLogSensorSetID)
   else{
     Serial << "BeckDisplayClass::DisplaySensorSet(): Call DisplayTemperature()" << endl;
@@ -49,17 +50,27 @@ void BeckDisplayClass::DisplaySensorSet(int wSensorSetID) {
 }  //DisplaySensorSet
 
 
+/*
 void BeckDisplayClass::DisplayLogTemps(float fDegf1, float fDegf2, float fDegf3){
-  Serial << "BeckDisplayClass::DisplayLogTemps(" << fDegf1 << ", " << fDegf2 << "): Begin" << endl;
+  Serial << "BeckDisplayClass::DisplayLogTemps(" << fDegf1 << ", " << fDegf2 << ", " << fDegf3 << "): Begin" << endl;
+*/
+void BeckDisplayClass::DisplayLogTemps(char* szLogString){
+  Serial << "BeckDisplayClass::DisplayLogTemps(): Begin: szLogString= " << szLogString << endl;
   const GFXfont   *pFont        = &FreeSansOblique18pt7b;
   uint16_t        usCursorX     = 45;
   uint16_t        usCursorY     = 232;    //Was 72
   uint8_t         ucSize        = 1;
   ColorType       usColor       = WROVER_CYAN;
 
-  sprintf(sz100CharString, "%6.1f   %6.1f   %6.1f", fDegf1, fDegf2, fDegf3);
-  Serial << "BeckDisplayClass::DisplayLogTemps(): Call DisplayText() String= " << sz100CharString << endl;
-  DisplayText( usCursorX, usCursorY, sz100CharString, pFont, ucSize, usColor);
+  //sprintf(sz100CharString, "%6.1f   %6.1f   %6.1f", fDegf1, fDegf2, fDegf3);
+  Serial << "BeckDisplayClass::DisplayLogTemps(): Call DisplayText() String= " << szLogString << endl;
+  //Serial << "BeckDisplayClass::DisplayLogTemps(): Call DisplayText() String= not printed"  << endl;
+  Serial << "BeckDisplayClass::DisplayLogTemps(): I haven't crashed but I haven't called DisplayText() yet" << endl;
+
+  //DisplayText( usCursorX, usCursorY, sz100CharString, pFont, ucSize, usColor);
+  //DisplayText( usCursorX, usCursorY, szLogString, pFont, ucSize, usColor);
+
+  Serial << "BeckDisplayClass::DisplayLogTemps(): After call to DisplayText()" << endl;
 
   return;
 } //DisplayLogTemps(float,float,float)
