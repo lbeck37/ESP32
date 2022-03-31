@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckCarSetClass.cpp";
-const char szSystemFileDate[]  = "3/30/22d";
+const char szSystemFileDate[]  = "3/31/22b";
 
 #include <BeckCarSetClass.h>
 #include <BeckE32_Defines.h>
@@ -26,7 +26,7 @@ BeckCarSetClass::BeckCarSetClass() {
   _poButtons= new BeckButtonsClass();
 
   Serial << "BeckCarSetClass(): Default CTR, Do _poDisplay= new BeckTireTempDisplayClass()" << endl;
-  _poDisplay= new BeckTireTempDisplayClass(_poDataMgr);
+  _poDisplay= new BeckDisplayClass(_poDataMgr);
   _poDisplay->DisplayBegin();
 
   Serial << "BeckCarSetClass(): Default CTR, Done" << endl;
@@ -61,6 +61,7 @@ void BeckCarSetClass::HandleLoop(){
   int wPressedButton= _poButtons->wHandleLoop();
   if (wPressedButton > 0){
     ReadSensorSet     (wPressedButton);
+    //DisplaySensorSet  (wPressedButton);
     DisplaySensorSet  (wPressedButton);
   } //if(wPressedButton>0)
 
@@ -101,7 +102,9 @@ void BeckCarSetClass::DisplayLogData(){
   if (millis() > _ulNextDispLogMsec){
     _ulNextDispLogMsec= millis() + _ulDispLogPeriodMsec;
     Serial << "BeckCarSetClass::DisplayLogData(): Call DisplaySensorSet()" << endl;
-    DisplaySensorSet(_wLogSensorSetID);
+    //DisplaySensorSet(_wLogSensorSetID);
+    Serial << "BeckCarSetClass::DisplayLogData(): Call _apoSensorSet[wSensorSetID]->DisplaySensorSetData()" << endl;
+    _apoSensorSet[_wLogSensorSetID]->DisplaySensorSet(_wLogSensorSetID);
   } //if (millis()>_ulNextPrintLogMsec)
   return;
 } //DisplayLogData

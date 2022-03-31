@@ -49,6 +49,16 @@ void BeckTireTempDisplayClass::DisplaySensorSet(int wSensorSetID) {
 }  //DisplaySensorSet
 
 
+void BeckTireTempDisplayClass::DisplayLogTemps(float fDegf1, float fDegf2, float fDegf3){
+  Serial << "BeckTireTempDisplayClass::DisplayLogTemps(" << fDegf1 << ", " << fDegf2 << "): Begin" << endl;
+
+  sprintf(sz100CharString, "%6.1f   %6.1f   %6.1f", fDegf1, fDegf2, fDegf3);
+  Serial << "BeckTireTempDisplayClass::DisplayLogTemps(): Call DisplayText() String= " << sz100CharString << endl;
+  DisplayText( usCursorX, usCursorY, sz100CharString, pFont, ucSize, usColor);
+
+  return;
+} //DisplayLogTemps(float,float,float)
+/*
 void BeckTireTempDisplayClass::DisplayLogTemps(){
   Serial << "BeckTireTempDisplayClass::DisplayLogTemps():  Begin" << endl;
   const GFXfont   *pFont        = &FreeSansOblique18pt7b;
@@ -60,11 +70,11 @@ void BeckTireTempDisplayClass::DisplayLogTemps(){
   Serial << "BeckTireTempDisplayClass::DisplayLogTemps():  Initialize afDegF[]" << endl;
   float afDegF[_wNumSensors + 1] {0.0};
 
-/*
+
   for(int wSensor= 1; wSensor <= _wNumSensors; wSensor++){
     afDegF[wSensor]= _poDataMgr->fGetDegF(_wLogSensorSetID, wSensor);
   } //for
-*/
+
   Serial << "BeckTireTempDisplayClass::DisplayLogTemps():  Call _poDataMgr->TestPtr() iside a try/catch" << endl;
   try {
       _poDataMgr->TestPtr();
@@ -83,11 +93,11 @@ void BeckTireTempDisplayClass::DisplayLogTemps(){
       Serial << "BeckTireTempDisplayClass::DisplayLogTemps(): _poDataMgr is a nullptr" << endl;
     } //if (_poDataMgr!=nullptr)else
   } //try
-/*
+
   catch (const runtime_error& e) {
     Serial << "BeckTireTempDisplayClass::DisplayLogTemps():  Call  to _poDataMgr->TestPtr() threw Exception |" << e.what() << endl;
   }
-*/
+
   catch (...) {
     Serial << "BeckTireTempDisplayClass::DisplayLogTemps():  Call  to _poDataMgr->TestPtr() threw Exception" << endl;
   } //catch(...)
@@ -98,6 +108,7 @@ void BeckTireTempDisplayClass::DisplayLogTemps(){
 
   return;
 } //DisplayLogTemps
+*/
 
 
 void BeckTireTempDisplayClass::DisplayClear() {

@@ -1,5 +1,5 @@
 const char szSketchName[]  = "BeckE32_TireTemp.ino";
-const char szFileDate[]    = "3/30/22u";
+const char szFileDate[]    = "3/31/22a";
 #include <BeckE32_Defines.h>
 #define LOCAL_BUTTONS   false
 #if DO_OTA
@@ -9,7 +9,7 @@ const char szFileDate[]    = "3/30/22u";
 #include <BeckI2cClass.h>
 #include <BeckLogLib.h>
 #include <BeckMiniLib.h>
-#include <BeckTireTempDisplayClass.h>
+#include <BeckDisplayClass.h>
 #include <BeckTireTempNTPClass.h>
 #include <WiFi.h>
 #include <Streaming.h>

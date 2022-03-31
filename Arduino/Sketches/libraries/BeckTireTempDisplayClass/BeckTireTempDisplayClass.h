@@ -1,4 +1,4 @@
-// BeckTireTempDisplayClass.h, 3/30/22b
+// BeckTireTempDisplayClass.h, 3/31/22a
 #pragma once
 #include <BeckE32_Defines.h>
 #include <BeckDataMgrClass.h>
@@ -17,6 +17,7 @@ public:
 
   void  DisplayBegin        ();
   void  DisplaySensorSet    (int wSensorSetID);
+  void  DisplayLogTemps     (float fDegf1, float fDegf2, float fDegf3);
 
 private:
   void  DisplayClear        ();

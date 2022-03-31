@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckSensorSetClass.cpp";
-const char szSystemFileDate[]  = "3/30/22b";
+const char szSystemFileDate[]  = "3/31/22a";
 
 #include <BeckE32_Defines.h>
 #include <BeckSensorSetClass.h>
@@ -14,7 +14,7 @@ BeckSensorSetClass::BeckSensorSetClass() {
 } //constructor
 
 
-  BeckSensorSetClass::BeckSensorSetClass(BeckTireTempDisplayClass* poDisplay, BeckDataMgrClass* poDataMgr, int wSensorSetID){
+  BeckSensorSetClass::BeckSensorSetClass(BeckDisplayClass* poDisplay, BeckDataMgrClass* poDataMgr, int wSensorSetID){
   _wSensorSetID= wSensorSetID;
   _poDataMgr= poDataMgr;
   _poDisplay= poDisplay;
