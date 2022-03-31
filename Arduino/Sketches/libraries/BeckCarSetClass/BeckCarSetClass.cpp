@@ -109,6 +109,7 @@ void BeckCarSetClass::DisplayLogData(){
 void BeckCarSetClass::PrintLogData(){
   if (millis() > _ulNextPrintLogMsec){
     _ulNextPrintLogMsec= millis() + _ulPrintLogPeriodMsec;
+    Serial << "BeckCarSetClass::PrintLogData(): Call _apoSensorSet[_wLogSensorSetID]->PrintSensorSetData()" << endl;
     _apoSensorSet[_wLogSensorSetID]->PrintSensorSetData();
   } //if (millis()>_ulNextPrintLogMsec)
   return;
