@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckDisplayClass.cpp";
-const char szSystemFileDate[]  = "3/31/22c";
+const char szSystemFileDate[]  = "4/1/22a";
 
 #include <BeckDisplayClass.h>
 #include <BeckLogLib.h>
@@ -68,7 +68,7 @@ void BeckDisplayClass::DisplayLogTemps(char* szLogString){
   Serial << "BeckDisplayClass::DisplayLogTemps(): I haven't crashed but I haven't called DisplayText() yet" << endl;
 
   //DisplayText( usCursorX, usCursorY, sz100CharString, pFont, ucSize, usColor);
-  //DisplayText( usCursorX, usCursorY, szLogString, pFont, ucSize, usColor);
+  DisplayText( usCursorX, usCursorY, szLogString, pFont, ucSize, usColor);
 
   Serial << "BeckDisplayClass::DisplayLogTemps(): After call to DisplayText()" << endl;
 

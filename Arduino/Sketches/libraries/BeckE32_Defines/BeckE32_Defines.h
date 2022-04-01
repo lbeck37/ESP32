@@ -1,4 +1,4 @@
-// BeckESP32_Defines.h, 3/29/22b
+// BeckESP32_Defines.h, 4/1/22a
 #pragma once
 #include <cstdint>
 
@@ -19,7 +19,7 @@ typedef int16_t         PUnit;          //Pixel Unit
 typedef uint8_t         FontSize;
 
 static unsigned long    _ulNextDispLogMsec    =    0;
-static unsigned long    _ulDispLogPeriodMsec  = 2000;   //mSec between updating the log on the display
+static unsigned long    _ulDispLogPeriodMsec  = 5000;   //mSec between updating the log on the display
 
 static unsigned long    _ulNextPrintLogMsec   =    0;
 static unsigned long    _ulPrintLogPeriodMsec = 5000;   //mSec between logging to serial port

@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckCarSetClass.cpp";
-const char szSystemFileDate[]  = "3/31/22c";
+const char szSystemFileDate[]  = "4/1/22b";
 
 #include <BeckCarSetClass.h>
 #include <BeckE32_Defines.h>
@@ -65,12 +65,12 @@ void BeckCarSetClass::HandleLoop(){
     DisplaySensorSet  (wPressedButton);
   } //if(wPressedButton>0)
 
-  Serial << "BeckCarSetClass::HandleLoop(): Call DisplayLogData()" << endl;
+  //Serial << "BeckCarSetClass::HandleLoop(): Call DisplayLogData()" << endl;
   DisplayLogData();
 
-  Serial << "BeckCarSetClass::HandleLoop(): Call PrintLogData()" << endl;
+  //Serial << "BeckCarSetClass::HandleLoop(): Call PrintLogData()" << endl;
   PrintLogData();
-  delay(1000);
+  //delay(1000);
   return;
 } //HandleLoop
 
@@ -114,6 +114,7 @@ void BeckCarSetClass::PrintLogData(){
     _ulNextPrintLogMsec= millis() + _ulPrintLogPeriodMsec;
     Serial << "BeckCarSetClass::PrintLogData(): Call _apoSensorSet[_wLogSensorSetID]->PrintSensorSetData()" << endl;
     _apoSensorSet[_wLogSensorSetID]->PrintSensorSetData();
+    Serial << endl;     //Separate reading printouts, this is the last thing in the current HandleLoop()
   } //if (millis()>_ulNextPrintLogMsec)
   return;
 } //PrintLogData

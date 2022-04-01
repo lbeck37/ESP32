@@ -1,4 +1,4 @@
-// BeckDisplayClass.h, 3/31/22b
+// BeckDisplayClass.h, 4/1/22a
 #pragma once
 #include <BeckE32_Defines.h>
 #include <BeckDataMgrClass.h>

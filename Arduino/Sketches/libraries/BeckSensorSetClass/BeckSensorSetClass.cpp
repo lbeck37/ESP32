@@ -1,5 +1,5 @@
 const char szSystemFileName[]  = "BeckSensorSetClass.cpp";
-const char szSystemFileDate[]  = "3/31/22a";
+const char szSystemFileDate[]  = "4/1/22a";
 
 #include <BeckE32_Defines.h>
 #include <BeckSensorSetClass.h>

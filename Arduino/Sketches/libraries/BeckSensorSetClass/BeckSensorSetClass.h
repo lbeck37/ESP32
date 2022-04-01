@@ -1,4 +1,4 @@
-// BeckSensorSetClass.h, 3/31/22b
+// BeckSensorSetClass.h, 4/1/22a
 #pragma once
 #include <BeckSensorClass.h>
 #include <BeckE32_Defines.h>
