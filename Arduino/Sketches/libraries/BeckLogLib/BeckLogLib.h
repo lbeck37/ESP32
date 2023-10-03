@@ -1,6 +1,6 @@
 //BeckLogLib.h, 2/16/19
 #pragma once
-#include <BeckMiniLib.h>
+//#include <BeckMiniLib.h>
 #include <Streaming.h>
 #include <Time.h>
 

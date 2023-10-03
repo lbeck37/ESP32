@@ -11,9 +11,9 @@
 #define DO_NTP                  false
 #define DO_THERMOSTAT           false
 #define DO_WEB_SERVER           false
-#define DO_TTGO                 true
+#define DO_TTGO                 false
 
-#define DO_ROVER                true
+#define DO_ROVER                false
 #define DO_OTA                  true
 //If DO_ROVER is not true, then the display is on TTGO instead of the ESP-WROVER-KIT
 
