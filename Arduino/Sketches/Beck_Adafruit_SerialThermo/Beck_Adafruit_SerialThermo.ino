@@ -1,5 +1,5 @@
 const char szSketchName[]  = "Beck_Adafruit_SerialThermo.ino";
-const char szFileDate[]    = "10/3/23g";
+const char szFileDate[]    = "10/3/23h";
 /***************************************************
   This is an example for the Adafruit Thermocouple Sensor w/MAX31855K
   Designed specifically to work with the Adafruit Thermocouple Sensor
