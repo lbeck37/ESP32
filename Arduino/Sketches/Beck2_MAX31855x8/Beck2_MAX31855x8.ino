@@ -1,5 +1,5 @@
 const char szSketchName[]  = "Beck2_MAX31855x8.ino";
-const char szFileDate[]    = "10/3/23d";
+const char szFileDate[]    = "10/11/23b";
 /*
  MAX31855 library example sketch
 
@@ -49,11 +49,20 @@ const char szFileDate[]    = "10/3/23d";
 // than that one each I/O pin.  For example, the ATmega328 supports up to 20mA.  For convenience, the board
 // is placed directly on top of a row of I/O pins on the microcontroller.  Power is supplied to the board by
 // holding the GND pin low and the VIN pin high
+/*
 #define GND  3
 #define T0   4
 #define T1   5
 #define T2   6
 #define VIN  7
+*/
+//ESP32 TTGO T-Display board
+#define GND  3
+#define T0   27
+#define T1   26
+#define T2   6
+#define VIN  7
+
 //Set up SPI pins
 /*
 #define MISO  8
